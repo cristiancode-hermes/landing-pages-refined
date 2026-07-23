@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbit &amp; Anchor — learn to sail. Actually sail.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(0.99 0 0);
+    --ink: oklch(0.24 0.015 255);
+    --navy: oklch(0.3 0.065 255);
+    --navy-deep: oklch(0.25 0.06 255);
+    --navy-ink: oklch(0.94 0.012 250);
+    --navy-muted: oklch(0.78 0.03 250);
+    --red: oklch(0.55 0.19 25);
+    --red-deep: oklch(0.47 0.15 25);
+    --gray: oklch(0.44 0.015 255);
+    --rule: oklch(0.88 0.008 255);
+    --font-display: "Italiana", serif;
+    --font-body: "Hanken Grotesk", sans-serif;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
+  p { max-width: 65ch; text-wrap: pretty; }
+  :focus-visible { outline: 2px solid var(--red); outline-offset: 3px; border-radius: 2px; }
+
+  /* header */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.1rem clamp(1.25rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    text-decoration: none;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+  .wordmark span { color: var(--red); }
+  nav ul { display: flex; gap: clamp(1rem, 3vw, 2rem); list-style: none; }
+  nav a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  nav a:hover { color: var(--ink); }
+
+  main > section { padding: clamp(3rem, 8vh, 5.5rem) clamp(1.25rem, 5vw, 4rem); }
+  .inner { max-width: 1020px; margin: 0 auto; }
+  h2 { font-size: clamp(1.9rem, 3.8vw, 2.9rem); margin-bottom: 1.2rem; }
+  .lede { color: var(--gray); margin-bottom: 2.5rem; }
+  .navy .lede { color: var(--navy-muted); }
+
+  /* hero */
+  .hero { padding: 0; position: relative; }
+  .hero-figure img { display: block; width: 100%; height: auto; max-height: 80vh; object-fit: cover; }
+  .hero-overlay {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1.25rem, 5vw, 4rem);
+    background: linear-gradient(to top, oklch(0.25 0.06 255 / 0.88), oklch(0.25 0.06 255 / 0));
+  }
+  .hero-overlay .inner { display: grid; gap: 0.8rem; }
+  h1 {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    color: oklch(0.97 0.008 250);
+  }
+  h1 em { font-style: normal; color: oklch(0.72 0.16 30); }
+  .hero-overlay p {
+    color: oklch(0.88 0.02 250);
+    font-size: 1.08rem;
+    max-width: 56ch;
+  }
+  .hero-overlay .harbor {
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: oklch(0.78 0.03 250);
+  }
+
+  /* compass */
+  .compass { background: var(--navy); color: var(--navy-ink); }
+  .compass h2 { color: var(--navy-ink); }
+  .compass-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .compass-svg { width: 100%; max-width: 420px; height: auto; display: block; margin: 0 auto; }
+  .compass-indicator {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.9s var(--ease-out);
+  }
+  .point-buttons { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.2rem 0 1.6rem; }
+  .point-btn {
+    font: 600 0.88rem var(--font-body);
+    letter-spacing: 0.03em;
+    padding: 0.6rem 1.15rem;
+    border-radius: 999px;
+    border: 1.5px solid oklch(0.6 0.06 252);
+    background: transparent;
+    color: var(--navy-ink);
+    cursor: pointer;
+    transition: background 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+  }
+  .point-btn:hover { border-color: oklch(0.8 0.03 250); }
+  .point-btn[aria-pressed="true"] {
+    background: var(--red);
+    border-color: var(--red);
+    color: oklch(0.97 0.01 30);
+  }
+  .point-readout h3 { font-size: 1.6rem; color: oklch(0.97 0.008 250); margin-bottom: 0.5rem; }
+  .point-readout .angle {
+    font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--navy-muted); margin-bottom: 0.9rem; display: block;
+  }
+  .point-readout p { color: var(--navy-muted); font-size: 1rem; }
+  .compass-note { margin-top: 2rem; font-size: 0.9rem; color: var(--navy-muted); }
+
+  /* ladder */
+  .ladder { border-top: 1px solid var(--rule); }
+  .rungs { list-style: none; display: grid; gap: 1.6rem; counter-reset: rung; }
+  .rung {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr auto;
+    gap: 1.4rem;
+    align-items: start;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .rung-badge {
+    width: 3.2rem; height: 3.2rem;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    background: var(--navy);
+    color: var(--navy-ink);
+  }
+  .rung:last-child .rung-badge { background: var(--red); color: oklch(0.97 0.01 30); }
+  .rung h3 { font-size: 1.5rem; margin-bottom: 0.35rem; }
+  .rung .rung-meta { font-size: 0.88rem; font-weight: 600; color: var(--gray); letter-spacing: 0.03em; margin-bottom: 0.5rem; }
+  .rung p { font-size: 0.98rem; color: var(--ink); }
+  .rung .rung-price { font-family: var(--font-display); font-size: 1.4rem; white-space: nowrap; }
+
+  /* capsize */
+  .capsize { background: var(--navy-deep); color: var(--navy-ink); }
+  .capsize h2 { color: var(--navy-ink); }
+  .capsize-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .capsize p { color: var(--navy-muted); margin-bottom: 1.1rem; font-size: 1.02rem; }
+  .capsize strong { color: var(--navy-ink); }
+  .capsize-figure img { display: block; width: 100%; height: auto; border-radius: 12px; }
+  .capsize-figure figcaption { margin-top: 0.6rem; font-size: 0.85rem; color: var(--navy-muted); }
+
+  /* knot */
+  .knot { border-top: 1px solid var(--rule); }
+  .knot-grid {
+    display: grid;
+    grid-template-columns: 1fr minmax(280px, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .knot-svg { width: 100%; max-width: 380px; height: auto; display: block; margin: 0 auto; }
+  .knot-line {
+    fill: none;
+    stroke: var(--navy);
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: tie 7s linear infinite;
+  }
+  @keyframes tie {
+    0% { stroke-dashoffset: 100; }
+    55% { stroke-dashoffset: 0; }
+    80% { stroke-dashoffset: 0; opacity: 1; }
+    90% { stroke-dashoffset: 0; opacity: 0; }
+    100% { stroke-dashoffset: 100; opacity: 0; }
+  }
+  .knot-steps { list-style: none; display: grid; gap: 1rem; margin-top: 1.5rem; }
+  .knot-steps li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.9rem;
+    align-items: baseline;
+    color: var(--gray);
+    font-size: 0.98rem;
+  }
+  .knot-steps b {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: var(--red);
+  }
+  .knot-steps strong { color: var(--ink); }
+
+  /* fleet */
+  .fleet { border-top: 1px solid var(--rule); }
+  .fleet-list { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .boat {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.4rem 2rem;
+    padding: 1.3rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .boat h3 { font-size: 1.5rem; }
+  .boat .boat-spec { font-size: 0.88rem; font-weight: 600; color: var(--gray); letter-spacing: 0.03em; }
+  .boat p { grid-column: 1 / -1; font-size: 0.97rem; color: var(--gray); }
+  .boat .boat-access {
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--red-deep); white-space: nowrap;
+  }
+
+  /* crew board + season pass */
+  .board { background: var(--navy); color: var(--navy-ink); }
+  .board h2 { color: var(--navy-ink); }
+  .board-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .posting {
+    background: var(--navy-deep);
+    border-radius: 12px;
+    padding: 1.5rem 1.6rem;
+    display: grid;
+    gap: 0.45rem;
+    align-content: start;
+  }
+  .posting h3 { font-size: 1.3rem; color: var(--navy-ink); }
+  .posting .posting-meta {
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: oklch(0.72 0.16 30);
+  }
+  .posting p { font-size: 0.95rem; color: var(--navy-muted); }
+  .board-note { margin-top: 1.8rem; font-size: 0.95rem; color: var(--navy-muted); }
+
+  .pass { border-top: 1px solid var(--rule); }
+  .pass-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .pass-price {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    color: var(--navy);
+    line-height: 1;
+  }
+  .pass-price span { display: block; font-family: var(--font-body); font-size: 0.95rem; font-weight: 500; color: var(--gray); letter-spacing: 0.06em; margin-top: 0.6rem; }
+  .pass ul { list-style: none; display: grid; gap: 0.6rem; margin-top: 1.2rem; }
+  .pass li { padding-left: 1.2rem; position: relative; color: var(--gray); font-size: 0.98rem; }
+  .pass li::before {
+    content: ""; position: absolute; left: 0; top: 0.62em;
+    width: 6px; height: 6px; background: var(--red); border-radius: 50%;
+  }
+  .pass li strong { color: var(--ink); }
+  .pass-cta {
+    display: inline-block;
+    margin-top: 1.6rem;
+    font: 600 0.95rem var(--font-body);
+    letter-spacing: 0.04em;
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    background: var(--red);
+    color: oklch(0.97 0.01 30);
+    text-decoration: none;
+    transition: background 0.35s var(--ease-out);
+  }
+  .pass-cta:hover { background: var(--red-deep); }
+
+  footer {
+    background: var(--navy-deep);
+    color: var(--navy-muted);
+    padding: 2.2rem clamp(1.25rem, 5vw, 4rem);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+  footer b { color: var(--navy-ink); font-weight: 500; }
+
+  @media (max-width: 820px) {
+    .compass-grid, .capsize-grid, .knot-grid, .pass-grid { grid-template-columns: 1fr; }
+    .rung { grid-template-columns: 2.6rem 1fr; }
+    .rung-badge { width: 2.6rem; height: 2.6rem; font-size: 1.05rem; }
+    .rung .rung-price { grid-column: 2; }
+  }
+  @media (max-width: 560px) {
+    header { flex-direction: column; gap: 0.7rem; align-items: flex-start; }
+    nav ul { flex-wrap: wrap; }
+    .hero-overlay { position: static; background: var(--navy); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .compass-indicator { transition: none; }
+    .knot-line { animation: none; stroke-dashoffset: 0; }
+    .point-btn, .pass-cta { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="#top">Orbit <span>&amp;</span> Anchor</a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#capsize">The drill</a></li>
+      <li><a href="#fleet">Fleet</a></li>
+      <li><a href="#crew">Crew board</a></li>
+      <li><a href="#pass">Season pass</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <figure class="hero-figure">
+      <img src="https://picsum.photos/seed/sailing-1/1600/900" width="1600" height="900"
+           alt="Meadowlark heeled over on a beam reach, three students grinning on the high side">
+    </figure>
+    <div class="hero-overlay">
+      <div class="inner">
+        <h1>Learn to sail. <em>Actually sail.</em></h1>
+        <p>Orbit &amp; Anchor is a working sailing school on Kilbride Harbor. We teach on real boats, in real weather, and we don't hand you a certificate for sitting through a slideshow. You'll be heeled over and grinning by your second lesson — or wondering what you signed up for, which is also fine.</p>
+        <p class="harbor">Kilbride Harbor · Est. 1998 · Lessons April–October</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compass navy" id="courses" aria-labelledby="compass-h">
+    <div class="inner">
+      <h2 id="compass-h">First, learn where the wind is</h2>
+      <p class="lede">Everything in sailing starts with the points of sail. Pick one — the boat turns, and we'll tell you what it feels like out there.</p>
+      <div class="compass-grid">
+        <svg class="compass-svg" viewBox="0 0 200 200" role="img" aria-label="Wind compass: a boat indicator rotating to the selected point of sail">
+          <circle cx="100" cy="100" r="94" fill="none" stroke="oklch(0.55 0.06 252)" stroke-width="1"/>
+          <circle cx="100" cy="100" r="72" fill="none" stroke="oklch(0.45 0.06 252)" stroke-width="1" stroke-dasharray="2 5"/>
+          <g font-family="Hanken Grotesk, sans-serif" font-size="11" font-weight="600" fill="oklch(0.85 0.025 250)" text-anchor="middle">
+            <text x="100" y="18">WIND</text>
+            <text x="100" y="196">180°</text>
+            <text x="14" y="104">270°</text>
+            <text x="186" y="104">90°</text>
+          </g>
+          <g stroke="oklch(0.5 0.06 252)" stroke-width="1.5">
+            <line x1="100" y1="26" x2="100" y2="36"/>
+            <line x1="100" y1="164" x2="100" y2="174"/>
+            <line x1="26" y1="100" x2="36" y2="100"/>
+            <line x1="164" y1="100" x2="174" y2="100"/>
+          </g>
+          <path d="M100 22 L96 34 L104 34 Z" fill="oklch(0.72 0.16 30)"/>
+          <g class="compass-indicator" id="compassBoat">
+            <path d="M100 52 L100 148" stroke="oklch(0.72 0.16 30)" stroke-width="2"/>
+            <path d="M100 58 L114 128 L100 120 L86 128 Z" fill="oklch(0.94 0.012 250)"/>
+            <circle cx="100" cy="100" r="5" fill="oklch(0.55 0.19 25)"/>
+          </g>
+        </svg>
+        <div>
+          <div class="point-buttons" role="group" aria-label="Points of sail">
+            <button class="point-btn" type="button" data-heading="45" aria-pressed="true">Close-hauled</button>
+            <button class="point-btn" type="button" data-heading="90" aria-pressed="false">Beam reach</button>
+            <button class="point-btn" type="button" data-heading="135" aria-pressed="false">Broad reach</button>
+            <button class="point-btn" type="button" data-heading="180" aria-pressed="false">Dead run</button>
+          </div>
+          <div class="point-readout" aria-live="polite">
+            <h3 id="pointName">Close-hauled</h3>
+            <span class="angle" id="pointAngle">~45° off the wind</span>
+            <p id="pointDesc">Heeled hard, spray in your teeth, everything trimmed tight. The boat feels alive and slightly annoyed. Week two of Skipper I you'll hate it; week three it'll be why you come back.</p>
+          </div>
+          <p class="compass-note">Instructors make you call the point of sail before every tack for the entire first course. By the end you do it in your sleep. That's the idea.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ladder" aria-labelledby="ladder-h">
+    <div class="inner">
+      <h2 id="ladder-h">The certification ladder</h2>
+      <p class="lede">Three rungs. Each one unlocks more of the fleet, and each one ends with you alone at the helm while the instructor pretends to read a magazine.</p>
+      <ol class="rungs">
+        <li class="rung">
+          <span class="rung-badge" aria-hidden="true">I</span>
+          <div>
+            <h3>Skipper I — Keelboat basics</h3>
+            <p class="rung-meta">12 hours over 4 sessions · includes the capsize drill · max 4 students per boat</p>
+            <p>Points of sail, tacking, gybing, docking without tears, and what every rope on the boat is actually called. You'll crew first, helm second, and by the fourth session you'll rig Meadowlark yourself while we watch with coffee.</p>
+          </div>
+          <span class="rung-price">$480</span>
+        </li>
+        <li class="rung">
+          <span class="rung-badge" aria-hidden="true">II</span>
+          <div>
+            <h3>Skipper II — Coastal confident</h3>
+            <p class="rung-meta">18 hours incl. one full-day sail · chart work, anchoring, man-overboard until it's boring</p>
+            <p>Now the harbor opens up. Tides, channels, anchoring for lunch, reefing before you need to, and recovering a fender you dropped because you will drop a fender. Skipper II holders can take the J/24s anywhere inside the bay.</p>
+          </div>
+          <span class="rung-price">$690</span>
+        </li>
+        <li class="rung">
+          <span class="rung-badge" aria-hidden="true">III</span>
+          <div>
+            <h3>Skipper III — Night &amp; weather</h3>
+            <p class="rung-meta">24 hours incl. two night sails · spinnaker endorsement optional · by invitation after II</p>
+            <p>Lights, shipping lanes, weather calls you can't take back, and sailing by feel when the horizon is gone. The spinnaker add-on teaches you to fly the big red kite without wrapping it around the forestay — most people manage it by the third hoist.</p>
+          </div>
+          <span class="rung-price">$920</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="capsize" id="capsize" aria-labelledby="capsize-h">
+    <div class="inner capsize-grid">
+      <div>
+        <h2 id="capsize-h">About the capsize drill</h2>
+        <p>Let's get this out of the way: <strong>you will capsize. On purpose. In week two.</strong> Every Skipper I student, every season, no exceptions for triathletes, navy veterans, or people who "promise to be careful."</p>
+        <p>Here's the honesty part. The harbor is <strong>14°C in May</strong> and not much warmer in June. We provide wetsuits that mostly fit. You will be cold, you will swallow some harbor, and the boat will turtle further than you expected the first time. Nobody has ever enjoyed the drill. Everybody has passed it.</p>
+        <p>Why we insist: the first unplanned capsize — and it comes for every sailor — should happen in a body of water you already know, next to people who've fished out four hundred students. Fear of capsizing ruins more sailors than capsizing ever has.</p>
+        <p>Afterwards there's hot soup in the clubhouse and your name goes on the <strong>Turtled List</strong> on the wall, which by now is longer than the membership roster. Wear it proudly.</p>
+      </div>
+      <figure class="capsize-figure">
+        <img src="https://picsum.photos/seed/sailing-2/800/600" width="800" height="600" loading="lazy"
+             alt="Hands on the helm of Beagle, mainsheet eased, Kilbride Head in the haze behind">
+        <figcaption>Beagle's helm, post-drill. The wetsuits mostly fit.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="knot" aria-labelledby="knot-h">
+    <div class="inner knot-grid">
+      <div>
+        <h2 id="knot-h">The bowline, forever</h2>
+        <p class="lede">One knot to start with. It doesn't slip, it doesn't jam, and you can untie it with frozen fingers. Watch it tie itself, then learn it on a real line at the dock.</p>
+        <ol class="knot-steps">
+          <li><b>1</b><span><strong>Make the loop</strong> — the rabbit hole, small end toward you.</span></li>
+          <li><b>2</b><span><strong>Rabbit comes up</strong> — working end up through the hole.</span></li>
+          <li><b>3</b><span><strong>Around the tree</strong> — behind the standing part, the long way round.</span></li>
+          <li><b>4</b><span><strong>Back down the hole</strong> — snug it home. That's the whole knot.</span></li>
+        </ol>
+      </div>
+      <svg class="knot-svg" viewBox="0 0 200 200" role="img" aria-label="Animated line drawing of a bowline being tied, looping continuously">
+        <path class="knot-line" pathLength="100"
+              d="M30 170 C 20 120, 40 90, 70 88 C 95 86, 108 100, 106 118 C 104 134, 88 140, 76 134 C 64 128, 62 112, 72 104 C 84 94, 110 96, 128 84 C 150 70, 168 76, 174 94 C 178 108, 170 124, 152 128 C 132 132, 118 122, 116 108 L 112 92 C 110 78, 118 60, 138 52 C 158 44, 180 52, 186 70"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="fleet" id="fleet" aria-labelledby="fleet-h">
+    <div class="inner">
+      <h2 id="fleet-h">The fleet</h2>
+      <p class="lede">Five boats, all named by students, all with opinions. What you can rent depends on your rung — the boats don't care how good you say you are.</p>
+      <div class="fleet-list">
+        <div class="boat">
+          <h3>Beagle</h3>
+          <span class="boat-spec">6.7 m keelboat · 4 souls · the school bus</span>
+          <span class="boat-access">Skipper I</span>
+          <p>Forgives everything, points like a shopping cart, impossible to embarrass. More sailors have learned on Beagle than on every other boat in the harbor combined.</p>
+        </div>
+        <div class="boat">
+          <h3>Meadowlark</h3>
+          <span class="boat-spec">7.3 m · 5 souls · Beagle's quicker sister</span>
+          <span class="boat-access">Skipper I</span>
+          <p>Same manners, better legs. This is the one in the photo at the top, heeled over with three students who swore they weren't nervous.</p>
+        </div>
+        <div class="boat">
+          <h3>Kestrel</h3>
+          <span class="boat-spec">J/24 · 4 souls · the honest one</span>
+          <span class="boat-access">Skipper II</span>
+          <p>Tells you immediately when your trim is wrong, in a language of weather helm and lost speed. Graduates of Skipper II either love Kestrel or respect her from the dock.</p>
+        </div>
+        <div class="boat">
+          <h3>Nightjar</h3>
+          <span class="boat-spec">8.8 m · 6 souls · cabin, stove, opinions</span>
+          <span class="boat-access">Skipper III</span>
+          <p>The overnight boat. Anchor in Seal Cove, cook something ambitious on the two-burner, and learn that everything sounds bigger in the dark.</p>
+        </div>
+        <div class="boat">
+          <h3>Redshift</h3>
+          <span class="boat-spec">9.1 m · 6 souls · the big red kite</span>
+          <span class="boat-access">Skipper III + spinnaker</span>
+          <p>Carries the spinnaker the school is named for — the red one you've seen from the ferry. Fast, dramatic, and utterly unforgiving of a lazy foredeck.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="board" id="crew" aria-labelledby="crew-h">
+    <div class="inner">
+      <h2 id="crew-h">The crew-match board</h2>
+      <p class="lede">Skippers need crew; crew need boats. The board hangs in the clubhouse and lives here too. Real postings from this week:</p>
+      <div class="board-grid">
+        <div class="posting">
+          <span class="posting-meta">Racing · Thursdays</span>
+          <h3>Marta needs a foredeck</h3>
+          <p>Thursday evening series on Kestrel. Must be able to swim, hike hard, and swear in at least two languages. Rookie-friendly if you're quick; we were all useless once.</p>
+        </div>
+        <div class="posting">
+          <span class="posting-meta">Cruising · weekends</span>
+          <h3>The Okafor family</h3>
+          <p>Taking Nightjar to Seal Cove every other weekend, kids aged 9 and 12 included. Looking for one patient adult who likes cooking on a boat that moves. Skipper II minimum.</p>
+        </div>
+        <div class="posting">
+          <span class="posting-meta">Learning · flexible</span>
+          <h3>Tomás, freshly minted II</h3>
+          <p>Just passed Skipper II, want miles more than glory. Will crew anything, bring sandwiches, and won't touch the radio without asking. Available most evenings after six.</p>
+        </div>
+      </div>
+      <p class="board-note">To post: be a member or current student, write it on an actual card at the clubhouse (the tradition), and we'll put it here the same day. Postings come down after 30 days or when Marta stops being picky, whichever comes first.</p>
+    </div>
+  </section>
+
+  <section class="pass" id="pass" aria-labelledby="pass-h">
+    <div class="inner pass-grid">
+      <div>
+        <p class="pass-price">$1,450<span>per season, April through October</span></p>
+        <a class="pass-cta" href="#visit">Hold a pass for next season</a>
+      </div>
+      <div>
+        <h2 id="pass-h">The season pass</h2>
+        <p>One price, the whole harbor. It pays for itself in about nine rentals — our record holder logged 61 days on the water last season, which works out to less than a round of drinks per sail.</p>
+        <ul>
+          <li><strong>Unlimited rentals</strong> of every boat your certification covers, up to 3 days per booking</li>
+          <li><strong>25% off all courses</strong>, including the spinnaker endorsement</li>
+          <li><strong>Guest sails</strong> — bring a landlubber twice a month, free</li>
+          <li><strong>Clubhouse key</strong> — showers, soup, and the good charts</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="visit">
+  <span><b>Orbit &amp; Anchor Sailing School</b> · Pier 3, Kilbride Harbor · Office Mon–Sat 9–5 · VHF channel 72, call sign "Harbor School"</span>
+  <span>The wind is free. Everything else is in the course fee.</span>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var boat = document.getElementById("compassBoat");
+  var nameEl = document.getElementById("pointName");
+  var angleEl = document.getElementById("pointAngle");
+  var descEl = document.getElementById("pointDesc");
+
+  var points = {
+    "45": {
+      name: "Close-hauled",
+      angle: "~45° off the wind",
+      desc: "Heeled hard, spray in your teeth, everything trimmed tight. The boat feels alive and slightly annoyed. Week two of Skipper I you'll hate it; week three it'll be why you come back."
+    },
+    "90": {
+      name: "Beam reach",
+      angle: "wind on the beam — 90°",
+      desc: "The fast, comfortable one. Wind square on the side, boat flat enough for sandwiches, quick enough to feel like sailing. Most harbor miles are beam reaches, and nobody complains."
+    },
+    "135": {
+      name: "Broad reach",
+      angle: "~135° off the wind",
+      desc: "Wind over the quarter, boat surging, the downhill run with your hair on fire. This is where students start whooping without deciding to. The instructor will pretend not to whoop."
+    },
+    "180": {
+      name: "Dead run",
+      angle: "180° — wind dead astern",
+      desc: "Slower than it feels, rolly, and one careless gybe away from a boom across the boat. We teach it with the preventer rigged and the jokes parked. Respect the run."
+    }
+  };
+
+  document.querySelectorAll(".point-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var heading = btn.getAttribute("data-heading");
+      var point = points[heading];
+      if (!point) return;
+      boat.style.transform = "rotate(" + heading + "deg)";
+      nameEl.textContent = point.name;
+      angleEl.textContent = point.angle;
+      descEl.textContent = point.desc;
+      document.querySelectorAll(".point-btn").forEach(function (b) {
+        b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alloy — made-to-measure steel and titanium bicycle frames</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;600;800&family=Hanken+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.975 0.003 250);
+    --ink: oklch(0.27 0.012 250);
+    --muted: oklch(0.45 0.012 250);
+    --brass: oklch(0.74 0.115 80);
+    --brass-deep: oklch(0.55 0.10 78);
+    --line: oklch(0.905 0.005 250);
+    --z-sticky: 10;
+    --step--1: clamp(0.84rem, 0.8rem + 0.2vw, 0.95rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.13rem);
+    --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+    --step-2: clamp(1.56rem, 1.38rem + 0.9vw, 2.05rem);
+    --step-3: clamp(1.95rem, 1.63rem + 1.6vw, 2.87rem);
+    --step-4: clamp(2.44rem, 1.9rem + 2.7vw, 3.9rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Hanken Grotesk", sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--brass-deep);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  h1, h2, h3 {
+    font-family: "Geologica", sans-serif;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  p { max-width: 68ch; text-wrap: pretty; }
+  .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1rem;
+  }
+  .logo {
+    font-family: "Geologica", sans-serif;
+    font-weight: 800;
+    font-size: var(--step-1);
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+  .logo .mark {
+    width: 0.62em;
+    height: 0.62em;
+    background: var(--brass);
+    border-radius: 2px;
+    transform: translateY(0.05em) rotate(45deg);
+  }
+  .nav-links {
+    display: flex;
+    gap: 1.75rem;
+    list-style: none;
+    font-size: var(--step--1);
+    font-weight: 500;
+  }
+  .nav-links a { text-decoration: none; color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .btn {
+    display: inline-block;
+    font-weight: 700;
+    font-size: var(--step--1);
+    text-decoration: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    border: 0;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-ink { background: var(--ink); color: var(--bg); white-space: nowrap; flex-shrink: 0; }
+  .btn-ink:hover { background: var(--brass-deep); color: var(--bg); }
+  .btn-brass { background: var(--brass); color: var(--ink); }
+  .btn-brass:hover { background: var(--brass-deep); color: var(--bg); }
+  .btn-ghost { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--brass-deep); color: var(--brass-deep); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.5rem, 5vw, 4rem);
+  }
+  .hero h1 { font-size: var(--step-4); max-width: 20ch; margin-bottom: 1.25rem; }
+  .hero h1 em { font-style: normal; color: var(--brass-deep); }
+  .hero .lede { font-size: var(--step-1); line-height: 1.55; color: var(--muted); max-width: 58ch; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .hero img {
+    width: 100%;
+    border-radius: 14px;
+    aspect-ratio: 16 / 8;
+    object-fit: cover;
+  }
+
+  section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .section-head { max-width: 60ch; margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .section-head h2 { font-size: var(--step-3); margin-bottom: 0.75rem; }
+  .section-head p { color: var(--muted); font-size: var(--step-1); line-height: 1.55; }
+
+  /* ---------- fitting / geometry ---------- */
+  .fit-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .geometry { width: 100%; height: auto; }
+  .geometry .tube {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+  .geometry .dim {
+    fill: none;
+    stroke: var(--brass-deep);
+    stroke-width: 1.5;
+    stroke-dasharray: 4 5;
+  }
+  .geometry .hub { fill: var(--bg); stroke: var(--ink); stroke-width: 4; }
+  .geometry text {
+    font-family: "Geologica", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    fill: var(--brass-deep);
+  }
+  .geometry .armed .tube, .geometry .armed .dim, .geometry .armed .hub {
+    clip-path: inset(-10% 102% -10% 0);
+  }
+  .geometry .revealed .tube, .geometry .revealed .dim, .geometry .revealed .hub {
+    clip-path: inset(-10% 0 -10% 0);
+    transition: clip-path 1.6s var(--ease-out);
+  }
+  .geometry .lbl { opacity: 1; }
+  .geometry .armed .lbl { opacity: 0; transform: translateY(6px); }
+  .geometry .revealed .lbl {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+  }
+  .geometry .revealed .lbl.t1 { transition-delay: 0.9s; }
+  .geometry .revealed .lbl.t2 { transition-delay: 1.15s; }
+  .geometry .revealed .lbl.t3 { transition-delay: 1.4s; }
+  .fit-steps { list-style: none; display: grid; gap: 1.5rem; }
+  .fit-steps li { border-top: 1px solid var(--line); padding-top: 1.1rem; }
+  .fit-steps h3 { font-size: var(--step-1); margin-bottom: 0.35rem; }
+  .fit-steps p { font-size: var(--step--1); color: var(--muted); }
+
+  /* ---------- steel vs ti ---------- */
+  .materials { background: var(--surface); border-block: 1px solid var(--line); }
+  .mat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .mat {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .mat h3 { font-size: var(--step-2); margin-bottom: 0.25rem; }
+  .mat .price { font-weight: 700; color: var(--brass-deep); font-size: var(--step-1); margin-bottom: 1.25rem; }
+  .mat dl { display: grid; gap: 1rem; font-size: var(--step--1); }
+  .mat dt { font-weight: 700; margin-bottom: 0.15rem; }
+  .mat dd { color: var(--muted); line-height: 1.55; }
+  .mat dd.good::before { content: "— "; color: var(--brass-deep); }
+
+  /* ---------- waitlist ---------- */
+  .queue { display: grid; gap: 0; }
+  .queue-row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+    border-top: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .queue-row:last-child { border-bottom: 1px solid var(--line); }
+  .queue-row .weeks {
+    font-family: "Geologica", sans-serif;
+    font-weight: 600;
+    font-size: var(--step--1);
+    color: var(--brass-deep);
+  }
+  .queue-row h3 { font-size: var(--step-1); display: inline; margin-right: 0.75rem; }
+  .queue-row p { display: inline; font-size: var(--step--1); color: var(--muted); }
+  .queue-note {
+    margin-top: 1.5rem;
+    font-size: var(--step-0);
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+  }
+  .queue-note strong { color: var(--brass-deep); }
+
+  /* ---------- builds ---------- */
+  .builds { background: var(--surface); border-block: 1px solid var(--line); }
+  .build-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .build {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .build img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: saturate(0.35) contrast(0.96);
+    transition: filter 0.6s var(--ease-out);
+  }
+  .build:hover img, .build:focus-within img { filter: saturate(1) contrast(1); }
+  .build .body { padding: 1.4rem 1.5rem 1.6rem; display: grid; gap: 0.5rem; }
+  .build h3 { font-size: var(--step-1); }
+  .build .spec { font-size: var(--step--1); font-weight: 700; color: var(--brass-deep); }
+  .build p { font-size: var(--step--1); color: var(--muted); line-height: 1.6; }
+  .build .geo-card {
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    filter: none;
+  }
+  .build .geo-card svg { width: 82%; height: auto; }
+  .build .geo-card .tube { fill: none; stroke: var(--bg); stroke-width: 4; stroke-linecap: round; }
+  .build .geo-card .brassline { fill: none; stroke: var(--brass); stroke-width: 1.5; stroke-dasharray: 3 4; }
+
+  /* ---------- cta band ---------- */
+  .cta-band { text-align: center; padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .cta-band h2 { font-size: var(--step-3); max-width: 24ch; margin: 0 auto 1rem; }
+  .cta-band p { color: var(--muted); font-size: var(--step-1); margin: 0 auto 2rem; max-width: 52ch; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .foot { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  footer a { color: var(--ink); font-weight: 500; }
+
+  @media (max-width: 820px) {
+    .fit-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .queue-row { grid-template-columns: 5.5rem 1fr; gap: 1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .geometry .armed .tube, .geometry .armed .dim, .geometry .armed .hub { clip-path: none; }
+    .geometry .armed .lbl { opacity: 1; transform: none; }
+    .build img { filter: none; transition: none; }
+    .btn { transition: none; }
+    .btn:hover { transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    header nav a { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true"></span>Alloy</a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#fit">The fitting</a></li>
+        <li><a href="#materials">Steel or ti</a></li>
+        <li><a href="#queue">The 14 weeks</a></li>
+        <li><a href="#builds">Recent builds</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-ink" href="#queue">Join the waitlist</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <h1>A frame that fits like a <em>favorite tool</em>.</h1>
+    <p class="lede">Alloy builds made-to-measure steel and titanium frames in Bellingham, Washington — one builder, one jig, one customer at a time. You bring your body and your riding; we bring the tubes.</p>
+    <div class="hero-actions">
+      <a class="btn btn-brass" href="#fit">Start with a fitting — $250</a>
+      <a class="btn btn-ghost" href="#materials">Steel or titanium?</a>
+    </div>
+    <img src="https://picsum.photos/seed/frame-1/1600/800" width="1600" height="800"
+         alt="Close-up of brass brazing on a lugged steel frame joint, still warm from the torch">
+  </section>
+
+  <section id="fit" class="wrap">
+    <div class="fit-grid">
+      <div>
+        <div class="section-head">
+          <h2>The fitting comes first. The frame follows.</h2>
+          <p>Ninety minutes on the fit bike before we talk about a single tube. We measure your current position, your flexibility, and the riding you actually do — not the riding you put on Instagram.</p>
+        </div>
+        <ol class="fit-steps">
+          <li>
+            <h3>The interview</h3>
+            <p>Where you ride, how far, what hurts. Most frame problems are fit problems wearing a costume.</p>
+          </li>
+          <li>
+            <h3>Ninety minutes on the jig</h3>
+            <p>Saddle height, setback, reach, drop — dialed while you pedal under load. You leave with your numbers either way.</p>
+          </li>
+          <li>
+            <h3>Geometry drawn to you</h3>
+            <p>Your position becomes stack, reach, and angles. We send the drawing before we cut anything. Changes are free at this stage — after the torch, they&rsquo;re not.</p>
+          </li>
+        </ol>
+      </div>
+      <div>
+        <svg class="geometry" id="geometrySvg" viewBox="0 0 640 420" role="img"
+             aria-label="Line drawing of a custom frame's geometry with effective top tube, seat angle, and stack dimensions">
+          <!-- dimension lines -->
+          <g>
+            <line class="dim" x1="150" y1="150" x2="470" y2="118"/>
+            <line class="dim" x1="330" y1="96" x2="352" y2="262"/>
+            <line class="dim" x1="470" y1="118" x2="470" y2="300"/>
+          </g>
+          <!-- frame tubes -->
+          <g>
+            <line class="tube" x1="160" y1="320" x2="330" y2="120"/>
+            <line class="tube" x1="330" y1="120" x2="470" y2="96"/>
+            <line class="tube" x1="470" y1="96" x2="440" y2="300"/>
+            <line class="tube" x1="330" y1="120" x2="440" y2="300"/>
+            <line class="tube" x1="160" y1="320" x2="440" y2="300"/>
+            <line class="tube" x1="440" y1="300" x2="490" y2="330"/>
+            <line class="tube" x1="160" y1="320" x2="150" y2="350"/>
+          </g>
+          <!-- hubs / bottom bracket -->
+          <circle class="hub" cx="150" cy="352" r="12"/>
+          <circle class="hub" cx="490" cy="332" r="12"/>
+          <circle class="hub" cx="440" cy="300" r="14"/>
+          <!-- labels -->
+          <text class="lbl t1" x="270" y="112">eff. TT 565</text>
+          <text class="lbl t2" x="490" y="210">stack 580</text>
+          <text class="lbl t3" x="350" y="270">STA 73.5°</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="materials" class="materials">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Steel or titanium — the honest version.</h2>
+        <p>Both are excellent. Neither is magic. Here&rsquo;s what we tell people across the bench, with no horse in the race beyond your riding.</p>
+      </div>
+      <div class="mat-grid">
+        <div class="mat">
+          <h3>Columbus steel</h3>
+          <p class="price">Frameset from $3,400</p>
+          <dl>
+            <div>
+              <dt>The ride</dt>
+              <dd class="good">Lively and springy under a strong rider; the classic feel, because the classics were right.</dd>
+            </div>
+            <div>
+              <dt>The weight</dt>
+              <dd>A finished 56 cm frame lands around 1,650 g. Roughly 350 g heavier than ti. On a 9 kg bike, you will not feel it.</dd>
+            </div>
+            <div>
+              <dt>The catch</dt>
+              <dd>It rusts if you neglect it. Frame-saver spray once a year, wipe it down after winter rides, and it outlives you anyway.</dd>
+            </div>
+            <div>
+              <dt>Choose it if</dt>
+              <dd class="good">You want the best ride-per-dollar in cycling and a frame that any shop on earth can repair.</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="mat">
+          <h3>Grade 9 titanium</h3>
+          <p class="price">Frameset from $4,900</p>
+          <dl>
+            <div>
+              <dt>The ride</dt>
+              <dd class="good">Smooth over chatter, quiet on long days. Slightly more forgiving than steel without going soft.</dd>
+            </div>
+            <div>
+              <dt>The weight</dt>
+              <dd>Around 1,300 g for a 56. Real, but smaller than the internet claims.</dd>
+            </div>
+            <div>
+              <dt>The catch</dt>
+              <dd>Costs $1,500 more, takes three extra weeks at the welder, and a cracked ti frame is a specialist repair, not a roadside one.</dd>
+            </div>
+            <div>
+              <dt>Choose it if</dt>
+              <dd class="good">You ride in salt air or wet winters, hate paint maintenance, or plan to keep one frame for thirty years.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="queue" class="wrap">
+    <div class="section-head">
+      <h2>Fourteen weeks, week by week.</h2>
+      <p>We publish the queue because you deserve to know where your deposit sits. Here&rsquo;s exactly what those weeks contain.</p>
+    </div>
+    <div class="queue">
+      <div class="queue-row"><span class="weeks">Week 1</span><div><h3>Deposit &amp; fitting</h3><p>$500 holds your slot. Fitting happens at the shop or remotely over video with your measurements.</p></div></div>
+      <div class="queue-row"><span class="weeks">Weeks 2–3</span><div><h3>Drawing &amp; sign-off</h3><p>Geometry drawn, sent to you, revised until it&rsquo;s right. Nothing is cut before your written approval.</p></div></div>
+      <div class="queue-row"><span class="weeks">Weeks 4–6</span><div><h3>Tubes selected &amp; mitered</h3><p>Tube diameters and wall thicknesses chosen for your weight and use. Mitered by hand, checked on the surface plate.</p></div></div>
+      <div class="queue-row"><span class="weeks">Weeks 7–9</span><div><h3>Brazed &amp; aligned</h3><p>Brass brazing over two days, then cold-set on the alignment table until every face is true to half a millimeter.</p></div></div>
+      <div class="queue-row"><span class="weeks">Weeks 10–12</span><div><h3>Finish</h3><p>Paint in-house (steel) or media-blast and anodized graphics (ti). Cures for a full week — no shortcuts here.</p></div></div>
+      <div class="queue-row"><span class="weeks">Weeks 13–14</span><div><h3>Assembly &amp; handover</h3><p>Faced, chased, and built with your parts or ours. You collect it in Bellingham or it ships in a reusable crate.</p></div></div>
+    </div>
+    <p class="queue-note"><strong>Current queue: taking deposits for October 2026 builds.</strong> If we slip past week 14, we tell you the week it happens and why — and the finish work is on us.</p>
+  </section>
+
+  <section id="builds" class="builds">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three recent builds, three honest owners.</h2>
+        <p>Every frame leaves with a build sheet and a story. These three left this spring.</p>
+      </div>
+      <div class="build-grid">
+        <article class="build">
+          <img src="https://picsum.photos/seed/frame-2/800/600" width="800" height="600"
+               alt="Mara's finished steel randonneur with fenders and a front bag, leaning against the shop wall">
+          <div class="body">
+            <h3>Mara&rsquo;s randonneur</h3>
+            <p class="spec">Columbus XCR · 52 cm · $4,180 as built</p>
+            <p>&ldquo;Fourteen weeks felt long until week nine, when Tom sent a photo of my brazed rear triangle. I&rsquo;ve done two 400 km brevets on it. The fit is the difference between finishing and finishing smiling.&rdquo;</p>
+          </div>
+        </article>
+        <article class="build">
+          <div class="geo-card" role="img" aria-label="Geometry line drawing of Dev's titanium fixed-gear criterium frame">
+            <svg viewBox="0 0 640 420">
+              <line class="brassline" x1="150" y1="150" x2="480" y2="112"/>
+              <line class="tube" x1="160" y1="320" x2="335" y2="118"/>
+              <line class="tube" x1="335" y1="118" x2="480" y2="92"/>
+              <line class="tube" x1="480" y1="92" x2="445" y2="300"/>
+              <line class="tube" x1="335" y1="118" x2="445" y2="300"/>
+              <line class="tube" x1="160" y1="320" x2="445" y2="300"/>
+              <circle class="tube" cx="150" cy="352" r="12" fill="none"/>
+              <circle class="tube" cx="495" cy="330" r="12" fill="none"/>
+              <circle class="tube" cx="445" cy="300" r="14" fill="none"/>
+            </svg>
+          </div>
+          <div class="body">
+            <h3>Dev&rsquo;s fixed crit</h3>
+            <p class="spec">Grade 9 ti · 56 cm · $5,650 as built</p>
+            <p>&ldquo;I asked for aggressive and he talked me two degrees calmer. He was right — I&rsquo;m faster in hour three of a race than I ever was on the twitchy frame. Should have listened years ago.&rdquo;</p>
+          </div>
+        </article>
+        <article class="build">
+          <img src="https://picsum.photos/seed/frame-1/800/600" width="800" height="600"
+               alt="Brass fillet detail on Tom's gravel tourer before paint, brazing ripples visible at the head tube">
+          <div class="body">
+            <h3>Tom&rsquo;s gravel tourer</h3>
+            <p class="spec">Columbus Zona · 58 cm · $3,760 frameset</p>
+            <p>&ldquo;Third bike I&rsquo;ve owned, first one built for me. It carries 18 kg of camping gear and still wants to be ridden hard on the way home. The waitlist is real, and worth it.&rdquo;</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band wrap">
+    <h2>The waitlist is the price of doing it once, properly.</h2>
+    <p>Fourteen weeks from deposit to first ride. Start with the fitting — the $250 comes off your frameset if you proceed, and the numbers are yours to keep if you don&rsquo;t.</p>
+    <a class="btn btn-brass" href="mailto:bench@alloyframes.cc">Book the fitting — bench@alloyframes.cc</a>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>Alloy Framebuilding — Bellingham, WA</span>
+    <span>One builder. Eight frames a season.</span>
+    <a href="mailto:bench@alloyframes.cc">bench@alloyframes.cc</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var geo = document.getElementById("geometrySvg");
+  if (!geo || reduce || !("IntersectionObserver" in window)) return;
+
+  geo.classList.add("armed");
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        geo.classList.add("revealed");
+        io.disconnect();
+      }
+    });
+  }, { threshold: 0.35 });
+  io.observe(geo);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Moonshine Motor Court" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=e5]:
+        - link "Rooms" [ref=e6] [cursor=pointer]:
+          - /url: "#rooms"
+        - link "Rates" [ref=e7] [cursor=pointer]:
+          - /url: "#rates"
+        - link "The Pool" [ref=e8] [cursor=pointer]:
+          - /url: "#pool"
+        - link "Ice" [ref=e9] [cursor=pointer]:
+          - /url: "#ice"
+        - link "Find Us" [ref=e10] [cursor=pointer]:
+          - /url: "#find"
+  - main [ref=e11]:
+    - region "Welcome" [ref=e12]:
+      - img "Two-lane desert highway at dusk, the sky gone indigo, a red neon glow somewhere off the shoulder" [ref=e13]
+      - generic [ref=e14]:
+        - heading "Fourteen rooms under a red neon promise" [level=1] [ref=e15]
+        - paragraph [ref=e16]: Mile marker 214, east side of Route 66. The beds are firm, the water is hot by the second minute, and the sign has not missed a night since 1958. Pull in. Dolores leaves the porch light on.
+        - 'img "Flickering neon sign reading: no vacancy, with the NO tube half burnt out" [ref=e17]':
+          - generic [ref=e18]: "No"
+          - generic [ref=e19]: Vacancy
+          - generic [ref=e20]: (the NO tube died in '09 — there's almost always a room)
+    - region [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - heading [level=2] [ref=e24]:
+            - text: The rooms,
+            - emphasis [ref=e25]: honestly
+          - list [ref=e26]:
+            - listitem [ref=e27]:
+              - generic [ref=e28]:
+                - generic [ref=e29]: Single Queen
+                - generic [ref=e31]: $68
+              - paragraph [ref=e32]: One bed, one chair, one lamp that buzzes a little. Rooms 1–8 face the road; 9–14 face the arroyo and are quieter.
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - generic [ref=e35]: Double Queen
+                - generic [ref=e37]: $84
+              - paragraph [ref=e38]: Two beds, a table for cards, and a window unit that could chill a meat locker. Bring socks.
+            - listitem [ref=e39]:
+              - generic [ref=e40]:
+                - generic [ref=e41]: The Honeymoon Suite
+                - generic [ref=e43]: $110
+              - paragraph [ref=e44]: Room 7. Heart-shaped tub, red lamp, mirrored headboard we did not install and will not discuss. Book it with a straight face.
+        - figure "Rooms 5 through 9, around midnight. The walkway bulbs get changed every spring whether they need it or not." [ref=e45]:
+          - img "Row of motel doors under a covered walkway at night, one porch lamp burning over room number seven" [ref=e46]
+    - region [ref=e48]:
+      - generic [ref=e49]:
+        - heading "The rate card" [level=2] [ref=e50]
+        - paragraph [ref=e51]:
+          - text: Typed on the Olympia in the office, photocopied every few years when the old one fades.
+          - strong [ref=e52]: Cash knocks five dollars off any room.
+          - text: We have a card reader. It has opinions, but it works most nights.
+        - 'img "Typewritten rate card: single queen 68 dollars, double queen 84, honeymoon suite 110, rollaway cot 12, dog under thirty pounds 8, cash discount minus 5. No refunds after ten minutes." [ref=e53]':
+          - heading "Moonshine Motor Court Rate Card — Est. 1958" [level=3] [ref=e54]: Moonshine Motor CourtRate Card — Est. 1958
+          - separator [ref=e56]
+          - generic [ref=e57]:
+            - generic [ref=e58]: Single Queen
+            - generic [ref=e59]: $68.00
+          - generic [ref=e60]:
+            - generic [ref=e61]: Double Queen
+            - generic [ref=e62]: $84.00
+          - generic [ref=e63]:
+            - generic [ref=e64]: Honeymoon Suite (Rm 7)
+            - generic [ref=e65]: $110.00
+          - generic [ref=e66]:
+            - generic [ref=e67]: Rollaway cot
+            - generic [ref=e68]: $12.00
+          - generic [ref=e69]:
+            - generic [ref=e70]: Dog under 30 lbs
+            - generic [ref=e71]: $8.00
+          - generic [ref=e72]:
+            - generic [ref=e73]: Weekly rate (any room)
+            - generic [ref=e74]: 6th night free
+          - generic [ref=e75]:
+            - generic [ref=e76]: Cash discount
+            - generic [ref=e77]: –$5.00
+          - separator [ref=e78]
+          - generic [ref=e79]:
+            - generic [ref=e80]: Check-out
+            - generic [ref=e81]: 11:00 AM sharp
+          - generic [ref=e82]:
+            - generic [ref=e83]: Late check-out
+            - generic [ref=e84]: Ask nice
+          - paragraph [ref=e85]: NO REFUNDS AFTER 10 MINUTES · QUIET AFTER MIDNIGHT · THANK YOU STAY AGAIN
+    - region [ref=e86]:
+      - generic [ref=e87]:
+        - heading "The pool is 82 degrees and lit from below" [level=2] [ref=e88]
+        - paragraph [ref=e89]: It is not big. It is not heated by anything but the day it just sat through. But at eleven at night, with the light glowing up through the water and the highway gone quiet, it is the best seat in the county. Open till the last porch light goes off — usually room 9, usually around one.
+    - region [ref=e90]:
+      - generic [ref=e91]:
+        - heading "About the ice machine" [level=2] [ref=e92]
+        - generic [ref=e93]:
+          - paragraph [ref=e94]: People ask about the ice machine. It is the loudest thing on the property — louder than the trains, louder than Earl's truck. It kicks on at 6:40 every morning like a small engine refusing to die, and it has done this since 1974.
+          - paragraph [ref=e95]:
+            - strong [ref=e96]: The ice is free and it is endless.
+            - text: Bring your cooler, bring your bucket, bring the good plastic tub from your mother-in-law's. The machine does not judge. It only roars, and fills, and roars again. If it ever stops, we will know the world has truly ended — and room 3 gets it free.
+    - region [ref=e97]:
+      - generic [ref=e98]:
+        - heading "Finding us after dark" [level=2] [ref=e99]
+        - generic [ref=e100]:
+          - term [ref=e101]: Where
+          - definition [ref=e102]: Mile marker 214, Route 66 east side, San Ysidro County (look for the red sign — you can see it two miles out)
+          - term [ref=e103]: If you pass
+          - definition [ref=e104]: The Arroyo Seco bridge (you've gone 2 miles too far — turn around at the gas station)
+          - term [ref=e105]: Office hours
+          - definition [ref=e106]: 7 AM – midnight (after that, ring the bell; Dolores hears everything)
+          - term [ref=e107]: Phone
+          - definition [ref=e108]:
+            - link "(505) 555-0187" [ref=e109] [cursor=pointer]:
+              - /url: tel:+15055550187
+            - text: (the landline — it rings in the office and the laundry room)
+  - contentinfo [ref=e110]:
+    - generic [ref=e111]:
+      - generic [ref=e112]: Moonshine Motor Court · Est. 1958 · Fourteen rooms and a pool
+      - generic [ref=e113]: Cash discount honored since before you were born.

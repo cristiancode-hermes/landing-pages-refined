@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurora Ice — Icelandic glacier expeditions. The sky decides.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600&family=Spline+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: oklch(0.10 0.025 260);
+    --night-2: oklch(0.145 0.03 260);
+    --night-3: oklch(0.19 0.035 262);
+    --green: oklch(0.86 0.19 160);
+    --green-deep: oklch(0.62 0.15 160);
+    --violet: oklch(0.72 0.17 300);
+    --ice: oklch(0.96 0.012 240);
+    --muted: oklch(0.78 0.025 255);
+    --ink-on-green: oklch(0.20 0.04 200);
+    --z-hero: 0;
+    --z-content: 10;
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--night);
+    color: var(--ice);
+    font-family: "Spline Sans", system-ui, sans-serif;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+
+  .display {
+    font-family: "Unbounded", sans-serif;
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- HERO (sticky, cave slides over it) ---------- */
+  .hero {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-hero);
+    height: 100svh;
+    overflow: hidden;
+  }
+  #sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero-inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(1.5rem, 4vw, 4rem);
+    padding-bottom: clamp(5rem, 10vh, 8rem);
+    will-change: transform, opacity;
+  }
+  .hero-inner h1 {
+    font-size: clamp(2.2rem, 1.1rem + 5.5vw, 5.25rem);
+    font-weight: 300;
+    max-width: 14ch;
+    text-shadow: 0 2px 30px oklch(0.10 0.03 260 / 0.9);
+  }
+  .hero-inner h1 strong { font-weight: 600; color: var(--green); }
+  .hero-inner p {
+    margin-top: 1.25rem;
+    max-width: 46ch;
+    color: var(--muted);
+    font-size: clamp(1.05rem, 1rem + 0.4vw, 1.25rem);
+    line-height: 1.7;
+  }
+  .hero-nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem clamp(1.5rem, 4vw, 4rem);
+  }
+  .hero-nav .brand { font-family: "Unbounded", sans-serif; font-weight: 600; font-size: 1rem; color: var(--ice); text-decoration: none; }
+  .hero-nav nav { display: flex; gap: 1.75rem; }
+  .hero-nav nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.4s var(--ease-expo);
+  }
+  .hero-nav nav a:hover { color: var(--green); }
+  .scroll-cue {
+    position: absolute;
+    bottom: 1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 44px;
+    background: var(--green);
+    transform-origin: top;
+    animation: cue 2.6s var(--ease-expo) infinite;
+    opacity: 0.8;
+  }
+  @keyframes cue {
+    0% { transform: translateX(-50%) scaleY(0); }
+    45% { transform: translateX(-50%) scaleY(1); }
+    100% { transform: translateX(-50%) scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ---------- CAVE TRANSITION ---------- */
+  .cave {
+    position: relative;
+    z-index: var(--z-content);
+    background: var(--night-2);
+  }
+  .cave::before {
+    content: "";
+    position: absolute;
+    top: -88px;
+    left: 0;
+    right: 0;
+    height: 89px;
+    background: var(--night-2);
+    clip-path: polygon(
+      0% 100%, 0% 55%, 4% 30%, 8% 62%, 13% 18%, 18% 55%, 24% 8%,
+      30% 48%, 36% 22%, 42% 60%, 48% 12%, 54% 44%, 60% 25%, 66% 58%,
+      72% 10%, 78% 50%, 84% 28%, 90% 64%, 95% 35%, 100% 58%, 100% 100%
+    );
+  }
+
+  section { padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  .lead {
+    font-size: clamp(1.15rem, 1rem + 0.9vw, 1.6rem);
+    line-height: 1.55;
+    max-width: 52ch;
+    color: var(--muted);
+  }
+  h2.display {
+    font-size: clamp(1.9rem, 1.1rem + 3.8vw, 3.75rem);
+    font-weight: 400;
+    margin-bottom: 1.25rem;
+  }
+  h2.display em { font-style: normal; color: var(--green); }
+  .kicker-line {
+    width: 56px;
+    height: 3px;
+    background: var(--green);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  /* expeditions */
+  .trips {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: 3.5rem;
+    list-style: none;
+  }
+  .trip {
+    background: var(--night-3);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.6s var(--ease-expo);
+  }
+  .trip:hover { transform: translateY(-8px); }
+  .trip img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; filter: saturate(0.85) brightness(0.9); }
+  .trip-body { padding: 1.75rem; display: flex; flex-direction: column; gap: 0.75rem; flex: 1; }
+  .trip h3 { font-family: "Unbounded", sans-serif; font-weight: 400; font-size: 1.3rem; }
+  .trip .meta { color: var(--green); font-weight: 700; font-size: 0.95rem; }
+  .trip p { color: var(--muted); font-size: 1rem; flex: 1; }
+  .trip a {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    color: var(--ink-on-green);
+    background: var(--green);
+    font-weight: 700;
+    text-decoration: none;
+    padding: 0.7rem 1.6rem;
+    border-radius: 999px;
+    transition: transform 0.45s var(--ease-expo), background-color 0.45s var(--ease-expo);
+  }
+  .trip a:hover { transform: translateY(-2px) scale(1.03); background: var(--violet); color: var(--ice); }
+
+  /* honesty block */
+  .honesty { background: var(--night); }
+  .honesty-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .honesty blockquote {
+    font-family: "Unbounded", sans-serif;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 1rem + 2.4vw, 2.6rem);
+    line-height: 1.3;
+    max-width: 22ch;
+  }
+  .honesty blockquote span { color: var(--violet); }
+  .honesty .facts { display: grid; gap: 1.25rem; }
+  .fact { border-top: 1px solid var(--night-3); padding-top: 1.25rem; }
+  .fact b { font-family: "Unbounded", sans-serif; font-weight: 600; color: var(--green); font-size: 1.6rem; display: block; }
+  .fact span { color: var(--muted); font-size: 1rem; }
+
+  /* guides */
+  .guides .wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .guides header { grid-column: 1 / -1; max-width: 60ch; }
+  .guide { border-top: 3px solid var(--green); padding-top: 1.25rem; }
+  .guide:nth-child(3) { border-top-color: var(--violet); }
+  .guide h3 { font-family: "Unbounded", sans-serif; font-weight: 400; font-size: 1.2rem; margin-bottom: 0.35rem; }
+  .guide .cred { color: var(--green); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.75rem; }
+  .guide:nth-child(3) .cred { color: var(--violet); }
+  .guide p { color: var(--muted); font-size: 1rem; }
+
+  /* packing */
+  .packing { background: var(--night-2); }
+  .packing .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  .packing ul { list-style: none; display: grid; gap: 0.9rem; }
+  .packing li {
+    padding-left: 1.75rem;
+    position: relative;
+    color: var(--muted);
+  }
+  .packing li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.55em;
+    width: 0.8em; height: 0.8em;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .packing li:nth-child(even)::before { background: var(--violet); }
+  .packing li strong { color: var(--ice); font-weight: 700; }
+  .packing figure { border-radius: 14px; overflow: hidden; }
+  .packing figcaption { padding: 0.9rem 0 0; color: var(--muted); font-size: 0.95rem; }
+
+  footer {
+    position: relative;
+    z-index: var(--z-content);
+    background: var(--night);
+    padding: 3rem clamp(1.5rem, 4vw, 4rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 3rem;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--night-3);
+  }
+  footer .brand { font-family: "Unbounded", sans-serif; font-weight: 600; color: var(--green); }
+  footer p { color: var(--muted); font-size: 0.95rem; }
+  footer a { color: var(--ice); font-weight: 700; }
+
+  @media (max-width: 760px) {
+    .honesty-grid, .packing .wrap { grid-template-columns: 1fr; }
+    .hero-nav nav { gap: 1rem; }
+    .hero-nav nav a { font-size: 0.85rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .scroll-cue { animation: none; }
+    .trip, .trip a { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-nav">
+    <a class="brand" href="#">AURORA ICE</a>
+    <nav aria-label="Primary">
+      <a href="#trips">Expeditions</a>
+      <a href="#honesty">The forecast</a>
+      <a href="#guides">Guides</a>
+      <a href="#packing">What to pack</a>
+    </nav>
+  </div>
+  <div class="hero-inner" id="heroInner">
+    <h1 class="display">The sky decides. <strong>We take you to meet it.</strong></h1>
+    <p>Small-group glacier and aurora expeditions out of Reykjavík, from September to late March. No buses of forty. No promises the sky can't keep.</p>
+  </div>
+  <span class="scroll-cue" aria-hidden="true"></span>
+</header>
+
+<main class="cave">
+  <section class="trips-section" id="trips">
+    <div class="wrap">
+      <div class="kicker-line" aria-hidden="true"></div>
+      <h2 class="display">Three ways into <em>the cold.</em></h2>
+      <p class="lead">Every expedition runs with a maximum of eight guests and two guides. Crampons, helmets, headlamps and hot chocolate are always included. Doubt is optional.</p>
+      <ul class="trips">
+        <li class="trip">
+          <img src="https://picsum.photos/seed/glacier-1/800/600" width="800" height="600"
+               alt="Inside a blue ice cave — light filtering through a frozen ceiling onto a hushed group of walkers.">
+          <div class="trip-body">
+            <h3>The Blue Cave</h3>
+            <p class="meta">5 hours · 24.900 ISK · Moderate</p>
+            <p>A walk into the breathing heart of Vatnajökull. The cave changes every winter; last year's cathedral is this year's tunnel. You see what the glacier built while no one was watching.</p>
+            <a href="#packing">Reserve a place</a>
+          </div>
+        </li>
+        <li class="trip">
+          <img src="https://picsum.photos/seed/glacier-2/800/600" width="800" height="600"
+               alt="Black sand beach at dusk, scattered with stranded chunks of glacier ice catching the last light.">
+          <div class="trip-body">
+            <h3>Black Sand &amp; Bergs</h3>
+            <p class="meta">Full day · 31.500 ISK · Easy</p>
+            <p>Jökulsárlón lagoon and the diamond beach, timed for the low sun. Thousand-year ice on volcanic sand, and silence you can hear. Lunch is a thermos and a very serious rye bread.</p>
+            <a href="#packing">Reserve a place</a>
+          </div>
+        </li>
+        <li class="trip">
+          <div class="trip-body" style="padding-top:2rem">
+            <h3>The Long Night</h3>
+            <p class="meta">Overnight · 89.000 ISK · Demanding</p>
+            <p>Two days, one mountain hut, and a sky we refuse to schedule. Snowshoes by day, then we wait — awake, outdoors, and hopeful — for the lights to begin. Sometimes they begin at 21:00. Sometimes at 03:00.</p>
+            <a href="#packing">Reserve a place</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="honesty" id="honesty">
+    <div class="wrap honesty-grid">
+      <blockquote>“Nature decides. Our job is to be <span>standing in the right dark place</span> when it does.”</blockquote>
+      <div class="facts">
+        <div class="fact">
+          <b>41 of 212</b>
+          <span>departures we cancelled last winter for weather. Full refund, every time, within 48 hours.</span>
+        </div>
+        <div class="fact">
+          <b>Kp 3+</b>
+          <span>the geomagnetic level we ask for before calling an aurora night "likely". Below that, we say so.</span>
+        </div>
+        <div class="fact">
+          <b>68%</b>
+          <span>of last season's guests saw the lights. We'd rather quote the real number than a prettier one.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="guides" id="guides">
+    <div class="wrap">
+      <header>
+        <div class="kicker-line" aria-hidden="true"></div>
+        <h2 class="display">The people who <em>read the ice.</em></h2>
+        <p class="lead">Guides, not performers. Each leads no more than eight guests, carries satellite communication, and has turned groups around when the mountain said no.</p>
+      </header>
+      <article class="guide">
+        <h3>Guðrún Egilsdóttir</h3>
+        <p class="cred">IFMGA mountain guide · 14 winters on Vatnajökull</p>
+        <p>Founded Aurora Ice in 2017 after a decade guiding crevasse rescue. Reads ice cores the way you read headlines.</p>
+      </article>
+      <article class="guide">
+        <h3>Sigurður "Siggi" Ólafsson</h3>
+        <p class="cred">Glacier rescue team, ICE-SAR · Aurora photographer</p>
+        <p>Volunteers with the national rescue service. Will happily spend forty minutes getting your camera settings right.</p>
+      </article>
+      <article class="guide">
+        <h3>Katla Jónsdóttir</h3>
+        <p class="cred">WFR certified · Ex-glaciologist, University of Iceland</p>
+        <p>Left research to spend more time on the ice than in front of it. Answers every "why is it blue?" like it's the first time.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="packing" id="packing">
+    <div class="wrap">
+      <div>
+        <div class="kicker-line" aria-hidden="true"></div>
+        <h2 class="display">What you <em>actually</em> need.</h2>
+        <p class="lead" style="margin-bottom:2rem">The cold is honest. Dress for standing still at −10°C, not for the brochure photo.</p>
+        <ul>
+          <li><strong>Wool base layers.</strong> Cotton kills; it holds sweat against your skin. Wool or nothing.</li>
+          <li><strong>Stiff-soled boots.</strong> Crampons need a boot that doesn't fold. We keep rental pairs in sizes 36–48.</li>
+          <li><strong>Two pairs of gloves.</strong> One thin for the camera, one thick over them. Cold fingers end aurora nights early.</li>
+          <li><strong>A thermos, if you like.</strong> We refill it. The hot chocolate has been described as "structurally important".</li>
+          <li><strong>Leave behind:</strong> umbrellas, drones without a permit, and the expectation of a schedule.</li>
+        </ul>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/glacier-1/1600/900" width="1600" height="900"
+             alt="A guide's headlamp beam crossing a blue ice wall deep inside the glacier cave."
+             style="filter:saturate(0.85) brightness(0.9)">
+        <figcaption>The Blue Cave, January. Guðrún checking the ceiling before anyone walks under it.</figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="brand">AURORA ICE</span>
+  <p>Reykjavík · Departures Sep 12 – Mar 28 · <a href="#trips">hello@auroraice.is</a></p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  function start() {
+    if (typeof THREE === 'undefined') return;
+    var canvas = document.getElementById('sky');
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setClearColor(0x0a0a18, 1);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 200);
+    camera.position.set(0, 2, 26);
+
+    var group = new THREE.Group();
+    scene.add(group);
+
+    // ----- starfield -----
+    var STAR_COUNT = 1400;
+    var positions = new Float32Array(STAR_COUNT * 3);
+    var phases = new Float32Array(STAR_COUNT);
+    var sizes = new Float32Array(STAR_COUNT);
+    for (var i = 0; i < STAR_COUNT; i++) {
+      positions[i * 3]     = (Math.random() - 0.5) * 140;
+      positions[i * 3 + 1] = Math.random() * 55 - 6;
+      positions[i * 3 + 2] = -30 - Math.random() * 80;
+      phases[i] = Math.random() * Math.PI * 2;
+      sizes[i] = 0.5 + Math.random() * 1.6;
+    }
+    var starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    starGeo.setAttribute('aPhase', new THREE.BufferAttribute(phases, 1));
+    starGeo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
+    var starMat = new THREE.ShaderMaterial({
+      uniforms: { uTime: { value: 0 } },
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      vertexShader: [
+        'attribute float aPhase;',
+        'attribute float aSize;',
+        'uniform float uTime;',
+        'varying float vTwinkle;',
+        'void main() {',
+        '  vTwinkle = 0.55 + 0.45 * sin(uTime * 1.4 + aPhase);',
+        '  vec4 mv = modelViewMatrix * vec4(position, 1.0);',
+        '  gl_PointSize = aSize * (160.0 / -mv.z);',
+        '  gl_Position = projectionMatrix * mv;',
+        '}'
+      ].join('\n'),
+      fragmentShader: [
+        'varying float vTwinkle;',
+        'void main() {',
+        '  float d = length(gl_PointCoord - vec2(0.5));',
+        '  float a = smoothstep(0.5, 0.08, d);',
+        '  gl_FragColor = vec4(0.92, 0.96, 1.0, a * vTwinkle);',
+        '}'
+      ].join('\n')
+    });
+    group.add(new THREE.Points(starGeo, starMat));
+
+    // ----- aurora ribbons -----
+    var ribbons = [];
+    function makeRibbon(colorA, colorB, seed, y, z, width, height) {
+      var geo = new THREE.PlaneGeometry(width, height, 160, 20);
+      var mat = new THREE.ShaderMaterial({
+        uniforms: {
+          uTime: { value: 0 },
+          uSeed: { value: seed },
+          uColorA: { value: new THREE.Color(colorA) },
+          uColorB: { value: new THREE.Color(colorB) }
+        },
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending,
+        vertexShader: [
+          'uniform float uTime;',
+          'uniform float uSeed;',
+          'varying vec2 vUv;',
+          'void main() {',
+          '  vUv = uv;',
+          '  vec3 p = position;',
+          '  float wave = sin(p.x * 0.22 + uTime * 0.5 + uSeed)',
+          '             + 0.6 * sin(p.x * 0.51 - uTime * 0.35 + uSeed * 2.0);',
+          '  p.y += wave * (0.7 + uv.y * 2.4);',
+          '  p.z += sin(p.x * 0.14 + uTime * 0.28 + uSeed) * 2.2 * uv.y;',
+          '  gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);',
+          '}'
+        ].join('\n'),
+        fragmentShader: [
+          'uniform float uTime;',
+          'uniform vec3 uColorA;',
+          'uniform vec3 uColorB;',
+          'varying vec2 vUv;',
+          'void main() {',
+          '  float body = smoothstep(0.0, 0.22, vUv.y) * (1.0 - smoothstep(0.5, 1.0, vUv.y));',
+          '  float curtains = 0.6 + 0.4 * sin(vUv.x * 55.0 + uTime * 0.7);',
+          '  vec3 col = mix(uColorA, uColorB, clamp(vUv.y + 0.12 * sin(uTime * 0.2 + vUv.x * 6.2831), 0.0, 1.0));',
+          '  gl_FragColor = vec4(col, body * curtains * 0.42);',
+          '}'
+        ].join('\n')
+      });
+      var mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(0, y, z);
+      mesh.rotation.x = -0.25;
+      group.add(mesh);
+      ribbons.push(mat);
+    }
+    makeRibbon(0x3dffa8, 0x9a5cff, 0.0, 11, -34, 90, 12);
+    makeRibbon(0x35e8c8, 0xc05cff, 2.3, 15, -46, 110, 10);
+    makeRibbon(0x5cff7a, 0x6a4dff, 4.7, 8, -28, 70, 8);
+
+    // ----- interaction & loop -----
+    var mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
+    window.addEventListener('pointermove', function (e) {
+      targetX = (e.clientX / window.innerWidth) * 2 - 1;
+      targetY = (e.clientY / window.innerHeight) * 2 - 1;
+    }, { passive: true });
+
+    function resize() {
+      var w = canvas.clientWidth || window.innerWidth;
+      var h = canvas.clientHeight || window.innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var rafId = null;
+    var clock = new THREE.Clock();
+
+    function frame() {
+      var t = clock.getElapsedTime();
+      starMat.uniforms.uTime.value = t;
+      for (var i = 0; i < ribbons.length; i++) ribbons[i].uniforms.uTime.value = t;
+      mouseX += (targetX - mouseX) * 0.04;
+      mouseY += (targetY - mouseY) * 0.04;
+      group.rotation.y = mouseX * 0.08;
+      group.rotation.x = -mouseY * 0.04;
+      renderer.render(scene, camera);
+      rafId = requestAnimationFrame(frame);
+    }
+
+    if (reduced) {
+      // one static frame, no animation loop
+      starMat.uniforms.uTime.value = 3.1;
+      for (var j = 0; j < ribbons.length; j++) ribbons[j].uniforms.uTime.value = 3.1;
+      renderer.render(scene, camera);
+    } else {
+      frame();
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+        } else if (rafId === null) {
+          clock.getDelta();
+          frame();
+        }
+      });
+    }
+  }
+
+  if (typeof THREE !== 'undefined') {
+    start();
+  } else {
+    // CDN fallback
+    var s = document.createElement('script');
+    s.src = 'https://unpkg.com/three@0.160.0/build/three.min.js';
+    s.onload = start;
+    document.head.appendChild(s);
+  }
+
+  // hero recedes into the ice cave on scroll (transform/opacity only)
+  var heroInner = document.getElementById('heroInner');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = window.scrollY;
+        var h = window.innerHeight;
+        var p = Math.min(y / (h * 0.9), 1);
+        heroInner.style.opacity = String(1 - p);
+        heroInner.style.transform = 'translateY(' + (p * 60) + 'px) scale(' + (1 - p * 0.06) + ')';
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+})();
+</script>
+</body>
+</html>

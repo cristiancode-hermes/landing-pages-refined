@@ -1,0 +1,113 @@
+- generic [active] [ref=f14e1]:
+  - banner [ref=f14e2]:
+    - generic [ref=f14e3]:
+      - link "Copper Kettle" [ref=f14e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=f14e6]:
+        - link "The Broth" [ref=f14e7] [cursor=pointer]:
+          - /url: "#broth"
+        - link "Menu" [ref=f14e8] [cursor=pointer]:
+          - /url: "#menu"
+        - link "Find Us" [ref=f14e9] [cursor=pointer]:
+          - /url: "#visit"
+  - main [ref=f14e10]:
+    - generic [ref=f14e12]:
+      - generic [ref=f14e13]:
+        - heading [level=1] [ref=f14e14]:
+          - text: Fourteen hours in the pot.
+          - emphasis [ref=f14e15]: Ninety seconds
+          - text: in the bowl.
+        - paragraph [ref=f14e16]: A tiny tonkotsu counter on Mercer Lane. We make one broth, we make it properly, and when the pot is empty the lights go off.
+        - generic [ref=f14e17]:
+          - link "Tonight's menu" [ref=f14e18] [cursor=pointer]:
+            - /url: "#menu"
+          - link "Hours & last order" [ref=f14e19] [cursor=pointer]:
+            - /url: "#visit"
+      - figure "The classic, as of 9:40 tonight" [ref=f14e20]:
+        - img "A bowl of tonkotsu ramen shot close — chashu, nori, and a soft egg half sinking into cloudy broth" [ref=f14e21]
+    - generic [ref=f14e24]:
+      - generic [ref=f14e25]:
+        - heading "The broth decides when we close." [level=2] [ref=f14e26]
+        - paragraph [ref=f14e27]: "Every morning at 5:00, Mariko starts the pot: pork femur, back fat, nothing else, at a rolling boil hard enough to emulsify the marrow into the water. Fourteen hours later it turns the color of light through a whiskey glass. That's the whole recipe. There is no backup batch."
+        - paragraph [ref=f14e28]: Most nights the pot holds about ninety bowls. Fridays it can run to a hundred and ten. When the ladle scrapes bottom we hang the wooden sign, bow to whoever's still in line, and start again tomorrow. We'd rather disappoint you at the door than dilute a bowl.
+      - complementary "Tonight's broth status" [ref=f14e29]:
+        - heading "How a day at the Kettle runs" [level=3] [ref=f14e30]
+        - generic [ref=f14e31]:
+          - generic [ref=f14e32]: 5:00
+          - generic [ref=f14e33]: Pot on, bones in
+        - generic [ref=f14e34]:
+          - generic [ref=f14e35]: 11:30
+          - generic [ref=f14e36]: Tare mixed, eggs steeped
+        - generic [ref=f14e37]:
+          - generic [ref=f14e38]: 17:30
+          - generic [ref=f14e39]: Doors open, counter fills
+        - generic [ref=f14e40]:
+          - generic [ref=f14e41]: 22:15
+          - generic [ref=f14e42]: Last order, no exceptions
+        - generic [ref=f14e43]:
+          - generic [ref=f14e44]: ~23:00
+          - generic [ref=f14e45]: Pot empty, sign hung
+    - generic [ref=f14e50]:
+      - generic [ref=f14e51]:
+        - heading "Four bowls. That's the menu." [level=2] [ref=f14e52]
+        - paragraph [ref=f14e53]: Everything is built on the same 14-hour tonkotsu. Noodles are pulled to order — never before you sit down.
+      - generic [ref=f14e54]:
+        - article [ref=f14e55]:
+          - generic [ref=f14e56]:
+            - heading "The Classic" [level=3] [ref=f14e57]
+            - generic [ref=f14e58]: $18
+          - paragraph [ref=f14e59]: Tonkotsu, thin straight noodles, two slices of chashu, nori, scallion, black garlic oil. The bowl we opened with in 2016, unchanged since.
+          - generic [ref=f14e60]: The one to start with
+        - article [ref=f14e61]:
+          - generic [ref=f14e62]:
+            - heading "Shoyu Kettle" [level=3] [ref=f14e63]
+            - generic [ref=f14e64]: $17
+          - paragraph [ref=f14e65]: The same broth cut with a three-year aged shoyu tare. Lighter on the palate, heavier on the aroma. Bamboo shoots, no egg.
+          - generic [ref=f14e66]: Clearer, sharper
+        - article [ref=f14e67]:
+          - generic [ref=f14e68]:
+            - heading "Red Miso" [level=3] [ref=f14e69]
+            - generic [ref=f14e70]: $18
+          - paragraph [ref=f14e71]: Sendai red miso whisked into the bowl, chili-sesame crumble, sweet corn, a knob of butter that melts as you eat. Winter's answer to everything.
+          - generic [ref=f14e72]: Rich, warming
+        - article [ref=f14e73]:
+          - generic [ref=f14e74]:
+            - heading "Tsukemen" [level=3] [ref=f14e75]
+            - generic [ref=f14e76]: $19
+          - paragraph [ref=f14e77]: Thick noodles served cold beside a concentrated dipping broth, reduced by half. Ask for the soup-wari at the end — we cut the dip with hot broth so nothing goes to waste.
+          - generic [ref=f14e78]: Dip, don't slurp
+      - paragraph [ref=f14e79]: Kaedama (extra noodle ball) $3 · ajitama egg $2 · chashu plate $6 · house chili oil to take home, $9 the jar.
+    - generic [ref=f14e81]:
+      - figure [ref=f14e82]:
+        - img "Eighteen wooden stools along a single cypress counter, steam rising from the open kitchen behind it" [ref=f14e83]
+      - generic [ref=f14e84]:
+        - heading "Eighteen stools, one counter, zero table service." [level=2] [ref=f14e85]
+        - paragraph [ref=f14e86]: You'll queue, you'll sit elbow to elbow with a stranger, and you'll probably leave with a new favorite person. The counter is cypress, the stools wobble slightly, and the ticket is cash or card but never an app.
+        - list [ref=f14e87]:
+          - listitem [ref=f14e88]: "Line etiquette: hold your spot in person — no placeholders, no holding six seats for friends who are \"five minutes away.\""
+          - listitem [ref=f14e89]: Solo diners almost always get in within twenty minutes. Parties of four or more should expect to split.
+          - listitem [ref=f14e90]: Eat, then go. We love you, but someone behind you is cold. Lingering is for the bar two doors down.
+    - generic [ref=f14e92]:
+      - generic [ref=f14e93]:
+        - heading "Hours" [level=2] [ref=f14e94]
+        - generic [ref=f14e95]:
+          - term [ref=f14e96]: Tuesday – Sunday
+          - definition [ref=f14e97]: 17:30 – 23:00, last order 22:15 sharp
+          - term [ref=f14e98]: Monday
+          - definition [ref=f14e99]: Closed. The pot rests; so do we.
+          - term [ref=f14e100]: Sell-out nights
+          - definition [ref=f14e101]: When the sign goes up, the night is over. Fridays often end by 22:45.
+      - generic [ref=f14e102]:
+        - heading "Find the steam" [level=2] [ref=f14e103]
+        - generic [ref=f14e104]:
+          - term [ref=f14e105]: Address
+          - definition [ref=f14e106]: 47 Mercer Lane, down the stairs, under the copper pipe sign
+          - term [ref=f14e107]: Getting here
+          - definition [ref=f14e108]: Broadway stop, two minutes on foot. No parking — don't try.
+          - term [ref=f14e109]: Contact
+          - definition [ref=f14e110]: No phone. No email list. The line is the reservation.
+        - paragraph [ref=f14e111]: "Allergies: our broth contains pork and sesame in everything. Vegetarians, sincerely — we are not your restaurant, and we'd rather say so here than at the door."
+  - contentinfo [ref=f14e112]:
+    - generic [ref=f14e113]:
+      - generic [ref=f14e114]: Copper Kettle · 47 Mercer Lane · est. 2016
+      - generic [ref=f14e115]: One broth. Fourteen hours. Ninety bowls, give or take.

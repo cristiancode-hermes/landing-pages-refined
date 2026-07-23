@@ -1,0 +1,39 @@
+- generic [active] [ref=f2e1]:
+  - banner [ref=f2e2]:
+    - img "A candlelit cellar table — bottles without labels, two half-poured glasses, somebody's bread crust." [ref=f2e3]
+    - generic [ref=f2e4]:
+      - heading "Feral" [level=1] [ref=f2e5]
+      - paragraph [ref=f2e6]: Wine that was alive once. Still acts like it.
+      - paragraph [ref=f2e7]: Natural wine bar · open tonight
+  - main [ref=f2e8]:
+    - region [ref=f2e9]:
+      - heading "Tonight's pours" [level=2] [ref=f2e10]
+      - paragraph [ref=f2e11]: Written on the mirror in grease pencil at 4pm. When it's gone, we shrug and open something weirder.
+      - generic [ref=f2e12]:
+        - heading "La Grange de l'Oncle Charles, “Amicale”" [level=3] [ref=f2e13]
+        - paragraph [ref=f2e14]: Alsace. Riesling that spent six months on skins and came back opinionated. Apricot, gunpowder tea, long goodbye.
+        - generic [ref=f2e15]: "14"
+      - generic [ref=f2e16]:
+        - heading "Partida Creus, “TN”" [level=3] [ref=f2e17]
+        - paragraph [ref=f2e18]: Penedès. Trepat the color of stained glass when the sun gives up. Sour cherry, wet slate, church basement.
+        - generic [ref=f2e19]: "12"
+      - generic [ref=f2e20]:
+        - heading "Frères Soulier, “Grand Clos”" [level=3] [ref=f2e21]
+        - paragraph [ref=f2e22]: Rhône. Gamay that tastes like the cellar it was raised in — dark fruit, black olive, a little feral, obviously.
+        - generic [ref=f2e23]: "13"
+      - generic [ref=f2e24]:
+        - heading "Les Capriades, “Piege à Filles”" [level=3] [ref=f2e25]
+        - paragraph [ref=f2e26]: Touraine. Pét-nat, cloudy, unrepentant. Pear skin and sea spray. We open it with a knife when nobody's watching.
+        - generic [ref=f2e27]: "15"
+      - paragraph [ref=f2e28]: Everything by the glass because bottles are a commitment and so are you not. Prices are for the glass; the mirror knows the bottles.
+    - region [ref=f2e29]:
+      - heading "Find the cellar" [level=2] [ref=f2e30]
+      - generic [ref=f2e31]: 17 Rue de la Butte-aux-Cailles 75013 Paris, down the stairs, follow the candle
+      - paragraph [ref=f2e32]: Wednesday – Sunday · 6pm until the last glass or 1am, whichever surrenders first.No reservations. No natural-wine lecture unless you ask — and please, ask.
+      - link "Ask about Sunday magnums" [ref=f2e33] [cursor=pointer]:
+        - /url: mailto:cellar@feral.bar
+  - contentinfo [ref=f2e34]:
+    - paragraph [ref=f2e35]:
+      - text: Feral · wine that was alive once ·
+      - link "cellar@feral.bar" [ref=f2e36] [cursor=pointer]:
+        - /url: mailto:cellar@feral.bar

@@ -1,0 +1,124 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "Semitone." [ref=e3] [cursor=pointer]:
+      - /url: "#top"
+    - navigation "Main" [ref=e4]:
+      - list [ref=e5]:
+        - listitem [ref=e6]:
+          - link "The sets" [ref=e7] [cursor=pointer]:
+            - /url: "#sets"
+        - listitem [ref=e8]:
+          - link "Requests" [ref=e9] [cursor=pointer]:
+            - /url: "#requests"
+        - listitem [ref=e10]:
+          - link "The wall" [ref=e11] [cursor=pointer]:
+            - /url: "#regulars"
+        - listitem [ref=e12]:
+          - link "Find us" [ref=e13] [cursor=pointer]:
+            - /url: "#find-us"
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - img "Piano keys under the red lamp, half an hour before the nine o'clock set" [ref=e17]
+      - generic [ref=e19]:
+        - heading [level=1] [ref=e20]:
+          - text: Two sets a night.
+          - emphasis [ref=e21]: That's the whole promise.
+        - paragraph [ref=e22]: Semitone is a fourteen-table piano bar in the basement of the old Meridian Hotel. One piano, one pianist, one red lamp. We don't take song requests by shouting, and we don't do birthday shout-outs. We do music, played properly, twice a night.
+        - paragraph [ref=e23]:
+          - text: Doors at 7 · Sets at
+          - strong [ref=e24]: "9"
+          - text: and
+          - strong [ref=e25]: "11"
+          - text: · No cover before 8
+    - region [ref=e26]:
+      - generic [ref=e27]:
+        - heading "How the night goes" [level=2] [ref=e28]
+        - paragraph [ref=e29]: The room runs on a clock older than most of our guests. Come early if you want to talk; come late if you want to listen.
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]: 7–9
+            - paragraph [ref=e33]:
+              - strong [ref=e34]: The talking hours.
+              - text: Doors open at seven. No cover before eight. The kitchen runs till 10:30 — the duck rillettes go fast. The piano rests; the room hums. This is when you catch up with whoever you brought.
+          - generic [ref=e35]:
+            - generic [ref=e36]: "9"
+            - paragraph [ref=e37]:
+              - strong [ref=e38]: First set.
+              - text: Ninety minutes. Elias Voss at the piano — he's held this bench for eleven years. Phones face down. Conversation drops to a murmur on its own; we've never once had to ask.
+          - generic [ref=e39]:
+            - generic [ref=e40]: 10:30
+            - paragraph [ref=e41]:
+              - strong [ref=e42]: The interval.
+              - text: Half an hour. Elias drinks a glass of rioja at the end of the bar and will happily argue about Monk. Last food orders. The room exhales.
+          - generic [ref=e43]:
+            - generic [ref=e44]: "11"
+            - paragraph [ref=e45]:
+              - strong [ref=e46]: Second set.
+              - text: Looser, darker, longer. This is when the requests jar empties and the standards give way to whatever he's been turning over all week. We close at one, quietly.
+    - region [ref=e47]:
+      - generic [ref=e48]:
+        - heading "The request policy" [level=2] [ref=e49]
+        - paragraph [ref=e50]: Yes, we take requests. No, not like that. There's a system, and it has worked since 2013.
+        - list [ref=e51]:
+          - listitem [ref=e52]:
+            - strong [ref=e53]: Write it down.
+            - text: Cards and pencils live in the brass holder on the piano. One tune per card. Legible handwriting helps your case.
+          - listitem [ref=e54]:
+            - strong [ref=e55]: Five dollars in the jar.
+            - text: The jar is for the tuner's fund — the Steinway gets voiced four times a year, and you can hear where the money went.
+          - listitem [ref=e56]:
+            - strong [ref=e57]: First-set requests get played in the first set.
+            - text: Cards submitted after 10:30 go into tomorrow's pile unless Elias takes a liking to them.
+          - listitem [ref=e58]:
+            - strong [ref=e59]: No "Piano Man" after the second set begins.
+            - text: This rule is carved, literally, into the underside of the lid. Ask Elias why at your own risk — it's a forty-minute story.
+          - listitem [ref=e60]:
+            - strong [ref=e61]: The pianist decides.
+            - text: If your tune doesn't get played, your five dollars still bought the piano an hour of its next tuning. We think that's fair. So did the last 4,000 people who asked.
+    - region [ref=e62]:
+      - generic [ref=e63]:
+        - heading "The regulars' wall" [level=2] [ref=e64]
+        - paragraph [ref=e65]: Six stools and two tables carry small brass plates. You don't apply for one. One night you notice your name is on it, and by then it's been there a month.
+        - list [ref=e66]:
+          - listitem [ref=e67]:
+            - generic [ref=e68]: Marta K.
+            - generic [ref=e69]: Stool 3 · Thursdays
+            - generic [ref=e70]: "\"In a Sentimental Mood\" — first set, every week, card always in the same green ink."
+          - listitem [ref=e71]:
+            - generic [ref=e72]: The Aldana brothers
+            - generic [ref=e73]: Table 11 · Fridays
+            - generic [ref=e74]: "\"Take Five\" — they split one card and one five between them, which is against the spirit and we allow it."
+          - listitem [ref=e75]:
+            - generic [ref=e76]: Priya & Sam
+            - generic [ref=e77]: Stools 6–7 · their anniversary, and most Tuesdays
+            - generic [ref=e78]: "\"The Nearness of You\" — he proposed here during the second-set version, 2019."
+          - listitem [ref=e79]:
+            - generic [ref=e80]: Old Henrik
+            - generic [ref=e81]: Stool 1 · "whenever it rains"
+            - generic [ref=e82]: Never requests anything. Applauds exactly twice a night, at the right moments.
+          - listitem [ref=e83]:
+            - generic [ref=e84]: Dana W.
+            - generic [ref=e85]: Table 4 · first Saturday of the month
+            - generic [ref=e86]: "\"Round Midnight\" — asks for it at 9:05, knowing full well it closes the late set."
+          - listitem [ref=e87]:
+            - generic [ref=e88]: Your name here, eventually
+            - generic [ref=e89]: The plates are ordered six at a time
+            - generic [ref=e90]: There's one left in the current batch. We're just saying.
+  - contentinfo [ref=e91]:
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - heading "Find us" [level=3] [ref=e94]
+        - generic [ref=e95]: Semitone Basement, the Meridian Hotel 47 Calder Street Open Tuesday–Sunday, 7pm–1am
+      - generic [ref=e96]:
+        - heading "Seats" [level=3] [ref=e97]
+        - paragraph [ref=e98]:
+          - text: No reservations for the bar — fourteen tables, first come. The back room seats eight and books two weeks out,
+          - link "call 555-0417" [ref=e99] [cursor=pointer]:
+            - /url: tel:+15550417
+          - text: after 4pm.
+      - generic [ref=e100]:
+        - heading "The fine print" [level=3] [ref=e101]
+        - paragraph [ref=e102]: Cover is $12 after 8pm, cash or card. The jar takes fives. The piano takes everything else.
+    - generic [ref=e103]:
+      - generic [ref=e104]: © Semitone, est. 2013
+      - generic [ref=e105]: Sets at nine and eleven. Everything else is negotiable.

@@ -1,0 +1,107 @@
+- generic [active] [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - generic:
+      - heading "STATIC_BLOOM" [level=1]:
+        - text: STATIC
+        - emphasis: _
+        - text: BLOOM
+      - paragraph: A generative art collective. Nine members, one renderer, no saved states. Everything you see here was computed a moment ago and will never exist again.
+      - paragraph: 52.5200°N 13.4050°E · EST. 2019 · SEED UNSTABLE
+  - main [ref=f3e4]:
+    - region [ref=f3e5]:
+      - generic [ref=f3e6]:
+        - heading "The rules we render by" [level=2] [ref=f3e7]
+        - paragraph [ref=f3e8]: Static Bloom is a collective, not a studio. Nobody signs anything. The rules below are the entire contract — they were compiled in 2019 and have never thrown an exception.
+        - list [ref=f3e9]:
+          - listitem [ref=f3e10]:
+            - generic [ref=f3e11]: RULE_01
+            - paragraph [ref=f3e12]:
+              - strong [ref=f3e13]: No saved states.
+              - text: A work exists only while it renders. If you loved it, you loved a moment, not a file.
+          - listitem [ref=f3e14]:
+            - generic [ref=f3e15]: RULE_02
+            - paragraph [ref=f3e16]:
+              - strong [ref=f3e17]: The seed is public.
+              - text: Every exhibited piece ships with its seed and commit hash. If you can recreate it, you collaborated.
+          - listitem [ref=f3e18]:
+            - generic [ref=f3e19]: RULE_03
+            - paragraph [ref=f3e20]:
+              - strong [ref=f3e21]: No neural networks.
+              - text: Noise, fields, L-systems, feedback loops. If a GPU can dream it, we are not interested in its dreams.
+          - listitem [ref=f3e22]:
+            - generic [ref=f3e23]: RULE_04
+            - paragraph [ref=f3e24]:
+              - strong [ref=f3e25]: Phosphor over pigment.
+              - text: We are a screen practice. Prints exist only to fund the electricity.
+          - listitem [ref=f3e26]:
+            - generic [ref=f3e27]: RULE_05
+            - paragraph [ref=f3e28]:
+              - strong [ref=f3e29]: Delete something at every meeting.
+              - text: The codebase gets smaller or it gets forked. Both have happened.
+    - region [ref=f3e30]:
+      - generic [ref=f3e31]:
+        - heading "Exhibited works" [level=2] [ref=f3e32]
+        - paragraph [ref=f3e33]: Six pieces currently on the wall at Lagerhaus G, Dresden, through March. Hover or focus a frame to force a re-render — the gallery charges extra for this.
+        - generic [ref=f3e34]:
+          - figure "PHOSPHENE CHOIR ED. 12/50" [ref=f3e35]:
+            - 'generic "Generative work: Phosphene Choir — interference rings in phosphor green" [ref=f3e36]'
+            - generic [ref=f3e37]:
+              - generic [ref=f3e38]: PHOSPHENE CHOIR
+              - generic [ref=f3e39]: ED. 12/50
+          - figure "DEAD CHANNEL LULLABY ED. 07/25" [ref=f3e40]:
+            - 'generic "Generative work: Dead Channel Lullaby — displaced dot matrix with magenta dropout" [ref=f3e41]'
+            - generic [ref=f3e42]:
+              - generic [ref=f3e43]: DEAD CHANNEL LULLABY
+              - generic [ref=f3e44]: ED. 07/25
+          - figure "SCANLINE HERD ED. 31/100" [ref=f3e45]:
+            - 'generic "Generative work: Scanline Herd — horizontal waveform drift" [ref=f3e46]'
+            - generic [ref=f3e47]:
+              - generic [ref=f3e48]: SCANLINE HERD
+              - generic [ref=f3e49]: ED. 31/100
+          - figure "BLOOM ARITHMETIC ED. 02/10" [ref=f3e50]:
+            - 'generic "Generative work: Bloom Arithmetic — spiral point accumulation" [ref=f3e51]'
+            - generic [ref=f3e52]:
+              - generic [ref=f3e53]: BLOOM ARITHMETIC
+              - generic [ref=f3e54]: ED. 02/10
+          - figure "CATHODE RAIN ED. 44/50" [ref=f3e55]:
+            - 'generic "Generative work: Cathode Rain — falling interference rings" [ref=f3e56]'
+            - generic [ref=f3e57]:
+              - generic [ref=f3e58]: CATHODE RAIN
+              - generic [ref=f3e59]: ED. 44/50
+          - figure "THE FIELD FORGETS ED. 18/75" [ref=f3e60]:
+            - 'generic "Generative work: The Field Forgets — slow scanline erosion" [ref=f3e61]'
+            - generic [ref=f3e62]:
+              - generic [ref=f3e63]: THE FIELD FORGETS
+              - generic [ref=f3e64]: ED. 18/75
+    - region [ref=f3e65]:
+      - generic [ref=f3e66]:
+        - heading "Print shop" [level=2] [ref=f3e67]
+        - paragraph [ref=f3e68]: "Archival pigment prints of single frames, chosen by dice roll. Rule 04 applies: these fund the electricity. Each ships with its seed printed on the back."
+        - list [ref=f3e69]:
+          - listitem [ref=f3e70]:
+            - 'heading "Phosphene Choir, frame #4,117" [level=3] [ref=f3e71]'
+            - paragraph [ref=f3e72]: 50×70 cm on Hahnemühle Photo Rag. The frame where the rings nearly resolved. They didn't.
+            - generic [ref=f3e73]: €180
+          - listitem [ref=f3e74]:
+            - 'heading "Dead Channel Lullaby, frame #019" [level=3] [ref=f3e75]'
+            - paragraph [ref=f3e76]: 30×40 cm, magenta dropout at maximum entropy. Signed with a commit hash, not a name.
+            - generic [ref=f3e77]: €95
+          - listitem [ref=f3e78]:
+            - 'heading "Bloom Arithmetic, frame #88,201" [level=3] [ref=f3e79]'
+            - paragraph [ref=f3e80]: 100×100 cm. Ninety seconds of accumulation, then the renderer was killed mid-spiral. Edition of 10, seven left.
+            - generic [ref=f3e81]: €340
+    - region [ref=f3e82]:
+      - generic [ref=f3e83]:
+        - heading "Tune in" [level=2] [ref=f3e84]
+        - paragraph [ref=f3e85]: "One transmission per month: new works, dropped seeds, exhibition dates. No analytics, no tracking pixels — we wouldn't know what to do with them."
+        - generic [ref=f3e86]:
+          - generic [ref=f3e87]: Email address
+          - textbox "Email address" [ref=f3e88]:
+            - /placeholder: you@frequency.net
+          - button "SUBSCRIBE_" [ref=f3e89] [cursor=pointer]
+        - status [ref=f3e90]
+  - contentinfo [ref=f3e91]:
+    - generic [ref=f3e92]: STATIC_BLOOM · DRESDEN / EVERYWHERE
+    - link "signal@staticbloom.art" [ref=f3e94] [cursor=pointer]:
+      - /url: mailto:signal@staticbloom.art
+    - generic [ref=f3e95]: NO SAVED STATES SINCE 2019

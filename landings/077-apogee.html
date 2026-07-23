@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apogee — dedicated small-payload launches, flown on a public countdown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Spline+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --ink: oklch(0.18 0.01 260);
+    --muted: oklch(0.42 0.015 260);
+    --graphite: oklch(0.32 0.015 260);
+    --flame: oklch(0.62 0.19 45);
+    --flame-text: oklch(0.45 0.15 45);
+    --flame-soft: oklch(0.95 0.035 60);
+    --line: oklch(0.88 0.008 260);
+    --surface: oklch(0.97 0.005 260);
+    --display: "Archivo", sans-serif;
+    --body: "Spline Sans", sans-serif;
+    --step--1: clamp(0.85rem, 0.82rem + 0.15vw, 0.95rem);
+    --step-0: clamp(1rem, 0.96rem + 0.25vw, 1.13rem);
+    --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+    --step-2: clamp(1.56rem, 1.35rem + 1.05vw, 2rem);
+    --step-3: clamp(1.95rem, 1.55rem + 2vw, 2.85rem);
+    --step-4: clamp(2.44rem, 1.7rem + 3.7vw, 4.5rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+    --z-overlay: 20;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    text-transform: uppercase;
+  }
+  p { max-width: 66ch; text-wrap: pretty; }
+  a { color: var(--flame-text); }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--flame);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .wrap { width: min(1180px, 100% - 3rem); margin-inline: auto; }
+  .muted { color: var(--muted); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.96);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.8rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand span { color: var(--flame-text); }
+  .head-count {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .nav { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 1.8rem); }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--step--1);
+    transition: color 0.3s var(--ease-out);
+  }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--flame-text); }
+  .btn {
+    display: inline-block;
+    font-weight: 600;
+    font-size: var(--step--1);
+    text-decoration: none;
+    padding: 0.75em 1.7em;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.3s var(--ease-out);
+  }
+  .btn-flame { background: var(--flame); color: oklch(0.2 0.02 45); }
+  .btn-flame:hover { background: oklch(0.56 0.19 45); transform: translateY(-2px); }
+  .btn-graphite { background: var(--graphite); color: oklch(0.97 0.005 260); white-space: nowrap; flex-shrink: 0; }
+  .btn-graphite:hover { background: oklch(0.25 0.015 260); transform: translateY(-2px); }
+
+  /* ---------- flight hero (three.js, scroll-driven) ---------- */
+  .flight { height: 340vh; position: relative; }
+  .flight-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+  #scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .flight-copy {
+    position: absolute;
+    top: clamp(3rem, 8vh, 5.5rem);
+    left: max(1.5rem, calc((100vw - 1180px) / 2));
+    max-width: 30rem;
+    z-index: var(--z-overlay);
+    pointer-events: none;
+  }
+  .flight-copy > * { pointer-events: auto; }
+  .flight-copy .tminus {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step--1);
+    letter-spacing: 0.1em;
+    color: var(--flame-text);
+    margin-bottom: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .flight-copy h1 { font-size: var(--step-4); margin-bottom: 1.2rem; max-width: 11ch; }
+  .flight-copy .lede { font-size: var(--step-1); color: var(--muted); line-height: 1.5; max-width: 30ch; margin-bottom: 1.8rem; }
+
+  .telemetry {
+    position: absolute;
+    top: clamp(3rem, 8vh, 5.5rem);
+    right: max(1.5rem, calc((100vw - 1180px) / 2));
+    width: 250px;
+    z-index: var(--z-overlay);
+    background: oklch(1 0 0 / 0.92);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.2rem 1.3rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .telemetry h2 {
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 0.9rem;
+  }
+  .telemetry dl { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1rem; margin-bottom: 1rem; }
+  .telemetry dt { font-size: var(--step--1); color: var(--muted); font-weight: 500; }
+  .telemetry dd { font-family: var(--display); font-weight: 700; font-size: var(--step--1); text-align: right; }
+  .telemetry .events { list-style: none; border-top: 1px solid var(--line); padding-top: 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; }
+  .telemetry .events li {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: oklch(0.62 0.01 260);
+    display: flex;
+    justify-content: space-between;
+    transition: color 0.4s var(--ease-out);
+  }
+  .telemetry .events li.active { color: var(--flame-text); }
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--step--1);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    z-index: var(--z-overlay);
+    animation: bob 2.4s var(--ease-out) infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 8px); }
+  }
+
+  /* ---------- sections ---------- */
+  section.block { padding-block: clamp(3.5rem, 7vw, 6rem); border-top: 1px solid var(--line); }
+  .block h2 { font-size: var(--step-3); margin-bottom: clamp(1.6rem, 3.5vw, 2.5rem); max-width: 20ch; }
+  .block .lede { font-size: var(--step-1); color: var(--muted); line-height: 1.5; max-width: 48ch; margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+  /* vehicle specs */
+  .spec-rows { border-top: 1px solid var(--ink); }
+  .spec-rows .row {
+    display: grid;
+    grid-template-columns: minmax(140px, 0.8fr) minmax(0, 1.2fr) auto;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .spec-rows .row dt { font-weight: 600; color: var(--muted); font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.06em; }
+  .spec-rows .row dd:first-of-type { font-family: var(--display); font-weight: 900; font-size: var(--step-1); text-transform: uppercase; letter-spacing: -0.01em; }
+  .spec-rows .row dd:last-of-type { color: var(--muted); font-size: var(--step--1); text-align: right; }
+
+  /* missions */
+  .mission-hero { margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .mission-hero img { width: 100%; aspect-ratio: 16/7; object-fit: cover; border: 1px solid var(--line); border-radius: 12px; }
+  .mission-hero figcaption { padding-top: 0.7rem; font-size: var(--step--1); color: var(--muted); }
+  .missions { list-style: none; display: flex; flex-direction: column; }
+  .missions li {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.5fr) minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: clamp(1rem, 4vw, 3rem);
+    padding-block: 1.8rem;
+    border-top: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .missions h3 { font-size: var(--step-1); }
+  .missions .status { font-size: var(--step--1); font-weight: 600; color: var(--muted); }
+  .missions .status strong { color: var(--flame-text); }
+  .missions .detail { color: var(--muted); font-size: var(--step--1); line-height: 1.6; }
+
+  /* pricing */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: clamp(1.2rem, 3vw, 2rem);
+  }
+  .price-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.8rem;
+    background: var(--surface);
+    transition: transform 0.45s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+  .price-card:hover { transform: translateY(-4px); border-color: var(--flame); }
+  .price-card h3 { font-size: var(--step-1); margin-bottom: 0.8rem; }
+  .price-card .per-kg {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: var(--step-2);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.9rem;
+  }
+  .price-card .per-kg span { font-size: var(--step--1); font-family: var(--body); font-weight: 500; color: var(--muted); }
+  .price-card p { font-size: var(--step--1); color: var(--muted); line-height: 1.6; }
+
+  /* careers */
+  .careers { background: var(--graphite); color: oklch(0.96 0.005 260); border-top: 0; }
+  .careers h2 { color: oklch(0.96 0.005 260); }
+  .careers .lede { color: oklch(0.78 0.01 260); }
+  .careers-list { list-style: none; display: flex; flex-direction: column; }
+  .careers-list a {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding-block: 1.2rem;
+    border-top: 1px solid oklch(0.45 0.015 260);
+    text-decoration: none;
+    color: oklch(0.96 0.005 260);
+    transition: padding-left 0.4s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .careers-list a:hover { padding-left: 0.8rem; color: oklch(0.8 0.12 55); }
+  .careers-list .role { font-family: var(--display); font-weight: 700; font-size: var(--step-1); text-transform: uppercase; letter-spacing: -0.01em; }
+  .careers-list .loc { font-size: var(--step--1); color: oklch(0.78 0.01 260); white-space: nowrap; }
+
+  /* manifest */
+  .manifest-table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
+  .manifest-table th {
+    text-align: left;
+    font-family: var(--display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding: 0.8rem 1rem 0.8rem 0;
+    border-bottom: 2px solid var(--ink);
+  }
+  .manifest-table td { padding: 1rem 1rem 1rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .manifest-table td:first-child { font-weight: 600; white-space: nowrap; }
+  .manifest-table .open { color: var(--flame-text); font-weight: 600; }
+  .table-scroll { overflow-x: auto; }
+
+  footer { padding-block: 2.5rem; border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; align-items: baseline; }
+  footer p { font-size: var(--step--1); color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .telemetry { display: none; }
+    .missions li { grid-template-columns: 1fr; gap: 0.4rem; }
+    .spec-rows .row { grid-template-columns: 1fr; gap: 0.3rem; }
+    .spec-rows .row dd:last-of-type { text-align: left; }
+  }
+  @media (max-width: 700px) {
+    .nav a:not(.btn) { display: none; }
+    .head-count { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001s !important;
+    }
+    .flight { height: auto !important; }
+    .flight-sticky { position: relative; height: 80vh; }
+    .scroll-hint { display: none; }
+    .price-card:hover, .btn:hover { transform: none; }
+    .careers-list a:hover { padding-left: 0; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Apogee<span>.</span></a>
+    <p class="head-count" id="head-count" aria-live="off">T–--:--:--:--</p>
+    <nav class="nav" aria-label="Primary">
+      <a href="#vehicle">Vehicle</a>
+      <a href="#missions">Missions</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#manifest">Manifest</a>
+      <a href="#pricing" class="btn btn-graphite">Book Payload</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="flight" id="flight">
+    <div class="flight-sticky">
+      <canvas id="scene" aria-label="Animated model of the Meridian-1 rocket ascending with scroll, separating its first stage near the top"></canvas>
+      <div class="flight-copy">
+        <p class="tminus" id="hero-count">T–--:--:--:-- to Flight 4</p>
+        <h1>Flight is a promise kept in public.</h1>
+        <p class="lede">Scroll to fly Meridian-1. The telemetry on the right is the same
+          math our guidance computer runs — no theater, just numbers.</p>
+        <a class="btn btn-flame" href="#vehicle">Read the Spec Sheet</a>
+      </div>
+      <aside class="telemetry" aria-label="Simulated flight telemetry driven by scroll">
+        <h2>Telemetry — Sim</h2>
+        <dl>
+          <dt>Altitude</dt><dd id="t-alt">0.0 km</dd>
+          <dt>Velocity</dt><dd id="t-vel">0.00 km/s</dd>
+          <dt>Downrange</dt><dd id="t-down">0 km</dd>
+          <dt>Throttle</dt><dd id="t-thr">0%</dd>
+        </dl>
+        <ul class="events">
+          <li id="ev-liftoff" class="active"><span>Liftoff</span><span>T+0:00</span></li>
+          <li id="ev-maxq"><span>Max-Q</span><span>T+1:12</span></li>
+          <li id="ev-meco"><span>MECO</span><span>T+2:31</span></li>
+          <li id="ev-sep"><span>Stage sep</span><span>T+2:34</span></li>
+          <li id="ev-seco"><span>SECO-1</span><span>T+8:49</span></li>
+        </ul>
+      </aside>
+      <p class="scroll-hint" aria-hidden="true">Scroll to ascend</p>
+    </div>
+  </div>
+
+  <section class="block" id="vehicle">
+    <div class="wrap">
+      <h2>Meridian-1, by the numbers</h2>
+      <p class="lede">A two-stage, kerosene-oxygen small launcher built for one job:
+        putting 550 kg exactly where you asked, on the day we said we would.</p>
+      <dl class="spec-rows">
+        <div class="row"><dt>Height</dt><dd>42 m</dd><dd>about eleven parked cars, nose to tail</dd></div>
+        <div class="row"><dt>Payload to LEO</dt><dd>550 kg</dd><dd>500 km sun-synchronous, dedicated</dd></div>
+        <div class="row"><dt>First stage</dt><dd>9 × Kestrel engines</dd><dd>1,240 kN at liftoff, throttle to 55%</dd></div>
+        <div class="row"><dt>Second stage</dt><dd>1 × Kestrel-Vac</dd><dd>restarts twice, deorbits itself every time</dd></div>
+        <div class="row"><dt>Fairing</dt><dd>2.3 m Ø × 4.1 m</dd><dd>recovered and reflown, salt water and all</dd></div>
+        <div class="row"><dt>Reliability</dt><dd>3 of 3 to orbit</dd><dd>see the anomaly notes — we hide nothing</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="block" id="missions">
+    <div class="wrap">
+      <h2>Three flights, honestly reported</h2>
+      <p class="lede">Every launch provider shows you the highlight reel. Here is the
+        whole reel, including the frame we'd rather crop.</p>
+      <figure class="mission-hero">
+        <img src="https://picsum.photos/seed/launch-1/1600/700" width="1600" height="700"
+             alt="The Meridian-1 launch pad at dawn, vehicle on the mount under low orange light, Atlantic flat behind it">
+        <figcaption>Pad 1, Boca Chica del Mar range, 05:40 local — forty minutes before Flight 3.</figcaption>
+      </figure>
+      <ul class="missions">
+        <li>
+          <h3>Flight 1</h3>
+          <p class="status"><strong>Nominal.</strong> 2024-11-02 · 410 kg to SSO</p>
+          <p class="detail">First flight, first orbit. Fairing recovery failed when the
+            parafoil tore on splashdown — we fished out the pieces, published the
+            teardown, and flew the redesigned seam on Flight 2.</p>
+        </li>
+        <li>
+          <h3>Flight 2</h3>
+          <p class="status"><strong>Anomaly, disclosed.</strong> 2025-04-19 · 380 kg to LEO</p>
+          <p class="detail">Second-stage restart underperformed by 3% due to a sticky
+            helium valve. Payload reached a lower-but-usable orbit; the customer stayed,
+            the valve was redesigned, and the full telemetry is on our site, unedited.</p>
+        </li>
+        <li>
+          <h3>Flight 3</h3>
+          <p class="status"><strong>Nominal.</strong> 2026-02-27 · 550 kg to SSO</p>
+          <p class="detail">Full advertised mass, first fairing refly, bullseye orbit.
+            The mission patch has a small helium valve on it. Ask anyone on the pad
+            crew why — they'll tell you the whole story.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="pricing">
+    <div class="wrap">
+      <h2>Payload pricing, per kilogram, in writing</h2>
+      <p class="lede">No "contact us for a quote." The quote is here. It has been here
+        since Flight 1, and it only moves when costs do.</p>
+      <div class="price-grid">
+        <article class="price-card">
+          <h3>Rideshare</h3>
+          <p class="per-kg">$4,200<span> / kg to SSO</span></p>
+          <p>15 kg minimum, quarterly departures. Your CubeSat shares the stack with up
+            to eleven neighbors; separation sequencing is ours to worry about, not yours.</p>
+        </article>
+        <article class="price-card">
+          <h3>Dedicated</h3>
+          <p class="per-kg">$6,800<span> / kg to LEO</span></p>
+          <p>The whole vehicle, your orbit, your window, your countdown. Includes two
+            launch attempts and our famously plain-spoken mission assurance team.</p>
+        </article>
+        <article class="price-card">
+          <h3>Hosted payload</h3>
+          <p class="per-kg">$1,900<span> / kg, stays attached</span></p>
+          <p>Fly bolted to the second stage for up to 30 days of power, downlink, and
+            attitude control. Deorbit included — we never leave anything up there.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block careers" id="careers">
+    <div class="wrap">
+      <h2>Come set things on fire, carefully</h2>
+      <p class="lede">Propulsion is hiring. The test stand runs Tuesday and Friday
+        nights, the coffee is strong, and the anomaly reviews are blameless but
+        brutally specific.</p>
+      <ul class="careers-list">
+        <li><a href="#careers"><span class="role">Propulsion Engineer, Turbomachinery</span><span class="loc">Boca Chica del Mar · full-time</span></a></li>
+        <li><a href="#careers"><span class="role">Combustion Devices Engineer</span><span class="loc">Boca Chica del Mar · full-time</span></a></li>
+        <li><a href="#careers"><span class="role">Test Operations Technician, Night Shift</span><span class="loc">Pad 1 · shift differential</span></a></li>
+        <li><a href="#careers"><span class="role">Guidance &amp; Navigation Intern, Summer 2027</span><span class="loc">Boca Chica del Mar · paid</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="manifest">
+    <div class="wrap">
+      <h2>Launch manifest</h2>
+      <p class="lede">Dates hold unless weather or physics objects. We announce slips
+        the hour we know about them, not the week after.</p>
+      <div class="table-scroll">
+        <table class="manifest-table">
+          <thead>
+            <tr><th scope="col">Flight</th><th scope="col">Date (UTC)</th><th scope="col">Payload</th><th scope="col">Orbit</th><th scope="col">Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Flight 4</td><td>2026-09-14 · 13:22</td><td>Meridian Weather Constellation, 3 sats</td><td>SSO 500 km</td><td class="open">Countdown live</td></tr>
+            <tr><td>Flight 5</td><td>2026-12-03 · 09:05</td><td>Rideshare — 11 payloads, 6 countries</td><td>SSO 500 km</td><td class="open">3 slots open</td></tr>
+            <tr><td>Flight 6</td><td>2027-03-21 · 17:40</td><td>Dedicated — Cartesia-2 imaging sat</td><td>LEO 430 km</td><td>Sold</td></tr>
+            <tr><td>Flight 7</td><td>2027-Q3</td><td>Hosted payload flight, 30-day mission</td><td>LEO 400 km</td><td class="open">Booking</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top">Apogee<span>.</span></a>
+    <p>Boca Chica del Mar Range, Pad 1 · Range control: +1 555 010 4414</p>
+    <p>Telemetry from every flight, published unedited, since day one.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>window.THREE || document.write('<script src="https://unpkg.com/three@0.160.0/build/three.min.js"><\/script>');</script>
+<script>
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- countdown ---------- */
+  var target = Date.UTC(2026, 8, 14, 13, 22, 0); // Flight 4: 2026-09-14 13:22 UTC
+  var headCount = document.getElementById("head-count");
+  var heroCount = document.getElementById("hero-count");
+  function pad(n, w) { return String(n).padStart(w, "0"); }
+  function tickCountdown() {
+    var diff = Math.max(0, target - Date.now());
+    var s = Math.floor(diff / 1000);
+    var d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600),
+        m = Math.floor((s % 3600) / 60), sec = s % 60;
+    var t = "T–" + pad(d, 2) + ":" + pad(h, 2) + ":" + pad(m, 2) + ":" + pad(sec, 2);
+    headCount.textContent = t;
+    heroCount.textContent = t + " to Flight 4";
+  }
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
+
+  /* ---------- three.js flight scene ---------- */
+  if (typeof THREE === "undefined") return;
+  var canvas = document.getElementById("scene");
+  var flight = document.getElementById("flight");
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xffffff);
+  scene.fog = new THREE.Fog(0xffffff, 30, 90);
+
+  var camera = new THREE.PerspectiveCamera(36, 1, 0.1, 200);
+  camera.position.set(0, 3, 15);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+  var sun = new THREE.DirectionalLight(0xfff2e0, 2.2);
+  sun.position.set(6, 10, 8);
+  scene.add(sun);
+  var rim = new THREE.DirectionalLight(0xdfe8ff, 0.9);
+  rim.position.set(-8, 4, -6);
+  scene.add(rim);
+
+  var white = new THREE.MeshStandardMaterial({ color: 0xf7f8fa, roughness: 0.5, metalness: 0.15 });
+  var graphite = new THREE.MeshStandardMaterial({ color: 0x2e3138, roughness: 0.65, metalness: 0.3 });
+  var orange = new THREE.MeshStandardMaterial({ color: 0xe85d1f, roughness: 0.45, metalness: 0.1 });
+  var flameMat = new THREE.MeshBasicMaterial({ color: 0xff7a2a, transparent: true, opacity: 0.9 });
+
+  var rocket = new THREE.Group();
+  var booster = new THREE.Group();
+  var upper = new THREE.Group();
+
+  // First stage (booster)
+  var bBody = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 3.4, 32), white);
+  booster.add(bBody);
+  var bBase = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.6, 0.5, 32), graphite);
+  bBase.position.y = -1.85;
+  booster.add(bBase);
+  var bBand = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.56, 0.18, 32), orange);
+  bBand.position.y = 1.2;
+  booster.add(bBand);
+  for (var i = 0; i < 4; i++) {
+    var fin = new THREE.Mesh(new THREE.BoxGeometry(0.08, 1.0, 0.55), graphite);
+    var ang = i * Math.PI / 2;
+    fin.position.set(Math.cos(ang) * 0.62, -1.55, Math.sin(ang) * 0.62);
+    fin.rotation.y = -ang + Math.PI / 2;
+    booster.add(fin);
+  }
+  var flame = new THREE.Mesh(new THREE.ConeGeometry(0.42, 2.4, 24), flameMat);
+  flame.position.y = -3.4;
+  flame.rotation.x = Math.PI;
+  booster.add(flame);
+  rocket.add(booster);
+
+  // Second stage + fairing
+  var uBody = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 2.0, 32), white);
+  uBody.position.y = 2.7;
+  upper.add(uBody);
+  var uBand = new THREE.Mesh(new THREE.CylinderGeometry(0.56, 0.56, 0.22, 32), orange);
+  uBand.position.y = 3.35;
+  upper.add(uBand);
+  var nose = new THREE.Mesh(new THREE.ConeGeometry(0.55, 1.3, 32), white);
+  nose.position.y = 4.35;
+  upper.add(nose);
+  var tip = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.5, 8), graphite);
+  tip.position.y = 5.15;
+  upper.add(tip);
+  var uFlame = new THREE.Mesh(new THREE.ConeGeometry(0.34, 1.7, 24), flameMat.clone());
+  uFlame.position.y = 1.35;
+  uFlame.rotation.x = Math.PI;
+  uFlame.visible = false;
+  upper.add(uFlame);
+  rocket.add(upper);
+
+  rocket.rotation.y = 0.5;
+  scene.add(rocket);
+
+  // faint horizon rings for depth (SpaceX-grade restraint: two, barely there)
+  var ringMat = new THREE.LineBasicMaterial({ color: 0xe4e7ec, transparent: true, opacity: 0.7 });
+  [8, 18].forEach(function (y, idx) {
+    var pts = [];
+    for (var a = 0; a <= 64; a++) {
+      var t = a / 64 * Math.PI * 2;
+      pts.push(new THREE.Vector3(Math.cos(t) * (14 + idx * 10), 0, Math.sin(t) * (14 + idx * 10)));
+    }
+    var ring = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), ringMat);
+    ring.position.y = y;
+    scene.add(ring);
+  });
+
+  /* telemetry */
+  var tAlt = document.getElementById("t-alt"), tVel = document.getElementById("t-vel"),
+      tDown = document.getElementById("t-down"), tThr = document.getElementById("t-thr");
+  var evMaxq = document.getElementById("ev-maxq"), evMeco = document.getElementById("ev-meco"),
+      evSep = document.getElementById("ev-sep"), evSeco = document.getElementById("ev-seco");
+  var SEP_P = 0.82;
+
+  function progress() {
+    if (reduced) return 0.55;
+    var rect = flight.getBoundingClientRect();
+    var total = flight.offsetHeight - window.innerHeight;
+    if (total <= 0) return 0;
+    return Math.min(1, Math.max(0, -rect.top / total));
+  }
+
+  var clock = new THREE.Clock();
+  function frame() {
+    var p = progress();
+    var t = clock.getElapsedTime();
+
+    // ascent: rocket climbs, camera tracks partway
+    rocket.position.y = -4.5 + p * 13;
+    camera.position.y = 2.5 + p * 9.5;
+    camera.lookAt(0, rocket.position.y + 1.2, 0);
+    rocket.rotation.y = reduced ? 0.5 : 0.5 + Math.sin(t * 0.25) * 0.12;
+
+    // stage separation at the section break
+    if (p >= SEP_P) {
+      var s = Math.min(1, (p - SEP_P) / (1 - SEP_P));
+      flame.visible = false;
+      uFlame.visible = true;
+      booster.position.y = -s * 3.2;
+      booster.position.x = s * 2.2;
+      booster.rotation.z = s * 0.55;
+      uFlame.scale.y = reduced ? 1 : 1 + Math.sin(t * 22) * 0.18;
+    } else {
+      flame.visible = true;
+      uFlame.visible = false;
+      booster.position.set(0, 0, 0);
+      booster.rotation.z = 0;
+      flame.scale.y = reduced ? 1 : 1 + Math.sin(t * 26) * 0.22;
+      flame.material.opacity = 0.75 + (reduced ? 0 : Math.sin(t * 13) * 0.12);
+    }
+
+    // telemetry readouts
+    var alt = p * 120, vel = Math.pow(p, 0.85) * 7.8, down = p * 860;
+    var thr = p >= SEP_P ? 100 : Math.max(55, 100 - p * 30);
+    tAlt.textContent = alt.toFixed(1) + " km";
+    tVel.textContent = vel.toFixed(2) + " km/s";
+    tDown.textContent = Math.round(down) + " km";
+    tThr.textContent = Math.round(p === 0 ? 0 : thr) + "%";
+    evMaxq.classList.toggle("active", p >= 0.12);
+    evMeco.classList.toggle("active", p >= SEP_P - 0.02);
+    evSep.classList.toggle("active", p >= SEP_P);
+    evSeco.classList.toggle("active", p >= 0.995);
+
+    renderer.render(scene, camera);
+  }
+
+  function resize() {
+    var w = canvas.clientWidth || window.innerWidth,
+        h = canvas.clientHeight || window.innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener("resize", function () { resize(); frame(); });
+  resize();
+
+  if (reduced) {
+    frame(); // one static frame, mid-flight
+  } else {
+    var rafId = null;
+    var loop = function () { frame(); rafId = requestAnimationFrame(loop); };
+    var start = function () { if (rafId === null) { clock.start(); loop(); } };
+    var stop = function () { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; clock.stop(); } };
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else start();
+    });
+    start();
+  }
+})();
+</script>
+</body>
+</html>

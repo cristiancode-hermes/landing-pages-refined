@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Golden Hour Balloon Rides — One flight a day, at sunrise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;1,300&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sky-top: oklch(0.88 0.07 65);
+    --sky-mid: oklch(0.84 0.075 45);
+    --sky-low: oklch(0.80 0.07 300);
+    --ink: oklch(0.30 0.06 310);
+    --ink-soft: oklch(0.40 0.055 310);
+    --burner: oklch(0.55 0.17 50);
+    --burner-deep: oklch(0.47 0.15 48);
+    --basket: oklch(0.42 0.06 60);
+    --cloud: oklch(0.96 0.025 330);
+    --display: "Jost", sans-serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.84rem, 0.81rem + 0.15vw, 0.92rem);
+    --step-0: clamp(1.02rem, 0.98rem + 0.2vw, 1.13rem);
+    --step-1: clamp(1.28rem, 1.2rem + 0.4vw, 1.53rem);
+    --step-2: clamp(1.6rem, 1.44rem + 0.8vw, 2.15rem);
+    --step-3: clamp(2rem, 1.7rem + 1.5vw, 2.95rem);
+    --step-4: clamp(2.5rem, 1.9rem + 3vw, 4.6rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-clouds-back: 1;
+    --z-balloon: 2;
+    --z-clouds-front: 3;
+    --z-content: 4;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: linear-gradient(178deg, var(--sky-top) 0%, var(--sky-mid) 46%, var(--sky-low) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p { max-width: 62ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--burner-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1080px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 3rem + 5vw, 8rem); position: relative; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.88 0.07 65 / 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid oklch(0.78 0.06 55 / 0.5);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .brand svg { width: 1.5rem; height: 1.9rem; flex: none; }
+  .site-nav { display: flex; align-items: center; gap: 1.8rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--burner-deep); }
+  @media (max-width: 660px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: oklch(0.97 0.015 70);
+    background: var(--burner);
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: var(--burner-deep); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.25rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 1.5px var(--ink-soft);
+  }
+  .btn.ghost:hover { background: oklch(0.96 0.02 330 / 0.5); color: var(--ink); }
+
+  /* ---------- hero sky scene ---------- */
+  .hero {
+    min-height: min(88vh, 54rem);
+    display: flex;
+    align-items: center;
+    padding-block: clamp(4rem, 3rem + 6vw, 8rem);
+    overflow: hidden;
+  }
+  .cloud {
+    position: absolute;
+    border-radius: 999px;
+    background: var(--cloud);
+    filter: blur(2px);
+    opacity: 0.75;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .cloud::before, .cloud::after {
+    content: "";
+    position: absolute;
+    border-radius: 999px;
+    background: inherit;
+  }
+  .cloud.c1 {
+    width: 17rem; height: 4.2rem;
+    top: 18%; left: -4rem;
+    z-index: var(--z-clouds-back);
+    opacity: 0.55;
+  }
+  .cloud.c1::before { width: 8rem; height: 4.5rem; top: -2.2rem; left: 2.5rem; }
+  .cloud.c1::after { width: 6rem; height: 3.4rem; top: -1.4rem; left: 8.5rem; }
+  .cloud.c2 {
+    width: 13rem; height: 3.4rem;
+    top: 55%; right: -3rem;
+    z-index: var(--z-clouds-back);
+    opacity: 0.5;
+  }
+  .cloud.c2::before { width: 6.5rem; height: 3.6rem; top: -1.8rem; left: 1.8rem; }
+  .cloud.c2::after { width: 4.5rem; height: 2.6rem; top: -1rem; left: 6.5rem; }
+  .cloud.c3 {
+    width: 21rem; height: 5rem;
+    bottom: 12%; left: 12%;
+    z-index: var(--z-clouds-front);
+    opacity: 0.8;
+    filter: blur(3px);
+  }
+  .cloud.c3::before { width: 10rem; height: 5.4rem; top: -2.6rem; left: 3rem; }
+  .cloud.c3::after { width: 7rem; height: 3.8rem; top: -1.6rem; left: 10.5rem; }
+
+  .balloon {
+    position: absolute;
+    top: 12%;
+    right: clamp(6%, 12vw, 18%);
+    width: clamp(6.5rem, 14vw, 11rem);
+    z-index: var(--z-balloon);
+    pointer-events: none;
+    animation: drift 9s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+    will-change: transform;
+  }
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0) rotate(-1.2deg); }
+    to   { transform: translate3d(0.9rem, -1.6rem, 0) rotate(1.4deg); }
+  }
+  .balloon.small {
+    top: 34%;
+    right: auto;
+    left: clamp(4%, 8vw, 12%);
+    width: clamp(3.4rem, 7vw, 5.5rem);
+    opacity: 0.85;
+    animation-duration: 12s;
+    animation-delay: -4s;
+  }
+
+  .hero .wrap { position: relative; z-index: var(--z-content); }
+  .hero .field {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--burner-deep);
+    letter-spacing: 0.02em;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    max-width: 14ch;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--burner-deep); }
+  .hero .lede {
+    font-size: var(--step-1);
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 44ch;
+    margin-bottom: 2.2rem;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+
+  /* ---------- photo break ---------- */
+  .photo { padding-block: 0; }
+  .photo img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .photo figcaption {
+    padding-block: 1rem;
+    font-size: var(--step--1);
+    font-style: italic;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  /* ---------- quiet sections ---------- */
+  .quiet h2 {
+    font-size: var(--step-3);
+    max-width: 20ch;
+    margin-bottom: 1.4rem;
+  }
+  .quiet .lede { font-size: var(--step-1); color: var(--ink-soft); max-width: 48ch; }
+  .quiet .lede + .lede { margin-top: 1rem; }
+  .quiet .fine { margin-top: 1.8rem; font-size: var(--step--1); color: var(--ink-soft); }
+  .center { text-align: center; }
+  .center h2, .center p { margin-inline: auto; }
+  .center .lede { margin-inline: auto; }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5.5rem);
+    align-items: center;
+  }
+  @media (max-width: 840px) { .split { grid-template-columns: 1fr; } }
+  .split figure img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  .split figcaption {
+    margin-top: 0.7rem;
+    font-size: var(--step--1);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  /* weather honesty */
+  .weather {
+    background: oklch(0.42 0.06 310 / 0.92);
+    color: oklch(0.93 0.03 320);
+  }
+  .weather h2 { color: oklch(0.95 0.025 320); }
+  .weather .lede { color: oklch(0.84 0.04 315); }
+  .weather .stat-line {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: var(--step-2);
+    line-height: 1.3;
+    color: oklch(0.95 0.025 320);
+    max-width: 26ch;
+    margin-top: 2rem;
+  }
+  .weather .fine { color: oklch(0.78 0.04 315); }
+
+  /* gift */
+  .gift .card {
+    background: oklch(0.96 0.03 330 / 0.65);
+    border-radius: 14px;
+    padding: clamp(2rem, 1.5rem + 3vw, 3.5rem);
+    text-align: center;
+  }
+  .gift h2 { margin-bottom: 1.2rem; }
+  .gift .lede { margin-bottom: 1.8rem; }
+  .gift .price-line {
+    font-family: var(--display);
+    font-size: var(--step-1);
+    color: var(--basket);
+    margin-bottom: 1.8rem;
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    padding-block: 3rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; justify-content: space-between; }
+  footer strong { color: var(--ink); font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    body { background-attachment: scroll; }
+    .balloon { animation: none; }
+    .cloud { will-change: auto; }
+    .btn, .btn:hover { transition: none; transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="balloon-mark" viewBox="0 0 60 84">
+      <path d="M30 4C14 4 5 16 5 30c0 11 7 20 14 25l3 5h16l3-5c7-5 14-14 14-25C55 16 46 4 30 4Z" fill="oklch(0.55 0.17 50)"/>
+      <path d="M30 4c-4.5 5-7 14-7 26s2.5 21 7 25c4.5-4 7-13 7-25S34.5 9 30 4Z" fill="oklch(0.68 0.16 55)"/>
+      <path d="M22 60l-2 8M38 60l2 8" stroke="oklch(0.42 0.06 60)" stroke-width="1.6"/>
+      <rect x="23" y="68" width="14" height="11" rx="2" fill="oklch(0.42 0.06 60)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 60 84" aria-hidden="true"><use href="#balloon-mark"/></svg>
+      Golden Hour
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#flight">The flight</a>
+      <a href="#weather">The weather call</a>
+      <a href="#gift">Gift cards</a>
+      <a class="btn small" href="#book">Book a sunrise flight</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="cloud c1" data-drift="0.12" aria-hidden="true"></div>
+    <div class="cloud c2" data-drift="0.22" aria-hidden="true"></div>
+    <div class="cloud c3" data-drift="0.38" aria-hidden="true"></div>
+    <svg class="balloon" viewBox="0 0 60 84" aria-hidden="true"><use href="#balloon-mark"/></svg>
+    <svg class="balloon small" viewBox="0 0 60 84" aria-hidden="true"><use href="#balloon-mark"/></svg>
+    <div class="wrap">
+      <p class="field">Walla Walla Valley · sunrise flights only</p>
+      <h1>Meet the sunrise at <em>a thousand feet.</em></h1>
+      <p class="lede">One flight a day, at dawn, when the valley air is still. Champagne when we land. That's the whole business, and we've kept it that way since 1973.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#book">Book a sunrise flight</a>
+        <a class="btn ghost" href="#weather">Why we cancel so often</a>
+      </div>
+    </div>
+  </section>
+
+  <figure class="photo">
+    <img src="https://picsum.photos/seed/balloon-1/1600/900" width="1600" height="900"
+         alt="Balloons lifting over the valley in the first ten minutes of light, envelopes glowing from their burners.">
+    <figcaption class="wrap">Six minutes after liftoff, last Tuesday. The burners go quiet and so does everyone aboard.</figcaption>
+  </figure>
+
+  <section class="quiet" id="flight">
+    <div class="wrap split">
+      <div>
+        <h2>The flight, start to finish</h2>
+        <p class="lede">We meet in the dark, an hour before sunrise, at the launch field off Mill Creek Road. You'll watch the envelope come upright in the burner light — most people say this half is worth the price alone.</p>
+        <p class="lede">Sixty to seventy-five minutes aloft, drifting wherever the morning goes. Then the landing, the champagne — a tradition older than our company — and breakfast tacos from Rosita's truck while we pack the balloon.</p>
+        <p class="fine">$265 per person · baskets hold six, never more · kids eight and up fly with an adult.</p>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/balloon-2/800/600" width="800" height="600"
+             alt="The basket tipping gently on landing as the envelope spills its air across a dew-wet pasture.">
+        <figcaption>The landing is gentle nine times in ten. The tenth time, it's a story.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="weather quiet" id="weather">
+    <div class="wrap">
+      <h2>We cancel, you rebook free. That's the deal.</h2>
+      <p class="lede">Balloons don't steer; they negotiate. If the wind at altitude is wrong, or the valley is holding fog, or a storm is anywhere within a hundred miles — we don't fly. The pilot calls every passenger by 8 p.m. the night before, either way.</p>
+      <p class="stat-line">We scrub about one morning in four. More than any operator in the valley, and we're proud of it.</p>
+      <p class="fine">A cancelled flight never expires and never costs you anything. Rebook next week, next season, or gift it to someone with a better forecast.</p>
+    </div>
+  </section>
+
+  <section class="gift quiet" id="gift">
+    <div class="wrap">
+      <div class="card">
+        <h2>Give someone a morning they'll describe badly for years.</h2>
+        <p class="lede" style="margin-inline:auto">Nobody tells a balloon story well. "And then it was just… quiet." Gift cards are printed on real paper, sealed with wax, and good for any sunrise in the next three years.</p>
+        <p class="price-line">$265 per seat · two seats most popular, for obvious reasons</p>
+        <a class="btn" id="book" href="tel:+15095550142">Call (509) 555-0142 to book</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><strong>Golden Hour Balloon Rides</strong> — launch field off Mill Creek Road, Walla Walla, WA. Since 1973.</span>
+    <span>The phone rings from 4 a.m. on flying days. Someone always answers.</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    var clouds = Array.prototype.slice.call(document.querySelectorAll('.cloud'));
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var y = window.scrollY || 0;
+      clouds.forEach(function (c) {
+        var rate = parseFloat(c.getAttribute('data-drift')) || 0.2;
+        c.style.transform = 'translate3d(0,' + (y * rate).toFixed(1) + 'px,0)';
+      });
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }, { passive: true });
+    update();
+  })();
+</script>
+</body>
+</html>

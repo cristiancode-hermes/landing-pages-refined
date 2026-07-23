@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quorum — where a motion becomes a decision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.972 0.006 245);
+    --ink: oklch(0.2 0.02 250);
+    --ink-soft: oklch(0.43 0.02 245);
+    --blue: oklch(0.42 0.11 245);
+    --blue-deep: oklch(0.32 0.1 248);
+    --blue-soft: oklch(0.94 0.02 245);
+    --seal: oklch(0.48 0.15 25);
+    --line: oklch(0.89 0.008 245);
+    --display: "Source Serif 4", serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.45rem);
+    --step-2: clamp(1.56rem, 1.35rem + 1vw, 2.2rem);
+    --step-3: clamp(1.95rem, 1.55rem + 2vw, 3rem);
+    --step-4: clamp(2.44rem, 1.8rem + 3.2vw, 4.4rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  .measure { max-width: 62ch; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .brand svg { width: 1.7rem; height: 1.7rem; flex: none; }
+  .site-nav { display: flex; align-items: center; gap: 1.75rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--blue); }
+  .btn {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: oklch(0.99 0.004 245);
+    background: var(--blue);
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+  .btn:hover { background: var(--blue-deep); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.ghost { background: transparent; color: var(--blue); border: 2px solid var(--blue); }
+  .btn.ghost:hover { background: var(--blue); color: oklch(0.99 0.004 245); }
+  @media (max-width: 640px) {
+    .site-nav a:not(.btn) { display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3rem, 6vw, 5rem); }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero h1 { font-size: var(--step-4); font-weight: 700; margin-bottom: 1.25rem; }
+  .hero h1 em { font-style: italic; color: var(--blue); }
+  .hero .lede {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: 33rem;
+    margin-bottom: 2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+  .hero-note { margin-top: 1.4rem; font-size: var(--step--1); color: var(--ink-soft); }
+  @media (max-width: 880px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- generative motion card ---------- */
+  .motion-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    box-shadow: 0 6px 8px oklch(0.3 0.04 245 / 0.1);
+  }
+  .motion-card .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+  }
+  .motion-card .ref {
+    font-weight: 700;
+    font-size: var(--step--1);
+    color: var(--seal);
+    letter-spacing: 0.02em;
+  }
+  .motion-card .status {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: oklch(0.99 0.004 245);
+    background: var(--blue);
+    border-radius: 999px;
+    padding: 0.25rem 0.8rem;
+  }
+  .motion-card h2 {
+    font-size: var(--step-1);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+  }
+  .tally-bar {
+    height: 0.8rem;
+    border-radius: 999px;
+    background: var(--blue-soft);
+    overflow: hidden;
+    margin-bottom: 1.1rem;
+  }
+  .tally-bar .fill {
+    height: 100%;
+    width: 68%;
+    border-radius: 999px;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.6s var(--ease-out);
+  }
+  .tallies {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .tallies li { display: flex; align-items: center; gap: 0.5rem; font-size: var(--step--1); }
+  .tallies .n {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-2);
+    letter-spacing: -0.02em;
+  }
+  .tallies .lbl { color: var(--ink-soft); line-height: 1.3; }
+  .tallies svg { width: 1.1rem; height: 1.1rem; flex: none; }
+  .tallies svg path {
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    transition: stroke-dashoffset 0.7s var(--ease-out);
+  }
+  .tallies svg.no path { stroke: var(--seal); }
+  .tallies svg.no path { stroke-dasharray: 20; stroke-dashoffset: 20; }
+  .motion-card.on .fill { transform: scaleX(1); }
+  .motion-card.on .tallies svg path { stroke-dashoffset: 0; }
+  .motion-card.on .tallies li:nth-child(2) svg path { transition-delay: 0.4s; }
+  .quorum-line {
+    border-top: 1px dashed var(--line);
+    padding-top: 0.9rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .quorum-line strong { color: var(--ink); }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .section-head { margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .section-head h2 { font-size: var(--step-3); font-weight: 700; margin-bottom: 0.9rem; }
+  .section-head p { color: var(--ink-soft); font-size: var(--step-1); }
+
+  /* ---------- process stepper ---------- */
+  .steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    border-top: 3px solid var(--blue);
+    padding-top: 1.1rem;
+  }
+  .steps li:nth-child(4) { border-top-color: var(--seal); }
+  .steps li::before {
+    content: counter(step);
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-2);
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 0.6rem;
+  }
+  .steps li:nth-child(4)::before { color: var(--seal); }
+  .steps h3 { font-size: var(--step-0); font-family: var(--body); font-weight: 700; margin-bottom: 0.45rem; }
+  .steps p { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.55; }
+  @media (max-width: 880px) {
+    .steps { grid-template-columns: 1fr; gap: 1.25rem; }
+    .steps li { display: grid; grid-template-columns: 3rem 1fr; column-gap: 1rem; }
+    .steps li::before { grid-row: span 2; }
+  }
+
+  /* ---------- agenda / minutes ---------- */
+  .agenda-section { background: var(--surface); border-block: 1px solid var(--line); }
+  .agenda { border: 1px solid var(--line); border-radius: 14px; background: var(--bg); overflow: hidden; }
+  .agenda-item + .agenda-item { border-top: 1px solid var(--line); }
+  .agenda-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.15rem 1.5rem;
+    background: none;
+    border: none;
+    font-family: var(--body);
+    font-size: var(--step-0);
+    font-weight: 600;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+  }
+  .agenda-btn:hover { background: var(--blue-soft); }
+  .agenda-btn .state {
+    flex: none;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 0.22rem 0.7rem;
+    color: var(--blue-deep);
+    background: var(--blue-soft);
+    border: 1px solid var(--blue);
+  }
+  .agenda-btn .state.passed { color: oklch(0.99 0.004 25); background: var(--seal); border-color: var(--seal); }
+  .agenda-btn .caret {
+    margin-left: auto;
+    flex: none;
+    transition: transform 0.4s var(--ease-out);
+  }
+  .agenda-btn[aria-expanded="true"] .caret { transform: rotate(180deg); }
+  .minutes {
+    padding: 0 1.5rem 1.4rem calc(1.5rem + 5.4rem);
+    font-family: var(--display);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .minutes .who { color: var(--ink); font-weight: 600; }
+  .minutes[hidden] { display: none; }
+  .minutes .type-caret {
+    display: inline-block;
+    width: 0.55ch;
+    height: 1.05em;
+    margin-left: 0.15ch;
+    vertical-align: text-bottom;
+    background: var(--seal);
+    animation: blink 0.9s steps(2, start) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (max-width: 640px) {
+    .minutes { padding-left: 1.5rem; }
+  }
+
+  /* ---------- towns ---------- */
+  .towns-photo { margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .towns-photo img { width: 100%; border-radius: 14px; }
+  .towns-photo figcaption { margin-top: 0.75rem; font-size: var(--step--1); color: var(--ink-soft); }
+  .towns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  .town { border-top: 3px solid var(--blue); padding-top: 1.25rem; }
+  .town:nth-child(2) { border-top-color: var(--seal); }
+  .town h3 { font-size: var(--step-1); font-weight: 700; }
+  .town .pop { font-size: var(--step--1); color: var(--ink-soft); margin-bottom: 1rem; }
+  .town dl { display: grid; gap: 0.85rem; }
+  .town .row { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; border-bottom: 1px dashed var(--line); padding-bottom: 0.6rem; }
+  .town dt { font-size: var(--step--1); color: var(--ink-soft); }
+  .town dd {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ---------- open data ---------- */
+  .open-data .wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .open-data h2 { font-size: var(--step-3); font-weight: 700; margin-bottom: 1rem; }
+  .open-data .lede { color: var(--ink-soft); font-size: var(--step-1); }
+  .promise { list-style: none; display: grid; gap: 1rem; }
+  .promise li { display: flex; gap: 0.8rem; align-items: baseline; font-size: var(--step-0); }
+  .promise li::before {
+    content: "✓";
+    color: var(--seal);
+    font-weight: 700;
+  }
+  .promise strong { font-weight: 700; }
+  @media (max-width: 880px) {
+    .open-data .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- pricing ---------- */
+  .pricing { background: var(--blue-deep); color: oklch(0.95 0.015 245); }
+  .pricing .section-head h2 { color: oklch(0.99 0.005 245); }
+  .pricing .section-head p { color: oklch(0.84 0.03 245); }
+  .bands {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.75rem;
+  }
+  .band {
+    background: oklch(1 0 0 / 0.06);
+    border: 1px solid oklch(1 0 0 / 0.25);
+    border-radius: 14px;
+    padding: 1.9rem 1.75rem;
+  }
+  .band h3 { font-size: var(--step-1); font-weight: 700; margin-bottom: 0.4rem; }
+  .band .rate {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+    margin-block: 0.5rem 0.2rem;
+  }
+  .band .rate small { font-size: var(--step--1); font-weight: 400; letter-spacing: 0; }
+  .band .eg { font-size: var(--step--1); color: oklch(0.84 0.03 245); margin-bottom: 1rem; }
+  .band p { font-size: var(--step--1); color: oklch(0.88 0.025 245); }
+  .pricing .fine { margin-top: 2rem; font-size: var(--step--1); color: oklch(0.8 0.03 245); }
+  .pricing .btn { background: var(--seal); margin-top: 2.25rem; }
+  .pricing .btn:hover { background: oklch(0.54 0.16 25); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; }
+  footer nav { display: flex; gap: 1.5rem; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--blue); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .minutes .type-caret { animation: none; opacity: 0; }
+    .motion-card .fill { transform: scaleX(1); }
+    .motion-card .tallies svg path { stroke-dashoffset: 0; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Quorum home">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="4" y="12" width="24" height="16" rx="2" fill="oklch(0.42 0.11 245)"/>
+        <rect x="12" y="4" width="8" height="10" rx="1" fill="oklch(1 0 0)" stroke="oklch(0.42 0.11 245)" stroke-width="2"/>
+        <path d="M13.5 20 l3 3 l5 -6" fill="none" stroke="oklch(0.48 0.15 25)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Quorum
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#minutes">Minutes</a>
+      <a href="#towns">Towns</a>
+      <a href="#pricing">Pricing</a>
+      <a class="btn small" href="#pricing">Bring it to your town</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <h1 id="hero-title">A motion becomes a decision. <em>In public, on the record.</em></h1>
+        <p class="lede">Quorum is the meeting platform for town councils, school boards and
+        select boards. Agendas go out on time, votes are tallied as they're cast, and the
+        minutes write their first draft before the gavel comes down.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#pricing">See pricing by population</a>
+          <a class="btn ghost" href="#how">How a motion works</a>
+        </div>
+        <p class="hero-note">Free for towns under 2,500 residents. No sales call required to find out the price.</p>
+      </div>
+      <div class="motion-card" id="motion-card" role="img"
+           aria-label="Example motion: Motion 2025-14, install a marked crosswalk at Maple and 4th. Tally: 214 in favor, 89 against, 12 abstaining. Quorum met.">
+        <div class="card-top">
+          <span class="ref">Motion 2025-14</span>
+          <span class="status">Quorum met 19:42</span>
+        </div>
+        <h2>Install a marked crosswalk at Maple &amp; 4th, funded from the road budget</h2>
+        <div class="tally-bar"><div class="fill"></div></div>
+        <ul class="tallies">
+          <li>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.5 l3.5 3.5 l7 -8"/></svg>
+            <span class="n" data-count="214">214</span> <span class="lbl">in favor</span>
+          </li>
+          <li>
+            <svg class="no" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3 l10 10 M13 3 l-10 10"/></svg>
+            <span class="n" data-count="89">89</span> <span class="lbl">against</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8 h10"/></svg>
+            <span class="n" data-count="12">12</span> <span class="lbl">abstain</span>
+          </li>
+        </ul>
+        <p class="quorum-line">Quorum required: <strong>150 residents</strong> — met with 315 voting.
+        Record published <strong>22 minutes</strong> after adjournment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="how-title">How a motion becomes a decision</h2>
+        <p class="measure">The same five steps every time, in the open. No back rooms, no
+        "we'll get back to you," no decision that exists only in someone's memory.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Proposed</h3>
+          <p>Any board member — or any resident with 25 signatures — files a motion. It's public the moment it's filed.</p>
+        </li>
+        <li>
+          <h3>Seconded</h3>
+          <p>A second member puts it on the next agenda. Agendas go out 72 hours before the meeting, by law and by default.</p>
+        </li>
+        <li>
+          <h3>Discussed</h3>
+          <p>Residents comment online or in person. Every comment is attached to the motion, attributed and searchable.</p>
+        </li>
+        <li>
+          <h3>Decided</h3>
+          <p>The vote is tallied as it's cast — in the room, on the livestream, on the public page. Same numbers everywhere.</p>
+        </li>
+        <li>
+          <h3>Published</h3>
+          <p>Minutes, tally and full record publish within 24 hours. The median across our towns is 22 minutes.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="agenda-section" id="minutes" aria-labelledby="minutes-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="minutes-title">Minutes, as they're taken</h2>
+        <p class="measure">This is a real agenda from the Marlow Falls Select Board, March 12.
+        Open an item and watch the clerk's draft minutes appear the way they did that night —
+        typed while the room was still talking.</p>
+      </div>
+      <div class="agenda">
+        <div class="agenda-item">
+          <button class="agenda-btn" aria-expanded="false" aria-controls="m1">
+            <span class="state passed">Passed</span>
+            <span>Approve the minutes of February 26</span>
+            <svg class="caret" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 5 l5 5 l5 -5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="minutes" id="m1" hidden
+               data-text="Approved 4–0 with one correction: the adjournment time of the February 26 meeting was 21:47, not 21:35. Correction filed by Member Okafor; no objection from the floor."></div>
+        </div>
+        <div class="agenda-item">
+          <button class="agenda-btn" aria-expanded="false" aria-controls="m2">
+            <span class="state">Hearing</span>
+            <span>Maple &amp; 4th crosswalk — public comment</span>
+            <svg class="caret" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 5 l5 5 l5 -5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="minutes" id="m2" hidden
+               data-text="Eleven residents spoke. Nine in favor, citing the walk to the elementary school. Two raised the loss of four parking spaces in front of the hardware store. The board asked Public Works to model a layout keeping two of the four spaces."></div>
+        </div>
+        <div class="agenda-item">
+          <button class="agenda-btn" aria-expanded="false" aria-controls="m3">
+            <span class="state passed">Passed</span>
+            <span>Motion 2025-14: fund the crosswalk from the road budget</span>
+            <svg class="caret" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 5 l5 5 l5 -5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="minutes" id="m3" hidden
+               data-text="Moved by Alvarez, seconded by Okafor. Amended to keep two parking spaces per the Public Works layout. Passed 4–1, Whitfield opposed. $18,400 allocated; work scheduled for the week of April 7, before the school fun run."></div>
+        </div>
+        <div class="agenda-item">
+          <button class="agenda-btn" aria-expanded="false" aria-controls="m4">
+            <span class="state">Procedural</span>
+            <span>Adjournment</span>
+            <svg class="caret" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 5 l5 5 l5 -5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+          <div class="minutes" id="m4" hidden
+               data-text="Adjourned 21:47. Full record, including this draft, published to the town page at 22:09. Next regular meeting: March 26, 19:00, Town Hall upstairs room."></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="towns" aria-labelledby="towns-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="towns-title">Three towns, three sizes</h2>
+        <p class="measure">Different populations, same product. The numbers below come from each
+        town's own public dashboard — you can check them yourself.</p>
+      </div>
+      <figure class="towns-photo">
+        <img src="https://picsum.photos/seed/townhall-1/1600/900" width="1600" height="900"
+             alt="Folding chairs filling up in a school gymnasium ten minutes before a town meeting is called to order">
+        <figcaption>Town meeting night in Marlow Falls — turnout is up from 6% to 17% since the agendas started arriving on time.</figcaption>
+      </figure>
+      <div class="towns">
+        <article class="town">
+          <h3>Marlow Falls, Vermont</h3>
+          <p class="pop">Population 4,112 · on Quorum since 2023</p>
+          <dl>
+            <div class="row"><dt>Meetings on the record</dt><dd><span data-count="41">41</span></dd></div>
+            <div class="row"><dt>Decisions published in 24 h</dt><dd><span data-count="96">96</span>%</dd></div>
+            <div class="row"><dt>Meeting turnout, before → now</dt><dd>6% → 17%</dd></div>
+          </dl>
+        </article>
+        <article class="town">
+          <h3>Cedar Bluffs, Iowa</h3>
+          <p class="pop">Population 12,847 · on Quorum since 2022</p>
+          <dl>
+            <div class="row"><dt>Motions decided last year</dt><dd><span data-count="204">204</span></dd></div>
+            <div class="row"><dt>Households with a login</dt><dd><span data-count="63">63</span>%</dd></div>
+            <div class="row"><dt>Clerk hours saved weekly</dt><dd>~11 h</dd></div>
+          </dl>
+        </article>
+        <article class="town">
+          <h3>North Fork, Washington</h3>
+          <p class="pop">Population 31,020 · on Quorum since 2024</p>
+          <dl>
+            <div class="row"><dt>Public comments last year</dt><dd><span data-count="2874">2,874</span></dd></div>
+            <div class="row"><dt>Motion → record, median</dt><dd>22 min</dd></div>
+            <div class="row"><dt>Records requests avoided</dt><dd><span data-count="310">310</span></dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="open-data" aria-labelledby="data-title">
+    <div class="wrap">
+      <div>
+        <h2 id="data-title">The record belongs to the town</h2>
+        <p class="lede">Not to us, and not behind a login. Every agenda, motion, vote and set of
+        minutes is public by default and exportable in full — as CSV, as JSON, or as a plain
+        web page anyone can read.</p>
+      </div>
+      <ul class="promise">
+        <li><div><strong>No login to read.</strong> If your town uses Quorum, its record is on the open web. Residents, journalists, researchers — same access.</div></li>
+        <li><div><strong>One-click export, everything.</strong> A clerk can hand over the entire archive on a thumb drive in an afternoon.</div></li>
+        <li><div><strong>A boring, documented format.</strong> If we ever shut down, the export keeps working. We publish the schema.</div></li>
+        <li><div><strong>Never sold, never mined.</strong> We charge towns a published price. That is the whole business model.</div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="pricing-title">Priced by population, on the website</h2>
+        <p class="measure">You should not have to sit through a sales call to learn what civic
+        software costs. Here is the entire pricing model:</p>
+      </div>
+      <div class="bands">
+        <div class="band">
+          <h3>Under 2,500 residents</h3>
+          <p class="rate">$0</p>
+          <p class="eg">Example: a town of 1,900 pays nothing, ever.</p>
+          <p>The full product — agendas, live tallies, minutes, open data. Small towns are why we built this.</p>
+        </div>
+        <div class="band">
+          <h3>2,500 – 25,000 residents</h3>
+          <p class="rate">60¢<small> per resident / year</small></p>
+          <p class="eg">Cedar Bluffs (12,847) pays $7,708 a year.</p>
+          <p>About the cost of one part-time clerk hour a week — and it gives eleven of those hours back.</p>
+        </div>
+        <div class="band">
+          <h3>Over 25,000 residents</h3>
+          <p class="rate">45¢<small> per resident / year</small></p>
+          <p class="eg">North Fork (31,020) pays $13,959 a year.</p>
+          <p>Capped at $40,000. Counties and school districts price the same way — no premium tier.</p>
+        </div>
+      </div>
+      <p class="fine">Every plan includes onboarding for the clerk's office, a records-migration
+      day, and a public dashboard your town owns. First full meeting is free so you can vote on it properly.</p>
+      <a class="btn" href="mailto:clerk@quorum.example">Put it on your next agenda</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Quorum — civic software with a published price. Made in Montpelier, Vermont.</span>
+    <nav aria-label="Footer">
+      <a href="#how">How it works</a>
+      <a href="#towns">Towns</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:clerk@quorum.example">clerk@quorum.example</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Count-up tallies: final values are in the markup; JS replays the climb.
+    function countUp(el) {
+      var target = parseInt(el.getAttribute("data-count"), 10);
+      var label = target.toLocaleString("en-US");
+      if (reduce) { el.textContent = label; return; }
+      var start = null;
+      var dur = 1400;
+      function tick(t) {
+        if (!start) start = t;
+        var p = Math.min((t - start) / dur, 1);
+        var eased = 1 - Math.pow(2, -10 * p); // exponential ease-out
+        el.textContent = Math.round(target * (p === 1 ? 1 : eased)).toLocaleString("en-US");
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = label;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    var counted = false;
+    function runTallies() {
+      if (counted) return;
+      counted = true;
+      document.querySelectorAll("[data-count]").forEach(countUp);
+      var card = document.getElementById("motion-card");
+      if (card) card.classList.add("on");
+    }
+
+    if ("IntersectionObserver" in window) {
+      var card = document.getElementById("motion-card");
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { runTallies(); io.disconnect(); }
+        });
+      }, { threshold: 0.35 });
+      if (card) io.observe(card);
+      // Towns' numbers count when their section appears.
+      var towns = document.getElementById("towns");
+      if (towns) io.observe(towns);
+    } else {
+      runTallies();
+    }
+
+    // Agenda: minutes appear as if being typed by the clerk.
+    document.querySelectorAll(".agenda-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var panel = document.getElementById(btn.getAttribute("aria-controls"));
+        var open = btn.getAttribute("aria-expanded") === "true";
+        if (open) {
+          btn.setAttribute("aria-expanded", "false");
+          panel.hidden = true;
+          panel.textContent = "";
+          return;
+        }
+        btn.setAttribute("aria-expanded", "true");
+        var text = panel.getAttribute("data-text");
+        panel.hidden = false;
+        if (reduce) {
+          panel.textContent = text;
+          return;
+        }
+        panel.innerHTML = "";
+        var caret = document.createElement("span");
+        caret.className = "type-caret";
+        panel.appendChild(caret);
+        var i = 0;
+        var timer = setInterval(function () {
+          if (btn.getAttribute("aria-expanded") !== "true") { clearInterval(timer); return; }
+          i += 2;
+          caret.before(document.createTextNode(text.slice(i - 2, i)));
+          if (i >= text.length) {
+            clearInterval(timer);
+            caret.remove();
+          }
+        }, 24);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

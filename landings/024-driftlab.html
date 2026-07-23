@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driftlab — Expedition D-7. Arctic research, logged from the ice.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.955 0.012 258);
+    --surface-deep: oklch(0.925 0.016 258);
+    --ink: oklch(0.21 0.025 262);
+    --ink-soft: oklch(0.36 0.03 260);
+    --navy: oklch(0.30 0.10 258);
+    --navy-deep: oklch(0.24 0.09 260);
+    --on-navy: oklch(0.96 0.012 255);
+    --on-navy-dim: oklch(0.82 0.025 255);
+    --data: oklch(0.66 0.17 52);
+    --data-deep: oklch(0.55 0.16 48);
+    --line: oklch(0.88 0.012 258);
+    --display: "Chivo Mono", monospace;
+    --body: "Archivo", sans-serif;
+    --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.88rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    --step-1: clamp(1.25rem, 1.18rem + 0.35vw, 1.45rem);
+    --step-2: clamp(1.56rem, 1.42rem + 0.7vw, 2rem);
+    --step-3: clamp(1.95rem, 1.66rem + 1.45vw, 2.9rem);
+    --step-4: clamp(2.44rem, 1.85rem + 2.95vw, 4.5rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { max-width: 68ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--data-deep);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .wrap { width: min(1160px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(3.5rem, 2.8rem + 4vw, 7rem); }
+
+  /* ---------- status bar ---------- */
+  .statusbar {
+    background: var(--navy-deep);
+    color: var(--on-navy-dim);
+    font-family: var(--display);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .statusbar .track {
+    display: inline-flex;
+    gap: 3.5rem;
+    padding-block: 0.45rem;
+    animation: ticker 42s linear infinite;
+    will-change: transform;
+  }
+  .statusbar .track span b { color: var(--data); font-weight: 600; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--navy-deep);
+  }
+  .brand svg { width: 1.5rem; height: 1.5rem; flex: none; }
+  .site-nav { display: flex; align-items: center; gap: 1.6rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-family: var(--display);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--data-deep); }
+  @media (max-width: 640px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    color: var(--on-navy);
+    background: var(--navy);
+    padding: 0.8rem 1.6rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: var(--navy-deep); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.1rem; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.orange { background: var(--data-deep); }
+  .btn.orange:hover { background: var(--navy-deep); color: var(--on-navy); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3rem, 2rem + 5vw, 6.5rem) clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+  .exp-id {
+    font-family: var(--display);
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--data-deep);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.4rem;
+  }
+  .exp-id::before {
+    content: "";
+    width: 0.6rem; height: 0.6rem;
+    background: var(--data);
+    border-radius: 50%;
+    animation: pulse 2.4s var(--ease-out) infinite;
+    flex: none;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.35; transform: scale(0.8); }
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    color: var(--navy-deep);
+    margin-bottom: 1.4rem;
+  }
+  .hero h1 .thin { font-weight: 400; }
+  .hero .lede {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin-bottom: 2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+  .hero figure {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 0.6rem;
+  }
+  .hero figure img { width: 100%; filter: saturate(0.85) contrast(1.04); }
+  .hero figcaption {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    padding-top: 0.55rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  /* ---------- telemetry ---------- */
+  .telemetry {
+    background: var(--navy-deep);
+    color: var(--on-navy);
+    padding-block: clamp(2.2rem, 1.6rem + 2vw, 3.2rem);
+  }
+  .telemetry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.6rem;
+  }
+  .telemetry-head h2 { font-size: var(--step-1); font-weight: 500; color: var(--on-navy); }
+  .telemetry-head .stamp {
+    font-family: var(--display);
+    font-size: 0.75rem;
+    color: var(--on-navy-dim);
+  }
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: oklch(0.38 0.06 258);
+    border: 1px solid oklch(0.38 0.06 258);
+  }
+  .cell {
+    background: var(--navy-deep);
+    padding: 1.1rem 1.2rem;
+  }
+  .cell .label {
+    font-family: var(--display);
+    font-size: 0.68rem;
+    color: var(--on-navy-dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.4rem;
+  }
+  .cell .value {
+    font-family: var(--display);
+    font-size: var(--step-2);
+    font-weight: 600;
+    color: var(--on-navy);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .cell .value .unit { font-size: 0.55em; font-weight: 400; color: var(--on-navy-dim); }
+  .cell .delta {
+    font-family: var(--display);
+    font-size: 0.7rem;
+    color: var(--data);
+    margin-top: 0.35rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .cell.flash .value { animation: tick 0.6s var(--ease-out); }
+  @keyframes tick {
+    0% { color: var(--data); }
+    100% { color: var(--on-navy); }
+  }
+
+  /* ---------- legs ---------- */
+  .legs h2 { font-size: var(--step-3); color: var(--navy-deep); margin-bottom: 0.6rem; }
+  .legs .sub { color: var(--ink-soft); margin-bottom: 2.6rem; max-width: 60ch; }
+  .logtable { border-top: 2px solid var(--navy); }
+  .leg {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1.1fr) minmax(0, 1.6fr) minmax(0, 1fr) auto;
+    gap: 1.4rem;
+    align-items: baseline;
+    padding-block: 1.35rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .leg .no {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-1);
+    color: var(--data-deep);
+  }
+  .leg .dates { font-family: var(--display); font-size: var(--step--1); color: var(--ink-soft); }
+  .leg .what strong { display: block; font-weight: 700; color: var(--ink); }
+  .leg .what { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.6; }
+  .leg .vessel { font-family: var(--display); font-size: var(--step--1); color: var(--ink); }
+  .leg .state {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .state.done { background: var(--surface-deep); color: var(--ink-soft); }
+  .state.active { background: var(--data-deep); color: oklch(0.99 0.005 60); }
+  .state.next { border: 1px solid var(--navy); color: var(--navy); }
+  @media (max-width: 800px) {
+    .leg { grid-template-columns: 4rem 1fr; row-gap: 0.35rem; }
+    .leg .no { grid-row: 1 / 5; }
+  }
+
+  /* ---------- science ---------- */
+  .science { background: var(--surface); border-block: 1px solid var(--line); }
+  .science h2 { font-size: var(--step-3); color: var(--navy-deep); margin-bottom: 0.6rem; }
+  .science .sub { color: var(--ink-soft); margin-bottom: 2.6rem; max-width: 60ch; }
+  .prog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.6rem;
+  }
+  .frost {
+    position: relative;
+    background: var(--bg);
+    padding: 1.8rem 1.7rem 1.6rem;
+  }
+  .frost svg.border {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .frost svg.border rect {
+    fill: none;
+    stroke: var(--navy);
+    stroke-width: 1.5;
+    stroke-dasharray: 2400;
+    stroke-dashoffset: 2400;
+    vector-effect: non-scaling-stroke;
+  }
+  .frost.drawn svg.border rect {
+    animation: draw 2.2s var(--ease-out) forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .frost .tag {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    color: var(--data-deep);
+    margin-bottom: 0.9rem;
+    font-weight: 600;
+  }
+  .frost h3 { font-size: var(--step-1); color: var(--navy-deep); margin-bottom: 0.7rem; }
+  .frost p { font-size: var(--step--1); color: var(--ink-soft); }
+  .frost .metric {
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--line);
+    font-family: var(--display);
+    font-size: 0.75rem;
+    color: var(--ink);
+  }
+  .frost .metric b { color: var(--data-deep); font-weight: 600; }
+
+  /* ---------- core figure ---------- */
+  .core-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .core-grid { grid-template-columns: 1fr; } }
+  .core-grid figure {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 0.6rem;
+  }
+  .core-grid figure img { width: 100%; filter: saturate(0.85) contrast(1.04); }
+  .core-grid figcaption {
+    font-family: var(--display);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    padding-top: 0.55rem;
+  }
+  .core-copy h2 { font-size: var(--step-3); color: var(--navy-deep); margin-bottom: 1.1rem; }
+  .core-copy p { color: var(--ink-soft); margin-bottom: 1.1rem; }
+  .core-copy .logline {
+    font-family: var(--display);
+    font-size: var(--step--1);
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 1rem 1.2rem;
+    margin-top: 1.6rem;
+  }
+  .core-copy .logline b { color: var(--data-deep); }
+
+  /* ---------- crew ---------- */
+  .crew { background: var(--navy-deep); color: var(--on-navy); }
+  .crew h2 { font-size: var(--step-3); color: var(--on-navy); margin-bottom: 1rem; }
+  .crew .lede { color: var(--on-navy-dim); max-width: 58ch; margin-bottom: 2.6rem; font-size: var(--step-1); }
+  .crew-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 2.8rem;
+  }
+  .crew-grid h3 {
+    font-size: var(--step-1);
+    font-weight: 600;
+    color: var(--data);
+    margin-bottom: 0.8rem;
+  }
+  .crew-grid ul { list-style: none; }
+  .crew-grid li {
+    font-size: var(--step--1);
+    color: var(--on-navy-dim);
+    padding-block: 0.55rem;
+    border-bottom: 1px solid oklch(0.36 0.06 258);
+    line-height: 1.55;
+  }
+  .crew-grid li b { color: var(--on-navy); font-weight: 600; }
+  .crew .apply {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.4rem;
+    border-top: 1px solid oklch(0.36 0.06 258);
+    padding-top: 2.2rem;
+  }
+  .crew .apply p {
+    font-family: var(--display);
+    font-size: var(--step--1);
+    color: var(--on-navy-dim);
+    max-width: 52ch;
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--navy-deep);
+    color: var(--on-navy-dim);
+    border-top: 1px solid oklch(0.36 0.06 258);
+    padding-block: 2rem;
+    font-family: var(--display);
+    font-size: 0.75rem;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .statusbar .track { animation: none; }
+    .exp-id::before { animation: none; }
+    .cell.flash .value { animation: none; }
+    .frost svg.border rect { stroke-dashoffset: 0; }
+    .frost.drawn svg.border rect { animation: none; }
+    .btn, .btn:hover { transition: none; transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<div class="statusbar" aria-hidden="true">
+  <div class="track" id="tickerTrack">
+    <span>DRIFTLAB / EXPEDITION D-7 · <b>DAY 214</b> OF 402</span>
+    <span>ICE THICKNESS AT CAMP: <b>1.87 M</b> · DRIFT 0.31 KM/DAY NE</span>
+    <span>RV ARCTIC TERN HOLDING LEAD OPEN · NEXT RESUPPLY <b>14 MAR</b></span>
+    <span>CAMP POPULATION: <b>9 CREW · 4 SCIENCE · 1 DOG (NUKA, OFF DUTY)</b></span>
+    <span>DRIFTLAB / EXPEDITION D-7 · <b>DAY 214</b> OF 402</span>
+    <span>ICE THICKNESS AT CAMP: <b>1.87 M</b> · DRIFT 0.31 KM/DAY NE</span>
+    <span>RV ARCTIC TERN HOLDING LEAD OPEN · NEXT RESUPPLY <b>14 MAR</b></span>
+    <span>CAMP POPULATION: <b>9 CREW · 4 SCIENCE · 1 DOG (NUKA, OFF DUTY)</b></span>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2 L20 20 H4 Z" fill="none" stroke="var(--navy)" stroke-width="1.8"/>
+        <circle cx="12" cy="13.5" r="2.4" fill="var(--data-deep)"/>
+      </svg>
+      DRIFTLAB
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#legs">The legs</a>
+      <a href="#science">Science</a>
+      <a href="#crew">Crew</a>
+      <a class="btn small orange" href="#crew">Apply for D-8</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="exp-id">EXPEDITION D-7 · CENTRAL ARCTIC BASIN · ON ICE</p>
+        <h1>Four hundred days<br><span class="thin">adrift on purpose.</span></h1>
+        <p class="lede">Driftlab is a research camp frozen into the pack ice, drifting with it, measuring everything the ocean and sky hand us. No engine noise. No fixed address. Just the floe, the instruments, and the log.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#legs">Read the field plan</a>
+          <a class="btn orange" href="#crew">Winter with us</a>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/arctic-1/1600/900" width="1600" height="900"
+             alt="The Driftlab camp at first light — tents and instrument masts staked into a pressure ridge, sky the colour of cold steel.">
+        <figcaption><span>FIG 01 — CAMP FROM THE EAST RIDGE</span><span>06:12 UTC</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- TELEMETRY -->
+  <section class="telemetry" aria-label="Live camp telemetry">
+    <div class="wrap">
+      <div class="telemetry-head">
+        <h2>Camp telemetry — relayed by buoy 4, updated hourly</h2>
+        <span class="stamp" id="stamp">LAST RELAY —:—:— UTC</span>
+      </div>
+      <div class="telemetry-grid">
+        <div class="cell" data-key="temp">
+          <div class="label">AIR TEMP</div>
+          <div class="value">−21.4 <span class="unit">°C</span></div>
+          <div class="delta">▼ 0.6 / 3H</div>
+        </div>
+        <div class="cell" data-key="wind">
+          <div class="label">WIND · 10 M</div>
+          <div class="value">11.2 <span class="unit">m/s</span></div>
+          <div class="delta">GUSTS 17 · FROM 040°</div>
+        </div>
+        <div class="cell" data-key="lat">
+          <div class="label">LATITUDE</div>
+          <div class="value">84°12.7′ <span class="unit">N</span></div>
+          <div class="delta">DRIFTING +0.4′/DAY</div>
+        </div>
+        <div class="cell" data-key="lon">
+          <div class="label">LONGITUDE</div>
+          <div class="value">132°44.1′ <span class="unit">E</span></div>
+          <div class="delta">DRIFTING −0.9′/DAY</div>
+        </div>
+        <div class="cell" data-key="baro">
+          <div class="label">PRESSURE</div>
+          <div class="value">1002.6 <span class="unit">hPa</span></div>
+          <div class="delta">▲ RISING SLOWLY</div>
+        </div>
+        <div class="cell" data-key="ice">
+          <div class="label">ICE DRAFT</div>
+          <div class="value">1.87 <span class="unit">m</span></div>
+          <div class="delta">RIDGE KEEL 6.2 M ASTERN</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEGS -->
+  <section class="legs" id="legs">
+    <div class="wrap">
+      <h2>The legs</h2>
+      <p class="sub">D-7 runs thirteen months in four legs. Crews rotate by icebreaker; the floe does not. Dates are plan-of-record — the ice edits the plan, and we log the edits.</p>
+      <div class="logtable">
+        <div class="leg">
+          <span class="no">I</span>
+          <span class="dates">SEP — DEC 2025</span>
+          <span class="what"><strong>Freeze-in &amp; baseline</strong>Locate the floe, anchor the camp, drill the first core line. Polar night arrives mid-leg; instrument checkout by headlamp.</span>
+          <span class="vessel">RV ARCTIC TERN</span>
+          <span class="state done">COMPLETE</span>
+        </div>
+        <div class="leg">
+          <span class="no">II</span>
+          <span class="dates">JAN — APR 2026</span>
+          <span class="what"><strong>Deep winter transect</strong>Ocean moorings serviced under 1.8 m of ice. Aurora optics run continuous. Coldest logged night so far: −38.9 °C, 11 February.</span>
+          <span class="vessel">NO ROTATION · ICEBOUND</span>
+          <span class="state active">UNDERWAY</span>
+        </div>
+        <div class="leg">
+          <span class="no">III</span>
+          <span class="dates">MAY — AUG 2026</span>
+          <span class="what"><strong>Melt season</strong>Melt-pond hydrology, under-ice light measurements, first open leads. The camp moves twice as the floe cracks. It always cracks.</span>
+          <span class="vessel">KV SVALBARD</span>
+          <span class="state next">PLANNED</span>
+        </div>
+        <div class="leg">
+          <span class="no">IV</span>
+          <span class="dates">SEP — OCT 2026</span>
+          <span class="what"><strong>Recovery</strong>Every sensor comes home or gets left running by design. Core archive flies south in −25 °C boxes. Camp struck; floe released.</span>
+          <span class="vessel">RV ARCTIC TERN</span>
+          <span class="state next">PLANNED</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCIENCE -->
+  <section class="science" id="science">
+    <div class="wrap">
+      <h2>The science program</h2>
+      <p class="sub">Three work packages, one floe. Everything is cross-referenced to the drift track so a water sample and a snow pit can be placed on the same map, hour for hour.</p>
+      <div class="prog-grid">
+        <article class="frost">
+          <svg class="border" preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true"><rect x="0.75" y="0.75" width="98.5" height="98.5"/></svg>
+          <p class="tag">WP-1 · GLACIOLOGY</p>
+          <h3>Ice core archive</h3>
+          <p>A 200 m core line across the floe, read layer by layer back to the 1960s. Each core is split on site: half analyzed in the cold lab at −20 °C, half flown home untouched.</p>
+          <p class="metric">CORES LOGGED TO DATE: <b>312</b> · OLDEST LAYER: <b>1964</b></p>
+        </article>
+        <article class="frost">
+          <svg class="border" preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true"><rect x="0.75" y="0.75" width="98.5" height="98.5"/></svg>
+          <p class="tag">WP-2 · OCEANOGRAPHY</p>
+          <h3>Ocean moorings</h3>
+          <p>Four moorings hang beneath the floe to 800 m, listening for warm Atlantic water sneaking north under the ice. Serviced by divers in dry suits, because robots hate the cold more than we do.</p>
+          <p class="metric">DEEPEST SENSOR: <b>812 M</b> · WARMEST INTRUSION: <b>+1.3 °C</b></p>
+        </article>
+        <article class="frost">
+          <svg class="border" preserveAspectRatio="none" viewBox="0 0 100 100" aria-hidden="true"><rect x="0.75" y="0.75" width="98.5" height="98.5"/></svg>
+          <p class="tag">WP-3 · ATMOSPHERE</p>
+          <h3>Aurora optics</h3>
+          <p>Three all-sky cameras and a photometer run every dark hour of the polar night, pairing auroral displays with the camp's magnetometer. The sky talks; we transcribe.</p>
+          <p class="metric">NIGHTS IMAGED: <b>121</b> · STRONGEST STORM: <b>KP 7, 9 FEB</b></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE -->
+  <section>
+    <div class="wrap core-grid">
+      <figure>
+        <img src="https://picsum.photos/seed/arctic-2/800/600" width="800" height="600"
+             alt="A meter-long ice core on the cold-lab bench, bands of trapped bubbles visible like tree rings under the inspection lamp.">
+        <figcaption>FIG 02 — CORE D7-118, SECTION 3 · COLD LAB BENCH</figcaption>
+      </figure>
+      <div class="core-copy">
+        <h2>Read the ice, page by page.</h2>
+        <p>Every winter the pack freezes a new layer; every summer it signs the margin. A core from this floe is a diary the ocean kept without being asked — ash from a Siberian fire season, the salt of a bad storm, the first spring melt spelled out in bubbles.</p>
+        <p>Driftlab exists because satellites see the ice from above and models guess at it from afar. Somebody has to stand on it and take its temperature. For thirteen months, that's us.</p>
+        <p class="logline">LOG, 11 FEB · 04:50 — <b>−38.9 °C.</b> GENERATOR 2 COMPLAINED, THEN DIDN'T. AURORA KP 7 OVERHEAD UNTIL DAWN. WORTH IT.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREW -->
+  <section class="crew" id="crew">
+    <div class="wrap">
+      <h2>Winter with us.</h2>
+      <p class="lede">Expedition D-8 embarks September 2027. We are hiring nine crew and four science staff for the full drift, plus two rotation-only positions on Legs I and III. Applications close 30 November 2026.</p>
+      <div class="crew-grid">
+        <div>
+          <h3>Open berths</h3>
+          <ul>
+            <li><b>Ice pilot / floe safety lead</b> — you decide where the camp sleeps</li>
+            <li><b>Field engineer, power &amp; comms</b> — two generators, zero excuses</li>
+            <li><b>Marine technician, moorings</b> — dry-suit certified</li>
+            <li><b>Cook &amp; medic</b> — one berth, two callings, non-negotiable</li>
+          </ul>
+        </div>
+        <div>
+          <h3>You should bring</h3>
+          <ul>
+            <li><b>One full polar season</b> or equivalent cold remote work</li>
+            <li><b>Calm at 03:00</b> when the ice alarm sounds</li>
+            <li><b>Instrument discipline</b> — the log is the product</li>
+            <li><b>A book you're willing to lend.</b> The camp library runs on trust</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What we promise</h3>
+          <ul>
+            <li><b>13 months, paid,</b> incl. 60 days pre-deployment training</li>
+            <li><b>Weekly sat uplink</b> — 40 GB, voice prioritized</li>
+            <li><b>Full medevac cover</b> via Longyearbyen, weather permitting</li>
+            <li><b>Your name on the data.</b> Every dataset lists its collectors</li>
+          </ul>
+        </div>
+      </div>
+      <div class="apply">
+        <a class="btn orange" href="mailto:crew@driftlab.example?subject=D-8%20application">Apply for D-8</a>
+        <p>Send a one-page field history and the harshest condition you've worked in, in °C. We read every application aloud at camp. Replies within 14 days, ice permitting.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>DRIFTLAB · POLAR OCEANOGRAPHY UNIT · EST. 2019</span>
+    <span>CURRENT POSITION RELAYED BY BUOY 4 · IRIDIUM SBD</span>
+    <span>LOGGED FROM THE ICE, NOT FROM A DESK</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var hidden = document.hidden;
+
+  document.addEventListener("visibilitychange", function () {
+    hidden = document.hidden;
+  });
+
+  /* ---- live-feel telemetry ---- */
+  var state = {
+    temp: { v: -21.4, min: -26, max: -17, step: 0.3, dec: 1, fmt: function (v) { return (v < 0 ? "−" : "") + Math.abs(v).toFixed(1); }, unit: "°C" },
+    wind: { v: 11.2, min: 6, max: 18, step: 0.6, dec: 1, fmt: function (v) { return v.toFixed(1); }, unit: "m/s" },
+    lat: { v: 12.7, min: 10.0, max: 15.9, step: 0.1, dec: 1, fmt: function (v) { return "84°" + v.toFixed(1) + "′"; }, unit: "N" },
+    lon: { v: 44.1, min: 40.0, max: 48.9, step: 0.1, dec: 1, fmt: function (v) { return "132°" + v.toFixed(1) + "′"; }, unit: "E" },
+    baro: { v: 1002.6, min: 998, max: 1009, step: 0.2, dec: 1, fmt: function (v) { return v.toFixed(1); }, unit: "hPa" },
+    ice: { v: 1.87, min: 1.82, max: 1.93, step: 0.01, dec: 2, fmt: function (v) { return v.toFixed(2); }, unit: "m" }
+  };
+  var cells = {};
+  document.querySelectorAll(".telemetry-grid .cell").forEach(function (c) {
+    cells[c.getAttribute("data-key")] = c;
+  });
+
+  function drift(s) {
+    var move = (Math.random() - 0.48) * s.step * 2;
+    s.v = Math.min(s.max, Math.max(s.min, s.v + move));
+    return s.v;
+  }
+
+  function updateStamp() {
+    var d = new Date();
+    var p = function (n) { return String(n).padStart(2, "0"); };
+    var el = document.getElementById("stamp");
+    if (el) el.textContent = "LAST RELAY " + p(d.getUTCHours()) + ":" + p(d.getUTCMinutes()) + ":" + p(d.getUTCSeconds()) + " UTC";
+  }
+  updateStamp();
+
+  if (!reduced) {
+    setInterval(function () {
+      if (hidden) return;
+      var keys = Object.keys(state);
+      var key = keys[Math.floor(Math.random() * keys.length)];
+      var s = state[key];
+      drift(s);
+      var cell = cells[key];
+      if (!cell) return;
+      cell.querySelector(".value").innerHTML = s.fmt(s.v) + ' <span class="unit">' + s.unit + "</span>";
+      cell.classList.remove("flash");
+      void cell.offsetWidth;
+      cell.classList.add("flash");
+      updateStamp();
+    }, 2200);
+  }
+
+  /* ---- frost-border draw on scroll into view ---- */
+  var frostCards = document.querySelectorAll(".frost");
+  if (reduced || !("IntersectionObserver" in window)) {
+    frostCards.forEach(function (c) { c.classList.add("drawn"); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("drawn");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    frostCards.forEach(function (c) { io.observe(c); });
+  }
+})();
+</script>
+</body>
+</html>

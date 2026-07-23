@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Leaf — Bean-to-bar chocolate, gilded by hand in small weekly batches</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Jost:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.145 0.02 40);
+    --surface: oklch(0.185 0.024 42);
+    --surface-2: oklch(0.22 0.028 44);
+    --ink: oklch(0.94 0.018 90);
+    --ink-soft: oklch(0.76 0.028 75);
+    --gold: oklch(0.74 0.12 85);
+    --gold-deep: oklch(0.63 0.115 82);
+    --crimson: oklch(0.63 0.18 22);
+    --line: oklch(0.30 0.03 46);
+    --display: "Prata", serif;
+    --body: "Jost", sans-serif;
+    --step--1: clamp(0.84rem, 0.8rem + 0.2vw, 0.94rem);
+    --step-0: clamp(1.05rem, 1rem + 0.3vw, 1.19rem);
+    --step-1: clamp(1.31rem, 1.2rem + 0.55vw, 1.6rem);
+    --step-2: clamp(1.64rem, 1.42rem + 1.1vw, 2.15rem);
+    --step-3: clamp(2.05rem, 1.65rem + 2vw, 2.95rem);
+    --step-4: clamp(2.56rem, 1.85rem + 3.6vw, 4.4rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+    --z-overlay: 20;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 300;
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    color: var(--gold);
+  }
+  p { max-width: 68ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .wrap { width: min(1140px, 100% - 3rem); margin-inline: auto; }
+  .lede { font-size: var(--step-1); line-height: 1.6; color: var(--ink-soft); font-weight: 300; }
+  .soft { color: var(--ink-soft); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.145 0.02 40 / 0.94);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-size: 1.3rem;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .nav { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2.2rem); flex-wrap: wrap; }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    transition: color 0.35s var(--ease-out);
+  }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--gold); }
+  .btn {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: var(--step--1);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    padding: 0.7em 1.6em;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.45s var(--ease-out), background 0.35s var(--ease-out), color 0.35s var(--ease-out);
+  }
+  .btn-gold { background: var(--gold); color: oklch(0.17 0.02 40); border: 1px solid var(--gold); white-space: nowrap; flex-shrink: 0; }
+  .btn-gold:hover { background: var(--ink); color: oklch(0.17 0.02 40); border-color: var(--ink); transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--gold); border: 1px solid var(--gold-deep); }
+  .btn-ghost:hover { border-color: var(--gold); transform: translateY(-2px); }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(3.5rem, 8vw, 7rem) 0 clamp(3rem, 6vw, 5rem); }
+  .hero .kicker {
+    font-size: var(--step--1);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    font-weight: 400;
+    margin-bottom: 1.4rem;
+  }
+  .hero h1 { font-size: var(--step-4); max-width: 15ch; margin-bottom: 1.6rem; }
+  .hero .lede { max-width: 46ch; margin-bottom: 2.4rem; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .hero figure { position: relative; }
+  .hero img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid var(--line);
+  }
+  .hero figcaption {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    padding-top: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .hero figcaption em { color: var(--gold-deep); font-style: normal; }
+
+  /* gold shimmer sweep across headings */
+  .shimmer { position: relative; overflow: hidden; }
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg,
+      transparent 38%,
+      oklch(0.9 0.06 90 / 0.22) 50%,
+      transparent 62%);
+    transform: translateX(-130%);
+    pointer-events: none;
+  }
+  .shimmer.swept::after { animation: sweep 1.6s var(--ease-out) 1 forwards; }
+  @keyframes sweep { to { transform: translateX(130%); } }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 8vw, 7rem); }
+  .section-head { margin-bottom: clamp(2rem, 4.5vw, 3.5rem); }
+  .section-head h2 { font-size: var(--step-3); max-width: 20ch; margin-bottom: 1rem; }
+
+  /* origin story */
+  .origin { background: var(--surface); border-block: 1px solid var(--line); }
+  .origin-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .origin img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--line);
+  }
+  .origin h2 { font-size: var(--step-3); margin-bottom: 1.2rem; }
+  .origin p + p { margin-top: 1.1rem; }
+  .origin .facts {
+    list-style: none;
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+  }
+  .origin .facts li { border-top: 1px solid var(--gold-deep); padding-top: 0.9rem; }
+  .origin .facts strong {
+    display: block;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: var(--step-1);
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+  .origin .facts span { font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* gilding process — a real ordered sequence */
+  .process ol {
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .process li {
+    counter-increment: step;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.8rem 1.6rem 2rem;
+    transition: transform 0.5s var(--ease-out), border-color 0.4s var(--ease-out);
+  }
+  .process li:hover { transform: translateY(-4px); border-color: var(--gold-deep); }
+  .process li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--display);
+    font-size: var(--step-2);
+    color: var(--gold-deep);
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .process h3 { font-size: var(--step-1); color: var(--ink); margin-bottom: 0.6rem; }
+  .process p { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.65; }
+
+  /* truffle collection */
+  .collection { background: var(--surface); border-block: 1px solid var(--line); }
+  .truffle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .truffle {
+    background: var(--bg);
+    padding: 2rem 1.7rem;
+    transition: transform 0.55s var(--ease-out), background 0.4s var(--ease-out);
+    will-change: transform;
+  }
+  .truffle:hover { transform: scale(1.035); background: var(--surface-2); z-index: 1; position: relative; }
+  .truffle h3 { font-size: var(--step-1); margin-bottom: 0.4rem; }
+  .truffle .notes { font-size: var(--step--1); color: var(--ink-soft); margin-bottom: 1.2rem; }
+  .truffle .price { font-family: var(--display); color: var(--gold); font-size: var(--step-0); }
+  .truffle .price small { font-family: var(--body); color: var(--ink-soft); font-size: var(--step--1); }
+
+  /* gift box configurator teaser */
+  .gift-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .gift h2 { font-size: var(--step-3); margin-bottom: 1.2rem; }
+  .size-picker { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 1.8rem 0 1.4rem; }
+  .size-picker button {
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: var(--step-0);
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.6em 1.4em;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-out);
+  }
+  .size-picker button:hover { border-color: var(--gold-deep); color: var(--ink); }
+  .size-picker button[aria-pressed="true"] {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: oklch(0.17 0.02 40);
+    font-weight: 500;
+  }
+  .gift-total {
+    font-family: var(--display);
+    font-size: var(--step-2);
+    color: var(--gold);
+  }
+  .gift-total small {
+    display: block;
+    font-family: var(--body);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .gift-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: clamp(1.8rem, 3.5vw, 2.6rem);
+  }
+  .gift-panel ul { list-style: none; }
+  .gift-panel li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--step--1);
+  }
+  .gift-panel li:last-child { border-bottom: 0; }
+  .gift-panel li span:last-child { color: var(--ink-soft); text-align: right; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  footer .brand { font-size: 1.1rem; }
+
+  @media (max-width: 760px) {
+    .origin-grid, .gift-grid { grid-template-columns: 1fr; }
+    .nav a:not(.btn) { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001s !important;
+    }
+    .shimmer::after { display: none; }
+    .truffle:hover, .process li:hover, .btn:hover { transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Gold Leaf</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#origin">Origin</a>
+      <a href="#process">The Gilding</a>
+      <a href="#collection">Collection</a>
+      <a href="#gift" class="btn btn-gold">Build a Gift Box</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Bean-to-bar atelier · Est. 2014 · Lyon</p>
+      <h1 class="shimmer">Chocolate patient enough to wear gold.</h1>
+      <p class="lede">One valley, one harvest, one weekly batch of six hundred bars.
+        We roast slow, conche for seventy-two hours, and lay edible 24-karat leaf
+        on every truffle by hand — because haste is the one ingredient we refuse.</p>
+      <div class="hero-cta">
+        <a class="btn btn-gold" href="#collection">Taste the Collection</a>
+        <a class="btn btn-ghost" href="#process">How We Gild</a>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/choc-1/1600/900" width="1600" height="900"
+             alt="A tray of hand-gilded dark chocolate truffles, gold leaf catching the light over an 85% cacao shell">
+        <figcaption>
+          <span>Truffles resting after gilding, Atelier Rue des Orfèvres</span>
+          <em>Batch № 412 — Ucayali Valley 85%</em>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="origin" id="origin">
+    <div class="wrap origin-grid">
+      <div>
+        <h2 class="shimmer">One valley. One harvest. Nothing else in the bar.</h2>
+        <p class="soft">Our cacao comes from a single cooperative of fourteen families
+          along the Ucayali River in Peru. The beans travel once, by boat and then by
+          rail, and arrive in Lyon still smelling of the fermentation boxes —
+          banana, black plum, wet earth.</p>
+        <p class="soft">We pay 2.4× the commodity price, fixed for five harvests, so the
+          cooperative can plan grafting cycles instead of chasing spot markets. You
+          taste the difference as a long, quiet finish instead of a bitter shout.</p>
+        <ul class="facts">
+          <li><strong>85%</strong><span>cacao, Ucayali Valley single origin</span></li>
+          <li><strong>72 h</strong><span>in the conche, never rushed</span></li>
+          <li><strong>600</strong><span>bars per weekly batch, numbered by hand</span></li>
+          <li><strong>14</strong><span>farming families, one contract</span></li>
+        </ul>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/choc-2/800/600" width="800" height="600"
+             alt="Cacao pods split open on a wooden table, pale pulp around the beans, at the Ucayali cooperative">
+        <figcaption class="soft" style="font-size: var(--step--1); padding-top: 0.7rem;">
+          Fresh pods at the cooperative, first week of the October harvest
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="process" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="shimmer">The gilding, in four unhurried movements</h2>
+        <p class="lede" style="max-width: 52ch;">Every truffle passes through the same four hands.
+          The gold is edible 24-karat leaf, applied sheet by sheet with squirrel-hair brushes —
+          no sprays, no shortcuts.</p>
+      </div>
+      <ol>
+        <li>
+          <h3>Temper</h3>
+          <p>The couverture is brought to 31.2°C by marble and patience. A degree higher and the
+            snap dulls; a degree lower and the shine never sets.</p>
+        </li>
+        <li>
+          <h3>Shell</h3>
+          <p>Each shell is cast at exactly 1.4&nbsp;mm — thin enough to crack under a tooth, thick
+            enough to hold a ganache at full humidity.</p>
+        </li>
+        <li>
+          <h3>Fill</h3>
+          <p>Ganache is piped at 27°C and rested sixteen hours. The crimson-heart batches get a
+            single drop of raspberry distillate at the center.</p>
+        </li>
+        <li>
+          <h3>Gild</h3>
+          <p>One sheet of gold leaf per truffle, laid by hand. About one in twenty tears — those
+            become the chocolatiers' lunch, never your box.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="collection" id="collection">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="shimmer">This week's collection</h2>
+        <p class="lede">Six truffles, gilded Thursday morning, gone by Sunday.</p>
+      </div>
+      <div class="truffle-grid">
+        <article class="truffle">
+          <h3>Ucayali Noir</h3>
+          <p class="notes">85% single origin · black plum, tobacco leaf, long finish</p>
+          <p class="price">€4.50 <small>/ piece</small></p>
+        </article>
+        <article class="truffle">
+          <h3>Cœur Cramoisi</h3>
+          <p class="notes">raspberry distillate heart · crimson cocoa-butter blush</p>
+          <p class="price">€4.80 <small>/ piece</small></p>
+        </article>
+        <article class="truffle">
+          <h3>Fleur de Sel d'Or</h3>
+          <p class="notes">salted caramel, Guérande grey salt, double gilded</p>
+          <p class="price">€5.20 <small>/ piece</small></p>
+        </article>
+        <article class="truffle">
+          <h3>Café de Minuit</h3>
+          <p class="notes">cold-brew ganache, Ethiopian Yirgacheffe, bitter edge</p>
+          <p class="price">€4.60 <small>/ piece</small></p>
+        </article>
+        <article class="truffle">
+          <h3>Miel Sauvage</h3>
+          <p class="notes">wild chestnut honey, toasted buckwheat praliné</p>
+          <p class="price">€4.90 <small>/ piece</small></p>
+        </article>
+        <article class="truffle">
+          <h3>Piment Doux</h3>
+          <p class="notes">Espelette pepper warmth, arrives slowly, leaves slowly</p>
+          <p class="price">€4.70 <small>/ piece</small></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="gift" id="gift">
+    <div class="wrap gift-grid">
+      <div>
+        <h2 class="shimmer">The gift box, built to the person</h2>
+        <p class="soft">Choose a size now; compose the exact assortment at the atelier or over
+          the phone. Every box is lined in crimson silk paper and tied with a waxed cord —
+          the gold does the talking, the packaging keeps quiet.</p>
+        <div class="size-picker" role="group" aria-label="Box size">
+          <button type="button" aria-pressed="true" data-size="9" data-price="38">9 pieces</button>
+          <button type="button" aria-pressed="false" data-size="16" data-price="58">16 pieces</button>
+          <button type="button" aria-pressed="false" data-size="25" data-price="86">25 pieces</button>
+        </div>
+        <p class="gift-total"><span id="gift-price">€38</span>
+          <small id="gift-note">9 pieces — a quiet thank-you, ribbon in crimson</small></p>
+      </div>
+      <aside class="gift-panel" aria-label="What every box includes">
+        <ul>
+          <li><span>Hand-numbered batch card</span><span>always</span></li>
+          <li><span>Crimson silk-paper lining</span><span>always</span></li>
+          <li><span>Tasting notes, handwritten</span><span>16 pieces and up</span></li>
+          <li><span>Chocolatier's letter, signed</span><span>25 pieces only</span></li>
+          <li><span>Delivery in Lyon, same day</span><span>before 14:00</span></li>
+          <li><span>Shipping across the EU, chilled</span><span>48 h, €9</span></li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top">Gold Leaf</a>
+    <p>Atelier Rue des Orfèvres 12, Lyon · Thu–Sun, 10:00–19:00 · +33 4 78 00 41 12</p>
+    <p>Batch № 412 closes Sunday at dusk.</p>
+  </div>
+</footer>
+
+<script>
+  // Gold shimmer sweep: headings shimmer once when they scroll into view.
+  // The heading text is fully visible at all times; the sweep is an overlay.
+  (function () {
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !("IntersectionObserver" in window)) return;
+    var targets = document.querySelectorAll(".shimmer");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("swept");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    targets.forEach(function (t) { io.observe(t); });
+  })();
+
+  // Gift-box size picker (teaser — no checkout).
+  (function () {
+    var buttons = document.querySelectorAll(".size-picker button");
+    var price = document.getElementById("gift-price");
+    var note = document.getElementById("gift-note");
+    var notes = {
+      "9": "9 pieces — a quiet thank-you, ribbon in crimson",
+      "16": "16 pieces — the dinner-party box, handwritten notes included",
+      "25": "25 pieces — the full atelier letter, signed by the chocolatier"
+    };
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+        btn.setAttribute("aria-pressed", "true");
+        price.textContent = "€" + btn.dataset.price;
+        note.textContent = notes[btn.dataset.size];
+      });
+    });
+  })();
+</script>
+</body>
+</html>

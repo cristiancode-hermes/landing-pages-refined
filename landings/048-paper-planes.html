@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paper Planes — A Stationery Box Worth Checking the Mail For</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Gabarito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(1 0 0);
+    --surface: oklch(0.965 0.008 240);
+    --ink: oklch(0.30 0.03 250);
+    --ink-dim: oklch(0.45 0.03 250);
+    --sky: oklch(0.72 0.10 235);
+    --sky-deep: oklch(0.50 0.11 245);
+    --coral: oklch(0.70 0.17 35);
+    --coral-deep: oklch(0.52 0.15 35);
+    --leaf: oklch(0.68 0.14 150);
+    --leaf-deep: oklch(0.45 0.11 155);
+    --z-plane: 1;
+    --z-content: 2;
+    --z-header: 10;
+    --font-display: "Fredoka", sans-serif;
+    --font-body: "Gabarito", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; height: auto; display: block; }
+
+  :focus-visible {
+    outline: 3px solid var(--sky-deep);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  p { max-width: 66ch; text-wrap: pretty; }
+
+  .wrap { width: min(68rem, 92vw); margin-inline: auto; position: relative; z-index: var(--z-content); }
+
+  /* cursor-chased paper plane */
+  #plane {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 64px;
+    height: 64px;
+    z-index: var(--z-plane);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  #plane.on { opacity: 1; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--paper);
+    border-bottom: 1px solid oklch(0.90 0.01 250);
+  }
+  .header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--sky-deep);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  nav ul { display: flex; gap: 1.5rem; list-style: none; }
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  nav a:hover { color: var(--coral-deep); }
+  @media (max-width: 520px) { nav ul { gap: 1rem; } nav a { font-size: 0.85rem; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(3rem, 7vw, 5rem);
+    position: relative;
+  }
+  .hero h1 { font-size: clamp(2.5rem, 1.2rem + 6vw, 4.75rem); max-width: 13ch; }
+  .hero h1 .sky { color: var(--sky-deep); }
+  .hero h1 .coral { color: var(--coral-deep); }
+  .hero-sub {
+    margin-top: 1.35rem;
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
+    color: var(--ink-dim);
+    max-width: 44ch;
+  }
+  .hero-cta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), background 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-coral { background: var(--coral); color: oklch(0.99 0.005 40); }
+  .btn-coral:hover { background: oklch(0.75 0.17 35); }
+  .btn-line { background: transparent; color: var(--ink); border: 1px solid oklch(0.75 0.02 250); }
+  .btn-line:hover { border-color: var(--sky-deep); color: var(--sky-deep); }
+  .price-note { font-weight: 800; color: var(--ink); }
+  .price-note small { display: block; font-weight: 600; color: var(--ink-dim); font-size: 0.85rem; }
+
+  /* folded-paper shapes (generative) */
+  .folds {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    display: flex;
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  .fold {
+    width: clamp(84px, 14vw, 150px);
+    aspect-ratio: 1;
+    position: relative;
+    filter: drop-shadow(0 10px 14px oklch(0.3 0.03 250 / 0.14));
+  }
+  .fold-a {
+    background: linear-gradient(135deg, oklch(0.78 0.10 235) 50%, oklch(0.66 0.10 235) 50%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 62%, 0 100%);
+  }
+  .fold-b {
+    background: linear-gradient(45deg, oklch(0.76 0.16 35) 50%, oklch(0.64 0.17 35) 50%);
+    clip-path: polygon(0 24%, 50% 0, 100% 24%, 100% 100%, 0 100%);
+    transform: translateY(-14px);
+  }
+  .fold-c {
+    background: linear-gradient(160deg, oklch(0.74 0.13 150) 50%, oklch(0.60 0.14 150) 50%);
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  }
+  .fold-d {
+    background: linear-gradient(120deg, oklch(0.94 0.02 90) 50%, oklch(0.87 0.03 90) 50%);
+    clip-path: polygon(0 0, 100% 12%, 88% 100%, 8% 88%);
+    transform: translateY(10px);
+  }
+
+  /* ---------- the box / fan ---------- */
+  section.block { padding: clamp(3.5rem, 8vw, 5.5rem) 0; }
+  section.block + section.block { border-top: 1px solid oklch(0.90 0.01 250); }
+  h2 { font-size: clamp(1.9rem, 1.3rem + 2.8vw, 3rem); }
+  .lede { margin-top: 0.9rem; color: var(--ink-dim); font-size: 1.05rem; }
+
+  .box-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 780px) { .box-grid { grid-template-columns: 1fr; } }
+
+  .fan {
+    position: relative;
+    height: clamp(240px, 40vw, 340px);
+    border-radius: 12px;
+    background: var(--surface);
+    outline-offset: 6px;
+  }
+  .sheet {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 56%;
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    box-shadow: 0 6px 8px oklch(0.3 0.03 250 / 0.18);
+    transform: translate(-50%, -50%) rotate(0deg);
+    transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sheet::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18%;
+    height: 14%;
+    background: oklch(0.99 0.004 250 / 0.55);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    border-radius: 0 8px 0 0;
+  }
+  .sheet-1 { background: var(--sky); }
+  .sheet-2 { background: var(--coral); }
+  .sheet-3 { background: var(--leaf); }
+  .sheet-4 { background: oklch(0.94 0.02 90); }
+  .sheet-5 { background: oklch(0.88 0.06 320); }
+  .fan:hover .sheet-1, .fan:focus-visible .sheet-1 { transform: translate(-96%, -54%) rotate(-16deg); }
+  .fan:hover .sheet-2, .fan:focus-visible .sheet-2 { transform: translate(-74%, -50%) rotate(-8deg); }
+  .fan:hover .sheet-3, .fan:focus-visible .sheet-3 { transform: translate(-50%, -48%) rotate(0deg); }
+  .fan:hover .sheet-4, .fan:focus-visible .sheet-4 { transform: translate(-26%, -50%) rotate(8deg); }
+  .fan:hover .sheet-5, .fan:focus-visible .sheet-5 { transform: translate(-4%, -54%) rotate(16deg); }
+  .fan-hint {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-dim);
+    pointer-events: none;
+  }
+
+  .contents { list-style: none; display: grid; gap: 0.9rem; }
+  .contents li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    align-items: start;
+    font-size: 1.02rem;
+  }
+  .chip {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+  }
+  .chip-sky { background: var(--sky); }
+  .chip-coral { background: var(--coral); }
+  .chip-leaf { background: var(--leaf); }
+  .contents strong { font-weight: 800; }
+
+  /* ---------- sourcing ---------- */
+  .source-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 780px) { .source-grid { grid-template-columns: 1fr; } }
+  .source-copy p + p { margin-top: 1.1rem; }
+  .source-photo { border-radius: 12px; overflow: hidden; box-shadow: 0 12px 24px oklch(0.3 0.03 250 / 0.15); }
+  .source-photo img { width: 100%; object-fit: cover; }
+
+  /* ---------- subscribe ---------- */
+  .plan {
+    margin-top: 2.5rem;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .plan-price {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(2.2rem, 1.5rem + 3vw, 3.25rem);
+    color: var(--coral-deep);
+  }
+  .plan-price small { font-family: var(--font-body); font-size: 1rem; font-weight: 600; color: var(--ink-dim); }
+  .plan-facts { list-style: none; display: grid; gap: 0.4rem; color: var(--ink-dim); font-size: 0.98rem; }
+  .plan-facts strong { color: var(--ink); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid oklch(0.90 0.01 250);
+    padding: 2.5rem 0;
+  }
+  .footer-in {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    #plane { display: none; }
+    .fan:hover .sheet, .fan:focus-visible .sheet { transform: translate(-50%, -50%) rotate(0deg); }
+  }
+</style>
+</head>
+<body>
+
+<svg id="plane" viewBox="0 0 64 64" aria-hidden="true">
+  <path d="M4 32 L60 6 L40 58 L30 40 Z" fill="oklch(0.72 0.10 235)"/>
+  <path d="M30 40 L60 6 L26 36 Z" fill="oklch(0.58 0.10 240)"/>
+  <path d="M26 36 L30 40 L40 58 L32 42 Z" fill="oklch(0.50 0.11 245)"/>
+</svg>
+
+<header>
+  <div class="wrap header-in">
+    <a class="brand" href="#top">
+      <svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M4 32 L60 6 L40 58 L30 40 Z" fill="oklch(0.50 0.11 245)"/>
+      </svg>
+      Paper Planes
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#box">The Box</a></li>
+        <li><a href="#sourcing">Sourcing</a></li>
+        <li><a href="#subscribe">Subscribe</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Welcome">
+    <div class="wrap">
+      <h1>Mail <span class="sky">worth</span> <span class="coral">opening.</span></h1>
+      <p class="hero-sub">
+        A monthly box of beautiful paper goods — notebooks, letter sheets, stickers, and
+        one surprise — picked by people who can tell 80gsm from 100gsm by touch.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-coral" href="#subscribe">Get the next box</a>
+        <p class="price-note">$24 / month<small>Skip or cancel anytime. Really.</small></p>
+      </div>
+      <div class="folds" aria-hidden="true">
+        <div class="fold fold-a"></div>
+        <div class="fold fold-b"></div>
+        <div class="fold fold-c"></div>
+        <div class="fold fold-d"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="box" aria-label="What's in the box">
+    <div class="wrap">
+      <h2>What's in the Box</h2>
+      <p class="lede">Every month is a little different, but it always adds up to five things you'll actually use.</p>
+      <div class="box-grid">
+        <div class="fan" tabindex="0" aria-label="Five sheets of colored paper fan out when you hover or focus this area">
+          <div class="sheet sheet-1"></div>
+          <div class="sheet sheet-2"></div>
+          <div class="sheet sheet-3"></div>
+          <div class="sheet sheet-4"></div>
+          <div class="sheet sheet-5"></div>
+          <span class="fan-hint">hover to fan the stack</span>
+        </div>
+        <ul class="contents">
+          <li><span class="chip chip-sky" aria-hidden="true"></span><span><strong>One lay-flat notebook</strong> — thread-sewn, dot-grid or ruled, 64 pages of paper that takes fountain pen ink without complaint.</span></li>
+          <li><span class="chip chip-coral" aria-hidden="true"></span><span><strong>A set of letter sheets</strong> — six sheets, three envelopes, because you keep meaning to write your grandmother back.</span></li>
+          <li><span class="chip chip-leaf" aria-hidden="true"></span><span><strong>Stickers that aren't for kids</strong> — washi-paper labels, date seals, or tiny index tabs.</span></li>
+          <li><span class="chip chip-sky" aria-hidden="true"></span><span><strong>A desk tool</strong> — a brass clip, a bone folder, a pencil worth sharpening.</span></li>
+          <li><span class="chip chip-coral" aria-hidden="true"></span><span><strong>The wildcard</strong> — last month: a letterpress coaster set. Next month: we're not telling.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="sourcing" aria-label="The sourcing story">
+    <div class="wrap">
+      <h2>Hopelessly Picky About Paper</h2>
+      <div class="source-grid">
+        <figure class="source-photo">
+          <img src="https://picsum.photos/seed/stationery-1/800/600" width="800" height="600"
+               alt="A tidy stack of notebooks and letter sheets in sky blue, coral, and leaf green on a worktable.">
+        </figure>
+        <div class="source-copy">
+          <p>
+            We buy from eleven small mills and binderies — a family shop in Gifu that
+            still sizes its paper with egg white, a Portland letterpress studio that
+            prints on a 1962 Heidelberg, a Barcelona mill making cotton paper from
+            textile offcuts.
+          </p>
+          <p>
+            Everything in the box gets the same test: our founder Rin writes one full
+            page on it with a wet fountain pen. Feathering, bleed-through, or a scratchy
+            tooth — any of the three and it doesn't ship, no matter how pretty it is.
+          </p>
+          <p>
+            About 40% of what we sample fails. You're welcome.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="subscribe" aria-label="Subscribe">
+    <div class="wrap">
+      <h2>One Plan, No Homework</h2>
+      <div class="plan">
+        <p class="plan-price">$24<small> / month, shipping included</small></p>
+        <ul class="plan-facts">
+          <li><strong>Ships on the 4th</strong> — in your mailbox by the 10th, US.</li>
+          <li><strong>Skip any month</strong> — two clicks, no guilt-trip email.</li>
+          <li><strong>Cancel anytime</strong> — we keep it sad and simple.</li>
+        </ul>
+        <a class="btn btn-coral" href="#top">Start with the next box</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <a class="brand" href="#top">Paper Planes</a>
+    <p>Made slowly in Portland, OR · hello@paperplanes.example</p>
+    <p>Bills are still mail. So is this. Choose wisely.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var plane = document.getElementById("plane");
+
+  /* Paper plane follows the cursor with a delayed swoop (fine pointers only) */
+  if (!reduced && finePointer) {
+    var tx = window.innerWidth * 0.7, ty = window.innerHeight * 0.3;
+    var px = tx, py = ty, angle = 0;
+    var seen = false;
+
+    document.addEventListener("pointermove", function (e) {
+      tx = e.clientX;
+      ty = e.clientY;
+      if (!seen) { seen = true; px = tx; py = ty; plane.classList.add("on"); }
+    }, { passive: true });
+
+    function loop() {
+      /* delayed follow: lerp gives the swooping lag */
+      var dx = tx - px, dy = ty - py;
+      px += dx * 0.055;
+      py += dy * 0.055;
+      var targetAngle = Math.atan2(dy, dx) * 180 / Math.PI;
+      /* smooth the rotation so the plane banks rather than snaps */
+      var diff = targetAngle - angle;
+      while (diff > 180) diff -= 360;
+      while (diff < -180) diff += 360;
+      angle += diff * 0.08;
+      var speed = Math.min(1, Math.hypot(dx, dy) / 300);
+      plane.style.transform =
+        "translate(" + (px - 32) + "px," + (py - 32) + "px) rotate(" + angle + "deg) scale(" + (0.85 + speed * 0.3) + ")";
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+
+    document.addEventListener("visibilitychange", function () {
+      /* rAF pauses itself on hidden tabs; nothing else to do */
+    });
+  } else {
+    plane.style.display = "none";
+  }
+})();
+</script>
+</body>
+</html>

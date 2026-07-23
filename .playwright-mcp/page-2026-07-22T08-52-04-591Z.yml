@@ -1,0 +1,92 @@
+- generic [active] [ref=f7e1]:
+  - banner [ref=f7e2]:
+    - generic [ref=f7e3]:
+      - link [ref=f7e4] [cursor=pointer]:
+        - /url: "#top"
+        - text: The Comma
+        - emphasis [ref=f7e5]: ","
+      - navigation "Café" [ref=f7e6]:
+        - link "The pairing" [ref=f7e7] [cursor=pointer]:
+          - /url: "#pairing"
+        - link "Evenings" [ref=f7e8] [cursor=pointer]:
+          - /url: "#evenings"
+        - link "Find us" [ref=f7e9] [cursor=pointer]:
+          - /url: "#visit"
+  - main [ref=f7e10]:
+    - region [ref=f7e11]:
+      - generic [ref=f7e12]:
+        - heading "Every sentence deserves a pause." [level=1] [ref=f7e13]
+        - paragraph [ref=f7e15]:
+          - text: A café for readers on Exmouth Street. Espresso pulled slowly, fiction shelved short, and
+          - strong [ref=f7e16]: no Wi-Fi — on purpose.
+          - text: Bring the book you're stuck on. Leave further in.
+        - generic [ref=f7e17]:
+          - link "Today's pairing" [ref=f7e18] [cursor=pointer]:
+            - /url: "#pairing"
+          - link "What happens at night" [ref=f7e19] [cursor=pointer]:
+            - /url: "#evenings"
+      - figure "A page from tonight's short story, with the editor's marks still on it" [ref=f7e20]:
+        - generic [ref=f7e21]:
+          - generic [ref=f7e22]:
+            - text: tonight's story —
+            - emphasis [ref=f7e23]: The Locksmith of Trieste
+          - generic [ref=f7e24]: 900 words · 7 min
+        - paragraph [ref=f7e25]: The shop on Via Cavana kept its own hours, which is to say it kept none at all. Aldo arrived when the fog did, and left when he had finished pretending to work.
+        - paragraph [ref=f7e26]: What he actually did, behind the counter, was read the letters people never posted. He steamed them open, read them ‸slowly twice, and filed them under the name of the street they were meant for.
+    - region [ref=f7e27]:
+      - generic [ref=f7e28]:
+        - heading "Espresso, with a story on the side." [level=2] [ref=f7e29]
+        - paragraph [ref=f7e30]: Every drink comes with a short story, printed that morning and matched to the roast. Finishing one before your cup goes cold is considered good form.
+        - list [ref=f7e31]:
+          - listitem [ref=f7e32]:
+            - generic [ref=f7e33]: Ethiopia Guji, pour-over
+            - generic [ref=f7e34]: £4.50
+            - generic [ref=f7e35]: paired with “The Locksmith of Trieste” — 900 words, seven minutes, one bad decision
+          - listitem [ref=f7e36]:
+            - generic [ref=f7e37]: Flat white
+            - generic [ref=f7e38]: £3.80
+            - generic [ref=f7e39]: paired with “Instructions for a Power Cut” — 400 words, best read by candlelight
+          - listitem [ref=f7e40]:
+            - generic [ref=f7e41]: Batch filter, bottomless until ten
+            - generic [ref=f7e42]: £3.00
+            - generic [ref=f7e43]: paired with the crossword — unsolved since Tuesday, clues disputed
+          - listitem [ref=f7e44]:
+            - generic [ref=f7e45]: Hot chocolate, the thick kind
+            - generic [ref=f7e46]: £4.20
+            - generic [ref=f7e47]: paired with a poem. Always a poem. We don't make the rules — actually, we do
+    - region [ref=f7e48]:
+      - generic [ref=f7e49]:
+        - heading "After the last chapter, we turn the chairs down." [level=2] [ref=f7e50]
+        - paragraph [ref=f7e51]: Two nights a month the café stays open late. Tickets are free; the rule is you have to stay for the whole thing.
+        - generic [ref=f7e52]:
+          - article [ref=f7e53]:
+            - time [ref=f7e54]: Third Thursday of the month · 19:30
+            - heading "Margins — an open mic for unfinished work" [level=3] [ref=f7e55]
+            - paragraph [ref=f7e56]: Bring the draft you can't end. Read for five minutes, then strangers tell you what they think happens next. The ending with the most votes gets written on the wall.
+          - article [ref=f7e57]:
+            - time [ref=f7e58]: First Sunday of the month · 18:00–20:00
+            - heading "The Silent Reading Party" [level=3] [ref=f7e59]
+            - paragraph [ref=f7e60]: Phones in the basket by the door. Two hours of collective reading, one viola at seven, soup at eight. The quietest ticket in the city, and the hardest to get.
+    - region [ref=f7e61]:
+      - generic [ref=f7e62]:
+        - heading "Find the comma." [level=2] [ref=f7e63]
+        - paragraph [ref=f7e64]: We're the shopfront with the red punctuation mark in the window and a queue that reads.
+        - generic [ref=f7e65]:
+          - list [ref=f7e66]:
+            - listitem [ref=f7e67]:
+              - generic [ref=f7e68]: Tuesday – Friday
+              - generic [ref=f7e69]: 7:30 – 17:00
+            - listitem [ref=f7e70]:
+              - generic [ref=f7e71]: Saturday – Sunday
+              - generic [ref=f7e72]: 9:00 – 18:00
+            - listitem [ref=f7e73]:
+              - generic [ref=f7e74]: Monday
+              - generic [ref=f7e75]: closed, for editing
+          - paragraph [ref=f7e76]:
+            - text: 14 Exmouth Street, between the bookbinder and the barber.
+            - emphasis [ref=f7e77]: "Nearest bus: the 41. Nearest excuse to stay all afternoon: the armchair by the window, first come, first served."
+  - contentinfo [ref=f7e78]:
+    - generic [ref=f7e79]: The Comma — a literary café
+    - generic [ref=f7e80]:
+      - text: Open until the chapter ends
+      - emphasis [ref=f7e81]: .

@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prism Break — an indie animation studio that draws 24 lies a second</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='4' fill='oklch(0.72 0.20 340)'/%3E%3Ccircle cx='12' cy='12' r='5' fill='oklch(0.14 0.03 250)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Gabarito:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.14 0.03 250);
+    --surface: oklch(0.18 0.035 250);
+    --surface-2: oklch(0.22 0.04 250);
+    --ink: oklch(0.96 0.01 250);
+    --muted: oklch(0.75 0.03 250);
+    --pink: oklch(0.72 0.20 340);
+    --pink-deep: oklch(0.60 0.19 340);
+    --cyan: oklch(0.82 0.12 200);
+    --yellow: oklch(0.86 0.15 95);
+    --line: oklch(0.96 0.01 250 / 0.16);
+    --display: "Unbounded", sans-serif;
+    --body: "Gabarito", sans-serif;
+    --step--1: clamp(0.82rem, 0.78rem + 0.2vw, 0.92rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.13rem);
+    --step-1: clamp(1.25rem, 1.1rem + 0.7vw, 1.6rem);
+    --step-2: clamp(1.56rem, 1.3rem + 1.3vw, 2.3rem);
+    --step-3: clamp(1.95rem, 1.5rem + 2.2vw, 3.3rem);
+    --step-4: clamp(2.44rem, 1.6rem + 4vw, 5.2rem);
+    --z-sticky: 10;
+    --z-canvas: 1;
+    --z-hero-copy: 2;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    font-family: var(--display);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    font-weight: 700;
+  }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1160px, 100% - 3rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.14 0.03 250 / 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .brand .mark {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex: none;
+    border-radius: 6px;
+    background: var(--pink);
+    position: relative;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .brand .mark::after {
+    content: "";
+    position: absolute;
+    inset: 30%;
+    border-radius: 50%;
+    background: var(--bg);
+  }
+  .brand:hover .mark { transform: rotate(90deg); }
+  .site-nav { display: flex; align-items: center; gap: 1.6rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--cyan); }
+  .btn {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--bg);
+    background: var(--cyan);
+    padding: 0.85rem 1.7rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { background: var(--yellow); color: var(--bg); transform: translateY(-2px) rotate(-1deg); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.8rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.pink { background: var(--pink); color: oklch(0.99 0.005 340); }
+  .btn.pink:hover { background: var(--yellow); color: var(--bg); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 94vh;
+    display: grid;
+    align-items: center;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  #stage {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-canvas);
+  }
+  #stage canvas { display: block; width: 100%; height: 100%; }
+  .hero-inner {
+    position: relative;
+    z-index: var(--z-hero-copy);
+    padding-block: 7rem;
+    pointer-events: none;
+  }
+  .hero-inner a, .hero-inner .frame-counter { pointer-events: auto; }
+  .hero h1 {
+    font-size: var(--step-4);
+    font-weight: 900;
+    max-width: 12ch;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .p { color: var(--pink); }
+  .hero h1 .c { color: var(--cyan); }
+  .hero .sub {
+    max-width: 44ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--muted);
+    margin-bottom: 2.3rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .frame-counter {
+    position: absolute;
+    right: 0;
+    bottom: 2.2rem;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--yellow);
+    border: 1px solid oklch(0.86 0.15 95 / 0.45);
+    border-radius: 8px;
+    padding: 0.5rem 0.9rem;
+    font-variant-numeric: tabular-nums;
+    background: oklch(0.14 0.03 250 / 0.6);
+  }
+  .reg-mark {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    z-index: var(--z-hero-copy);
+    pointer-events: none;
+    opacity: 0.85;
+  }
+  .reg-mark::before, .reg-mark::after {
+    content: "";
+    position: absolute;
+    background: var(--pink);
+  }
+  .reg-mark::before { left: 50%; top: 0; width: 2px; height: 100%; transform: translateX(-50%); }
+  .reg-mark::after { top: 50%; left: 0; height: 2px; width: 100%; transform: translateY(-50%); }
+  .reg-mark.tl { top: 5.2rem; left: 1.4rem; }
+  .reg-mark.tr { top: 5.2rem; right: 1.4rem; }
+  .reg-mark.bl { bottom: 1.4rem; left: 1.4rem; }
+
+  /* ---------- walk cycle strip ---------- */
+  .walk {
+    border-block: 1px solid var(--line);
+    background: var(--surface);
+    padding-block: 2.2rem;
+    overflow: hidden;
+  }
+  .walk-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--step--1);
+    color: var(--muted);
+    margin-bottom: 1.4rem;
+    font-weight: 500;
+  }
+  .walk-label strong { color: var(--cyan); font-weight: 700; }
+  .walk-track { overflow: hidden; }
+  .walk-strip {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    will-change: transform;
+  }
+  .cel {
+    width: clamp(90px, 10vw, 130px);
+    aspect-ratio: 1;
+    flex: none;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .cel::after {
+    content: attr(data-f);
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--yellow);
+    font-variant-numeric: tabular-nums;
+  }
+  .cel svg { width: 78%; height: 78%; }
+  .cel .limb { transform-box: fill-box; transform-origin: 50% 8%; }
+
+  /* ---------- sections ---------- */
+  section.block { padding-block: clamp(4.5rem, 9vw, 7.5rem); }
+  .sec-head { margin-bottom: 3rem; max-width: 46rem; }
+  .sec-head h2 { font-size: var(--step-3); margin-bottom: 1rem; }
+  .sec-head h2 .p { color: var(--pink); }
+  .sec-head h2 .c { color: var(--cyan); }
+  .sec-head h2 .y { color: var(--yellow); }
+  .sec-head p { color: var(--muted); max-width: 56ch; text-wrap: pretty; }
+
+  /* ---------- productions ---------- */
+  .prod {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+    padding-block: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .prod:last-of-type { border-bottom: 1px solid var(--line); }
+  .prod:nth-child(even) .reel { order: 2; }
+  .reel {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--surface-2);
+    cursor: crosshair;
+  }
+  .reel .frame {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.12s linear;
+  }
+  .reel .frame.on { opacity: 1; }
+  .reel .scrub-hint {
+    position: absolute;
+    left: 0.9rem;
+    bottom: 0.8rem;
+    z-index: 2;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: oklch(0.14 0.03 250 / 0.72);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .prod h3 { font-size: var(--step-2); margin-bottom: 0.8rem; }
+  .prod .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+  }
+  .prod .meta span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+  }
+  .prod .meta span.hot { color: var(--yellow); border-color: oklch(0.86 0.15 95 / 0.5); }
+  .prod p { color: var(--muted); max-width: 52ch; text-wrap: pretty; }
+  .prod p + p { margin-top: 0.8rem; }
+
+  /* ---------- credo ---------- */
+  .credo { background: var(--surface); border-block: 1px solid var(--line); }
+  .principles {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .principles li {
+    background: var(--surface);
+    padding: 1.4rem 1.5rem;
+    transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .principles li:hover { background: var(--surface-2); }
+  .principles b {
+    display: block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.45rem;
+    color: var(--ink);
+  }
+  .principles li:nth-child(3n+1) b { color: var(--pink); }
+  .principles li:nth-child(3n+2) b { color: var(--cyan); }
+  .principles li:nth-child(3n) b { color: var(--yellow); }
+  .principles span { font-size: var(--step--1); color: var(--muted); line-height: 1.55; }
+
+  /* ---------- studio photo + laurels ---------- */
+  .studio-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .studio-grid figure img {
+    width: 100%;
+    border-radius: 14px;
+    filter: saturate(0.85) contrast(1.05);
+  }
+  .studio-grid figcaption {
+    margin-top: 0.7rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .laurels { list-style: none; margin-top: 1.8rem; display: grid; gap: 0.9rem; }
+  .laurels li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .laurels li::before {
+    content: "✦";
+    color: var(--yellow);
+    flex: none;
+  }
+  .laurels b { color: var(--ink); font-weight: 700; }
+
+  /* ---------- jobs ---------- */
+  .jobs { background: var(--pink); color: oklch(0.99 0.005 340); }
+  .jobs .sec-head h2, .jobs .sec-head p { color: oklch(0.99 0.005 340); }
+  .jobs .sec-head p { opacity: 0.85; }
+  .job-list { list-style: none; display: grid; gap: 0.8rem; }
+  .job {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem 1.5rem;
+    background: oklch(0.99 0.005 340 / 0.12);
+    border-radius: 12px;
+    padding: 1.3rem 1.6rem;
+    text-decoration: none;
+    transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .job:hover { background: oklch(0.99 0.005 340 / 0.22); transform: translateX(0.4rem); }
+  .job b {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+  }
+  .job .terms { font-size: var(--step--1); opacity: 0.85; }
+  .job .arrow { font-family: var(--display); font-weight: 700; }
+
+  /* ---------- footer ---------- */
+  .site-foot {
+    border-top: 1px solid var(--line);
+    padding-block: 2.4rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .site-foot .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem 2rem;
+  }
+  .site-foot a { color: var(--cyan); text-decoration: none; }
+  .site-foot a:hover { color: var(--yellow); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .prod, .studio-grid { grid-template-columns: 1fr; }
+    .prod:nth-child(even) .reel { order: 0; }
+    .site-nav a:not(.btn) { display: none; }
+    .frame-counter { position: static; display: inline-block; margin-top: 2rem; }
+    .reg-mark.tl, .reg-mark.tr { top: 4.6rem; }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .brand .mark, .btn, .job, .principles li { transition: none; }
+    .reel .frame { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Prism Break, back to top">
+      <span class="mark" aria-hidden="true"></span>
+      Prism Break
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#work">Productions</a>
+      <a href="#credo">The credo</a>
+      <a href="#jobs">Jobs</a>
+      <a class="btn small" href="mailto:talk@prismbreak.studio">Talk to us</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Prism Break studio intro">
+    <div id="stage" aria-hidden="true"></div>
+    <span class="reg-mark tl" aria-hidden="true"></span>
+    <span class="reg-mark tr" aria-hidden="true"></span>
+    <span class="reg-mark bl" aria-hidden="true"></span>
+    <div class="wrap hero-inner">
+      <h1>We draw <span class="p">24 lies</span> a <span class="c">second.</span></h1>
+      <p class="sub">Prism Break is a nine-person animation studio in Montreal making hand-crafted 2D films, series, and the occasional music video that ruins a band's budget in the best way.</p>
+      <div class="hero-actions">
+        <a class="btn pink" href="#work">See the work</a>
+        <a class="btn" href="#jobs">We're hiring</a>
+      </div>
+      <output class="frame-counter" id="frameCounter" aria-label="Frame counter">F 0001 / 24</output>
+    </div>
+  </section>
+
+  <div class="walk" aria-label="Walk cycle: eight frames of our mascot Priz crossing the page as you scroll">
+    <div class="wrap walk-label">
+      <span><strong>WALK CYCLE</strong> — 8 drawings, on twos, by Mireille</span>
+      <span>scroll to advance →</span>
+    </div>
+    <div class="walk-track">
+      <div class="walk-strip" id="walkStrip"></div>
+    </div>
+  </div>
+
+  <section class="block" id="work" aria-labelledby="work-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="work-h">Three productions, <span class="p">zero shortcuts</span></h2>
+        <p>Drag your cursor across a reel to scrub the roughs. Everything below is pencil, ink, and stubbornness — no mocap, no tweening buttons, no "AI assist".</p>
+      </div>
+
+      <article class="prod">
+        <div class="reel" data-reel="moon" tabindex="0" role="img"
+             aria-label="Scrubbable rough frames from Paper Moon Radio: a girl repairs a lighthouse that broadcasts moonlight">
+        </div>
+        <div>
+          <h3>Paper Moon Radio</h3>
+          <div class="meta"><span class="hot">Short · 11 min</span><span>2025</span><span>Annecy Official Selection</span></div>
+          <p>A lighthouse keeper's daughter discovers the beacon doesn't shine light — it broadcasts it, on a frequency only moths and insomniacs can hear. 7,940 drawings. The storm sequence alone took four months and one actual therapist.</p>
+          <p>It played fourteen festivals and lost to a film about a sandwich at six of them. We'd make it again tomorrow.</p>
+        </div>
+      </article>
+
+      <article class="prod">
+        <div class="reel" data-reel="salto" tabindex="0" role="img"
+             aria-label="Scrubbable rough frames from Salto!: a luchador grandmother suplexes her way through a cooking competition">
+        </div>
+        <div>
+          <h3>Salto!</h3>
+          <div class="meta"><span class="hot">Series · 8 × 22 min</span><span>2024</span><span>Ottawa Grand Prize</span></div>
+          <p>Abuela Canela retired from the ring twenty years ago. Then the town's cooking show insulted her pozole, and the mask went back on. Each episode's fight is storyboarded like a recipe: mise en place, then a hurricanrana.</p>
+          <p>Season two is in clean-up now. The kitchen-fire tag match in episode six is the best 90 seconds we've ever shipped.</p>
+        </div>
+      </article>
+
+      <article class="prod">
+        <div class="reel" data-reel="kingfisher" tabindex="0" role="img"
+             aria-label="Scrubbable rough frames from Kingfisher: a bird the size of a weather system migrates over a city that builds around it">
+        </div>
+        <div>
+          <h3>Kingfisher</h3>
+          <div class="meta"><span class="hot">Feature · in production</span><span>2027</span><span>73,000 frames to go</span></div>
+          <p>Our first feature. A kingfisher the size of a weather system migrates once a generation, and a port city has learned to build its year around the bird: festivals when it arrives, silence when it nests, repairs when it leaves.</p>
+          <p>We're animating the bird on ones because it deserves it. This is either our masterpiece or our cautionary tale. Possibly both.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block credo" id="credo" aria-labelledby="credo-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="credo-h">The twelve, <span class="c">tattooed on the process</span></h2>
+        <p>Disney's nine old men wrote the principles. We just argue about them daily, over dumplings, at a studio above a bike shop. This is what they mean on our floor.</p>
+      </div>
+      <ul class="principles">
+        <li><b>Squash &amp; stretch</b><span>Priz's face is 40% of our render time and worth every frame.</span></li>
+        <li><b>Anticipation</b><span>If the audience blinks before the punch, we failed the wind-up.</span></li>
+        <li><b>Staging</b><span>One idea per shot. Two ideas means two shots. This rule ends meetings early.</span></li>
+        <li><b>Straight ahead &amp; pose to pose</b><span>Fights go straight ahead. Acting goes pose to pose. Dumplings settle ties.</span></li>
+        <li><b>Follow-through</b><span>Capes, hair, and Abuela Canela's skirt have their own department. It's one person. Hi, Soo.</span></li>
+        <li><b>Slow in &amp; slow out</b><span>Nothing in nature moves linearly, and neither does anything on our timeline.</span></li>
+        <li><b>Arcs</b><span>Every limb swings on an arc. Straight lines are for spreadsheets.</span></li>
+        <li><b>Secondary action</b><span>The ear flick in the background of shot 212 got a bigger laugh than the joke. We keep receipts.</span></li>
+        <li><b>Timing</b><span>Comedy is on twos. Tragedy is on ones. Meetings are on neither.</span></li>
+        <li><b>Exaggeration</b><span>Push the pose until it breaks, then back off exactly one drawing.</span></li>
+        <li><b>Solid drawing</b><span>Life drawing every Tuesday, 8 a.m. Attendance is "voluntary."</span></li>
+        <li><b>Appeal</b><span>If you wouldn't pin the character sheet to your wall, it goes back to the board.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="studio-h">
+    <div class="wrap studio-grid">
+      <figure>
+        <img src="https://picsum.photos/seed/anim-1/800/600" width="800" height="600" loading="lazy"
+             alt="The Prism Break studio floor: lightboxes, peg bars, and a wall of Kingfisher storyboard panels above the desks">
+        <figcaption>The floor at 6 p.m. — the lightboxes stay on until the last in-betweener caves.</figcaption>
+      </figure>
+      <div>
+        <div class="sec-head" style="margin-bottom:0">
+          <h2 id="studio-h">Laurels, <span class="y">counted honestly</span></h2>
+          <p>We submit to festivals the way other studios buy lottery tickets, and lately the odds have been suspiciously good.</p>
+        </div>
+        <ul class="laurels">
+          <li><b>Annecy 2025</b> — Official Selection, short film, <em>Paper Moon Radio</em></li>
+          <li><b>Ottawa 2024</b> — Grand Prize, series, <em>Salto!</em></li>
+          <li><b>Hiroshima 2024</b> — Special International Jury Prize, <em>Salto!</em></li>
+          <li><b>GLAS 2023</b> — Audience Award, <em>Night Bus Etudes</em></li>
+          <li><b>Sandwich Film Fest 2025</b> — lost, again, to the sandwich</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block jobs" id="jobs" aria-labelledby="jobs-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="jobs-h">Come draw the bird</h2>
+        <p><em>Kingfisher</em> needs hands. Montreal studio or remote within three time zones of it. Profit share on the feature, dumplings on Fridays, no crunch — we mean that in writing.</p>
+      </div>
+      <ul class="job-list">
+        <li>
+          <a class="job" href="mailto:jobs@prismbreak.studio?subject=2D%20Animator%20%E2%80%94%20Kingfisher">
+            <b>2D Animator (character)</b>
+            <span class="terms">Feature · full-time · from September</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a class="job" href="mailto:jobs@prismbreak.studio?subject=Background%20Painter%20%E2%80%94%20Kingfisher">
+            <b>Background Painter</b>
+            <span class="terms">Feature · full-time · gouache skills a plus</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a class="job" href="mailto:jobs@prismbreak.studio?subject=Storyboard%20Artist%20%E2%80%94%20Salto%20S2">
+            <b>Storyboard Artist</b>
+            <span class="terms">Salto! S2 · contract · must love suplexes</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+        <li>
+          <a class="job" href="mailto:jobs@prismbreak.studio?subject=Production%20Coordinator">
+            <b>Production Coordinator</b>
+            <span class="terms">Studio · permanent · herder of nine cats</span>
+            <span class="arrow">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>© 2026 Prism Break Animation Inc. — Montreal, QC. Drawn on paper, scanned with love.</span>
+    <span><a href="mailto:talk@prismbreak.studio">talk@prismbreak.studio</a> · Est. 2019, above the bike shop</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ================= walk-cycle strip ================= */
+  // Eight generative cels of Priz (geometric mascot), built once, scrubbed by scroll.
+  var strip = document.getElementById('walkStrip');
+  // leg/arm swing per frame (degrees)
+  var poses = [
+    { l:  28, r: -24, a: -20, b: 0 },  // contact
+    { l:  10, r: -10, a:  -8, b: 2 },  // recoil
+    { l: -14, r:  14, a:  10, b: 0 },  // passing
+    { l: -24, r:  26, a:  22, b: -2 }, // high point
+    { l: -28, r:  24, a:  20, b: 0 },  // contact (mirror)
+    { l: -10, r:  10, a:   8, b: 2 },
+    { l:  14, r: -14, a: -10, b: 0 },
+    { l:  24, r: -26, a: -22, b: -2 }
+  ];
+  var CEL_N = poses.length;
+  var COPIES = 3; // repeat the cycle so the strip is wide enough to travel
+  var svgNS = 'http://www.w3.org/2000/svg';
+
+  function makeCel(frameIdx) {
+    var p = poses[frameIdx % CEL_N];
+    var cel = document.createElement('div');
+    cel.className = 'cel';
+    cel.setAttribute('data-f', String((frameIdx % CEL_N) + 1).padStart(2, '0'));
+    var svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('aria-hidden', 'true');
+    function el(tag, attrs, parent) {
+      var n = document.createElementNS(svgNS, tag);
+      for (var k in attrs) n.setAttribute(k, attrs[k]);
+      (parent || svg).appendChild(n);
+      return n;
+    }
+    // legs (drawn first, behind body)
+    var legL = el('g', { 'class': 'limb', transform: 'translate(44 58) rotate(' + p.l + ')' });
+    el('rect', { x: -5, y: 0, width: 10, height: 30, rx: 5, fill: 'oklch(0.82 0.12 200)' }, legL);
+    var legR = el('g', { 'class': 'limb', transform: 'translate(56 58) rotate(' + p.r + ')' });
+    el('rect', { x: -5, y: 0, width: 10, height: 30, rx: 5, fill: 'oklch(0.60 0.19 340)' }, legR);
+    // bob group
+    var bob = el('g', { transform: 'translate(0 ' + p.b + ')' });
+    // arm
+    var arm = el('g', { 'class': 'limb', transform: 'translate(63 40) rotate(' + p.a + ')' }, bob);
+    el('rect', { x: -4, y: 0, width: 8, height: 24, rx: 4, fill: 'oklch(0.86 0.15 95)' }, arm);
+    // body
+    el('rect', { x: 34, y: 32, width: 32, height: 30, rx: 12, fill: 'oklch(0.72 0.20 340)' }, bob);
+    // head
+    el('circle', { cx: 50, cy: 22, r: 14, fill: 'oklch(0.96 0.01 250)' }, bob);
+    el('circle', { cx: 55, cy: 20, r: 3.2, fill: 'oklch(0.14 0.03 250)' }, bob);
+    // antenna
+    el('line', { x1: 50, y1: 9, x2: 50, y2: 2, stroke: 'oklch(0.86 0.15 95)', 'stroke-width': 2.4, 'stroke-linecap': 'round' }, bob);
+    cel.appendChild(svg);
+    return cel;
+  }
+  for (var c = 0; c < COPIES * CEL_N; c++) strip.appendChild(makeCel(c));
+
+  if (!reduceMotion) {
+    var track = document.querySelector('.walk-track');
+    var target = 0, current = 0, rafId = null;
+    function walkLoop() {
+      current += (target - current) * 0.08;
+      strip.style.transform = 'translateX(' + (-current) + 'px)';
+      if (Math.abs(target - current) > 0.1) rafId = requestAnimationFrame(walkLoop);
+      else rafId = null;
+    }
+    function onScroll() {
+      var r = track.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var prog = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+      var max = strip.scrollWidth - track.clientWidth;
+      target = prog * max;
+      if (!rafId) rafId = requestAnimationFrame(walkLoop);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+  }
+
+  /* ================= showreel hover-scrub ================= */
+  // Each reel holds 6 generative rough frames; cursor x scrubs between them.
+  var reelSchemes = {
+    moon:       ['oklch(0.24 0.05 250)', 'oklch(0.86 0.15 95)', 'oklch(0.82 0.12 200)'],
+    salto:      ['oklch(0.60 0.19 340)', 'oklch(0.96 0.01 250)', 'oklch(0.86 0.15 95)'],
+    kingfisher: ['oklch(0.30 0.08 235)', 'oklch(0.82 0.12 200)', 'oklch(0.72 0.20 340)']
+  };
+  var FRAMES = 6;
+  document.querySelectorAll('.reel').forEach(function (reel) {
+    var scheme = reelSchemes[reel.getAttribute('data-reel')] || reelSchemes.moon;
+    var frames = [];
+    for (var i = 0; i < FRAMES; i++) {
+      var f = document.createElement('div');
+      f.className = 'frame' + (i === 0 ? ' on' : '');
+      // generative rough: big circle drifting + bars shifting, all flat color
+      var x = 12 + i * 13, y = 20 + ((i * 29) % 40), s = 34 + ((i * 17) % 26);
+      f.style.background =
+        'radial-gradient(circle at ' + x + '% ' + y + '%, ' + scheme[1] + ' 0 ' + s / 4 + '%, transparent ' + (s / 4 + 0.5) + '%),' +
+        'radial-gradient(circle at ' + (80 - i * 9) + '% ' + (70 - ((i * 13) % 30)) + '%, ' + scheme[2] + ' 0 ' + s / 6 + '%, transparent ' + (s / 6 + 0.5) + '%),' +
+        'linear-gradient(to top, ' + scheme[2] + '22 0 ' + (8 + i * 3) + '%, transparent ' + (8 + i * 3) + '%),' +
+        scheme[0];
+      reel.appendChild(f);
+      frames.push(f);
+    }
+    var hint = document.createElement('span');
+    hint.className = 'scrub-hint';
+    hint.textContent = '◂ scrub the roughs ▸';
+    reel.appendChild(hint);
+
+    function show(idx) {
+      frames.forEach(function (fr, j) { fr.classList.toggle('on', j === idx); });
+    }
+    function idxFromX(clientX) {
+      var r = reel.getBoundingClientRect();
+      return Math.min(FRAMES - 1, Math.max(0, Math.floor((clientX - r.left) / r.width * FRAMES)));
+    }
+    reel.addEventListener('mousemove', function (e) { show(idxFromX(e.clientX)); });
+    reel.addEventListener('mouseleave', function () { show(0); });
+    // keyboard access: arrows scrub frames
+    reel.addEventListener('keydown', function (e) {
+      var cur = frames.findIndex(function (fr) { return fr.classList.contains('on'); });
+      if (e.key === 'ArrowRight') { show((cur + 1) % FRAMES); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { show((cur - 1 + FRAMES) % FRAMES); e.preventDefault(); }
+    });
+  });
+
+  /* ================= frame counter ================= */
+  var counter = document.getElementById('frameCounter');
+  if (!reduceMotion) {
+    var fnum = 1;
+    setInterval(function () {
+      if (document.hidden) return;
+      fnum = fnum % 24 + 1;
+      counter.textContent = 'F ' + String(fnum).padStart(4, '0') + ' / 24';
+    }, 1000 / 12);
+  }
+
+  /* ================= three.js cel-shaded mascot head ================= */
+  var stage = document.getElementById('stage');
+  var threeOK = false;
+
+  function initThree() {
+    if (!window.THREE || !stage) return;
+    try {
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(38, 2, 0.1, 100);
+      camera.position.set(0, 0.4, 7.2);
+      var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      stage.appendChild(renderer.domElement);
+
+      // toon gradient map: 4 hard steps = cel shading
+      var steps = new Uint8Array([90, 150, 210, 255]);
+      var gradMap = new THREE.DataTexture(steps, 4, 1, THREE.RedFormat);
+      gradMap.minFilter = THREE.NearestFilter;
+      gradMap.magFilter = THREE.NearestFilter;
+      gradMap.needsUpdate = true;
+
+      var PINK = 0, CYAN = 0, YELLOW = 0, INK = 0;
+      // three.js wants hex internally; convert our OKLCH palette via canvas
+      function oklchToHex(l, c, h) {
+        var cv = document.createElement('canvas');
+        cv.width = cv.height = 1;
+        var g = cv.getContext('2d');
+        g.fillStyle = 'oklch(' + l + ' ' + c + ' ' + h + ')';
+        g.fillRect(0, 0, 1, 1);
+        var d = g.getImageData(0, 0, 1, 1).data;
+        return (d[0] << 16) | (d[1] << 8) | d[2];
+      }
+      PINK = oklchToHex(0.72, 0.20, 340);
+      CYAN = oklchToHex(0.82, 0.12, 200);
+      YELLOW = oklchToHex(0.86, 0.15, 95);
+      INK = oklchToHex(0.14, 0.03, 250);
+
+      var head = new THREE.Group();
+      var matPink = new THREE.MeshToonMaterial({ color: PINK, gradientMap: gradMap });
+      var matCyan = new THREE.MeshToonMaterial({ color: CYAN, gradientMap: gradMap });
+      var matYellow = new THREE.MeshToonMaterial({ color: YELLOW, gradientMap: gradMap });
+      var matInk = new THREE.MeshToonMaterial({ color: INK, gradientMap: gradMap });
+
+      // skull
+      head.add(new THREE.Mesh(new THREE.SphereGeometry(1.5, 48, 32), matPink));
+      // ears — big cartoon stubs
+      var earGeo = new THREE.ConeGeometry(0.55, 1.1, 24);
+      var earL = new THREE.Mesh(earGeo, matPink);
+      earL.position.set(-1.05, 1.35, 0); earL.rotation.z = 0.5;
+      var earR = new THREE.Mesh(earGeo, matPink);
+      earR.position.set(1.05, 1.35, 0); earR.rotation.z = -0.5;
+      head.add(earL, earR);
+      // eyes
+      var eyeGeo = new THREE.SphereGeometry(0.34, 24, 16);
+      var eyeL = new THREE.Mesh(eyeGeo, matCyan); eyeL.position.set(-0.55, 0.25, 1.32);
+      var eyeR = new THREE.Mesh(eyeGeo, matCyan); eyeR.position.set(0.55, 0.25, 1.32);
+      var pupGeo = new THREE.SphereGeometry(0.15, 16, 12);
+      var pupL = new THREE.Mesh(pupGeo, matInk); pupL.position.set(-0.55, 0.25, 1.62);
+      var pupR = new THREE.Mesh(pupGeo, matInk); pupR.position.set(0.55, 0.25, 1.62);
+      head.add(eyeL, eyeR, pupL, pupR);
+      // nose — yellow diamond
+      var nose = new THREE.Mesh(new THREE.OctahedronGeometry(0.24), matYellow);
+      nose.position.set(0, -0.28, 1.5);
+      head.add(nose);
+      // little floating cel frames orbiting the head
+      var orbiters = new THREE.Group();
+      var frameGeo = new THREE.BoxGeometry(0.5, 0.38, 0.03);
+      for (var i = 0; i < 5; i++) {
+        var m = new THREE.Mesh(frameGeo, i % 2 ? matCyan : matYellow);
+        var ang = i / 5 * Math.PI * 2;
+        m.position.set(Math.cos(ang) * 2.9, Math.sin(ang * 2) * 0.7, Math.sin(ang) * 2.9);
+        m.lookAt(0, 0, 0);
+        orbiters.add(m);
+      }
+      scene.add(head, orbiters);
+
+      var key = new THREE.DirectionalLight(0xffffff, 2.6);
+      key.position.set(2.5, 3, 4);
+      var rim = new THREE.DirectionalLight(CYAN, 1.1);
+      rim.position.set(-3, -1, -2);
+      scene.add(key, rim, new THREE.AmbientLight(0xffffff, 0.5));
+
+      // keep the head right-of-center on wide screens, centered on narrow
+      var mouseX = 0, mouseY = 0;
+      window.addEventListener('pointermove', function (e) {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      }, { passive: true });
+
+      function layout() {
+        var w = stage.clientWidth, h = stage.clientHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        head.position.x = w > 900 ? 2.1 : 0;
+        head.position.y = w > 900 ? -0.1 : 0.9;
+        orbiters.position.copy(head.position);
+      }
+      layout();
+      window.addEventListener('resize', layout);
+
+      var t = 0, running = true, raf = null;
+      function tick() {
+        raf = null;
+        if (!running) return;
+        t += 0.016;
+        head.rotation.y += ((mouseX * 0.55 + t * 0.35) - head.rotation.y) * 0.06 + 0.004;
+        head.rotation.x += ((mouseY * 0.25) - head.rotation.x) * 0.05;
+        head.position.y += Math.sin(t * 1.4) * 0.004;
+        orbiters.rotation.y = t * 0.25;
+        renderer.render(scene, camera);
+        raf = requestAnimationFrame(tick);
+      }
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) { running = false; }
+        else if (!reduceMotion) { running = true; if (!raf) raf = requestAnimationFrame(tick); }
+      });
+
+      if (reduceMotion) {
+        renderer.render(scene, camera); // one static frame only
+      } else {
+        raf = requestAnimationFrame(tick);
+      }
+      threeOK = true;
+      window.__prismThree = true;
+    } catch (err) {
+      stage.style.background = 'radial-gradient(circle at 68% 42%, oklch(0.72 0.20 340 / 0.25), transparent 55%)';
+    }
+  }
+
+  // load three.js with fallback CDN
+  var SRCS = [
+    'https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js',
+    'https://unpkg.com/three@0.160.0/build/three.min.js'
+  ];
+  (function loadNext(i) {
+    if (i >= SRCS.length) { stage.style.background = 'radial-gradient(circle at 68% 42%, oklch(0.72 0.20 340 / 0.25), transparent 55%)'; return; }
+    var s = document.createElement('script');
+    s.src = SRCS[i];
+    s.onload = initThree;
+    s.onerror = function () { loadNext(i + 1); };
+    document.head.appendChild(s);
+  })(0);
+})();
+</script>
+</body>
+</html>

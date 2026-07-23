@@ -1,0 +1,127 @@
+- generic [active] [ref=f5e1]:
+  - banner [ref=f5e2]:
+    - generic [ref=f5e3]:
+      - link "Opaline" [ref=f5e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=f5e5]:
+        - list [ref=f5e6]:
+          - listitem [ref=f5e7]:
+            - link "Fragrances" [ref=f5e8] [cursor=pointer]:
+              - /url: "#fragrances"
+          - listitem [ref=f5e9]:
+            - link "The nose" [ref=f5e10] [cursor=pointer]:
+              - /url: "#nose"
+          - listitem [ref=f5e11]:
+            - link "Samples & refills" [ref=f5e12] [cursor=pointer]:
+              - /url: "#samples"
+  - main [ref=f5e13]:
+    - generic [ref=f5e15]:
+      - generic [ref=f5e16]:
+        - paragraph [ref=f5e17]: Maison de parfum · Grasse, since 1987
+        - heading "The air remembers what the eye forgets." [level=1] [ref=f5e18]
+        - paragraph [ref=f5e19]: Opaline composes three perfumes a decade, no more. Each begins as a walk through the hills above Grasse and ends, years later, as a bottle we are willing to sign. We would rather you smell before you buy — which is why the library of vials comes first, always.
+        - generic [ref=f5e20]:
+          - link "Begin with five vials · €28" [ref=f5e21] [cursor=pointer]:
+            - /url: "#samples"
+          - link "Meet the three fragrances" [ref=f5e22] [cursor=pointer]:
+            - /url: "#fragrances"
+      - figure "Figuier de Minuit, photographed in the atelier window at seven in the morning." [ref=f5e23]:
+        - img "A cut-glass flacon of Opaline perfume caught in pale morning window light" [ref=f5e25]
+    - generic [ref=f5e28]:
+      - generic [ref=f5e29]:
+        - heading "Three fragrances, built note by note" [level=2] [ref=f5e30]
+        - paragraph [ref=f5e31]: A perfume is a pyramid that collapses beautifully — the bright head burns off in minutes, the heart carries the afternoon, the base is what your scarf remembers in January. Each pyramid below builds the way the scent does.
+      - article [ref=f5e32]:
+        - generic [ref=f5e33]:
+          - paragraph [ref=f5e34]: Green · shadowed · the house signature
+          - heading "Figuier de Minuit" [level=3] [ref=f5e35]
+          - paragraph [ref=f5e36]: The fig tree after dark, when the leaves stop giving green and start giving milk. Maëlle spent four summers on the fig accord alone; the finished scent opens cool and bitter, then sinks into something almost edible.
+          - paragraph [ref=f5e37]: 50 ml · €140 · refill €98
+        - generic "Note pyramid for Figuier de Minuit" [ref=f5e38]:
+          - generic [ref=f5e39]:
+            - generic [ref=f5e40]:
+              - strong [ref=f5e41]: Tête
+              - generic [ref=f5e42]: 0–15 minutes
+            - paragraph [ref=f5e43]: Fig leaf crushed between fingers, violet leaf, a cold flash of bergamot.
+          - generic [ref=f5e44]:
+            - generic [ref=f5e45]:
+              - strong [ref=f5e46]: Cœur
+              - generic [ref=f5e47]: the afternoon
+            - paragraph [ref=f5e48]: Iris butter, heliotrope, the milky sap of the fruit itself.
+          - generic [ref=f5e49]:
+            - generic [ref=f5e50]:
+              - strong [ref=f5e51]: Fond
+              - generic [ref=f5e52]: what stays
+            - paragraph [ref=f5e53]: Fig wood, smoked amber, a low hum of tonka bean.
+      - article [ref=f5e54]:
+        - generic [ref=f5e55]:
+          - paragraph [ref=f5e56]: Floral · rain-washed · the quiet one
+          - heading "Pluie d'Opale" [level=3] [ref=f5e57]
+          - paragraph [ref=f5e58]: A garden ten minutes after the rain stops, when the petals are too heavy to hold their water. The most requested of the three, and the one we are proudest of — it took eleven years to make a peony that does not shout.
+          - paragraph [ref=f5e59]: 50 ml · €125 · refill €88
+        - generic "Note pyramid for Pluie d'Opale" [ref=f5e60]:
+          - generic [ref=f5e61]:
+            - generic [ref=f5e62]:
+              - strong [ref=f5e63]: Tête
+              - generic [ref=f5e64]: 0–15 minutes
+            - paragraph [ref=f5e65]: Wet bergamot, pink pepper, the mineral smell of rain on warm stone.
+          - generic [ref=f5e66]:
+            - generic [ref=f5e67]:
+              - strong [ref=f5e68]: Cœur
+              - generic [ref=f5e69]: the afternoon
+            - paragraph [ref=f5e70]: Peony, magnolia, a breath of lily of the valley from the house garden.
+          - generic [ref=f5e71]:
+            - generic [ref=f5e72]:
+              - strong [ref=f5e73]: Fond
+              - generic [ref=f5e74]: what stays
+            - paragraph [ref=f5e75]: White musk, pale cedar, a trace of ambrette seed.
+      - article [ref=f5e76]:
+        - generic [ref=f5e77]:
+          - paragraph [ref=f5e78]: Amber · smoke · the evening coat
+          - heading "Or Fumé" [level=3] [ref=f5e79]
+          - paragraph [ref=f5e80]: "Smoked gold: saffron stirred into amber over a low fire. This is the scent people ask about on trains. Wear it sparingly and it behaves; wear it generously and it introduces you to strangers."
+          - paragraph [ref=f5e81]: 50 ml · €155 · refill €110
+        - generic "Note pyramid for Or Fumé" [ref=f5e82]:
+          - generic [ref=f5e83]:
+            - generic [ref=f5e84]:
+              - strong [ref=f5e85]: Tête
+              - generic [ref=f5e86]: 0–15 minutes
+            - paragraph [ref=f5e87]: Saffron, green cardamom, a spark of bitter orange.
+          - generic [ref=f5e88]:
+            - generic [ref=f5e89]:
+              - strong [ref=f5e90]: Cœur
+              - generic [ref=f5e91]: the afternoon
+            - paragraph [ref=f5e92]: Tobacco flower, Taif rose, a ribbon of beeswax.
+          - generic [ref=f5e93]:
+            - generic [ref=f5e94]:
+              - strong [ref=f5e95]: Fond
+              - generic [ref=f5e96]: what stays
+            - paragraph [ref=f5e97]: Smoked amber, sandalwood, vanilla pod split and warmed.
+    - generic [ref=f5e99]:
+      - 'figure "The atelier bench in March: iris root, vanilla, the brass scale from 1987." [ref=f5e100]':
+        - img "Raw ingredients on the atelier bench — dried iris root, vanilla pods, a brass scale" [ref=f5e101]
+      - generic [ref=f5e103]:
+        - heading "The nose" [level=2] [ref=f5e104]
+        - paragraph [ref=f5e105]: "Maëlle Varenne was born in Grasse in 1963, in an apartment above a jasmine processor. She trained at ISIPCA, spent nine years composing for houses she is contractually forbidden to name, and came home in 1987 to found Opaline with one rule: nothing ships until she would wear it herself for a year."
+        - paragraph [ref=f5e106]: She still smells every batch. The house releases nothing on a schedule — Figuier de Minuit took seven years, Pluie d'Opale eleven, Or Fumé four. A fourth fragrance has been "almost ready" since 2019. She is in no hurry, and neither are we.
+        - blockquote [ref=f5e107]: “A perfume is finished when removing anything makes it worse, not when adding something makes it better.”
+        - paragraph [ref=f5e108]: — Maëlle Varenne, in conversation with the house journal, 2021
+    - generic [ref=f5e110]:
+      - generic [ref=f5e111]:
+        - heading "Smell first. Buy slowly. Refill forever." [level=2] [ref=f5e112]
+        - paragraph [ref=f5e113]: Nobody should spend €140 on a description. The house exists to be worn, not admired from a counter.
+      - generic [ref=f5e114]:
+        - generic [ref=f5e115]:
+          - heading "La Bibliothèque — the sample library" [level=3] [ref=f5e116]
+          - paragraph [ref=f5e117]: "Five 2 ml vials: the three fragrances, plus two working sketches that have never shipped. Wear each for a week. Keep the ones you love; the €28 is credited in full against any bottle, whenever you are ready — there is no expiry on the credit."
+          - paragraph [ref=f5e118]: €28, postage included in the EU. Ships every Tuesday from Grasse.
+        - generic [ref=f5e119]:
+          - heading "The refill program" [level=3] [ref=f5e120]
+          - paragraph [ref=f5e121]: Opaline bottles are heavy cut glass, made to be kept. Bring yours to the boutique on rue des Orangers, or post it back in the original box, and we refill it for roughly 30% less than a new bottle. The cap and collar are replaced free if they ever wear.
+          - paragraph [ref=f5e122]: "Refills since 2003: 14,206 bottles saved from the bin — and counting."
+      - link "Order the sample library" [ref=f5e124] [cursor=pointer]:
+        - /url: "#top"
+  - contentinfo [ref=f5e125]:
+    - generic [ref=f5e126]:
+      - paragraph [ref=f5e127]: Opaline · 14 rue des Orangers, 06130 Grasse · Open Tue–Sat, 10h–18h
+      - paragraph [ref=f5e128]: Three fragrances a decade, no more.

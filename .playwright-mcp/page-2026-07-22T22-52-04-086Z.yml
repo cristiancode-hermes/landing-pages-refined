@@ -1,0 +1,100 @@
+- generic [active] [ref=f16e1]:
+  - banner [ref=f16e2]:
+    - generic [ref=f16e3]:
+      - link "SMOKE SIGNAL" [ref=f16e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=f16e5]:
+        - list [ref=f16e6]:
+          - listitem [ref=f16e7]:
+            - link "The Board" [ref=f16e8] [cursor=pointer]:
+              - /url: "#board"
+          - listitem [ref=f16e9]:
+            - link "The Pit" [ref=f16e10] [cursor=pointer]:
+              - /url: "#pit"
+          - listitem [ref=f16e11]:
+            - link "The Line" [ref=f16e12] [cursor=pointer]:
+              - /url: "#line"
+  - main [ref=f16e13]:
+    - region "Welcome" [ref=f16e14]:
+      - generic [ref=f16e15]:
+        - generic [ref=f16e16]: Lockhart, Texas · since 1998
+        - heading "LOW. SLOW. GONE." [level=1] [ref=f16e17]
+        - paragraph [ref=f16e18]: Post oak, salt, pepper, and fourteen hours of paying attention. We open at eleven and sell meat by the half-pound until the board's erased — most days that's by two.
+        - generic [ref=f16e19]:
+          - link "See today's board" [ref=f16e20] [cursor=pointer]:
+            - /url: "#board"
+          - link "Line etiquette" [ref=f16e21] [cursor=pointer]:
+            - /url: "#line"
+        - figure [ref=f16e22]:
+          - img "A sliced brisket with a black pepper crust and a smoke ring pink as sunrise, resting on butcher paper." [ref=f16e23]
+        - paragraph [ref=f16e24]: Thursday's prime brisket, sliced to order. The flat never sees a knife till you do.
+    - region "Today's meat board" [ref=f16e25]:
+      - generic [ref=f16e26]:
+        - generic [ref=f16e27]:
+          - generic [ref=f16e28]: SOLD OUT
+          - heading "The Board" [level=2] [ref=f16e29]
+          - paragraph [ref=f16e30]: Everything's priced by the half-pound and weighed in front of you. When an item's gone, we strike it and that's that — we don't rush a second fire for anybody.
+        - list [ref=f16e31]:
+          - listitem [ref=f16e32]:
+            - generic [ref=f16e33]: Prime Brisket
+            - generic [ref=f16e34]: $16 / half-lb
+          - listitem [ref=f16e35]:
+            - generic [ref=f16e36]: Pork Spare Ribs
+            - generic [ref=f16e37]: $13 / half-lb
+          - listitem [ref=f16e38]:
+            - generic [ref=f16e39]: Jalapeño Cheddar Sausage
+            - generic [ref=f16e40]: $11 / half-lb
+          - listitem [ref=f16e41]:
+            - generic [ref=f16e42]: Smoked Turkey
+            - generic [ref=f16e43]: $10 / half-lb
+          - listitem [ref=f16e44]:
+            - generic [ref=f16e45]: Beef Rib (Saturdays)
+            - generic [ref=f16e46]: $24 / half-lb
+        - paragraph [ref=f16e47]: "Sides come in pints: pinto beans, potato salad, and pickled jalapeño slaw, $5 each. White bread, onions, and pickles ride free, same as always."
+    - region "The pit and the pitmaster" [ref=f16e48]:
+      - generic [ref=f16e49]:
+        - heading "The Pit Never Lies" [level=2] [ref=f16e50]
+        - generic [ref=f16e51]:
+          - figure [ref=f16e52]:
+            - img "Oak coals glowing deep orange inside the mouth of the offset pit at four in the morning." [ref=f16e53]
+          - generic [ref=f16e54]:
+            - paragraph [ref=f16e55]: Marla "Two-Alarm" Reyes has minded the same 1,000-gallon offset since 1998. She stokes the first coals at 4 a.m., reads the smoke by color — thin and blue or nothing — and won't let anybody else wrap the briskets. The paper's pink, the twine's cotton, and that's the whole recipe.
+            - paragraph [ref=f16e56]: We burn post oak split on the property, about a cord and a half a week. No gas assist, no pellet hopper, no thermometer with a battery in it. If the fire's wrong, the meat waits. So do you, and it'll be worth it.
+            - generic [ref=f16e57]:
+              - heading "Pitmaster Hours" [level=3] [ref=f16e58]
+              - generic [ref=f16e59]:
+                - term [ref=f16e60]: Thu – Fri
+                - definition [ref=f16e61]: 11 a.m. till sold out (usually 2 p.m.)
+                - term [ref=f16e62]: Saturday
+                - definition [ref=f16e63]: 11 a.m. till sold out (usually 12:45 p.m.)
+                - term [ref=f16e64]: Sunday
+                - definition [ref=f16e65]: Noon till sold out — church first
+                - term [ref=f16e66]: Mon – Wed
+                - definition [ref=f16e67]: Dark. The pit rests and so does Marla.
+    - region "Line etiquette" [ref=f16e68]:
+      - generic [ref=f16e69]:
+        - heading "Line Etiquette" [level=2] [ref=f16e70]
+        - paragraph [ref=f16e71]: The line forms at the oak fence and moves faster than it looks. Mind a few rules and everybody eats happy.
+        - list [ref=f16e72]:
+          - listitem [ref=f16e73]:
+            - generic [ref=f16e74]: Rule the first
+            - strong [ref=f16e75]: Hold your spot, not your whole group's.
+            - text: One body in line per tray you're buying. Saving space for seven cousins who left for breakfast tacos is how fights start.
+          - listitem [ref=f16e76]:
+            - generic [ref=f16e77]: Rule the second
+            - strong [ref=f16e78]: Know your order by the time you hit the counter.
+            - text: It's three meats and three sides, friend. The menu's been on this page the whole time.
+          - listitem [ref=f16e79]:
+            - generic [ref=f16e80]: Rule the third
+            - strong [ref=f16e81]: First-timers get a burnt end while they wait.
+            - text: Tell Marla it's your first visit and she'll cut you one off the point. Tipping it back is considered poor manners.
+          - listitem [ref=f16e82]:
+            - generic [ref=f16e83]: Rule the fourth
+            - strong [ref=f16e84]: "\"Sold out\" means sold out."
+            - text: The stamp doesn't negotiate. Come earlier tomorrow — the pit's been lit since four, same as ever.
+  - contentinfo [ref=f16e85]:
+    - generic [ref=f16e86]:
+      - link "SMOKE SIGNAL" [ref=f16e87] [cursor=pointer]:
+        - /url: "#top"
+      - paragraph [ref=f16e88]: 412 Post Oak Row, Lockhart, TX · Thu–Sun · till it's gone
+      - paragraph [ref=f16e89]: No reservations. No phone orders. Yes, the line is worth it.

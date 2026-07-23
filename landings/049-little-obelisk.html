@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little Obelisk — a bookshop for small people with big questions.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --ink: oklch(0.26 0.03 265);
+    --ink-soft: oklch(0.42 0.04 262);
+    --red: oklch(0.58 0.19 27);
+    --red-deep: oklch(0.48 0.17 27);
+    --blue: oklch(0.52 0.14 255);
+    --blue-deep: oklch(0.42 0.13 258);
+    --yellow: oklch(0.89 0.15 95);
+    --yellow-deep: oklch(0.78 0.14 90);
+    --line: oklch(0.91 0.01 260);
+    --display: "Cherry Bomb One", system-ui;
+    --body: "Nunito", sans-serif;
+    --step--1: clamp(0.84rem, 0.81rem + 0.15vw, 0.92rem);
+    --step-0: clamp(1.02rem, 0.98rem + 0.2vw, 1.12rem);
+    --step-1: clamp(1.28rem, 1.2rem + 0.4vw, 1.5rem);
+    --step-2: clamp(1.6rem, 1.45rem + 0.75vw, 2.05rem);
+    --step-3: clamp(2rem, 1.7rem + 1.5vw, 3rem);
+    --step-4: clamp(2.5rem, 1.9rem + 3vw, 4.6rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+  p { max-width: 60ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1100px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(3rem, 2.4rem + 3.5vw, 6rem); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.96);
+    backdrop-filter: blur(8px);
+    border-bottom: 3px solid var(--yellow);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.8rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--red-deep);
+  }
+  .brand svg { width: 1.6rem; height: 1.6rem; flex: none; }
+  .site-nav { display: flex; align-items: center; gap: 1.4rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-weight: 800;
+    font-size: var(--step--1);
+    color: var(--blue-deep);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--red-deep); }
+  @media (max-width: 600px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 800;
+    font-size: 0.98rem;
+    text-decoration: none;
+    color: oklch(1 0 0);
+    background: var(--red);
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: var(--red-deep); transform: translateY(-2px) rotate(-1deg); }
+  .btn.small { padding: 0.5rem 1.1rem; font-size: 0.86rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.blue { background: var(--blue); }
+  .btn.blue:hover { background: var(--blue-deep); }
+
+  /* ---------- hero with pop-up book ---------- */
+  .hero { padding-block: clamp(2.5rem, 2rem + 4vw, 5.5rem); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 880px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero .hello {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--ink);
+    font-weight: 800;
+    font-size: var(--step--1);
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    margin-bottom: 1.3rem;
+    transform: rotate(-1.5deg);
+  }
+  .hero h1 { font-size: var(--step-4); color: var(--ink); margin-bottom: 1.2rem; }
+  .hero h1 .r { color: var(--red); }
+  .hero h1 .b { color: var(--blue); }
+  .hero .lede { font-size: var(--step-1); color: var(--ink-soft); max-width: 42ch; margin-bottom: 1.8rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+
+  /* the pop-up book */
+  .book-scene { perspective: 1400px; display: grid; place-items: center; padding-block: 1rem; }
+  .book {
+    position: relative;
+    width: min(380px, 84vw);
+    aspect-ratio: 1.5;
+    transform-style: preserve-3d;
+  }
+  .page {
+    position: absolute;
+    inset: 0;
+    width: 50%;
+    border-radius: 6px;
+    display: grid;
+    place-items: center;
+    backface-visibility: hidden;
+  }
+  .page.left {
+    left: 0;
+    background: var(--blue);
+    color: oklch(1 0 0);
+    border-radius: 10px 3px 3px 10px;
+  }
+  .page.right {
+    right: 0;
+    background: var(--yellow);
+    color: var(--ink);
+    border-radius: 3px 10px 10px 3px;
+  }
+  .page .txt {
+    font-family: var(--display);
+    font-size: clamp(1.3rem, 4.5vw, 2rem);
+    text-align: center;
+    padding: 1rem;
+    line-height: 1.15;
+  }
+  .cover {
+    position: absolute;
+    inset: 0;
+    left: 50%;
+    width: 50%;
+    transform-origin: left center;
+    transform: rotateY(0deg);
+    background: var(--red);
+    border-radius: 3px 12px 12px 3px;
+    display: grid;
+    place-items: center;
+    color: oklch(1 0 0);
+    animation: openbook 1.6s var(--ease-out) 0.3s both;
+    box-shadow: -6px 10px 0 oklch(0.88 0.01 260);
+  }
+  .cover .txt {
+    font-family: var(--display);
+    font-size: clamp(1.1rem, 3.6vw, 1.6rem);
+    text-align: center;
+    padding: 1rem;
+    line-height: 1.2;
+  }
+  @keyframes openbook {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(-162deg); }
+  }
+  .book-base {
+    width: min(420px, 90vw);
+    height: 14px;
+    background: var(--ink);
+    border-radius: 999px;
+    margin-top: 1.2rem;
+    opacity: 0.12;
+  }
+
+  /* ---------- storytime ---------- */
+  .storytime { background: var(--yellow); }
+  .storytime .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 880px) { .storytime .wrap { grid-template-columns: 1fr; } }
+  .storytime h2 { font-size: var(--step-3); color: var(--ink); margin-bottom: 0.9rem; }
+  .storytime p { color: oklch(0.35 0.05 80); margin-bottom: 1rem; }
+  .storytime .facts {
+    background: oklch(1 0 0);
+    border-radius: 16px;
+    padding: 1.8rem 1.7rem;
+    transform: rotate(1deg);
+  }
+  .storytime .facts div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.6rem;
+    border-bottom: 2px dashed var(--yellow-deep);
+    font-size: var(--step--1);
+  }
+  .storytime .facts div:last-child { border-bottom: none; }
+  .storytime .facts b { font-weight: 800; color: var(--ink); }
+  .storytime .facts span { color: var(--ink-soft); text-align: right; }
+
+  /* ---------- shelves ---------- */
+  .picks h2 { font-size: var(--step-3); color: var(--ink); margin-bottom: 0.6rem; }
+  .picks .sub { color: var(--ink-soft); margin-bottom: 2.4rem; }
+  .shelf-group { margin-bottom: 2.8rem; }
+  .shelf-group h3 { font-size: var(--step-1); color: var(--blue-deep); margin-bottom: 1.1rem; }
+  .shelf-group h3 .dot { color: var(--red); }
+  .shelf {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.55rem;
+    padding: 1.2rem 1.2rem 0;
+    background: oklch(0.97 0.008 260);
+    border-radius: 12px 12px 0 0;
+    overflow-x: auto;
+  }
+  .shelf-board {
+    height: 12px;
+    background: var(--ink);
+    border-radius: 0 0 6px 6px;
+    opacity: 0.85;
+    margin-inline: 0.4rem;
+  }
+  .spine {
+    flex: none;
+    width: 3.4rem;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: bottom center;
+    transition: transform 0.5s var(--ease-out);
+    cursor: default;
+    position: relative;
+  }
+  .spine:hover, .spine:focus-visible { transform: rotate(-8deg) translateY(-6px); }
+  .spine .t {
+    writing-mode: vertical-rl;
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    color: oklch(1 0 0);
+    padding-block: 0.8rem;
+    white-space: nowrap;
+  }
+  .spine.tall { height: 11rem; }
+  .spine.mid { height: 9.5rem; }
+  .spine.short { height: 8rem; }
+  .spine.c-red { background: var(--red); }
+  .spine.c-blue { background: var(--blue); }
+  .spine.c-yellow { background: var(--yellow-deep); }
+  .spine.c-ink { background: var(--ink); }
+
+  /* ---------- touch the books ---------- */
+  .touch { background: var(--blue); color: oklch(1 0 0); }
+  .touch .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 880px) { .touch .wrap { grid-template-columns: 1fr; } }
+  .touch h2 { font-size: var(--step-3); color: oklch(1 0 0); margin-bottom: 0.9rem; }
+  .touch p { color: oklch(0.92 0.04 255); margin-bottom: 1rem; }
+  .touch p b { color: var(--yellow); }
+  .touch figure { border-radius: 16px; overflow: hidden; transform: rotate(-1.2deg); }
+  .touch figure img { width: 100%; }
+  .touch figcaption { font-size: var(--step--1); color: oklch(0.92 0.04 255); padding-top: 0.7rem; }
+
+  /* ---------- visit ---------- */
+  .visit h2 { font-size: var(--step-3); color: var(--ink); margin-bottom: 1.6rem; }
+  .visit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.6rem;
+  }
+  .visit-card {
+    border-radius: 16px;
+    padding: 1.7rem 1.6rem;
+  }
+  .visit-card.y { background: var(--yellow); }
+  .visit-card.r { background: var(--red); color: oklch(1 0 0); }
+  .visit-card.b { background: var(--blue); color: oklch(1 0 0); }
+  .visit-card h3 { font-size: var(--step-1); margin-bottom: 0.6rem; }
+  .visit-card p { font-size: var(--step--1); line-height: 1.6; }
+  .visit-card.y p { color: oklch(0.35 0.05 80); }
+  .visit-card.r p, .visit-card.b p { color: oklch(0.94 0.03 260); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 3px solid var(--yellow);
+    padding-block: 2rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  footer b { color: var(--red-deep); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .cover { animation: none; transform: rotateY(-162deg); }
+    .spine, .spine:hover, .spine:focus-visible { transition: none; transform: none; }
+    .btn, .btn:hover { transition: none; transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2 L15 15 L19 19 H5 L9 15 Z" fill="var(--red)"/>
+        <rect x="4" y="19" width="16" height="3" rx="1.5" fill="var(--blue)"/>
+      </svg>
+      Little Obelisk
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#storytime">Storytime</a>
+      <a href="#picks">Staff picks</a>
+      <a href="#visit">Visit</a>
+      <a class="btn small blue" href="#storytime">Saturday, 10 am</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="hello">Hello! Come in, we're open.</span>
+        <h1>Books for <span class="r">small</span> people with <span class="b">big</span> questions.</h1>
+        <p class="lede">Little Obelisk is a children's bookshop — nothing else. Two rooms, one reading rug, roughly four thousand answers to "but why?"</p>
+        <div class="hero-actions">
+          <a class="btn" href="#picks">See staff picks</a>
+          <a class="btn blue" href="#storytime">Storytime Saturdays</a>
+        </div>
+      </div>
+      <div class="book-scene" aria-hidden="true">
+        <div>
+          <div class="book">
+            <div class="page left"><span class="txt">Once upon<br>a Tuesday…</span></div>
+            <div class="page right"><span class="txt">…a very small<br>bookshop woke up.</span></div>
+            <div class="cover"><span class="txt">LITTLE<br>OBELISK</span></div>
+          </div>
+          <div class="book-base"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORYTIME -->
+  <section class="storytime" id="storytime">
+    <div class="wrap">
+      <div>
+        <h2>Storytime Saturdays</h2>
+        <p>Every Saturday at ten sharp, Marisol reads three books on the big rug. Voices are done. Roaring is permitted. Grown-ups get the stool circle and the good coffee from next door.</p>
+        <p>No booking, no tickets, no shushing. If your small person needs to wobble, wobble away — the rug has seen worse.</p>
+      </div>
+      <div class="facts">
+        <div><b>When</b><span>Saturdays, 10:00–10:45 am</span></div>
+        <div><b>Ages</b><span>2–6 (siblings always smuggled in)</span></div>
+        <div><b>Cost</b><span>Free. Forever.</span></div>
+        <div><b>After</b><span>15 minutes of "one more page" allowed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PICKS -->
+  <section class="picks" id="picks">
+    <div class="wrap">
+      <h2>Staff picks, by age</h2>
+      <p class="sub">Chosen by Marisol, Dev, and Granny June (volunteer, forty years of storytimes). Lean on a book — everyone does.</p>
+
+      <div class="shelf-group">
+        <h3>Ages 0–3 <span class="dot">·</span> chew-proof favourites</h3>
+        <div>
+          <div class="shelf">
+            <div class="spine tall c-red"><span class="t">The Snail Who Delivered the Post</span></div>
+            <div class="spine mid c-yellow"><span class="t">Peepo, Little Moon</span></div>
+            <div class="spine tall c-blue"><span class="t">Bath Time for Captain Crumb</span></div>
+            <div class="spine short c-ink"><span class="t">One Sock, Two Sock</span></div>
+            <div class="spine mid c-red"><span class="t">Goodnight, Tractor</span></div>
+          </div>
+          <div class="shelf-board"></div>
+        </div>
+      </div>
+
+      <div class="shelf-group">
+        <h3>Ages 4–7 <span class="dot">·</span> read-it-again territory</h3>
+        <div>
+          <div class="shelf">
+            <div class="spine tall c-blue"><span class="t">Mabel and the Upside-Down House</span></div>
+            <div class="spine mid c-red"><span class="t">The Lighthouse Keeper's Sandwich</span></div>
+            <div class="spine tall c-ink"><span class="t">Don't Let the Pigeon Drive the Tram</span></div>
+            <div class="spine mid c-yellow"><span class="t">A Pocket Full of Beetles</span></div>
+            <div class="spine short c-blue"><span class="t">Where the Wild Scones Are</span></div>
+          </div>
+          <div class="shelf-board"></div>
+        </div>
+      </div>
+
+      <div class="shelf-group">
+        <h3>Ages 8–12 <span class="dot">·</span> torch-under-the-duvet shelf</h3>
+        <div>
+          <div class="shelf">
+            <div class="spine tall c-ink"><span class="t">The Clockwork Orchard</span></div>
+            <div class="spine mid c-blue"><span class="t">Sisters of the Salt Road</span></div>
+            <div class="spine tall c-red"><span class="t">How to Invisible (Badly)</span></div>
+            <div class="spine mid c-yellow"><span class="t">The Map of Almost-Places</span></div>
+            <div class="spine short c-red"><span class="t">Beans versus the Moon</span></div>
+          </div>
+          <div class="shelf-board"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUCH THE BOOKS -->
+  <section class="touch">
+    <div class="wrap">
+      <div>
+        <h2>Yes, touch the books.</h2>
+        <p>We hear it in other shops — "don't touch, please." Not here. <b>Every book in Little Obelisk can be opened, sat with, and road-tested</b> on the rug before anyone spends a penny.</p>
+        <p>Sticky fingers happen. We keep wipes by the till and a small museum of books that were loved slightly too hard. They are not for sale. They are retired heroes.</p>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/kidsbooks-1/1600/900" width="1600" height="900"
+             alt="The reading corner at Little Obelisk — a low yellow rug, cushions in a heap, and picture books fanned face-out within arm's reach.">
+        <figcaption>The rug, mid-week, moments before it stops being tidy.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section class="visit" id="visit">
+    <div class="wrap">
+      <h2>Come and find us</h2>
+      <div class="visit-grid">
+        <div class="visit-card y">
+          <h3>Where</h3>
+          <p>3 Bell Yard, off Parchment Lane — look for the red door with the tiny second door in it. The tiny door is for browsers under one metre tall. It opens.</p>
+        </div>
+        <div class="visit-card r">
+          <h3>When</h3>
+          <p>Tuesday to Saturday, 9 am – 5:30 pm. Closed Sundays and Mondays for reading. Storytime Saturdays at 10 am, sharpish.</p>
+        </div>
+        <div class="visit-card b">
+          <h3>Orders</h3>
+          <p>Any children's book in print, ordered by Thursday, is usually here by Tuesday. We'll wrap it in brown paper and draw a worm on it. The worm is free.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top: 0;">
+    <div class="wrap">
+      <figure>
+        <img src="https://picsum.photos/seed/kidsbooks-2/800/600" width="800" height="600"
+             alt="A shelf of picture books arranged face-out like a rainbow, spines in red, blue and yellow, one book leaning out at a friendly angle."
+             style="border-radius: 16px; width: 100%;">
+      </figure>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>Little Obelisk</b> · 3 Bell Yard, off Parchment Lane</span>
+    <span>Independent since 2011 · owned by Marisol &amp; Dev</span>
+    <span>The tiny door opens. Really.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* Spines are keyboard-focusable so the lean works for keyboard users too. */
+  document.querySelectorAll(".spine").forEach(function (s) {
+    s.setAttribute("tabindex", "0");
+  });
+})();
+</script>
+</body>
+</html>

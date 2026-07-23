@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cassette — An 80s arcade bar with 30 working cabinets, honest tokens, and tournaments every Tuesday.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.14 0.01 300);
+    --surface: oklch(0.19 0.02 310);
+    --pink: oklch(0.72 0.21 335);
+    --pink-dim: oklch(0.55 0.15 335);
+    --gold: oklch(0.82 0.13 90);
+    --ink: oklch(0.93 0.05 150);
+    --ink-soft: oklch(0.78 0.06 152);
+    --line: oklch(0.30 0.03 320);
+    --display: "Monoton", cursive;
+    --crt: "VT323", monospace;
+    --step--1: clamp(1.05rem, 1rem + 0.2vw, 1.18rem);
+    --step-0: clamp(1.25rem, 1.19rem + 0.3vw, 1.45rem);
+    --step-1: clamp(1.56rem, 1.45rem + 0.55vw, 1.9rem);
+    --step-2: clamp(1.95rem, 1.74rem + 1.05vw, 2.65rem);
+    --step-3: clamp(2.44rem, 2.05rem + 1.95vw, 3.7rem);
+    --step-4: clamp(3.05rem, 2.3rem + 3.75vw, 5.5rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-boot: 20;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--crt);
+    font-size: var(--step-0);
+    line-height: 1.55;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+  p { max-width: 62ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 3rem + 5vw, 7rem); }
+
+  /* ---------- CRT boot overlay ---------- */
+  #boot {
+    display: none;
+    position: fixed; inset: 0;
+    background: oklch(0.1 0 0);
+    z-index: var(--z-boot);
+    align-items: center; justify-content: center;
+  }
+  #boot.on { display: flex; }
+  #boot .line {
+    width: 0; height: 3px;
+    background: oklch(0.97 0.02 150);
+    box-shadow: 0 0 24px oklch(0.93 0.05 150 / 0.9);
+  }
+  #boot.on .line {
+    animation: bootline 0.5s var(--ease-out) forwards,
+               bootraster 0.45s 0.55s var(--ease-out) forwards;
+  }
+  @keyframes bootline { to { width: 100vw; } }
+  @keyframes bootraster { to { height: 100vh; opacity: 0; } }
+  #boot.on { animation: bootgone 0.01s 1.15s forwards; }
+  @keyframes bootgone { to { visibility: hidden; } }
+
+  /* ---------- scanlines, on screen surfaces only (literal CRT) ---------- */
+  .screen { position: relative; }
+  .screen::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      oklch(0 0 0 / 0.16) 0 1px,
+      transparent 1px 4px
+    );
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky; top: 0; z-index: var(--z-sticky);
+    background: oklch(0.14 0.01 300 / 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1.5rem; padding-block: 0.7rem;
+  }
+  .brand {
+    font-family: var(--display); font-size: var(--step-1);
+    text-decoration: none; color: var(--pink);
+    text-shadow: 0 0 14px oklch(0.72 0.21 335 / 0.55);
+  }
+  .site-nav { display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { text-decoration: none; font-size: var(--step--1); color: var(--ink-soft); }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--gold); }
+  .btn {
+    display: inline-block; font-family: var(--crt); font-size: var(--step--1);
+    text-decoration: none; padding: 0.55rem 1.3rem; border-radius: 999px;
+    border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em;
+    transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-gold { background: var(--gold); color: oklch(0.22 0.05 90); white-space: nowrap; flex-shrink: 0; }
+  .btn-gold:hover { box-shadow: 0 0 18px oklch(0.82 0.13 90 / 0.5); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(4rem, 3rem + 7vw, 8rem); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4rem); align-items: center;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    color: var(--pink);
+    text-shadow: 0 0 10px oklch(0.72 0.21 335 / 0.65), 0 0 42px oklch(0.72 0.21 335 / 0.35);
+    margin-bottom: 1.4rem;
+  }
+  .hero p { color: var(--ink-soft); font-size: var(--step-1); margin-bottom: 2rem; }
+  .hero p strong { color: var(--gold); font-weight: 400; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .crt-frame {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 0 2px var(--pink-dim), 0 0 34px oklch(0.72 0.21 335 / 0.3);
+  }
+  .crt-frame img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; filter: saturate(1.15) contrast(1.05); }
+
+  /* joystick glow pulse */
+  .joystick {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    font-size: var(--step--1); color: var(--ink-soft);
+  }
+  .joystick .stick {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--pink);
+    animation: glowpulse 1.8s ease-in-out infinite;
+  }
+  @keyframes glowpulse {
+    0%, 100% { box-shadow: 0 0 6px oklch(0.72 0.21 335 / 0.6); }
+    50% { box-shadow: 0 0 22px oklch(0.72 0.21 335 / 0.95); }
+  }
+
+  /* ---------- section heads ---------- */
+  .sec-head { margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 46ch; }
+  .sec-head h2 {
+    font-size: var(--step-3); color: var(--gold);
+    text-shadow: 0 0 18px oklch(0.82 0.13 90 / 0.35);
+    margin-bottom: 0.7rem;
+  }
+  .sec-head p { color: var(--ink-soft); }
+
+  /* ---------- cabinets ---------- */
+  .cab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.2rem;
+  }
+  .cab {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.2rem 1.2rem 1rem;
+    border: 1px solid var(--line);
+  }
+  .cab h3 { font-family: var(--crt); font-size: var(--step-1); color: var(--pink); margin-bottom: 0.2rem; }
+  .cab .yr { color: var(--ink-soft); font-size: var(--step--1); }
+  .cab .status { display: inline-block; margin-top: 0.6rem; font-size: 0.95rem; padding: 0.15rem 0.7rem; border-radius: 999px; background: oklch(0.28 0.08 150); color: var(--ink); }
+  .cab .status.down { background: oklch(0.33 0.1 60); color: oklch(0.92 0.08 90); }
+
+  /* ---------- tokens ---------- */
+  .tokens-panel {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+    border: 1px solid var(--line);
+  }
+  .token-rows { list-style: none; }
+  .token-rows li {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+    padding-block: 0.9rem; border-bottom: 1px solid var(--line);
+  }
+  .token-rows li:first-child { border-top: 1px solid var(--line); }
+  .token-rows .deal { color: var(--ink); }
+  .token-rows .deal span { display: block; font-size: var(--step--1); color: var(--ink-soft); }
+  .token-rows .cost { color: var(--gold); font-size: var(--step-1); white-space: nowrap; }
+  .token-note { margin-top: 1.2rem; font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- high scores ---------- */
+  .scores-panel {
+    background: oklch(0.16 0.015 300);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 0 0 2px var(--pink-dim), 0 0 40px oklch(0.72 0.21 335 / 0.22);
+  }
+  .scores-inner { padding: clamp(1.6rem, 3vw, 2.6rem); }
+  .scores-inner h3 { font-size: var(--step-2); color: var(--pink); text-align: center; margin-bottom: 1.4rem; text-shadow: 0 0 16px oklch(0.72 0.21 335 / 0.5); }
+  .score-table { width: 100%; border-collapse: collapse; font-size: var(--step-1); }
+  .score-table th { text-align: left; color: var(--ink-soft); font-weight: 400; font-size: var(--step--1); padding-bottom: 0.6rem; }
+  .score-table th:last-child, .score-table td:last-child { text-align: right; }
+  .score-table td { padding-block: 0.5rem; border-top: 1px dashed var(--line); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .score-table td.name { color: var(--gold); }
+  .score-table tr.flash td { animation: scoreflash 1.2s var(--ease-out); }
+  @keyframes scoreflash {
+    0% { background: oklch(0.82 0.13 90 / 0.25); }
+    100% { background: transparent; }
+  }
+  .scores-foot { text-align: center; margin-top: 1.2rem; font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- honesty board ---------- */
+  .honesty { background: var(--surface); border-block: 1px solid var(--line); }
+  .repair-list { list-style: none; }
+  .repair-list li {
+    display: grid; grid-template-columns: 1fr auto; gap: 0.4rem 1.4rem;
+    padding-block: 1.1rem; border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .repair-list li:first-child { border-top: 1px solid var(--line); }
+  .repair-list h3 { font-family: var(--crt); font-size: var(--step-1); color: var(--pink); }
+  .repair-list .eta { color: var(--gold); white-space: nowrap; font-size: var(--step--1); }
+  .repair-list p { grid-column: 1 / -1; color: var(--ink-soft); font-size: var(--step--1); }
+
+  /* ---------- tournament ---------- */
+  .tourney .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .tourney h2 { font-size: var(--step-3); color: var(--pink); text-shadow: 0 0 18px oklch(0.72 0.21 335 / 0.4); margin-bottom: 1rem; }
+  .tourney p { color: var(--ink-soft); margin-bottom: 1rem; }
+  .tourney p strong { color: var(--gold); font-weight: 400; }
+
+  /* ---------- footer ---------- */
+  .site-foot {
+    border-top: 1px solid var(--line);
+    padding-block: 3rem;
+    font-size: var(--step--1); color: var(--ink-soft);
+  }
+  .site-foot .wrap { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; align-items: center; }
+  .site-foot a { color: var(--gold); text-decoration: none; }
+  .site-foot a:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .hero-grid, .tourney .wrap { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    #boot { display: none !important; }
+    .joystick .stick { animation: none; box-shadow: 0 0 12px oklch(0.72 0.21 335 / 0.7); }
+    .score-table tr.flash td { animation: none; }
+    .btn, .btn:hover { transition: none; transform: none; box-shadow: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    .site-nav a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="boot" aria-hidden="true"><div class="line"></div></div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Cassette</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#cabinets">Cabinets</a>
+      <a href="#tokens">Tokens</a>
+      <a href="#scores">High scores</a>
+      <a href="#repairs">Repair board</a>
+      <a href="#tuesday">Tournament Tuesdays</a>
+      <a class="btn btn-gold" href="#tokens">Buy tokens</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Cassette</h1>
+        <p>An arcade bar that means it. <strong>Thirty working cabinets</strong> from 1979 to 1991, a bar that takes its beer as seriously as its high scores, and carpet we're legally required to call "vintage."</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#tokens">Get your tokens</a>
+          <span class="joystick"><span class="stick" aria-hidden="true"></span>1 token = 1 play, like it should be</span>
+        </div>
+      </div>
+      <figure class="crt-frame screen">
+        <img src="https://picsum.photos/seed/arcade-1/1600/1200" width="1600" height="1200"
+             alt="A row of glowing arcade cabinets at Cassette, screens lit, nobody looking at their phone" loading="eager">
+      </figure>
+    </div>
+  </section>
+
+  <section id="cabinets">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>30 cabinets, all playable</h2>
+        <p>Every machine on this floor is on, calibrated, and eats its token gratefully. A sample of the lineup — the full roster is chalked on the wall by the door.</p>
+      </div>
+      <div class="cab-grid">
+        <article class="cab"><h3>Pac-Man</h3><span class="yr">1980 · maze</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Galaga</h3><span class="yr">1981 · shooter</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Donkey Kong</h3><span class="yr">1981 · platform</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Ms. Pac-Man</h3><span class="yr">1982 · maze</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Dig Dug</h3><span class="yr">1982 · maze</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>BurgerTime</h3><span class="yr">1982 · platform</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Track &amp; Field</h3><span class="yr">1983 · sports</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Out Run</h3><span class="yr">1986 · sit-down racer</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Street Fighter II</h3><span class="yr">1991 · fighter</span><br><span class="status">WORKING</span></article>
+        <article class="cab"><h3>Centipede</h3><span class="yr">1981 · trackball</span><br><span class="status down">SEE REPAIR BOARD</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="tokens">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Token math, no funny business</h2>
+        <p>Tokens never expire, the machine never eats one without a fight, and if it does, the bar refunds it from the honesty jar — which has never once been short.</p>
+      </div>
+      <div class="tokens-panel">
+        <ul class="token-rows">
+          <li><span class="deal">4 tokens<span>Enough to learn you still got it (or don't)</span></span><span class="cost">$5</span></li>
+          <li><span class="deal">10 tokens<span>The classic evening: 9 games and 1 heroic run</span></span><span class="cost">$10</span></li>
+          <li><span class="deal">25 tokens<span>Date-night bundle — plus two sodas on the house</span></span><span class="cost">$20</span></li>
+          <li><span class="deal">100-token roll<span>The regulars' roll. Comes in a paper wrapper with your name on it, kept behind the bar</span></span><span class="cost">$65</span></li>
+        </ul>
+        <p class="token-note">Kids under 12 play free on Sundays before 6 p.m. — the regulars voted for it, unanimously, which has never happened before or since.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="scores">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The wall of fame</h2>
+        <p>House records on the big board, verified by two staff and one skeptical regular. Beat one and your initials go up in gold marker the same night.</p>
+      </div>
+      <div class="scores-panel screen">
+        <div class="scores-inner">
+          <h3>— High Scores —</h3>
+          <table class="score-table">
+            <thead><tr><th scope="col">Game</th><th scope="col">Player</th><th scope="col">Score</th></tr></thead>
+            <tbody id="scoreBody">
+              <tr><td>Pac-Man</td><td class="name">RIO</td><td>3,326,480</td></tr>
+              <tr><td>Galaga</td><td class="name">DEE</td><td>1,847,220</td></tr>
+              <tr><td>Ms. Pac-Man</td><td class="name">KAT</td><td>921,540</td></tr>
+              <tr><td>Donkey Kong</td><td class="name">MOX</td><td>1,108,700</td></tr>
+              <tr><td>Street Fighter II</td><td class="name">JUN</td><td>97 wins</td></tr>
+            </tbody>
+          </table>
+          <p class="scores-foot" id="scoreFoot">Last verified: tonight, probably · RIO is a bartender and yes, it's unfair</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="honesty" id="repairs">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The broken-joystick honesty board</h2>
+        <p>We'd rather tell you a machine is down than let you find out mid-token. This page and the chalkboard by the door say the same thing, always.</p>
+      </div>
+      <ul class="repair-list">
+        <li>
+          <h3>Centipede</h3>
+          <span class="eta">Back Friday</span>
+          <p>Trackball got crunchy. New bearings arrived Tuesday; Marco is rebuilding it between shifts and narrating the process to anyone who'll listen.</p>
+        </li>
+        <li>
+          <h3>Tempest</h3>
+          <span class="eta">Waiting on a part</span>
+          <p>Spinner knob shaft snapped — a 1981 part in a 2026 world. One is coming from a collector in Ohio who made us promise to "treat her right." We will.</p>
+        </li>
+        <li>
+          <h3>Q*bert</h3>
+          <span class="eta">Back tomorrow</span>
+          <p>Monitor dimming on the left side. Not broken, exactly — just shy. Cap kit is in and tonight's the night.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="tourney" id="tuesday">
+    <div class="wrap">
+      <div>
+        <h2>Tournament Tuesdays</h2>
+        <p>Every Tuesday at 7 p.m., one cabinet, <strong>$5 entry, winner takes the pot</strong> in tokens. The game is drawn from a hat at 6:55 — no practicing, no excuses, no mercy.</p>
+        <p>First-timers get a bye through round one and a free soda, because everyone remembers their first bracket. House rule: trash talk must be at least 80% affectionate.</p>
+        <a class="btn btn-gold" href="#tokens">Reserve a bracket spot</a>
+      </div>
+      <figure class="crt-frame screen">
+        <img src="https://picsum.photos/seed/arcade-2/800/600" width="800" height="600"
+             alt="Neon light spilling over the tournament corner on a Tuesday night, brackets chalked on the wall" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="brand" href="#top">Cassette</a>
+    <p>212 VHS Lane · Wed–Sun 4pm–2am · 18+ after 9pm · <a href="tel:+15550198">(555) 019-8383</a></p>
+    <p>© <span id="year">2026</span> Cassette Arcade Bar · Insert coin to continue</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --- CRT boot: power-line flash, then raster fill --- */
+  var boot = document.getElementById("boot");
+  if (boot && !reduced) {
+    boot.classList.add("on");
+    setTimeout(function () { boot.remove(); }, 1400);
+  }
+
+  /* --- high-score table: live-feel updates --- */
+  var body = document.getElementById("scoreBody");
+  if (body && !reduced) {
+    var rows = body.querySelectorAll("tr");
+    var i = 0;
+    setInterval(function () {
+      var tr = rows[i % rows.length];
+      var cell = tr.querySelector("td:last-child");
+      if (!cell || cell.textContent.indexOf("wins") !== -1) { i++; return; }
+      var n = parseInt(cell.textContent.replace(/[^0-9]/g, ""), 10);
+      if (!isNaN(n)) {
+        n += Math.floor(Math.random() * 900) + 120;
+        cell.textContent = n.toLocaleString("en-US");
+        tr.classList.remove("flash");
+        void tr.offsetWidth;
+        tr.classList.add("flash");
+      }
+      i++;
+    }, 4200);
+  }
+
+  var y = document.getElementById("year");
+  if (y) y.textContent = String(new Date().getFullYear());
+})();
+</script>
+</body>
+</html>

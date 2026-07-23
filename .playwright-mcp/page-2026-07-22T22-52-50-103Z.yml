@@ -1,0 +1,173 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "Bright Harbor." [ref=f1e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=f1e5]:
+        - list [ref=f1e6]:
+          - listitem [ref=f1e7]:
+            - link "The floor" [ref=f1e8] [cursor=pointer]:
+              - /url: "#plan"
+          - listitem [ref=f1e9]:
+            - link "Memberships" [ref=f1e10] [cursor=pointer]:
+              - /url: "#memberships"
+          - listitem [ref=f1e11]:
+            - link "House rules" [ref=f1e12] [cursor=pointer]:
+              - /url: "#house"
+          - listitem [ref=f1e13]:
+            - link "Day pass & tours" [ref=f1e14] [cursor=pointer]:
+              - /url: "#visit"
+  - main [ref=f1e15]:
+    - generic [ref=f1e17]:
+      - generic [ref=f1e18]:
+        - paragraph [ref=f1e19]: Coworking on the old ferry pier · Berth 3, East Dock
+        - heading "Work where the morning comes off the water." [level=1] [ref=f1e20]
+        - paragraph [ref=f1e21]: Bright Harbor is 240 desks, six phone booths, a coffee bar that pulls its first shot at 7:30, and a harbor view that makes Monday slightly less Monday. Come for a day, stay for years — most people do.
+        - generic [ref=f1e22]:
+          - link "Book a free tour" [ref=f1e23] [cursor=pointer]:
+            - /url: "#visit"
+          - link "See memberships" [ref=f1e24] [cursor=pointer]:
+            - /url: "#memberships"
+      - figure "The main floor at 8:15, before the standups start." [ref=f1e25]:
+        - img "The main floor at Bright Harbor — long shared tables, harbor light through pier windows" [ref=f1e26]
+        - generic [ref=f1e27]: Open today until 22:00
+    - generic [ref=f1e30]:
+      - generic [ref=f1e31]:
+        - heading "The floor, desk by desk" [level=2] [ref=f1e32]
+        - paragraph [ref=f1e33]: Hover or tab across the plan — every desk lights up with what makes it worth fighting over. Window desks go first on Mondays; the radiator row goes first in February.
+      - generic [ref=f1e34]:
+        - generic [ref=f1e35]:
+          - group "Interactive floor plan of Bright Harbor" [ref=f1e36]:
+            - generic [ref=f1e39]: Coffee bar
+            - generic [ref=f1e41]: Room “Foghorn”
+            - generic [ref=f1e43]: Room “Slipway”
+            - generic [ref=f1e48]: Phone booths ×6 (two more upstairs)
+            - generic [ref=f1e50]: Kitchen & lunch tables
+            - generic "Desk A1 — harbor window, two monitors, taken most days by Priya" [ref=f1e51] [cursor=pointer]: A1 · window
+            - generic "Desk A2 — harbor window, near the plants" [ref=f1e53] [cursor=pointer]: A2 · window
+            - generic "Desk A3 — harbor window, afternoon sun" [ref=f1e55] [cursor=pointer]: A3 · window
+            - generic "Desk A4 — harbor window, closest to the coffee" [ref=f1e57] [cursor=pointer]: A4 · window
+            - generic "Desk B1 — quiet bay, under the skylight" [ref=f1e59] [cursor=pointer]: B1 · skylight
+            - generic "Desk B2 — quiet bay, standing desk" [ref=f1e61] [cursor=pointer]: B2 · standing
+            - generic "Desk B3 — quiet bay, extra-wide for dual screens" [ref=f1e63] [cursor=pointer]: B3 · wide
+            - generic "Desk B4 — quiet bay, next to the library shelf" [ref=f1e65] [cursor=pointer]: B4 · library
+            - generic "Desk C1 — radiator row, warmest seat in the building" [ref=f1e67] [cursor=pointer]: C1 · radiator
+            - generic "Desk C2 — radiator row, good for calls, near Foghorn" [ref=f1e69] [cursor=pointer]: C2 · radiator
+            - generic "Desk C3 — corner desk, two walls, deep focus" [ref=f1e71] [cursor=pointer]: C3 · corner
+            - generic "Desk C4 — beside the terrace door, first to smell the sea" [ref=f1e73] [cursor=pointer]: C4 · terrace
+            - generic [ref=f1e75]: 240 desks across two piers — this is the east bay, desks A1–C4 shown
+          - generic [ref=f1e76]:
+            - generic [ref=f1e77]: Open desk
+            - generic [ref=f1e79]: Hover / focus to inspect
+            - generic [ref=f1e81]: Phone booth
+        - generic [ref=f1e83]:
+          - heading "Meeting rooms, right now" [level=3] [ref=f1e84]
+          - list "Meeting room availability" [ref=f1e85]:
+            - listitem [ref=f1e86]:
+              - generic [ref=f1e87]:
+                - text: Foghorn
+                - generic [ref=f1e88]: 8 seats · screen · whiteboard wall
+              - generic [ref=f1e89]: Free now
+            - listitem [ref=f1e92]:
+              - generic [ref=f1e93]:
+                - text: Slipway
+                - generic [ref=f1e94]: 6 seats · screen · harbor side
+              - generic [ref=f1e95]: Booked until 14:00
+            - listitem [ref=f1e98]:
+              - generic [ref=f1e99]:
+                - text: The Chart Room
+                - generic [ref=f1e100]: 12 seats · the big table
+              - generic [ref=f1e101]: Free in 20 min
+            - listitem [ref=f1e104]:
+              - generic [ref=f1e105]:
+                - text: Crow's Nest
+                - generic [ref=f1e106]: 4 seats · upstairs, very quiet
+              - generic [ref=f1e107]: Free now
+          - paragraph [ref=f1e110]: Board refreshes as bookings change — members book in 15-minute blocks, capped at three hours a day so no one camps the good rooms.
+    - generic [ref=f1e112]:
+      - generic [ref=f1e113]:
+        - heading "Three ways to belong" [level=2] [ref=f1e114]
+        - paragraph [ref=f1e115]: Every tier includes the coffee bar's filter coffee (free until noon), 1 Gbps fiber, locker use, and the terrace. No setup fees, no annual lock-in — monthly means monthly.
+      - generic [ref=f1e116]:
+        - article [ref=f1e117]:
+          - heading "Day Pass" [level=3] [ref=f1e118]
+          - paragraph [ref=f1e119]: €18 / day
+          - list [ref=f1e120]:
+            - listitem [ref=f1e121]: Any open desk, 7:30–22:00
+            - listitem [ref=f1e122]: Phone booths included
+            - listitem [ref=f1e123]: Meeting rooms at €12 / hour
+            - listitem [ref=f1e124]: No tour, no signup — walk in
+          - link "Just come by" [ref=f1e125] [cursor=pointer]:
+            - /url: "#visit"
+        - article [ref=f1e126]:
+          - heading "Flex" [level=3] [ref=f1e127]
+          - paragraph [ref=f1e128]: €120 / month
+          - list [ref=f1e129]:
+            - listitem [ref=f1e130]: 10 days a month, any desk
+            - listitem [ref=f1e131]: 2 meeting-room hours included
+            - listitem [ref=f1e132]: "Guest passes: 2 per month"
+            - listitem [ref=f1e133]: Pause anytime, keep your rate
+          - link "Start with a tour" [ref=f1e134] [cursor=pointer]:
+            - /url: "#visit"
+        - article [ref=f1e135]:
+          - heading "Resident" [level=3] [ref=f1e136]
+          - paragraph [ref=f1e137]: €340 / month
+          - list [ref=f1e138]:
+            - listitem [ref=f1e139]: Your own desk — it stays yours
+            - listitem [ref=f1e140]: 24/7 access, both piers
+            - listitem [ref=f1e141]: 6 meeting-room hours included
+            - listitem [ref=f1e142]: Mail handling & registered address
+          - link "Join the waitlist" [ref=f1e143] [cursor=pointer]:
+            - /url: "#visit"
+    - generic [ref=f1e145]:
+      - generic [ref=f1e146]:
+        - generic [ref=f1e147]: 18:00
+        - heading "No Zoom booths after six." [level=3] [ref=f1e148]
+        - paragraph [ref=f1e149]: "Calls are fine all day — that is what the booths are for. But at 18:00 the floor switches to evening mode: no calls in the open, music stays low, and the long tables become what they were built for. People eat together, play chess, finish side projects. The rule is the reason residents stay an average of 3.2 years."
+      - generic [ref=f1e150]:
+        - heading "The community board" [level=3] [ref=f1e151]
+        - list [ref=f1e152]:
+          - listitem [ref=f1e153]:
+            - text: Tomas · Tue 14 May
+            - paragraph [ref=f1e154]: Sailing crew needs a fourth for Wednesday evenings. Beginners welcome, boat is forgiving, skipper less so.
+          - listitem [ref=f1e155]:
+            - text: Aisha · Mon 13 May
+            - paragraph [ref=f1e156]: "Found: one mechanical keyboard, very loud, desk B3. Claim it at the bar and apologize to your neighbors."
+          - listitem [ref=f1e157]:
+            - text: The bar · Fri 10 May
+            - paragraph [ref=f1e158]: New roaster from week 21 — a washed Ethiopian. Filter is free until noon as always; espresso drinks €2.50.
+          - listitem [ref=f1e159]:
+            - text: Renata · Thu 9 May
+            - paragraph [ref=f1e160]: Portuguese conversation table, Thursdays 12:30 in the kitchen. All levels. Bring lunch and opinions.
+    - generic [ref=f1e162]:
+      - generic [ref=f1e163]:
+        - heading "Try a day. No strings, honestly." [level=2] [ref=f1e164]
+        - generic [ref=f1e165]:
+          - paragraph [ref=f1e166]: The day pass really is €18, all day, coffee included. There is no “discounted first day” because there is nothing to upsell you into.
+          - paragraph [ref=f1e167]: You can leave at lunch and we will not email you about it. We do not have your email unless you book a tour below.
+          - paragraph [ref=f1e168]: If you join within a week of a day pass, the €18 comes off your first invoice.
+        - figure "The bar. Filter is free until noon; the harbor is free all day." [ref=f1e169]:
+          - img "The coffee bar at Bright Harbor — espresso machine, harbor visible through the window behind" [ref=f1e170]
+      - generic [ref=f1e172]:
+        - heading "Book a free tour" [level=3] [ref=f1e173]
+        - paragraph [ref=f1e174]: Twenty minutes, no sales script. We show you the floor, the booths, and the thermostat settings, then leave you alone with a coffee.
+        - generic [ref=f1e175]:
+          - generic [ref=f1e176]:
+            - generic [ref=f1e177]: Your name
+            - textbox "Your name" [ref=f1e178]
+          - generic [ref=f1e179]:
+            - generic [ref=f1e180]: Email
+            - textbox "Email" [ref=f1e181]
+          - generic [ref=f1e182]:
+            - generic [ref=f1e183]: Preferred day
+            - combobox "Preferred day" [ref=f1e184]:
+              - option "Tuesday morning" [selected]
+              - option "Tuesday afternoon"
+              - option "Thursday morning"
+              - option "Thursday afternoon"
+              - option "Saturday, 10:00"
+          - button "Request the tour" [ref=f1e185] [cursor=pointer]
+  - contentinfo [ref=f1e186]:
+    - generic [ref=f1e187]:
+      - paragraph [ref=f1e188]: Bright Harbor · Berth 3, East Dock · Mon–Fri 7:30–22:00, Sat 9:00–18:00
+      - paragraph [ref=f1e189]: 240 desks, six booths, one harbor.

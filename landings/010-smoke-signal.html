@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smoke Signal — Post Oak BBQ in Lockhart, Texas. Till It's Gone.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bitter:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --smoke-black: oklch(0.13 0.008 45);
+    --smoke-deep: oklch(0.10 0.006 45);
+    --butcher: oklch(0.91 0.028 45);
+    --butcher-dim: oklch(0.86 0.026 45);
+    --ink-light: oklch(0.93 0.012 60);
+    --ink-dark: oklch(0.22 0.02 40);
+    --ink-soft: oklch(0.38 0.025 40);
+    --ember: oklch(0.66 0.19 42);
+    --ember-deep: oklch(0.52 0.16 40);
+    --ember-on-paper: oklch(0.47 0.15 40);
+    --pickle: oklch(0.60 0.13 145);
+    --pickle-on-paper: oklch(0.42 0.11 150);
+    --z-base: 0;
+    --z-smoke: 1;
+    --z-stamp: 2;
+    --z-header: 10;
+    --font-display: "Alfa Slab One", serif;
+    --font-body: "Bitter", serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--smoke-black);
+    color: var(--ink-light);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; height: auto; display: block; }
+
+  :focus-visible {
+    outline: 3px solid var(--pickle);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p { max-width: 68ch; text-wrap: pretty; }
+
+  .wrap { width: min(72rem, 92vw); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--smoke-deep);
+    border-bottom: 1px solid oklch(0.28 0.02 40);
+  }
+  .header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--ember);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  nav ul { display: flex; gap: 1.75rem; list-style: none; }
+  nav a {
+    color: var(--ink-light);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-bottom: 2px solid transparent;
+    transition: border-color 180ms cubic-bezier(0.16, 1, 0.3, 1), color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  nav a:hover { color: var(--ember); border-bottom-color: var(--ember); }
+  @media (max-width: 560px) {
+    nav ul { gap: 1rem; }
+    nav a { font-size: 0.85rem; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    z-index: var(--z-base);
+    padding: clamp(3rem, 8vw, 6.5rem) 0 clamp(2.5rem, 6vw, 4.5rem);
+    overflow: hidden;
+  }
+  #smoke-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-smoke);
+    pointer-events: none;
+  }
+  .hero-in { position: relative; z-index: var(--z-stamp); }
+  .hero-kicker {
+    display: inline-block;
+    background: var(--pickle);
+    color: var(--smoke-deep);
+    font-weight: 800;
+    font-size: 0.9rem;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-size: clamp(2.6rem, 1.2rem + 7vw, 5.5rem);
+    color: var(--ink-light);
+    max-width: 14ch;
+  }
+  h1 .ember { color: var(--ember); }
+  .hero-sub {
+    margin-top: 1.4rem;
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+    color: oklch(0.80 0.02 55);
+    max-width: 46ch;
+  }
+  .hero-cta { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: 1rem; }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), background 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-ember { background: var(--ember); color: var(--smoke-deep); }
+  .btn-ember:hover { background: oklch(0.72 0.19 42); }
+  .btn-ghost { background: transparent; color: var(--ink-light); border: 1px solid oklch(0.45 0.03 50); }
+  .btn-ghost:hover { border-color: var(--ink-light); }
+  .hero-photo {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    border: 6px solid var(--butcher);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px oklch(0.05 0.005 45 / 0.55);
+  }
+  .hero-photo img { width: 100%; object-fit: cover; }
+  .hero-caption {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: oklch(0.66 0.025 50);
+  }
+
+  /* ---------- butcher-paper sections ---------- */
+  .paper {
+    background: var(--butcher);
+    color: var(--ink-dark);
+    padding: clamp(3.5rem, 8vw, 6rem) 0;
+    position: relative;
+  }
+  .paper h2 { color: var(--ink-dark); font-size: clamp(2rem, 1.4rem + 3vw, 3.4rem); }
+  .paper .lede { color: var(--ink-soft); margin-top: 1rem; font-size: 1.08rem; }
+
+  /* ---------- the board ---------- */
+  .board-head { position: relative; }
+  .stamp {
+    position: absolute;
+    top: -1.2rem;
+    right: 0;
+    z-index: var(--z-stamp);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 1rem + 2.2vw, 2.4rem);
+    color: var(--ember-on-paper);
+    border: 5px solid var(--ember-on-paper);
+    border-radius: 8px;
+    padding: 0.25rem 1.1rem;
+    transform: rotate(-9deg);
+    letter-spacing: 0.04em;
+    background: oklch(0.91 0.028 45 / 0.85);
+    user-select: none;
+  }
+  .stamp.slam { animation: stamp-slam 700ms cubic-bezier(0.16, 1, 0.3, 1) 1; }
+  @keyframes stamp-slam {
+    0%   { transform: rotate(-9deg) scale(1); }
+    30%  { transform: rotate(-9deg) scale(1.35); }
+    55%  { transform: rotate(-9deg) scale(0.96); }
+    100% { transform: rotate(-9deg) scale(1); }
+  }
+  .meat-list { margin-top: 2.5rem; list-style: none; }
+  .meat-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 1.1rem 0;
+    border-bottom: 2px dashed oklch(0.62 0.05 45);
+  }
+  .meat-list li:last-child { border-bottom: none; }
+  .meat-name { font-family: var(--font-display); font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem); }
+  .meat-note { font-size: 0.95rem; color: var(--ink-soft); font-style: italic; flex: 1; min-width: 8ch; }
+  .meat-price { font-weight: 800; font-size: 1.15rem; color: var(--ember-on-paper); white-space: nowrap; }
+  .meat-list .gone .meat-name,
+  .meat-list .gone .meat-price { text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: var(--ember-deep); }
+  .meat-list .gone .meat-note { color: var(--pickle-on-paper); font-weight: 600; font-style: normal; }
+  .board-foot { margin-top: 2rem; font-size: 0.98rem; color: var(--ink-soft); }
+  @media (max-width: 640px) {
+    .stamp { position: static; display: inline-block; margin-bottom: 1.25rem; }
+    .meat-note { display: none; }
+  }
+
+  /* ---------- pit section ---------- */
+  .pit { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .pit h2 { color: var(--ember); font-size: clamp(2rem, 1.4rem + 3vw, 3.4rem); }
+  .pit-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 820px) { .pit-grid { grid-template-columns: 1fr; } }
+  .pit-photo { border-radius: 12px; overflow: hidden; box-shadow: 0 18px 40px oklch(0.05 0.005 45 / 0.55); }
+  .pit-photo img { width: 100%; object-fit: cover; }
+  .pit-copy p + p { margin-top: 1.1rem; }
+  .hours {
+    margin-top: 2rem;
+    background: oklch(0.18 0.014 45);
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+  }
+  .hours h3 { color: var(--pickle); font-size: 1.15rem; margin-bottom: 0.75rem; }
+  .hours dl { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1.5rem; }
+  .hours dt { font-weight: 800; color: var(--ink-light); }
+  .hours dd { color: oklch(0.78 0.02 55); }
+
+  /* ---------- line etiquette ---------- */
+  .line-rules { margin-top: 2.25rem; list-style: none; display: grid; gap: 1.25rem; }
+  .line-rules li {
+    background: var(--butcher-dim);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    font-size: 1.02rem;
+  }
+  .line-rules strong { color: var(--ember-on-paper); }
+  .line-rules .rule-tag {
+    display: inline-block;
+    background: var(--pickle-on-paper);
+    color: var(--butcher);
+    font-size: 0.78rem;
+    font-weight: 800;
+    border-radius: 999px;
+    padding: 0.15rem 0.7rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--smoke-deep);
+    padding: 2.75rem 0;
+    border-top: 1px solid oklch(0.28 0.02 40);
+  }
+  .footer-in {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 3rem;
+    justify-content: space-between;
+    align-items: baseline;
+    color: oklch(0.72 0.02 55);
+    font-size: 0.95rem;
+  }
+  footer .brand { font-size: 1.05rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    .stamp.slam { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="brand" href="#top">SMOKE SIGNAL</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#board">The Board</a></li>
+        <li><a href="#pit">The Pit</a></li>
+        <li><a href="#line">The Line</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Welcome">
+    <canvas id="smoke-canvas" aria-hidden="true"></canvas>
+    <div class="wrap hero-in">
+      <span class="hero-kicker">Lockhart, Texas · since 1998</span>
+      <h1>LOW. SLOW. <span class="ember">GONE.</span></h1>
+      <p class="hero-sub">
+        Post oak, salt, pepper, and fourteen hours of paying attention. We open at eleven
+        and sell meat by the half-pound until the board's erased — most days that's by two.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-ember" href="#board">See today's board</a>
+        <a class="btn btn-ghost" href="#line">Line etiquette</a>
+      </div>
+      <figure class="hero-photo">
+        <img src="https://picsum.photos/seed/bbq-1/1600/900" width="1600" height="900"
+             alt="A sliced brisket with a black pepper crust and a smoke ring pink as sunrise, resting on butcher paper.">
+      </figure>
+      <p class="hero-caption">Thursday's prime brisket, sliced to order. The flat never sees a knife till you do.</p>
+    </div>
+  </section>
+
+  <section class="paper" id="board" aria-label="Today's meat board">
+    <div class="wrap">
+      <div class="board-head">
+        <span class="stamp" id="stamp">SOLD OUT</span>
+        <h2>The Board</h2>
+        <p class="lede">
+          Everything's priced by the half-pound and weighed in front of you. When an item's
+          gone, we strike it and that's that — we don't rush a second fire for anybody.
+        </p>
+      </div>
+      <ul class="meat-list">
+        <li>
+          <span class="meat-name">Prime Brisket</span>
+          <span class="meat-note">14 hours over post oak, fat cap left on</span>
+          <span class="meat-price">$16 / half-lb</span>
+        </li>
+        <li>
+          <span class="meat-name">Pork Spare Ribs</span>
+          <span class="meat-note">dry-rubbed, no sauce unless you ask twice</span>
+          <span class="meat-price">$13 / half-lb</span>
+        </li>
+        <li>
+          <span class="meat-name">Jalapeño Cheddar Sausage</span>
+          <span class="meat-note">ground and cased in-house every Monday</span>
+          <span class="meat-price">$11 / half-lb</span>
+        </li>
+        <li>
+          <span class="meat-name">Smoked Turkey</span>
+          <span class="meat-note">brined overnight, don't sleep on it</span>
+          <span class="meat-price">$10 / half-lb</span>
+        </li>
+        <li class="gone">
+          <span class="meat-name">Beef Rib (Saturdays)</span>
+          <span class="meat-note">gone by 12:40 today — 22 came out of the pit, 22 sold</span>
+          <span class="meat-price">$24 / half-lb</span>
+        </li>
+      </ul>
+      <p class="board-foot">
+        Sides come in pints: pinto beans, potato salad, and pickled jalapeño slaw, $5 each.
+        White bread, onions, and pickles ride free, same as always.
+      </p>
+    </div>
+  </section>
+
+  <section class="pit" id="pit" aria-label="The pit and the pitmaster">
+    <div class="wrap">
+      <h2>The Pit Never Lies</h2>
+      <div class="pit-grid">
+        <figure class="pit-photo">
+          <img src="https://picsum.photos/seed/bbq-2/800/600" width="800" height="600"
+               alt="Oak coals glowing deep orange inside the mouth of the offset pit at four in the morning.">
+        </figure>
+        <div class="pit-copy">
+          <p>
+            Marla "Two-Alarm" Reyes has minded the same 1,000-gallon offset since 1998.
+            She stokes the first coals at 4 a.m., reads the smoke by color — thin and blue
+            or nothing — and won't let anybody else wrap the briskets. The paper's pink,
+            the twine's cotton, and that's the whole recipe.
+          </p>
+          <p>
+            We burn post oak split on the property, about a cord and a half a week. No gas
+            assist, no pellet hopper, no thermometer with a battery in it. If the fire's
+            wrong, the meat waits. So do you, and it'll be worth it.
+          </p>
+          <div class="hours">
+            <h3>Pitmaster Hours</h3>
+            <dl>
+              <dt>Thu – Fri</dt><dd>11 a.m. till sold out (usually 2 p.m.)</dd>
+              <dt>Saturday</dt><dd>11 a.m. till sold out (usually 12:45 p.m.)</dd>
+              <dt>Sunday</dt><dd>Noon till sold out — church first</dd>
+              <dt>Mon – Wed</dt><dd>Dark. The pit rests and so does Marla.</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="paper" id="line" aria-label="Line etiquette">
+    <div class="wrap">
+      <h2>Line Etiquette</h2>
+      <p class="lede">
+        The line forms at the oak fence and moves faster than it looks. Mind a few rules
+        and everybody eats happy.
+      </p>
+      <ul class="line-rules">
+        <li>
+          <span class="rule-tag">Rule the first</span><br>
+          <strong>Hold your spot, not your whole group's.</strong> One body in line per
+          tray you're buying. Saving space for seven cousins who left for breakfast tacos
+          is how fights start.
+        </li>
+        <li>
+          <span class="rule-tag">Rule the second</span><br>
+          <strong>Know your order by the time you hit the counter.</strong> It's three
+          meats and three sides, friend. The menu's been on this page the whole time.
+        </li>
+        <li>
+          <span class="rule-tag">Rule the third</span><br>
+          <strong>First-timers get a burnt end while they wait.</strong> Tell Marla it's
+          your first visit and she'll cut you one off the point. Tipping it back is
+          considered poor manners.
+        </li>
+        <li>
+          <span class="rule-tag">Rule the fourth</span><br>
+          <strong>"Sold out" means sold out.</strong> The stamp doesn't negotiate. Come
+          earlier tomorrow — the pit's been lit since four, same as ever.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <a class="brand" href="#top">SMOKE SIGNAL</a>
+    <p>412 Post Oak Row, Lockhart, TX · Thu–Sun · till it's gone</p>
+    <p>No reservations. No phone orders. Yes, the line is worth it.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- smoke drift canvas ---- */
+  var canvas = document.getElementById("smoke-canvas");
+  var ctx = canvas.getContext("2d");
+  var puffs = [];
+  var W = 0, H = 0, raf = null;
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rect = canvas.parentElement.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function spawn(seedAnywhere) {
+    return {
+      x: Math.random() * W,
+      y: seedAnywhere ? Math.random() * H : H + 80,
+      r: 60 + Math.random() * 130,
+      vy: 0.25 + Math.random() * 0.5,
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: 0.004 + Math.random() * 0.008,
+      alpha: 0.045 + Math.random() * 0.06
+    };
+  }
+
+  function drawPuff(p) {
+    var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+    g.addColorStop(0, "rgba(208, 198, 188," + p.alpha + ")");
+    g.addColorStop(0.6, "rgba(180, 172, 164," + p.alpha * 0.5 + ")");
+    g.addColorStop(1, "rgba(160, 152, 146, 0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < puffs.length; i++) {
+      var p = puffs[i];
+      p.y -= p.vy;
+      p.wobble += p.wobbleSpeed;
+      p.x += Math.sin(p.wobble) * 0.6;
+      p.r += 0.12;
+      p.alpha *= 0.9992;
+      if (p.y + p.r < -40 || p.alpha < 0.004) puffs[i] = spawn(false);
+      drawPuff(puffs[i]);
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  resize();
+  for (var i = 0; i < 22; i++) puffs.push(spawn(true));
+
+  if (reduced) {
+    /* static frame: one draw, no loop */
+    ctx.clearRect(0, 0, W, H);
+    puffs.forEach(drawPuff);
+  } else {
+    tick();
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        if (raf) cancelAnimationFrame(raf);
+        raf = null;
+      } else if (!raf) {
+        tick();
+      }
+    });
+  }
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      resize();
+      if (reduced) { ctx.clearRect(0, 0, W, H); puffs.forEach(drawPuff); }
+    }, 150);
+  });
+
+  /* ---- sold-out stamp slams when scrolled to ---- */
+  var stamp = document.getElementById("stamp");
+  if (!reduced && "IntersectionObserver" in window) {
+    var fired = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !fired) {
+          fired = true;
+          stamp.classList.add("slam");
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.6 });
+    io.observe(stamp);
+  }
+})();
+</script>
+</body>
+</html>

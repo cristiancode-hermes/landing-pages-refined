@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas &amp; Thread — bespoke tailoring, ten weeks, three fittings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.16 0.025 255);
+    --surface: oklch(0.21 0.03 255);
+    --surface-deep: oklch(0.12 0.02 255);
+    --ink: oklch(0.94 0.008 90);
+    --ink-dim: oklch(0.72 0.015 255);
+    --flannel: oklch(0.55 0.015 255);
+    --chalk: oklch(0.95 0.008 90);
+    --crimson: oklch(0.48 0.17 15);
+    --crimson-text: oklch(0.72 0.14 15);
+    --line: oklch(0.30 0.03 255);
+    --z-header: 10;
+    --font-display: "Prata", serif;
+    --font-body: "Jost", system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(2.4rem, 1.6rem + 4.2vw, 4.6rem); }
+  h2 { font-size: clamp(1.9rem, 1.4rem + 2.4vw, 3rem); }
+  h3 { font-size: clamp(1.15rem, 1.05rem + 0.7vw, 1.45rem); }
+  p { max-width: 66ch; text-wrap: pretty; }
+  a { color: var(--crimson-text); }
+  :focus-visible {
+    outline: 3px solid var(--crimson-text);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap { width: min(1140px, 100% - 2.5rem); margin-inline: auto; }
+  .section { padding-block: clamp(3.5rem, 9vw, 6.5rem); }
+  .lede { color: var(--ink-dim); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.25rem); margin-top: 1.1rem; }
+  .kicker-line {
+    width: 3.5rem; height: 1px; background: var(--crimson-text); margin-bottom: 1.5rem;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1rem; }
+  .brand { font-family: var(--font-display); font-size: 1.35rem; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--crimson-text); }
+  .nav { display: flex; gap: 1.75rem; }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--ink-dim); text-decoration: none; font-size: 0.95rem; letter-spacing: 0.02em;
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--chalk); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3.5rem, 9vw, 7rem); }
+  .hero-in {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.5rem; }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body); font-weight: 500; font-size: 1rem; letter-spacing: 0.04em;
+    text-decoration: none; padding: 0.9rem 1.9rem; border-radius: 999px;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-3px); }
+  .btn-primary { background: var(--crimson); color: var(--chalk); }
+  .btn-ghost { color: var(--chalk); box-shadow: inset 0 0 0 1px var(--flannel); }
+
+  /* the measured silhouette */
+  .figure-stage {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+  }
+  .figure-svg { width: 100%; height: auto; display: block; }
+  .chalk-line {
+    stroke: var(--chalk); stroke-width: 1.4; stroke-dasharray: 6 5;
+    fill: none;
+    animation: chalk-draw 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .chalk-line.l2 { animation-delay: 0.35s; }
+  .chalk-line.l3 { animation-delay: 0.7s; }
+  .chalk-line.l4 { animation-delay: 1.05s; }
+  @keyframes chalk-draw {
+    from { stroke-dashoffset: 240; opacity: 0; }
+    30% { opacity: 1; }
+    to { stroke-dashoffset: 0; opacity: 1; }
+  }
+  .dim-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    fill: var(--crimson-text);
+  }
+  .dims { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-top: 1.5rem; }
+  .dim { text-align: center; }
+  .dim b {
+    display: block;
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(1.3rem, 1rem + 1.4vw, 1.9rem);
+    color: var(--chalk);
+  }
+  .dim span { font-size: 0.8rem; letter-spacing: 0.08em; color: var(--ink-dim); }
+
+  /* ---------- fittings ---------- */
+  .fittings ol { list-style: none; margin-top: 3rem; counter-reset: fit; }
+  .fittings li {
+    counter-increment: fit;
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 1.75rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .fittings li::before {
+    content: counter(fit, decimal-leading-zero);
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    color: var(--crimson-text);
+    line-height: 1;
+  }
+  .fittings h3 { margin-bottom: 0.35rem; }
+  .fittings .week { color: var(--ink-dim); font-size: 0.88rem; letter-spacing: 0.06em; }
+  .fittings p { color: var(--ink-dim); margin-top: 0.5rem; }
+
+  /* ---------- cloth ---------- */
+  .cloth { background: var(--surface-deep); }
+  .mills { margin-top: 3rem; }
+  .mill {
+    display: grid;
+    grid-template-columns: 1.1fr 0.7fr 1.4fr;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .mill .name { font-family: var(--font-display); font-size: 1.25rem; }
+  .mill .weight { color: var(--crimson-text); font-size: 0.92rem; letter-spacing: 0.05em; }
+  .mill p { color: var(--ink-dim); font-size: 0.98rem; }
+
+  /* ---------- ten weeks ---------- */
+  .weeks-track {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+  }
+  .week-cell { text-align: left; }
+  .week-cell .bar {
+    height: 5px; border-radius: 3px; background: var(--line); margin-bottom: 0.7rem;
+  }
+  .week-cell.hot .bar { background: var(--crimson-text); }
+  .week-cell b { display: block; font-weight: 500; font-size: 0.85rem; color: var(--chalk); }
+  .week-cell span { font-size: 0.78rem; color: var(--ink-dim); }
+
+  /* ---------- prices ---------- */
+  .prices { background: var(--surface-deep); }
+  .price-rows { margin-top: 3rem; }
+  .price-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem;
+    padding: 1.4rem 0; border-bottom: 1px solid var(--line);
+  }
+  .price-row .what h3 { font-weight: 400; }
+  .price-row .what p { color: var(--ink-dim); font-size: 0.95rem; margin-top: 0.25rem; }
+  .price-row .how-much {
+    font-family: var(--font-display); font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem);
+    color: var(--chalk); white-space: nowrap;
+  }
+  .lifetime {
+    margin-top: 2.75rem;
+    background: var(--surface);
+    border-radius: 16px;
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+  }
+  .lifetime h3 { color: var(--crimson-text); margin-bottom: 0.5rem; }
+
+  /* ---------- photos ---------- */
+  .drapes { overflow: hidden; }
+  .drape-grid {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+  }
+  .drape-grid figure { border-radius: 16px; overflow: hidden; }
+  .drape-grid .tall { grid-row: 1 / 3; }
+  .drape-grid img { width: 100%; will-change: transform; }
+  .drape-grid figcaption { padding: 0.8rem 0.25rem 0; font-size: 0.9rem; color: var(--ink-dim); }
+
+  footer { border-top: 1px solid var(--line); padding-block: 2.25rem; font-size: 0.9rem; color: var(--ink-dim); }
+  .footer-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+
+  @media (max-width: 820px) {
+    .nav { display: none; }
+    .hero-in { grid-template-columns: 1fr; }
+    .mill { grid-template-columns: 1fr; gap: 0.3rem; }
+    .weeks-track { grid-template-columns: repeat(5, 1fr); row-gap: 1.5rem; }
+    .drape-grid { grid-template-columns: 1fr; }
+    .drape-grid .tall { grid-row: auto; }
+    .dims { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .chalk-line { animation: none; }
+    .btn, .nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+    .btn:hover { transform: none; }
+    .drape-grid img { transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="brand" href="#top">Atlas <span>&amp;</span> Thread</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#fittings">The fittings</a>
+      <a href="#cloth">Cloth library</a>
+      <a href="#timeline">Ten weeks</a>
+      <a href="#prices">Prices</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div>
+        <div class="kicker-line" aria-hidden="true"></div>
+        <h1>Cut to the man, not the mannequin.</h1>
+        <p class="lede">One cutter, one sewer, one client at a time. We draft your pattern from thirty-eight measurements, cut it in cloth you’ve held in your hands, and keep it in the house for the rest of your life.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#fittings">Book a first measure</a>
+          <a class="btn btn-ghost" href="#cloth">Browse the cloth</a>
+        </div>
+      </div>
+      <div class="figure-stage">
+        <svg class="figure-svg" viewBox="0 0 360 420" role="img" aria-label="A jacket silhouette marked with chalk measurement lines at shoulder, chest, waist and sleeve">
+          <!-- jacket silhouette -->
+          <path d="M180 42
+                   C168 42 158 48 150 56 L96 74 C84 78 76 90 74 104 L62 250 C60 268 66 282 80 288 L88 292 L92 372
+                   C93 386 102 394 116 394 L244 394 C258 394 267 386 268 372 L272 292 L280 288 C294 282 300 268 298 250
+                   L286 104 C284 90 276 78 264 74 L210 56 C202 48 192 42 180 42 Z"
+                fill="oklch(0.26 0.035 255)" stroke="var(--flannel)" stroke-width="1.5"/>
+          <!-- lapel notch -->
+          <path d="M150 56 L180 118 L210 56" fill="none" stroke="var(--flannel)" stroke-width="1.5"/>
+          <path d="M180 118 L180 394" fill="none" stroke="var(--flannel)" stroke-width="1.2" opacity="0.6"/>
+          <!-- chalk measurement lines -->
+          <line class="chalk-line l1" x1="88" y1="86" x2="272" y2="86"/>
+          <line class="chalk-line l2" x1="72" y1="150" x2="288" y2="150"/>
+          <line class="chalk-line l3" x1="86" y1="240" x2="274" y2="240"/>
+          <line class="chalk-line l4" x1="62" y1="250" x2="96" y2="374"/>
+          <text class="dim-label" x="180" y="78" text-anchor="middle">SHOULDER 46</text>
+          <text class="dim-label" x="180" y="142" text-anchor="middle">CHEST 102</text>
+          <text class="dim-label" x="180" y="232" text-anchor="middle">WAIST 88</text>
+          <text class="dim-label" x="52" y="316" text-anchor="middle" transform="rotate(-76 52 316)">SLEEVE 64</text>
+        </svg>
+        <div class="dims">
+          <div class="dim"><b><span class="count" data-to="38">38</span></b><span>measurements taken</span></div>
+          <div class="dim"><b><span class="count" data-to="10">10</span></b><span>weeks, honestly</span></div>
+          <div class="dim"><b><span class="count" data-to="3">3</span></b><span>fittings, minimum</span></div>
+          <div class="dim"><b><span class="count" data-to="4200">4,200</span></b><span>stitches per lapel</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section fittings" id="fittings">
+    <div class="wrap">
+      <div class="kicker-line" aria-hidden="true"></div>
+      <h2>Three fittings, no shortcuts between them</h2>
+      <p class="lede">Bespoke means the garment exists between fittings, not before them. Each stage answers a question the last one raised.</p>
+      <ol>
+        <li>
+          <div>
+            <h3>The skeleton baste</h3>
+            <span class="week">Week 4 · about an hour</span>
+            <p>You try the coat held together by white basting thread — no buttonholes, no lining, no pockets. We pin the balance, mark the shoulders in chalk, and take the whole thing apart again in front of you. That’s the point: nothing is precious yet.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>The forward fitting</h3>
+            <span class="week">Week 7 · about forty minutes</span>
+            <p>Now it has sleeves, a collar, and the beginnings of a chest. We check how it moves when you reach for a shelf, sit down, check a phone. Most of what we adjust here is what you do, not what you measure.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>The finish</h3>
+            <span class="week">Week 10 · as long as it takes</span>
+            <p>Buttonholes sewn by hand — the left lapel gets the crimson one, our signature since the shop opened. Final press, sleeve pitch checked one last time, and you wear it out of the shop if the weather allows.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section cloth" id="cloth">
+    <div class="wrap">
+      <div class="kicker-line" aria-hidden="true"></div>
+      <h2>The cloth library</h2>
+      <p class="lede">Fourteen hundred bolts on the shelves, five mills we return to every season. You take the swatches home for a week — cloth lies under shop lights.</p>
+      <div class="mills">
+        <div class="mill">
+          <span class="name">Fox Brothers</span>
+          <span class="weight">Flannel · 320–400g</span>
+          <p>Somerset flannel with real weight. The grey chalkstripe half our clients end up choosing, whatever they came in wanting.</p>
+        </div>
+        <div class="mill">
+          <span class="name">Holland &amp; Sherry</span>
+          <span class="weight">Worsted · 260–310g</span>
+          <p>Clean, sharp, boardroom-proof. Their midnight barathea is what we cut our own dinner suits from.</p>
+        </div>
+        <div class="mill">
+          <span class="name">Loro Piana</span>
+          <span class="weight">Wool-silk-linen · 240g</span>
+          <p>For summers that demand a jacket anyway. Breathes like a shirt, wrinkles like honesty.</p>
+        </div>
+        <div class="mill">
+          <span class="name">Dormeuil</span>
+          <span class="weight">High-twist · 280g</span>
+          <p>The traveller’s cloth. Twelve hours in a suitcase, twenty minutes on a hanger, presentable again.</p>
+        </div>
+        <div class="mill">
+          <span class="name">Harrisons of Edinburgh</span>
+          <span class="weight">Tweed · 420–500g</span>
+          <p>Hebridean tweed that outlives the stitching. We cut it generously — it shrinks its opinions, never its shape.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="timeline">
+    <div class="wrap">
+      <div class="kicker-line" aria-hidden="true"></div>
+      <h2>The honest ten weeks</h2>
+      <p class="lede">Anyone promising bespoke in four is fusing something. Here is where your ten weeks actually go — the red stretches are when the coat is on our cutting table, not in a queue.</p>
+      <div class="weeks-track" aria-label="Week by week: measure, draft, cut, baste, first fitting, forward work, second fitting, finishing, buttonholes and press, handover">
+        <div class="week-cell hot"><span class="bar"></span><b>Wk 1</b><span>Measure &amp; cloth</span></div>
+        <div class="week-cell hot"><span class="bar"></span><b>Wk 2</b><span>Pattern drafted</span></div>
+        <div class="week-cell hot"><span class="bar"></span><b>Wk 3</b><span>Cloth cut</span></div>
+        <div class="week-cell"><span class="bar"></span><b>Wk 4</b><span>Skeleton baste</span></div>
+        <div class="week-cell hot"><span class="bar"></span><b>Wk 5</b><span>Re-cut &amp; rebuild</span></div>
+        <div class="week-cell hot"><span class="bar"></span><b>Wk 6</b><span>Sleeves &amp; collar</span></div>
+        <div class="week-cell"><span class="bar"></span><b>Wk 7</b><span>Forward fitting</span></div>
+        <div class="week-cell hot"><span class="bar"></span><b>Wk 8</b><span>Pockets &amp; lining</span></div>
+        <div class="week-cell hot"><span class="bar"></span><b>Wk 9</b><span>Buttonholes, press</span></div>
+        <div class="week-cell"><span class="bar"></span><b>Wk 10</b><span>The finish</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section prices" id="prices">
+    <div class="wrap">
+      <div class="kicker-line" aria-hidden="true"></div>
+      <h2>Price architecture</h2>
+      <p class="lede">The price is the cloth plus the hours, and the hours don’t change because a bolt has a famous name on it. Half to begin, half at the finish.</p>
+      <div class="price-rows">
+        <div class="price-row">
+          <div class="what">
+            <h3>Two-piece suit</h3>
+            <p>Thirty-eight measurements, three fittings, your pattern kept in the house.</p>
+          </div>
+          <span class="how-much">from £3,400</span>
+        </div>
+        <div class="price-row">
+          <div class="what">
+            <h3>Three-piece suit</h3>
+            <p>Adds the waistcoat — cut from the same bolt, fitted at the same sittings.</p>
+          </div>
+          <span class="how-much">from £4,100</span>
+        </div>
+        <div class="price-row">
+          <div class="what">
+            <h3>Overcoat</h3>
+            <p>Cut to go over the suit we made you, so the shoulders sit exactly once.</p>
+          </div>
+          <span class="how-much">from £3,800</span>
+        </div>
+        <div class="price-row">
+          <div class="what">
+            <h3>Second pair of trousers</h3>
+            <p>Ordered with the suit, from the same cloth. The jacket always outlives the first pair.</p>
+          </div>
+          <span class="how-much">£520</span>
+        </div>
+      </div>
+      <div class="lifetime">
+        <h3>Alterations for life</h3>
+        <p>Bodies change; the coat should be allowed to. Gain or lose a stone, take up running, stop — bring it back and we re-cut it on your pattern, free, for as long as the cloth holds. Our record is a 1971 tweed still in rotation on its third owner in the family.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section drapes">
+    <div class="wrap">
+      <div class="kicker-line" aria-hidden="true"></div>
+      <h2>The work, up close</h2>
+      <div class="drape-grid">
+        <figure class="tall">
+          <img data-parallax="0.06" src="https://picsum.photos/seed/tailor-1/1600/900" width="1600" height="900"
+               alt="The cutting table at midday — shears, chalk, and a drafted pattern pinned to midnight flannel">
+          <figcaption>The cutting table. One coat at a time, shears not lasers.</figcaption>
+        </figure>
+        <figure>
+          <img data-parallax="0.12" src="https://picsum.photos/seed/tailor-2/800/600" width="800" height="600"
+               alt="A forward fitting in progress, white basting thread visible along the jacket’s shoulder">
+          <figcaption>A forward fitting, week seven. The white thread comes out at the end.</figcaption>
+        </figure>
+        <figure>
+          <img data-parallax="0.18" src="https://picsum.photos/seed/tailor-3/800/600" width="800" height="600"
+               alt="Lapel macro — hand-sewn buttonhole in crimson twist on midnight barathea">
+          <figcaption>The crimson buttonhole. Four hundred stitches, always the left lapel.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <span>Atlas &amp; Thread, 9 Lamb’s Court — by appointment, Tuesday to Saturday</span>
+    <span>First measure £75, taken off your first order</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Dimension counters: count up from zero on load; final values live in the HTML. */
+    var counters = document.querySelectorAll('.count');
+    if (!reduce) {
+      counters.forEach(function (el) {
+        var to = parseInt(el.getAttribute('data-to'), 10);
+        var start = null;
+        var dur = 1600;
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / dur, 1);
+          var eased = 1 - Math.pow(2, -10 * p); /* expo out */
+          el.textContent = Math.round(to * eased).toLocaleString('en-GB');
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = to.toLocaleString('en-GB');
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    /* Fabric drape parallax: heavier cloth (lower speed) lags the scroll more. */
+    var imgs = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+    var ticking = false;
+    function drape() {
+      ticking = false;
+      if (reduce) return;
+      var vh = window.innerHeight;
+      imgs.forEach(function (img) {
+        var r = img.getBoundingClientRect();
+        var centerOffset = (r.top + r.height / 2) - vh / 2;
+        var speed = parseFloat(img.getAttribute('data-parallax'));
+        img.style.transform = 'translateY(' + (-centerOffset * speed).toFixed(1) + 'px)';
+      });
+    }
+    function onScroll() {
+      if (!ticking) { ticking = true; requestAnimationFrame(drape); }
+    }
+    if (!reduce && imgs.length) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      drape();
+    }
+  })();
+</script>
+</body>
+</html>

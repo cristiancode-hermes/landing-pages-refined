@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Open — A podcast network that starts mid-sentence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.97 0.004 260);
+    --ink: oklch(0.19 0.01 260);
+    --muted: oklch(0.42 0.012 260);
+    --red: oklch(0.57 0.21 20);
+    --teal: oklch(0.60 0.11 185);
+    --mustard: oklch(0.80 0.14 90);
+    --red-deep: oklch(0.47 0.18 20);
+    --teal-deep: oklch(0.50 0.095 185);
+    --mustard-deep: oklch(0.58 0.13 85);
+    --line: oklch(0.88 0.005 260);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+    --z-ticker: 20;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { font-family: "Archivo", sans-serif; text-wrap: balance; }
+  p { max-width: 68ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--teal-deep);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* ---------- ticker ---------- */
+  .ticker {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-ticker);
+    background: var(--ink);
+    color: oklch(0.97 0.005 260);
+    overflow: hidden;
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    padding: 0.55rem 0;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex;
+    gap: 3rem;
+    padding-right: 3rem;
+    animation: ticker-roll 40s linear infinite;
+    will-change: transform;
+  }
+  .ticker-track span { display: inline-flex; align-items: center; gap: 3rem; }
+  .ticker .dot { width: 0.45em; height: 0.45em; border-radius: 50%; display: inline-block; }
+  .dot-r { background: var(--red); }
+  .dot-t { background: var(--teal); }
+  .dot-m { background: var(--mustard); }
+  @keyframes ticker-roll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
+    border-bottom: 2px solid var(--ink);
+  }
+  .wordmark {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .wordmark em { font-style: normal; color: var(--red); }
+  nav ul { display: flex; gap: 1.75rem; list-style: none; flex-wrap: wrap; }
+  nav a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--muted);
+    transition: color 0.25s var(--ease-out);
+  }
+  nav a:hover { color: var(--ink); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: clamp(3.5rem, 9vw, 7.5rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3rem, 7vw, 5.5rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+  .hero h1 {
+    font-weight: 900;
+    font-size: clamp(2.6rem, 6.2vw, 5.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 .flag {
+    display: inline-block;
+    width: 0.62em;
+    height: 0.18em;
+    margin-right: 0.12em;
+    transform: translateY(-0.55em);
+  }
+  .hero p.lede { font-size: clamp(1.1rem, 1.4vw, 1.3rem); color: var(--muted); margin-bottom: 2rem; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 2px solid var(--ink);
+    transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-solid { background: var(--ink); color: oklch(0.98 0.005 260); }
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover { background: var(--mustard); border-color: var(--mustard); }
+  .hero-figure { position: relative; }
+  .hero-figure img {
+    width: 100%;
+    border-radius: 12px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  .hero-figure figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .mic-flag {
+    position: absolute;
+    top: -1rem;
+    right: -0.75rem;
+    background: var(--red);
+    color: oklch(0.98 0.01 20);
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    transform: rotate(4deg);
+  }
+
+  /* ---------- shows ---------- */
+  .shows { padding: clamp(3rem, 7vw, 6rem) clamp(1.25rem, 4vw, 3.5rem); max-width: 80rem; margin: 0 auto; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .section-head h2 { font-weight: 900; font-size: clamp(1.9rem, 3.6vw, 3rem); letter-spacing: -0.025em; }
+  .section-head p { color: var(--muted); font-size: 1rem; max-width: 40ch; }
+  .show-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; }
+  .show-card {
+    --show: var(--red);
+    --show-deep: var(--red-deep);
+    --on-show: oklch(0.98 0.01 20);
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  }
+  .show-card[data-color="teal"] { --show: var(--teal); --show-deep: var(--teal-deep); --on-show: oklch(0.98 0.01 185); }
+  .show-card[data-color="mustard"] { --show: var(--mustard); --show-deep: var(--mustard-deep); --on-show: oklch(0.22 0.02 260); }
+  .show-card:hover, .show-card:focus-within {
+    background: var(--show);
+    transform: translateY(-6px);
+  }
+  .show-flag {
+    width: 3rem;
+    height: 0.85rem;
+    background: var(--show);
+    border-radius: 3px;
+    transition: background 0.45s var(--ease-out);
+  }
+  .show-card:hover .show-flag, .show-card:focus-within .show-flag { background: var(--on-show); }
+  .show-card h3 { font-weight: 900; font-size: 1.55rem; letter-spacing: -0.02em; transition: color 0.45s var(--ease-out); }
+  .show-card .premise { font-size: 0.98rem; color: var(--muted); flex: 1; transition: color 0.45s var(--ease-out); }
+  .show-card:hover h3, .show-card:focus-within h3 { color: var(--on-show); }
+  .show-card:hover .premise, .show-card:focus-within .premise { color: var(--on-show); }
+  .show-meta {
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: "Archivo", sans-serif;
+    color: var(--show-deep);
+    letter-spacing: 0.02em;
+    transition: color 0.45s var(--ease-out);
+  }
+  .show-card:hover .show-meta, .show-card:focus-within .show-meta { color: var(--on-show); }
+  .wave {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 44px;
+  }
+  .wave i {
+    flex: 1;
+    background: var(--ink);
+    border-radius: 2px;
+    height: calc(18% + var(--h) * 1%);
+    transform-origin: center;
+    transform: scaleY(1);
+    transition: background 0.45s var(--ease-out);
+  }
+  .show-card:hover .wave i, .show-card:focus-within .wave i {
+    background: var(--on-show);
+    animation: wave-bob 0.9s var(--ease-out) infinite alternate;
+    animation-delay: calc(var(--i) * 55ms);
+  }
+  @keyframes wave-bob {
+    from { transform: scaleY(0.35); }
+    to { transform: scaleY(1); }
+  }
+  .show-link {
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--ink);
+    border-bottom: 2px solid var(--show);
+    align-self: flex-start;
+    padding-bottom: 0.1rem;
+    transition: color 0.45s var(--ease-out), border-color 0.45s var(--ease-out);
+  }
+  .show-card:hover .show-link, .show-card:focus-within .show-link { color: var(--on-show); border-color: var(--on-show); }
+
+  /* ---------- cadence ---------- */
+  .cadence {
+    background: var(--ink);
+    color: oklch(0.96 0.008 260);
+    padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 4vw, 3.5rem);
+  }
+  .cadence-inner { max-width: 80rem; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .cadence h2 { font-weight: 900; font-size: clamp(1.9rem, 3.6vw, 3rem); letter-spacing: -0.025em; margin-bottom: 1.25rem; }
+  .cadence p { color: oklch(0.82 0.01 260); margin-bottom: 1rem; }
+  .cadence strong { color: var(--mustard); font-weight: 700; }
+  .cadence-list { list-style: none; display: flex; flex-direction: column; }
+  .cadence-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid oklch(0.32 0.015 260);
+    font-size: 0.98rem;
+  }
+  .cadence-list li:first-child { border-top: 1px solid oklch(0.32 0.015 260); }
+  .cadence-list .show-name { font-family: "Archivo", sans-serif; font-weight: 700; }
+  .cadence-list .when { color: oklch(0.82 0.01 260); text-align: right; }
+  .tag { display: inline-block; width: 0.6em; height: 0.6em; border-radius: 2px; margin-right: 0.55em; transform: translateY(-0.05em); }
+
+  /* ---------- ads + careers ---------- */
+  .split { padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 4vw, 3.5rem); max-width: 80rem; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .rate-card {
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 2rem;
+    background: var(--surface);
+  }
+  .rate-card h2 { font-weight: 900; font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -0.02em; margin-bottom: 0.9rem; }
+  .rate-card > p { color: var(--muted); margin-bottom: 1.5rem; }
+  .rate-rows { list-style: none; display: flex; flex-direction: column; margin-bottom: 1.75rem; }
+  .rate-rows li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .rate-rows li:first-child { border-top: 1px solid var(--line); }
+  .rate-rows .price { font-family: "Archivo", sans-serif; font-weight: 900; white-space: nowrap; }
+  .careers h2 { font-weight: 900; font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -0.02em; margin-bottom: 0.9rem; }
+  .careers > p { color: var(--muted); margin-bottom: 1.5rem; }
+  .job { display: block; text-decoration: none; padding: 1.1rem 0; border-bottom: 1px solid var(--line); transition: padding-left 0.3s var(--ease-out); }
+  .job:first-of-type { border-top: 1px solid var(--line); }
+  .job:hover { padding-left: 0.6rem; }
+  .job .role { font-family: "Archivo", sans-serif; font-weight: 700; font-size: 1.05rem; display: block; }
+  .job .detail { font-size: 0.88rem; color: var(--muted); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 2px solid var(--ink);
+    padding: 2.5rem clamp(1.25rem, 4vw, 3.5rem);
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  footer .flags { display: inline-flex; gap: 4px; margin-right: 0.6rem; }
+  footer .flags i { width: 0.9rem; height: 0.9rem; border-radius: 2px; display: inline-block; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .hero, .cadence-inner, .split { grid-template-columns: 1fr; }
+    .hero-figure { max-width: 26rem; }
+    nav ul { gap: 1.1rem; }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .ticker-track { animation: none; }
+    .show-card, .show-card h3, .show-card .premise, .show-meta, .show-flag, .wave i, .show-link, .btn, .job, nav a { transition: none; }
+    .show-card:hover .wave i, .show-card:focus-within .wave i { animation: none; transform: scaleY(1); }
+    .btn:hover, .show-card:hover, .show-card:focus-within { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>
+      <b>ON AIR THIS WEEK</b> <i class="dot dot-r"></i> The Long Minute — ep. 214: the 1998 heist that took eleven years <i class="dot dot-t"></i> Static &amp; Soup — ep. 87: a storm chaser and a short-order cook <i class="dot dot-m"></i> Third Bell — ep. 152: why school assemblies sound like that <i class="dot dot-r"></i> 3 shows <i class="dot dot-t"></i> 4.1M monthly listens <i class="dot dot-m"></i> zero mid-roll surprise ads
+    </span>
+    <span>
+      <b>ON AIR THIS WEEK</b> <i class="dot dot-r"></i> The Long Minute — ep. 214: the 1998 heist that took eleven years <i class="dot dot-t"></i> Static &amp; Soup — ep. 87: a storm chaser and a short-order cook <i class="dot dot-m"></i> Third Bell — ep. 152: why school assemblies sound like that <i class="dot dot-r"></i> 3 shows <i class="dot dot-t"></i> 4.1M monthly listens <i class="dot dot-m"></i> zero mid-roll surprise ads
+    </span>
+  </div>
+</div>
+
+<header>
+  <a class="wordmark" href="#">COLD<em>—</em>OPEN</a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#shows">Shows</a></li>
+      <li><a href="#cadence">Schedule</a></li>
+      <li><a href="#advertise">Advertise</a></li>
+      <li><a href="#careers">Careers</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <h1>We start <span class="flag" style="background:var(--red)"></span>mid&shy;-sentence, <span class="flag" style="background:var(--teal)"></span>on <span class="flag" style="background:var(--mustard)"></span>purpose.</h1>
+      <p class="lede">Cold Open is an independent podcast network of three shows. No theme-song warmup, no "hey guys welcome back." The story is already running when you press play.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-solid" href="#shows">Meet the shows</a>
+        <a class="btn btn-ghost" href="#advertise">Advertise with us</a>
+      </div>
+    </div>
+    <figure class="hero-figure">
+      <span class="mic-flag">STUDIO B</span>
+      <img src="https://picsum.photos/seed/mic-1/800/1000" width="800" height="1000" alt="A broadcast microphone in Cold Open's Studio B, pop filter on, ready for the next take">
+      <figcaption>Studio B, Minneapolis. The mic flag color changes with the show.</figcaption>
+    </figure>
+  </section>
+
+  <section class="shows" id="shows">
+    <div class="section-head">
+      <h2>Three shows. Three mic flags.</h2>
+      <p>Every show gets one color, one host, one obsession. That's the whole org chart.</p>
+    </div>
+    <div class="show-grid">
+
+      <article class="show-card" data-color="red" tabindex="0">
+        <span class="show-flag" aria-hidden="true"></span>
+        <h3>The Long Minute</h3>
+        <p class="premise">True-crime stories where the crime is the boring part. Host Dana Okafor spends a whole season on the decade before and the decade after — the town, the ledger, the knock on the door.</p>
+        <div class="wave" aria-hidden="true">
+          <i style="--i:0;--h:20"></i><i style="--i:1;--h:55"></i><i style="--i:2;--h:35"></i><i style="--i:3;--h:70"></i><i style="--i:4;--h:45"></i><i style="--i:5;--h:80"></i><i style="--i:6;--h:30"></i><i style="--i:7;--h:62"></i><i style="--i:8;--h:25"></i><i style="--i:9;--h:58"></i><i style="--i:10;--h:40"></i><i style="--i:11;--h:74"></i><i style="--i:12;--h:18"></i><i style="--i:13;--h:50"></i><i style="--i:14;--h:66"></i><i style="--i:15;--h:33"></i><i style="--i:16;--h:78"></i><i style="--i:17;--h:28"></i><i style="--i:18;--h:52"></i><i style="--i:19;--h:42"></i>
+        </div>
+        <p class="show-meta">WEEKLY · TUESDAYS · ~52 MIN</p>
+        <a class="show-link" href="#">Listen to ep. 214</a>
+      </article>
+
+      <article class="show-card" data-color="teal" tabindex="0">
+        <span class="show-flag" aria-hidden="true"></span>
+        <h3>Static &amp; Soup</h3>
+        <p class="premise">Two strangers who share one strange job, recorded over a meal. A storm chaser and a short-order cook. A lighthouse keeper and a neon-sign bender. Host Ilya Marsh brings the soup; they bring the static.</p>
+        <div class="wave" aria-hidden="true">
+          <i style="--i:0;--h:48"></i><i style="--i:1;--h:22"></i><i style="--i:2;--h:64"></i><i style="--i:3;--h:38"></i><i style="--i:4;--h:72"></i><i style="--i:5;--h:26"></i><i style="--i:6;--h:55"></i><i style="--i:7;--h:80"></i><i style="--i:8;--h:34"></i><i style="--i:9;--h:60"></i><i style="--i:10;--h:20"></i><i style="--i:11;--h:45"></i><i style="--i:12;--h:68"></i><i style="--i:13;--h:30"></i><i style="--i:14;--h:52"></i><i style="--i:15;--h:76"></i><i style="--i:16;--h:24"></i><i style="--i:17;--h:58"></i><i style="--i:18;--h:40"></i><i style="--i:19;--h:70"></i>
+        </div>
+        <p class="show-meta">WEEKLY · THURSDAYS · ~38 MIN</p>
+        <a class="show-link" href="#">Listen to ep. 87</a>
+      </article>
+
+      <article class="show-card" data-color="mustard" tabindex="0">
+        <span class="show-flag" aria-hidden="true"></span>
+        <h3>Third Bell</h3>
+        <p class="premise">A sound-design show about noises you've heard ten thousand times and never once thought about. Elevator dings, school assemblies, the exact hum of a 24-hour laundromat at 3 a.m.</p>
+        <div class="wave" aria-hidden="true">
+          <i style="--i:0;--h:30"></i><i style="--i:1;--h:66"></i><i style="--i:2;--h:24"></i><i style="--i:3;--h:50"></i><i style="--i:4;--h:78"></i><i style="--i:5;--h:36"></i><i style="--i:6;--h:62"></i><i style="--i:7;--h:20"></i><i style="--i:8;--h:72"></i><i style="--i:9;--h:44"></i><i style="--i:10;--h:58"></i><i style="--i:11;--h:28"></i><i style="--i:12;--h:80"></i><i style="--i:13;--h:40"></i><i style="--i:14;--h:54"></i><i style="--i:15;--h:22"></i><i style="--i:16;--h:68"></i><i style="--i:17;--h:34"></i><i style="--i:18;--h:60"></i><i style="--i:19;--h:46"></i>
+        </div>
+        <p class="show-meta">TWICE MONTHLY · SUNDAYS · ~24 MIN</p>
+        <a class="show-link" href="#">Listen to ep. 152</a>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="cadence" id="cadence">
+    <div class="cadence-inner">
+      <div>
+        <h2>Cadence honesty</h2>
+        <p>Most networks promise weekly and ship "whenever." Here's the actual board. If a show slips, we say so in the feed — <strong>no filler episodes, no reruns dressed up as new.</strong></p>
+        <p>Between seasons, feeds go quiet on purpose. Silence is part of the format. You'll get one short tape when a season returns, never a countdown of countdowns.</p>
+      </div>
+      <ul class="cadence-list">
+        <li><span class="show-name"><i class="tag" style="background:var(--red)"></i>The Long Minute</span><span class="when">Every Tuesday, 5:00 a.m. CT — 214 in a row, zero missed</span></li>
+        <li><span class="show-name"><i class="tag" style="background:var(--teal)"></i>Static &amp; Soup</span><span class="when">Every Thursday, 6:00 a.m. CT — missed twice in 87 (both disclosed)</span></li>
+        <li><span class="show-name"><i class="tag" style="background:var(--mustard)"></i>Third Bell</span><span class="when">1st &amp; 3rd Sunday — currently between seasons, back Sept 14</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="split" id="advertise">
+    <div class="rate-card">
+      <h2>The ad-rate card, in the open</h2>
+      <p>One host-read slot per episode, read by the host who actually uses the thing. No programmatic inserts, ever. Rates are public because negotiating in the dark is boring.</p>
+      <ul class="rate-rows">
+        <li><span>The Long Minute — 60s host read</span><span class="price">$4,800 / ep</span></li>
+        <li><span>Static &amp; Soup — 60s host read</span><span class="price">$2,900 / ep</span></li>
+        <li><span>Third Bell — 45s host read</span><span class="price">$1,600 / ep</span></li>
+        <li><span>Full-network take-over week</span><span class="price">$8,100</span></li>
+      </ul>
+      <a class="btn btn-solid" href="#">Book a slot</a>
+    </div>
+    <div class="careers" id="careers">
+      <h2>Work at Cold Open</h2>
+      <p>We're eleven people in Minneapolis and fully remote within three time zones. Audio experience helps; opinions about soup are mandatory.</p>
+      <a class="job" href="#">
+        <span class="role">Senior Producer — The Long Minute</span>
+        <span class="detail">Full-time · Remote (US) · $88–104k · Closes Aug 30</span>
+      </a>
+      <a class="job" href="#">
+        <span class="role">Sound Designer — Third Bell</span>
+        <span class="detail">Contract · ~20 hrs/wk · $72/hr · Rolling</span>
+      </a>
+      <a class="job" href="#">
+        <span class="role">Audience &amp; Membership Lead</span>
+        <span class="detail">Full-time · Remote (US/EU) · $78–92k · Closes Sept 12</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span><span class="flags" aria-hidden="true"><i style="background:var(--red)"></i><i style="background:var(--teal)"></i><i style="background:var(--mustard)"></i></span>Cold Open Media Co-op — Minneapolis, MN. Independent since 2019.</span>
+  <span>3 shows · 4.1M monthly listens · 0 investors</span>
+</footer>
+
+<script>
+  // Keep the ticker seamless: duplicate content until the track is at least 2x viewport width.
+  (function () {
+    var track = document.querySelector('.ticker-track');
+    if (!track) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+    var original = track.innerHTML;
+    var guard = 0;
+    while (track.scrollWidth < window.innerWidth * 2 && guard < 6) {
+      track.innerHTML += original;
+      guard++;
+    }
+  })();
+</script>
+</body>
+</html>

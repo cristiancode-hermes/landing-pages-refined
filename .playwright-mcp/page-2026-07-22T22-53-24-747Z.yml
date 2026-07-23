@@ -1,0 +1,115 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Saltline home" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+        - text: Saltline
+      - navigation "Main" [ref=e8]:
+        - link "The water" [ref=e9] [cursor=pointer]:
+          - /url: "#water"
+        - link "Coaches" [ref=e10] [cursor=pointer]:
+          - /url: "#coaches"
+        - link "Lessons" [ref=e11] [cursor=pointer]:
+          - /url: "#lessons"
+        - link "Book a session" [ref=e12] [cursor=pointer]:
+          - /url: "#lessons"
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - img "A grey-dawn lineup at Skarvik Point — eight surfers in hooded 5/4mm wetsuits waiting beyond the break" [ref=e16]
+      - generic [ref=e17]:
+        - paragraph [ref=e18]: "Water today: 9.4°C — hoods on, spirits high"
+        - heading [level=1] [ref=e20]:
+          - text: Cold water. Warm welcome.
+          - emphasis [ref=e21]: You will stand up.
+        - paragraph [ref=e22]: Saltline is a surf school on the North Sea at Skarvik Point. We teach in 5/4mm suits we provide, in water we'll never lie to you about, with coaches who think February is the best month.
+        - generic [ref=e23]:
+          - link "See lesson tiers" [ref=e24] [cursor=pointer]:
+            - /url: "#lessons"
+          - link "How cold is cold?" [ref=e25] [cursor=pointer]:
+            - /url: "#water"
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - heading "We publish the temperature. Then we get in." [level=2] [ref=e31]
+        - paragraph [ref=e32]: Most schools crop the thermometer out of the photo. We paint it on the door. The North Sea at Skarvik runs from 6°C in March to 15°C in a good September, and every one of those degrees is surfable with the right rubber and the right attitude.
+        - paragraph [ref=e33]: Your fee includes a 5/4mm suit, 7mm boots, gloves, and a hood — rinsed, dried, and warm from the rack. Cold hands end lessons; ours don't end early.
+      - generic "This week at Skarvik Point" [ref=e34]:
+        - generic [ref=e35]:
+          - term [ref=e36]: Water, this morning
+          - definition [ref=e37]: 9.4°C
+        - generic [ref=e38]:
+          - term [ref=e39]: Air at first light
+          - definition [ref=e40]: 7°C
+        - generic [ref=e41]:
+          - term [ref=e42]: Swell window
+          - definition [ref=e43]: 3–5ft, clean
+        - generic [ref=e44]:
+          - term [ref=e45]: Suit you'll wear
+          - definition [ref=e46]: 5/4mm + hood
+        - generic [ref=e47]:
+          - term [ref=e48]: Hot drinks after
+          - definition [ref=e49]: Free, always
+        - paragraph [ref=e50]: Read off the harbour gauge at 06:40 by whoever opens up. Posted as-is, never rounded up.
+    - generic [ref=e54]:
+      - figure "Mara, 06:15, checking the sandbars before the first lesson of the day." [ref=e55]:
+        - img "Coach Mara in a hooded wetsuit carrying a 8-foot foam board down the slipway at first light" [ref=e56]
+      - generic [ref=e58]:
+        - heading "Coached by people who surf here all winter" [level=2] [ref=e59]
+        - paragraph [ref=e60]: "No gap-year instructors reading from a laminated card. Our three coaches log over 200 cold-water sessions a year at this exact beach, and they teach the way they learned: small groups, honest feedback, and nobody left floating at the back."
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - generic [ref=e63]: Mara Ellingsen
+            - generic [ref=e64]: 14 winters at Skarvik
+            - paragraph [ref=e65]: Ex-competition longboarder. Specialises in getting total beginners upright inside one session — her record is eleven minutes.
+          - generic [ref=e66]:
+            - generic [ref=e67]: Deniz Kaya
+            - generic [ref=e68]: 9 winters at Skarvik
+            - paragraph [ref=e69]: Former RNLI lifeguard. Runs the winter progression group and the January dawn patrol that nobody believes exists until they try it.
+          - generic [ref=e70]:
+            - generic [ref=e71]: Cormac Byrne
+            - generic [ref=e72]: 11 winters at Skarvik
+            - paragraph [ref=e73]: Teaches the over-40s cohort and anyone convinced they've left it too late. He started at 46. He's now the one waiting for you out back.
+    - generic [ref=e77]:
+      - generic: Fresh off the rack — still dripping from this morning's 07:00.
+      - heading "Lesson tiers, wetsuit always included" [level=2] [ref=e78]
+      - paragraph [ref=e79]: Every session comes with the full 5/4mm kit, hot showers, and a debrief over coffee in the hut. Bring a towel and a willingness to fall over in front of strangers — briefly.
+      - generic [ref=e80]:
+        - article [ref=e81]:
+          - heading "First Wave" [level=3] [ref=e82]
+          - paragraph [ref=e83]: £65 / 2.5-hour session
+          - list [ref=e84]:
+            - listitem [ref=e85]: Never surfed? Perfect. Max 6 per coach
+            - listitem [ref=e86]: "Full winter kit: suit, boots, gloves, hood"
+            - listitem [ref=e87]: Beach theory, then 90 minutes in the water
+            - listitem [ref=e88]: Free resit if you don't stand up
+          - link "Book First Wave" [ref=e89] [cursor=pointer]:
+            - /url: "#book"
+        - article [ref=e90]:
+          - heading "Six Swell Pass" [level=3] [ref=e91]
+          - paragraph [ref=e92]: £330 / 6 sessions, save £60
+          - list [ref=e93]:
+            - listitem [ref=e94]: The way people actually learn — weekly reps
+            - listitem [ref=e95]: Same coach throughout, progression tracked
+            - listitem [ref=e96]: Video review after sessions 3 and 6
+            - listitem [ref=e97]: Valid 12 months, transferable to a mate
+          - link "Book the Pass" [ref=e98] [cursor=pointer]:
+            - /url: "#book"
+        - article [ref=e99]:
+          - heading "Winter Grit" [level=3] [ref=e100]
+          - paragraph [ref=e101]: £110 / private, Nov–Mar
+          - list [ref=e102]:
+            - listitem [ref=e103]: One-to-one in the quiet months
+            - listitem [ref=e104]: Dawn slots before work, 06:30 start
+            - listitem [ref=e105]: Green-wave progression, not just whitewater
+            - listitem [ref=e106]: Thermos of something hot included
+          - link "Book Winter Grit" [ref=e107] [cursor=pointer]:
+            - /url: "#book"
+      - paragraph [ref=e108]:
+        - text: "Our promise:"
+        - strong [ref=e109]: 94% of first-timers stand in session one.
+        - text: The other 6% come back free — and so far, every one of them has stood on the second go.
+  - contentinfo [ref=e110]:
+    - generic [ref=e111]:
+      - link "Saltline" [ref=e112] [cursor=pointer]:
+        - /url: "#top"
+      - paragraph [ref=e113]: Skarvik Point, North Sea coast · Lessons Mar–Dec, diehards all year · hello@saltline.surf
+      - paragraph [ref=e114]: © 2026 Saltline Surf School. The sea doesn't do refunds; we do.

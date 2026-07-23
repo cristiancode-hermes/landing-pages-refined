@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marigold — Modern Indian cooking, served like a celebration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Yeseva+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --marigold: oklch(0.63 0.16 75);
+    --marigold-deep: oklch(0.55 0.17 62);
+    --aubergine: oklch(0.25 0.055 330);
+    --aubergine-deep: oklch(0.2 0.05 330);
+    --ink: oklch(0.24 0.02 60);
+    --ivory: oklch(0.95 0.015 85);
+    --ivory-dim: oklch(0.82 0.03 80);
+    --mint: oklch(0.87 0.11 160);
+    --mint-deep: oklch(0.36 0.07 165);
+    --field: oklch(0.97 0.01 85);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-nav: 10;
+    --z-garland: 3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Hanken Grotesk", sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    background: var(--marigold);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--aubergine); color: var(--ivory); }
+
+  :focus-visible {
+    outline: 3px solid var(--aubergine);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  .dark :focus-visible, footer :focus-visible { outline-color: var(--mint); }
+
+  h1, h2, h3 {
+    font-family: "Yeseva One", serif;
+    font-weight: 400;
+    text-wrap: balance;
+    line-height: 1.12;
+  }
+
+  .wrap {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 3rem);
+  }
+
+  /* ---------- nav ---------- */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: var(--marigold);
+    border-bottom: 2px solid var(--ink);
+  }
+  .site-nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.8rem;
+  }
+  .wordmark {
+    font-family: "Yeseva One", serif;
+    font-size: 1.5rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: clamp(0.9rem, 2.6vw, 2rem);
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .nav-links a:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+  .nav-cta {
+    background: var(--aubergine);
+    color: var(--ivory) !important;
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+  }
+  .nav-cta:hover { background: var(--aubergine-deep); text-decoration: none !important; }
+  @media (max-width: 40rem) {
+    .nav-links li:not(.cta-li) { display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding-block: clamp(4rem, 9vw, 7rem) clamp(3rem, 7vw, 5rem);
+    overflow: hidden;
+  }
+  .garland {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: var(--z-garland);
+    pointer-events: none;
+  }
+  .strand { transform-origin: top center; animation: sway 5.2s ease-in-out infinite alternate; }
+  .strand:nth-child(2) { animation-duration: 6.4s; animation-delay: -1.2s; }
+  .strand:nth-child(3) { animation-duration: 4.6s; animation-delay: -0.6s; }
+  .strand:nth-child(4) { animation-duration: 5.8s; animation-delay: -2s; }
+  .strand:nth-child(5) { animation-duration: 6.9s; animation-delay: -1.6s; }
+  .strand:nth-child(6) { animation-duration: 5s; animation-delay: -0.9s; }
+  .strand:nth-child(7) { animation-duration: 6.1s; animation-delay: -2.4s; }
+  @keyframes sway {
+    from { transform: rotate(-2.4deg); }
+    to { transform: rotate(2.4deg); }
+  }
+
+  .hero-inner {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 56rem) {
+    .hero-inner { grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; }
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .hero .lede {
+    margin-top: 1.3rem;
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    max-width: 38ch;
+    font-weight: 500;
+    text-wrap: pretty;
+  }
+  .hero-actions {
+    margin-top: 2.2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 0.85rem 1.7rem;
+    border-radius: 999px;
+    transition: transform 0.45s var(--ease-out), background 0.3s ease, color 0.3s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-solid { background: var(--aubergine); color: var(--ivory); }
+  .btn-solid:hover { background: var(--aubergine-deep); }
+  .btn-ghost { border: 2px solid var(--ink); color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--marigold); }
+
+  .hero-figure { position: relative; }
+  .hero-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+  }
+  .hero-figure figcaption {
+    margin-top: 0.7rem;
+    font-size: 0.9rem;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* ---------- swirl reveal ---------- */
+  [data-swirl] {
+    transition: clip-path 1.4s var(--ease-out), transform 1.4s var(--ease-out);
+  }
+  .pre-swirl {
+    clip-path: circle(0% at 50% 50%);
+    transform: rotate(-8deg) scale(0.92);
+  }
+  .swirled {
+    clip-path: circle(75% at 50% 50%);
+    transform: rotate(0deg) scale(1);
+  }
+
+  [data-fade] {
+    transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+  }
+  .pre-fade { opacity: 0; transform: translateY(18px); }
+  .faded-in { opacity: 1; transform: none; }
+
+  /* ---------- dark sections ---------- */
+  .dark {
+    background: var(--aubergine);
+    color: var(--ivory);
+  }
+  .dark p { color: var(--ivory-dim); }
+  .dark h2, .dark h3 { color: var(--ivory); }
+  .dark a { color: var(--mint); }
+
+  section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .section-head { max-width: 46rem; margin-bottom: clamp(2.2rem, 5vw, 3.5rem); }
+  .section-head h2 { font-size: clamp(2rem, 4.6vw, 3.2rem); }
+  .section-head p { margin-top: 1rem; max-width: 56ch; text-wrap: pretty; }
+  .dark .section-head p { color: var(--ivory-dim); }
+
+  /* ---------- story ---------- */
+  .story-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 56rem) {
+    .story-grid { grid-template-columns: 0.9fr 1.1fr; gap: 3.5rem; }
+  }
+  .story-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+  }
+  .story-copy p + p { margin-top: 1.1rem; }
+  .story-copy .signature {
+    margin-top: 1.6rem;
+    font-family: "Yeseva One", serif;
+    font-size: 1.5rem;
+    color: var(--mint);
+  }
+
+  /* ---------- menu ---------- */
+  .menu-region { margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .menu-region h3 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    color: var(--aubergine);
+    margin-bottom: 0.4rem;
+  }
+  .menu-region .region-note {
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 1.4rem;
+    max-width: 56ch;
+  }
+  .dish {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.15rem 1.5rem;
+    padding-block: 0.9rem;
+    border-top: 1px dashed oklch(0.4 0.05 65 / 0.55);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  }
+  .dish .name { font-weight: 700; font-size: 1.08rem; }
+  .dish .name .veg { color: var(--mint-deep); font-weight: 600; font-size: 0.85rem; }
+  .dish .desc { grid-column: 1; max-width: 58ch; font-size: 0.97rem; text-wrap: pretty; }
+  .dish .price { grid-row: 1; grid-column: 2; font-weight: 700; white-space: nowrap; }
+  .dish.pre-cascade { opacity: 0; transform: translateY(22px); }
+  .dish.cascaded { opacity: 1; transform: none; }
+  .dish:nth-child(2) { transition-delay: 0.06s; }
+  .dish:nth-child(3) { transition-delay: 0.14s; }
+  .dish:nth-child(4) { transition-delay: 0.22s; }
+  .dish:nth-child(5) { transition-delay: 0.3s; }
+  .dish:nth-child(6) { transition-delay: 0.38s; }
+
+  /* ---------- image break ---------- */
+  .break-figure { line-height: 0; }
+  .break-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* ---------- private dining ---------- */
+  .private-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 56rem) {
+    .private-grid { grid-template-columns: 1.1fr 0.9fr; gap: 3.5rem; align-items: start; }
+  }
+  .private-facts {
+    list-style: none;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid oklch(0.4 0.06 330);
+  }
+  .private-facts li {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1.25rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid oklch(0.4 0.06 330);
+    align-items: baseline;
+  }
+  .private-facts dt {
+    font-family: "Yeseva One", serif;
+    color: var(--mint);
+    font-size: 1.05rem;
+  }
+  .private-facts dd { color: var(--ivory-dim); }
+
+  /* ---------- reservations ---------- */
+  .reserve-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 56rem) {
+    .reserve-grid { grid-template-columns: 0.9fr 1.1fr; gap: 3.5rem; align-items: start; }
+  }
+  .reserve-form {
+    background: var(--field);
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .reserve-form .row {
+    display: grid;
+    gap: 1.1rem;
+  }
+  @media (min-width: 34rem) {
+    .reserve-form .row { grid-template-columns: 1fr 1fr; }
+  }
+  .field { display: grid; gap: 0.4rem; margin-bottom: 1.1rem; }
+  .field label { font-weight: 700; font-size: 0.92rem; }
+  .field input, .field select {
+    font: inherit;
+    color: var(--ink);
+    background: oklch(1 0 0);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    padding: 0.65rem 0.85rem;
+  }
+  .field input:focus-visible, .field select:focus-visible {
+    outline: 3px solid var(--aubergine);
+    outline-offset: 1px;
+  }
+  .reserve-form button {
+    font: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    background: var(--aubergine);
+    color: var(--ivory);
+    border: none;
+    border-radius: 999px;
+    padding: 0.9rem 2rem;
+    cursor: pointer;
+    transition: transform 0.45s var(--ease-out), background 0.3s ease;
+  }
+  .reserve-form button:hover { background: var(--aubergine-deep); transform: translateY(-2px); }
+  .reserve-note { margin-top: 1rem; font-size: 0.92rem; color: var(--ink); }
+  .confirmation {
+    margin-top: 1.4rem;
+    background: var(--mint);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    padding: 1.1rem 1.3rem;
+    font-weight: 600;
+    display: none;
+  }
+  .confirmation.show { display: block; }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--aubergine-deep);
+    color: var(--ivory-dim);
+    padding-block: 3rem;
+  }
+  footer .foot-grid {
+    display: grid;
+    gap: 1.8rem;
+  }
+  @media (min-width: 44rem) {
+    footer .foot-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  footer h3 { color: var(--ivory); font-size: 1.2rem; margin-bottom: 0.6rem; }
+  footer p, footer li { font-size: 0.95rem; }
+  footer ul { list-style: none; }
+  footer a { color: var(--mint); }
+  .foot-mark {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid oklch(0.35 0.05 330);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.88rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .strand { animation: none; }
+    [data-swirl], [data-fade], .dish { transition: none; }
+    .pre-swirl { clip-path: none; transform: none; }
+    .pre-fade, .dish.pre-cascade { opacity: 1; transform: none; }
+    .btn, .reserve-form button { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Main">
+  <div class="wrap">
+    <a class="wordmark" href="#top">Marigold</a>
+    <ul class="nav-links">
+      <li><a href="#story">Our Story</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#private">Private Dining</a></li>
+      <li class="cta-li"><a class="nav-cta" href="#reserve">Reserve</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <svg class="garland" viewBox="0 0 1200 150" aria-hidden="true" preserveAspectRatio="xMidYMin slice">
+    <g class="strand">
+      <line x1="80" y1="0" x2="80" y2="118" stroke="oklch(0.36 0.07 165)" stroke-width="2"/>
+      <circle cx="80" cy="30" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="80" cy="52" r="9" fill="oklch(0.25 0.055 330)"/>
+      <circle cx="80" cy="74" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="80" cy="96" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="80" cy="118" r="11" fill="oklch(0.25 0.055 330)"/>
+    </g>
+    <g class="strand">
+      <line x1="260" y1="0" x2="260" y2="88" stroke="oklch(0.36 0.07 165)" stroke-width="2"/>
+      <circle cx="260" cy="28" r="9" fill="oklch(0.25 0.055 330)"/><circle cx="260" cy="50" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="260" cy="72" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="260" cy="92" r="11" fill="oklch(0.55 0.17 62)"/>
+    </g>
+    <g class="strand">
+      <line x1="440" y1="0" x2="440" y2="132" stroke="oklch(0.36 0.07 165)" stroke-width="2"/>
+      <circle cx="440" cy="32" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="440" cy="54" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="440" cy="76" r="9" fill="oklch(0.25 0.055 330)"/><circle cx="440" cy="98" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="440" cy="122" r="11" fill="oklch(0.55 0.17 62)"/>
+    </g>
+    <g class="strand">
+      <line x1="620" y1="0" x2="620" y2="78" stroke="oklch(0.36 0.07 165)" stroke-width="2"/>
+      <circle cx="620" cy="26" r="9" fill="oklch(0.25 0.055 330)"/><circle cx="620" cy="48" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="620" cy="70" r="10" fill="oklch(0.55 0.17 62)"/>
+    </g>
+    <g class="strand">
+      <line x1="800" y1="0" x2="800" y2="126" stroke="oklch(0.36 0.07 165)" stroke-width="2"/>
+      <circle cx="800" cy="30" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="800" cy="52" r="9" fill="oklch(0.25 0.055 330)"/>
+      <circle cx="800" cy="74" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="800" cy="96" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="800" cy="118" r="11" fill="oklch(0.25 0.055 330)"/>
+    </g>
+    <g class="strand">
+      <line x1="980" y1="0" x2="980" y2="94" stroke="oklch(0.36 0.07 165)" stroke-width="2"/>
+      <circle cx="980" cy="28" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="980" cy="50" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="980" cy="72" r="9" fill="oklch(0.25 0.055 330)"/><circle cx="980" cy="94" r="10" fill="oklch(0.55 0.17 62)"/>
+    </g>
+    <g class="strand">
+      <line x1="1140" y1="0" x2="1140" y2="120" stroke="oklch(0.36 0.07 165)" stroke-width="2"/>
+      <circle cx="1140" cy="30" r="9" fill="oklch(0.25 0.055 330)"/><circle cx="1140" cy="52" r="9" fill="oklch(0.55 0.17 62)"/>
+      <circle cx="1140" cy="74" r="9" fill="oklch(0.55 0.17 62)"/><circle cx="1140" cy="98" r="11" fill="oklch(0.55 0.17 62)"/>
+    </g>
+  </svg>
+  <div class="wrap hero-inner">
+    <div>
+      <h1>Dinner, strung like a garland.</h1>
+      <p class="lede">Marigold is a modern Indian dining room in Leicester — tandoor fire,
+         coastal coconut, and chaat that crackles, served with the generosity of a family
+         wedding and none of the formality.</p>
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#reserve">Reserve a table</a>
+        <a class="btn btn-ghost" href="#menu">See the menu</a>
+      </div>
+    </div>
+    <figure class="hero-figure" data-swirl>
+      <img src="https://picsum.photos/seed/marigold-1/1600/900" width="1600" height="900"
+           alt="A Marigold thali — small brass bowls of dal, paneer, pickles and rice on a beaten tray">
+      <figcaption>The full thali, Tuesdays only, until the tray is bare.</figcaption>
+    </figure>
+  </div>
+</header>
+
+<main>
+
+  <section class="dark" id="story" aria-labelledby="story-h">
+    <div class="wrap story-grid">
+      <img src="https://picsum.photos/seed/marigold-3/800/600" width="800" height="600"
+           alt="The dining room at Marigold — low lamps, aubergine walls, marigolds in brass vases"
+           loading="lazy" data-swirl>
+      <div class="story-copy" data-fade>
+        <h2 id="story-h">Chef Asha's story</h2>
+        <p>Asha Rangan grew up above her grandmother's mess hall in Madurai, where lunch was
+           eleven dishes on a banana leaf and nobody left hungry — that was the whole business
+           model. She cooked through Lyon and Copenhagen, then came home to the flavours that
+           raised her.</p>
+        <p>Marigold opened in 2019 with nine tables, one tandoor, and a rule she still keeps:
+           every dish must taste like somewhere specific. No "Indian-inspired." Madurai is
+           Madurai. Kochi is Kochi. The map is the menu.</p>
+        <p>The marigolds are real, by the way. Her mother strings them fresh every morning
+           and refuses to teach anyone else the knot.</p>
+        <p class="signature">— Asha Rangan</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu" aria-labelledby="menu-h">
+    <div class="wrap">
+      <div class="section-head" data-fade>
+        <h2 id="menu-h">The menu, by region</h2>
+        <p>Three kitchens of India, one dining room. Dishes marked
+           <span style="color: var(--mint-deep); font-weight: 700;">(v)</span> are plant-based,
+           and every curry can be made so. Tell us about allergies — the kitchen keeps a
+           separate pan for you, not a separate attitude.</p>
+      </div>
+
+      <div class="menu-region">
+        <h3>From the North — tandoor &amp; griddle</h3>
+        <p class="region-note">Cooked over lumpwood charcoal at 480°C. The bread arrives
+           blistered; please don't wait for it to cool.</p>
+        <div class="dish" data-cascade>
+          <p class="name">Amritsari lamb chops <span class="price">£16.50</span></p>
+          <p class="desc">Two nights in raw-papaya marinade, charred edges, mint chutney with
+             actual bite.</p>
+        </div>
+        <div class="dish" data-cascade>
+          <p class="name">Paneer tikka, smoked yoghurt <span class="veg">(v)</span> <span class="price">£12.00</span></p>
+          <p class="desc">House-pressed paneer, Kashmiri chilli, a yoghurt we smoke over the
+             tandoor coals.</p>
+        </div>
+        <div class="dish" data-cascade>
+          <p class="name">Butter chicken, old Delhi style <span class="price">£14.50</span></p>
+          <p class="desc">Tomato, fenugreek, restraint. Not orange, not sweet, not sorry.</p>
+        </div>
+        <div class="dish" data-cascade>
+          <p class="name">Garlic naan, black butter <span class="veg">(v)</span> <span class="price">£4.00</span></p>
+          <p class="desc">Brushed with butter we brown until it smells like toasted hazelnuts.</p>
+        </div>
+      </div>
+
+      <div class="menu-region">
+        <h3>From the Coast — coconut &amp; catch</h3>
+        <p class="region-note">The fish comes in daily from Brixham. When it's gone, the board
+           says so, and we will not be argued with.</p>
+        <div class="dish" data-cascade>
+          <p class="name">Kochi fish moilee <span class="price">£17.00</span></p>
+          <p class="desc">Sea bream in first-press coconut milk, turmeric, green mango. Gentle
+             until it isn't.</p>
+        </div>
+        <div class="dish" data-cascade>
+          <p class="name">Goan prawn balchão <span class="price">£15.50</span></p>
+          <p class="desc">Fiery, vinegared, the dish Portuguese sailors wrote nervous letters
+             home about.</p>
+        </div>
+        <div class="dish" data-cascade>
+          <p class="name">Avial — vegetables in coconut &amp; curry leaf <span class="veg">(v)</span> <span class="price">£11.50</span></p>
+          <p class="desc">Asha's grandmother's version, which means drumstick, yam, and no
+             shortcuts.</p>
+        </div>
+      </div>
+
+      <div class="menu-region">
+        <h3>From the South — dosa &amp; fire</h3>
+        <p class="region-note">The dosa batter ferments for 26 hours. We time the ferment,
+           not the other way round, so dosas stop at 22:00 sharp.</p>
+        <div class="dish" data-cascade>
+          <p class="name">Masala dosa, gunpowder <span class="veg">(v)</span> <span class="price">£11.00</span></p>
+          <p class="desc">Crisp as cellophane, potato masala, milagai podi, three chutneys
+             in descending order of mercy.</p>
+        </div>
+        <div class="dish" data-cascade>
+          <p class="name">Chettinad chicken, stone-ground pepper <span class="price">£14.00</span></p>
+          <p class="desc">Black pepper ground on stone each morning, star anise, a heat that
+             builds like a good argument.</p>
+        </div>
+        <div class="dish" data-cascade>
+          <p class="name">Filter coffee crème brûlée <span class="veg">(v)</span> <span class="price">£7.00</span></p>
+          <p class="desc">Davara-tumbler coffee under the crack of caramel. The tables
+             applaud it weekly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <figure class="break-figure">
+    <img src="https://picsum.photos/seed/marigold-2/1600/900" width="1600" height="900"
+         alt="Flames leaping inside the open tandoor at the back of the Marigold kitchen" loading="lazy">
+  </figure>
+
+  <section class="dark" id="private" aria-labelledby="private-h">
+    <div class="wrap private-grid">
+      <div class="section-head" style="margin-bottom: 0;" data-fade>
+        <h2 id="private-h">The Garland Room</h2>
+        <p>Behind the kitchen is a room that seats sixteen around one long teak table, under
+           a ceiling strung with — you'll never guess. It has its own tandoor, its own
+           playlist, and its own rules: the menu is set by the season, the toast is set by you.</p>
+        <p style="margin-top: 1rem;">Write to <a href="mailto:garland@marigold.example">garland@marigold.example</a>
+           with your date. We answer within a day, usually within the hour, occasionally
+           mid-service with flour on the keyboard.</p>
+      </div>
+      <dl class="private-facts" data-fade>
+        <li><dt>Seats</dt><dd>16 at the teak table, 22 standing with plates and opinions</dd></li>
+        <li><dt>Menus</dt><dd>Three seasonal set menus, £55–£85 per guest, always a full (v) version</dd></li>
+        <li><dt>Drinks</dt><dd>Paired pours from our cellar, or bring your own for £15 corkage</dd></li>
+        <li><dt>Notice</dt><dd>Two weeks is comfortable; we've done it in two days and aged a year</dd></li>
+      </dl>
+    </div>
+  </section>
+
+  <section id="reserve" aria-labelledby="reserve-h">
+    <div class="wrap reserve-grid">
+      <div data-fade>
+        <h2 id="reserve-h" style="font-size: clamp(2rem, 4.6vw, 3.2rem);">Reserve a table</h2>
+        <p style="margin-top: 1rem; max-width: 44ch; text-wrap: pretty;">We hold every table
+           for two hours, then we hold your coat instead. Parties of seven or more should use
+           the Garland Room. Walk-ins are loved but not promised — the bar takes four, first
+           come, first fed.</p>
+        <p style="margin-top: 1rem; max-width: 44ch;">Tuesday is thali night. Thursday the
+           kitchen tests new dishes on whoever's brave. Sunday we close at 16:00 and go to
+           Asha's mother's house, which is the best review we get.</p>
+      </div>
+      <form class="reserve-form" id="reserve-form" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="r-name">Name</label>
+            <input id="r-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="r-party">Party size</label>
+            <select id="r-party" name="party" required>
+              <option value="2">2 guests</option>
+              <option value="3">3 guests</option>
+              <option value="4" selected>4 guests</option>
+              <option value="5">5 guests</option>
+              <option value="6">6 guests</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="r-date">Date</label>
+            <input id="r-date" name="date" type="date" required>
+          </div>
+          <div class="field">
+            <label for="r-time">Time</label>
+            <select id="r-time" name="time" required>
+              <option>17:30</option>
+              <option>18:00</option>
+              <option selected>19:00</option>
+              <option>20:00</option>
+              <option>21:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="r-notes">Anything we should know? <span style="font-weight: 400;">(allergies, occasions, grudges)</span></label>
+          <input id="r-notes" name="notes" type="text">
+        </div>
+        <button type="submit">Request this table</button>
+        <p class="reserve-note">This asks the kitchen, not a call centre. We confirm by text
+           within the hour during service.</p>
+        <p class="confirmation" id="confirmation" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h3>Marigold</h3>
+        <p>14 Halford Street, Leicester LE1<br>
+           <a href="tel:+441162960114">0116 296 0114</a><br>
+           <a href="mailto:hello@marigold.example">hello@marigold.example</a></p>
+      </div>
+      <div>
+        <h3>Hours</h3>
+        <ul>
+          <li>Tue–Thu · 17:30 – 22:30</li>
+          <li>Fri–Sat · 17:30 – 23:00</li>
+          <li>Sun · 12:00 – 16:00</li>
+          <li>Mon · closed (tandoor rests)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Good to know</h3>
+        <ul>
+          <li>Step-free entrance on Halford St</li>
+          <li>Full vegan menu, always</li>
+          <li>Dogs welcome at lunch</li>
+          <li>Garlands not for sale. Asked a lot.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-mark">
+      <span>© Marigold Dining Room, since 2019</span>
+      <span>Strung fresh every morning</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- scroll reveals: swirl + fade + cascade --- */
+  if (!reduced && 'IntersectionObserver' in window) {
+    var swirlEls = Array.prototype.slice.call(document.querySelectorAll('[data-swirl]'));
+    var fadeEls = Array.prototype.slice.call(document.querySelectorAll('[data-fade]'));
+    var dishEls = Array.prototype.slice.call(document.querySelectorAll('[data-cascade]'));
+
+    function prep(el, cls) {
+      var r = el.getBoundingClientRect();
+      if (r.top > window.innerHeight * 0.92) el.classList.add(cls);
+    }
+    swirlEls.forEach(function (el) { prep(el, 'pre-swirl'); });
+    fadeEls.forEach(function (el) { prep(el, 'pre-fade'); });
+    dishEls.forEach(function (el) { prep(el, 'pre-cascade'); });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var t = entry.target;
+        t.classList.add('swirled', 'faded-in', 'cascaded');
+        t.classList.remove('pre-swirl', 'pre-fade', 'pre-cascade');
+        io.unobserve(t);
+      });
+    }, { threshold: 0.15 });
+
+    swirlEls.concat(fadeEls, dishEls).forEach(function (el) { io.observe(el); });
+
+    setTimeout(function () {
+      swirlEls.concat(fadeEls, dishEls).forEach(function (el) {
+        el.classList.add('swirled', 'faded-in', 'cascaded');
+        el.classList.remove('pre-swirl', 'pre-fade', 'pre-cascade');
+      });
+    }, 4500);
+  }
+
+  /* --- reservation flow --- */
+  var form = document.getElementById('reserve-form');
+  var confirmation = document.getElementById('confirmation');
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    var name = document.getElementById('r-name').value.trim().split(' ')[0] || 'friend';
+    var party = document.getElementById('r-party').value;
+    var time = document.getElementById('r-time').value;
+    var date = document.getElementById('r-date').value;
+    var when = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-GB',
+      { weekday: 'long', day: 'numeric', month: 'long' }) : 'your evening';
+    confirmation.textContent = 'Noted, ' + name + ' — a table for ' + party + ' on ' + when +
+      ' at ' + time + '. We\'ll text to confirm within the hour. The garlands will be ready.';
+    confirmation.classList.add('show');
+    confirmation.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
+  });
+
+  // Earliest bookable date is today.
+  var dateInput = document.getElementById('r-date');
+  dateInput.min = new Date().toISOString().split('T')[0];
+})();
+</script>
+</body>
+</html>

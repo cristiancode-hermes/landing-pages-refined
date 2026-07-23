@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Verte — landscape architecture, from survey to planting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;600;700&family=Literata:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.995 0.003 150);
+    --paper: oklch(0.97 0.008 150);
+    --ink: oklch(0.26 0.015 150);
+    --muted: oklch(0.44 0.02 150);
+    --green: oklch(0.42 0.085 150);
+    --green-deep: oklch(0.32 0.07 150);
+    --green-tint: oklch(0.93 0.03 150);
+    --gravel: oklch(0.72 0.01 150);
+    --gravel-light: oklch(0.9 0.008 150);
+    --on-green: oklch(0.96 0.015 150);
+    --on-green-muted: oklch(0.82 0.03 150);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Literata", Georgia, serif;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Geologica", system-ui, sans-serif; letter-spacing: -0.02em; text-wrap: balance; line-height: 1.15; }
+  h1 { font-size: clamp(2.4rem, 1.8rem + 2.8vw, 4.25rem); font-weight: 700; }
+  h2 { font-size: clamp(1.85rem, 1.5rem + 1.7vw, 2.9rem); font-weight: 700; }
+  h3 { font-size: 1.25rem; font-weight: 600; }
+  p { max-width: 66ch; text-wrap: pretty; }
+  a { color: var(--green-deep); text-underline-offset: 0.18em; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  ::selection { background: var(--green); color: var(--on-green); }
+
+  .wrap { width: min(72rem, 100% - 3rem); margin-inline: auto; }
+
+  header {
+    position: sticky; top: 0; z-index: var(--z-sticky);
+    background: oklch(0.995 0.003 150 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--gravel-light);
+  }
+  .header-in { display: flex; align-items: baseline; justify-content: space-between; padding-block: 1rem; }
+  .wordmark { font-family: "Geologica", sans-serif; font-weight: 700; font-size: 1.375rem; color: var(--ink); text-decoration: none; }
+  .wordmark em { font-style: normal; color: var(--green); }
+  nav { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.9375rem; font-family: "Geologica", sans-serif; font-weight: 400; transition: color 0.3s var(--ease-out); }
+  nav a:hover { color: var(--green-deep); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(2.5rem, 5vw, 4rem); }
+  .hero .lede { margin-top: 1.5rem; color: var(--muted); font-size: 1.1875rem; max-width: 52ch; }
+  .hero-facts {
+    display: flex; gap: 2.5rem; flex-wrap: wrap;
+    margin-top: 2.5rem;
+    font-family: "Geologica", sans-serif;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .hero-facts span { border-top: 2px solid var(--green); padding-top: 0.5rem; }
+
+  /* ---------- projects ---------- */
+  .projects { padding-block: clamp(2rem, 5vw, 4rem); }
+  .project {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+    border-top: 1px solid var(--gravel-light);
+    align-items: start;
+  }
+  .project:nth-child(even) .compare { order: 2; }
+  .compare {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .compare img { display: block; width: 100%; height: auto; }
+  .compare .plan-layer {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    transition: opacity 0.25s linear;
+    background: var(--paper);
+  }
+  .plan-layer svg { display: block; width: 100%; height: 100%; }
+  .compare-controls {
+    display: flex; align-items: center; gap: 0.9rem;
+    margin-top: 0.85rem;
+    font-family: "Geologica", sans-serif;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .compare-controls input[type="range"] { flex: 1; accent-color: var(--green); cursor: ew-resize; }
+  .compare-controls .lbl { min-width: 3.2rem; }
+  .compare-controls .lbl:last-child { text-align: right; }
+  .project h3 { font-size: clamp(1.5rem, 1.25rem + 1.1vw, 2.1rem); }
+  .project-meta {
+    font-family: "Geologica", sans-serif;
+    color: var(--green-deep);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    margin: 0.35rem 0 1.25rem;
+  }
+  .project p { color: var(--muted); }
+  .planting-list {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--green-tint);
+    border-radius: 12px;
+  }
+  .planting-list h4 {
+    font-family: "Geologica", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .planting-list ul { list-style: none; columns: 2; font-size: 0.9375rem; }
+  .planting-list li { font-style: italic; padding-block: 0.1rem; break-inside: avoid; }
+
+  /* ---------- seasons ---------- */
+  .seasons {
+    background: var(--green-deep);
+    color: var(--on-green);
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+  }
+  .seasons h2 { color: var(--on-green); }
+  .seasons .note { color: var(--on-green-muted); margin-top: 0.75rem; max-width: 60ch; }
+  .seasons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    margin-top: 2.5rem;
+    align-items: start;
+  }
+  .season-plan {
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+  .season-plan svg { display: block; width: 100%; height: auto; }
+  .zone { transition: fill 1.1s var(--ease-out); }
+  .season-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .season-btn {
+    font-family: "Geologica", sans-serif;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    padding: 0.6rem 1.3rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--on-green-muted);
+    background: transparent;
+    color: var(--on-green);
+    cursor: pointer;
+    transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+  .season-btn[aria-pressed="true"] { background: var(--on-green); color: var(--green-deep); border-color: var(--on-green); }
+  .season-desc { margin-top: 1.5rem; color: var(--on-green-muted); min-height: 5.5em; }
+  .season-desc strong { color: var(--on-green); }
+
+  /* ---------- maturity ---------- */
+  .maturity { padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .maturity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  .maturity p { color: var(--muted); }
+  .maturity p + p { margin-top: 0.9rem; }
+  .maturity-timeline { list-style: none; }
+  .maturity-timeline li {
+    display: flex; justify-content: space-between; gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--gravel-light);
+    font-variant-numeric: tabular-nums;
+  }
+  .maturity-timeline li span:last-child { color: var(--muted); text-align: right; }
+
+  /* ---------- process ---------- */
+  .process { padding-block: clamp(3.5rem, 8vw, 6rem); border-top: 1px solid var(--gravel-light); }
+  .steps { list-style: none; margin-top: 2.5rem; counter-reset: step; }
+  .steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1.75rem;
+    padding: 1.4rem 0;
+    border-top: 1px solid var(--gravel-light);
+  }
+  .steps li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: "Geologica", sans-serif;
+    font-weight: 700;
+    color: var(--green);
+    font-size: 1.1rem;
+    padding-top: 0.2rem;
+  }
+  .steps h3 { font-size: 1.15rem; }
+  .steps p { grid-column: 2; color: var(--muted); font-size: 0.96875rem; }
+
+  /* ---------- fit ---------- */
+  .fit { padding-block: clamp(3.5rem, 8vw, 6rem) clamp(4rem, 9vw, 7rem); border-top: 1px solid var(--gravel-light); }
+  .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); margin-top: 2rem; }
+  .fit h3 { margin-bottom: 0.75rem; }
+  .fit ul { list-style: none; }
+  .fit li { padding: 0.55rem 0; color: var(--muted); border-bottom: 1px solid var(--gravel-light); }
+  .fit .yes li::before { content: "— "; color: var(--green); }
+  .fit .no li::before { content: "— "; color: var(--gravel); }
+
+  footer {
+    background: var(--green-deep);
+    color: var(--on-green-muted);
+    padding-block: 2rem 3rem;
+    font-size: 0.9375rem;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  footer a { color: var(--on-green); }
+
+  @media (max-width: 820px) {
+    .project, .seasons-grid, .maturity-grid, .fit-grid { grid-template-columns: 1fr; }
+    .project:nth-child(even) .compare { order: 0; }
+    .planting-list ul { columns: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="wordmark" href="#top">Studio <em>Verte</em></a>
+    <nav aria-label="Main">
+      <a href="#projects">Projects</a>
+      <a href="#seasons">Seasons</a>
+      <a href="#process">Process</a>
+      <a href="#fit">Client fit</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <h1 id="hero-title">Gardens drawn on paper, grown in weather.</h1>
+    <p class="lede">Studio Verte is a landscape architecture practice in Bath. We design planted structure — parterres, orchards, meadows with edges — and we stay for the first five years to see it take.</p>
+    <div class="hero-facts">
+      <span>21 built projects</span>
+      <span>Est. 2014</span>
+      <span>Two designers, one horticulturist</span>
+    </div>
+  </section>
+
+  <section class="projects wrap" id="projects" aria-label="Built projects">
+
+    <article class="project">
+      <div>
+        <div class="compare">
+          <img src="https://picsum.photos/seed/garden-1/800/600" width="800" height="600" loading="lazy"
+               alt="Harrow Court three years after planting — boxwood parterre knots filling in, gravel paths between">
+          <div class="plan-layer" data-plan="parterre" aria-hidden="true"></div>
+        </div>
+        <div class="compare-controls">
+          <span class="lbl">Built</span>
+          <input type="range" min="0" max="100" value="50" aria-label="Crossfade between the built garden photograph and the planting plan, Harrow Court">
+          <span class="lbl">Plan</span>
+        </div>
+      </div>
+      <div>
+        <h3>Harrow Court</h3>
+        <p class="project-meta">Kent · 0.8 ha · planted 2022</p>
+        <p>A seventeenth-century house with a lawn that had given up. We replaced it with a four-knot parterre in dwarf box, set loose enough that the garden reads as geometry from the house and as planting from inside it.</p>
+        <div class="planting-list">
+          <h4>Planting list, abbreviated</h4>
+          <ul>
+            <li>Buxus sempervirens 'Suffruticosa'</li>
+            <li>Taxus baccata</li>
+            <li>Teucrium fruticans</li>
+            <li>Stipa tenuissima</li>
+            <li>Galanthus nivalis</li>
+            <li>Rosa 'Felicia'</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="project">
+      <div>
+        <div class="compare">
+          <img src="https://picsum.photos/seed/garden-2/800/600" width="800" height="600" loading="lazy"
+               alt="The Millfield orchard meadow in high summer — standard apple trees standing in uncut grass drifts">
+          <div class="plan-layer" data-plan="orchard" aria-hidden="true"></div>
+        </div>
+        <div class="compare-controls">
+          <span class="lbl">Built</span>
+          <input type="range" min="0" max="100" value="50" aria-label="Crossfade between the built garden photograph and the planting plan, Millfield">
+          <span class="lbl">Plan</span>
+        </div>
+      </div>
+      <div>
+        <h3>The Millfield Garden</h3>
+        <p class="project-meta">Frome, Somerset · 1.4 ha · planted 2021</p>
+        <p>A working smallholding that wanted beauty without surrendering function. Twenty-eight standard cider apples on a surveyed grid, with mown paths through meadow that is cut once, in August, by the client's own tractor.</p>
+        <div class="planting-list">
+          <h4>Planting list, abbreviated</h4>
+          <ul>
+            <li>Malus 'Kingston Black'</li>
+            <li>Malus 'Dabinett'</li>
+            <li>Deschampsia cespitosa</li>
+            <li>Sanguisorba officinalis</li>
+            <li>Centaurea nigra</li>
+            <li>Tulipa sylvestris</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="project">
+      <div>
+        <div class="compare">
+          <img src="https://picsum.photos/seed/garden-3/800/600" width="800" height="600" loading="lazy"
+               alt="Bristol courtyard garden at dusk — multi-stem amelanchiers lighting a gravel court between brick walls">
+          <div class="plan-layer" data-plan="courtyard" aria-hidden="true"></div>
+        </div>
+        <div class="compare-controls">
+          <span class="lbl">Built</span>
+          <input type="range" min="0" max="100" value="50" aria-label="Crossfade between the built garden photograph and the planting plan, Hotwells courtyard">
+          <span class="lbl">Plan</span>
+        </div>
+      </div>
+      <div>
+        <h3>Hotwells Courtyard</h3>
+        <p class="project-meta">Bristol · 180 m² · planted 2023</p>
+        <p>A lightwell between two Georgian terraces, four metres across at its narrowest. Five multi-stem Amelanchier hold the vertical space; everything below them is shade-tolerant, slow, and chosen to look deliberate in February.</p>
+        <div class="planting-list">
+          <h4>Planting list, abbreviated</h4>
+          <ul>
+            <li>Amelanchier lamarckii</li>
+            <li>Polystichum setiferum</li>
+            <li>Hakonechloa macra</li>
+            <li>Epimedium × versicolor</li>
+            <li>Hedera helix 'Glacier'</li>
+            <li>Liriope muscari</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="seasons" id="seasons" aria-labelledby="seasons-title">
+    <div class="wrap">
+      <h2 id="seasons-title">One garden, four seasons</h2>
+      <p class="note">The Harrow Court planting zones, colored by what carries the garden at each point in the year. A plan that only works in June is not a plan.</p>
+      <div class="seasons-grid">
+        <div class="season-plan">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Schematic planting plan of Harrow Court showing five zones whose colors change with the selected season">
+            <rect width="400" height="300" fill="oklch(0.97 0.008 150)"/>
+            <rect class="zone" data-zone="structure" x="20" y="20" width="360" height="260" rx="4" fill="oklch(0.42 0.085 150)"/>
+            <rect x="150" y="130" width="100" height="40" fill="oklch(0.97 0.008 150)"/>
+            <text x="200" y="154" text-anchor="middle" font-family="Geologica, sans-serif" font-size="11" fill="oklch(0.26 0.015 150)">house</text>
+            <ellipse class="zone" data-zone="bulbs" cx="90" cy="70" rx="55" ry="35" fill="oklch(0.42 0.085 150)"/>
+            <ellipse class="zone" data-zone="bulbs" cx="310" cy="230" rx="55" ry="35" fill="oklch(0.42 0.085 150)"/>
+            <ellipse class="zone" data-zone="grasses" cx="310" cy="70" rx="55" ry="35" fill="oklch(0.42 0.085 150)"/>
+            <ellipse class="zone" data-zone="grasses" cx="90" cy="230" rx="55" ry="35" fill="oklch(0.42 0.085 150)"/>
+            <circle class="zone" data-zone="roses" cx="200" cy="70" r="26" fill="oklch(0.42 0.085 150)"/>
+            <circle class="zone" data-zone="roses" cx="200" cy="230" r="26" fill="oklch(0.42 0.085 150)"/>
+          </svg>
+        </div>
+        <div>
+          <div class="season-btns" role="group" aria-label="Choose a season">
+            <button class="season-btn" data-season="spring" aria-pressed="true">Spring</button>
+            <button class="season-btn" data-season="summer" aria-pressed="false">Summer</button>
+            <button class="season-btn" data-season="autumn" aria-pressed="false">Autumn</button>
+            <button class="season-btn" data-season="winter" aria-pressed="false">Winter</button>
+          </div>
+          <p class="season-desc" id="season-desc"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="maturity wrap" aria-labelledby="maturity-title">
+    <div class="maturity-grid">
+      <div>
+        <h2 id="maturity-title">The five-year honesty</h2>
+        <p>Photographs of new gardens lie. Ours looked sparse the day we planted them — every one. A parterre at one litre per plant is a drawing, not a garden, and we tell clients so before they sign.</p>
+        <p>Year three is when structure arrives. Year five is when the planting reads as we intended, and it is also when the maintenance regime — not the design — decides whether it stays that way. That is why our fee includes five years of seasonal visits, and why we turn down clients who plan to hand the garden to nobody.</p>
+      </div>
+      <ul class="maturity-timeline" aria-label="How a Studio Verte planting matures">
+        <li><span>Planting day</span><span>a drawing with roots</span></li>
+        <li><span>Year 1</span><span>establishment; losses replaced free</span></li>
+        <li><span>Year 2</span><span>first real knit of groundcover</span></li>
+        <li><span>Year 3</span><span>structure legible from the house</span></li>
+        <li><span>Year 5</span><span>the garden as drawn — finally</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="process wrap" id="process" aria-labelledby="process-title">
+    <h2 id="process-title">From survey to planting</h2>
+    <ol class="steps">
+      <li>
+        <h3>Survey and soil</h3>
+        <p>Two weeks. Topographic survey, soil pits at one per hundred square metres, and a season of watching where water and frost actually sit.</p>
+      </li>
+      <li>
+        <h3>Concept plan</h3>
+        <p>One drawing, argued over. We present a single scheme — not three options — because a garden needs a conviction, not a menu.</p>
+      </li>
+      <li>
+        <h3>Technical design</h3>
+        <p>Setting-out plans, grading, drainage, and the planting schedule with every plant counted and sourced from named nurseries.</p>
+      </li>
+      <li>
+        <h3>Planting</h3>
+        <p>We plant with our own small crew, bare-root where the season allows. Structure plants first, infill the following autumn.</p>
+      </li>
+      <li>
+        <h3>Aftercare</h3>
+        <p>Five years of seasonal visits: pruning, re-edging, honest replacement of what died, and a written note after each visit.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="fit wrap" id="fit" aria-labelledby="fit-title">
+    <h2 id="fit-title">Are we the right studio</h2>
+    <div class="fit-grid">
+      <div class="yes">
+        <h3>Likely a fit</h3>
+        <ul>
+          <li>You want planted structure more than decoration</li>
+          <li>You can wait five years for the real garden</li>
+          <li>You garden, or employ someone who does</li>
+          <li>Budgets from £45,000 including planting</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3>Probably not</h3>
+        <ul>
+          <li>You need it finished for a summer party</li>
+          <li>You want low maintenance to mean no maintenance</li>
+          <li>The brief is a photograph of someone else's garden</li>
+          <li>You would like three concepts to choose from</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top: 2rem; color: var(--muted);">Write to <a href="mailto:survey@studioverte.example">survey@studioverte.example</a>. We take on four new gardens a year.</p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Studio Verte — Bath, est. 2014</span>
+    <span>Drawn on paper. Grown in weather.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) {
+    document.querySelectorAll('.zone').forEach(function (z) { z.style.transition = 'none'; });
+  }
+
+  /* ---------- generative planting plans ---------- */
+  function planSVG(kind) {
+    var g = 'oklch(0.42 0.085 150)', gd = 'oklch(0.32 0.07 150)',
+        gravel = 'oklch(0.72 0.01 150)', paper = 'oklch(0.97 0.008 150)';
+    var inner = '';
+    if (kind === 'parterre') {
+      inner =
+        '<rect width="800" height="600" fill="' + paper + '"/>' +
+        '<rect x="60" y="60" width="680" height="480" fill="none" stroke="' + gd + '" stroke-width="3"/>' +
+        '<path d="M400 60 V540 M60 300 H740" stroke="' + gravel + '" stroke-width="26"/>' +
+        [[190,180],[610,180],[190,420],[610,420]].map(function (c) {
+          return '<rect x="' + (c[0]-105) + '" y="' + (c[1]-75) + '" width="210" height="150" fill="none" stroke="' + g + '" stroke-width="10"/>' +
+                 '<rect x="' + (c[0]-70) + '" y="' + (c[1]-45) + '" width="140" height="90" fill="none" stroke="' + g + '" stroke-width="6"/>' +
+                 '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="18" fill="' + gd + '"/>';
+        }).join('');
+    } else if (kind === 'orchard') {
+      var trees = '';
+      for (var r = 0; r < 4; r++) for (var col = 0; col < 7; col++) {
+        trees += '<circle cx="' + (110 + col * 95) + '" cy="' + (110 + r * 125) + '" r="20" fill="none" stroke="' + g + '" stroke-width="4"/>' +
+                 '<circle cx="' + (110 + col * 95) + '" cy="' + (110 + r * 125) + '" r="4" fill="' + gd + '"/>';
+      }
+      inner =
+        '<rect width="800" height="600" fill="' + paper + '"/>' +
+        '<rect x="50" y="50" width="700" height="500" fill="none" stroke="' + gd + '" stroke-width="3"/>' +
+        '<path d="M50 300 C250 260 550 340 750 290" fill="none" stroke="' + gravel + '" stroke-width="20"/>' + trees;
+    } else {
+      var shrubs = '';
+      [[150,150],[400,120],[650,150],[150,450],[650,450]].forEach(function (c) {
+        shrubs += '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="46" fill="none" stroke="' + g + '" stroke-width="5"/>' +
+                  '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="6" fill="' + gd + '"/>';
+      });
+      inner =
+        '<rect width="800" height="600" fill="' + paper + '"/>' +
+        '<rect x="80" y="60" width="640" height="480" fill="none" stroke="' + gd + '" stroke-width="8"/>' +
+        '<circle cx="400" cy="300" r="90" fill="none" stroke="' + gravel + '" stroke-width="18"/>' + shrubs;
+    }
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">' + inner + '</svg>';
+  }
+
+  document.querySelectorAll('.plan-layer').forEach(function (layer) {
+    layer.innerHTML = planSVG(layer.getAttribute('data-plan'));
+  });
+
+  /* ---------- plan-to-photo crossfade sliders ---------- */
+  document.querySelectorAll('.project').forEach(function (project) {
+    var layer = project.querySelector('.plan-layer');
+    var slider = project.querySelector('input[type="range"]');
+    function apply() { layer.style.opacity = (slider.value / 100).toFixed(2); }
+    slider.addEventListener('input', apply);
+    apply();
+  });
+
+  /* ---------- seasonal zone fills ---------- */
+  var palette = {
+    spring: { structure: 'oklch(0.42 0.085 150)', bulbs: 'oklch(0.75 0.14 95)',  grasses: 'oklch(0.68 0.09 145)', roses: 'oklch(0.6 0.06 150)' },
+    summer: { structure: 'oklch(0.4 0.09 150)',   bulbs: 'oklch(0.55 0.05 150)', grasses: 'oklch(0.55 0.12 140)', roses: 'oklch(0.58 0.16 25)' },
+    autumn: { structure: 'oklch(0.4 0.08 150)',   bulbs: 'oklch(0.5 0.03 150)',  grasses: 'oklch(0.62 0.13 75)',  roses: 'oklch(0.5 0.1 45)' },
+    winter: { structure: 'oklch(0.38 0.08 150)',  bulbs: 'oklch(0.85 0.01 150)', grasses: 'oklch(0.78 0.06 90)',  roses: 'oklch(0.6 0.02 150)' }
+  };
+  var desc = {
+    spring: '<strong>Spring.</strong> The snowdrops and Tulipa sylvestris carry March and April; the parterre holds its line while everything else wakes.',
+    summer: '<strong>Summer.</strong> Roses peak in June and the grasses are at full height — the garden is at its softest and the structure does the disciplining.',
+    autumn: '<strong>Autumn.</strong> Seedheads of Stipa and Deschampsia turn to straw and hold light until December; the Rosa hips take over from the flowers.',
+    winter: '<strong>Winter.</strong> Box and yew alone earn their keep. This is the season the plan was drawn for — if the geometry works in January, the rest is generosity.'
+  };
+  var descEl = document.getElementById('season-desc');
+  var btns = document.querySelectorAll('.season-btn');
+  function setSeason(name) {
+    var p = palette[name];
+    Object.keys(p).forEach(function (zone) {
+      document.querySelectorAll('.zone[data-zone="' + zone + '"]').forEach(function (el) {
+        el.setAttribute('fill', p[zone]);
+      });
+    });
+    descEl.innerHTML = desc[name];
+    btns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-season') === name ? 'true' : 'false'); });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () { setSeason(b.getAttribute('data-season')); });
+  });
+  setSeason('spring');
+})();
+</script>
+</body>
+</html>

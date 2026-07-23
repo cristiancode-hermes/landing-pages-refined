@@ -1,0 +1,2305 @@
+- generic [active] [ref=f132e1]:
+  - link "Skip to gallery" [ref=f132e2] [cursor=pointer]:
+    - /url: "#gallery"
+  - banner [ref=f132e3]:
+    - generic [ref=f132e4]:
+      - link "Landing.Pages Refined · Archive" [ref=f132e5] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f132e6]: Landing.Pages
+        - generic [ref=f132e7]: Refined · Archive
+      - generic [ref=f132e8]:
+        - generic [ref=f132e9]:
+          - strong [ref=f132e10]: "95"
+          - text: live
+        - generic [ref=f132e11]:
+          - strong [ref=f132e12]: "100"
+          - text: planned
+        - generic [ref=f132e13]:
+          - strong [ref=f132e14]: "100"
+          - text: shown
+  - main [ref=f132e15]:
+    - generic [ref=f132e16]:
+      - paragraph [ref=f132e17]: Design archive
+      - heading [level=1] [ref=f132e18]:
+        - text: One hundred brands.
+        - emphasis [ref=f132e19]: Zero templates.
+      - paragraph [ref=f132e20]: A curated collection of self-contained landing pages — each a distinct fictional brand with its own palette, type, motion, and voice. Browse, filter, preview, open.
+      - generic [ref=f132e21]:
+        - generic [ref=f132e22]:
+          - generic [ref=f132e23]: HTML
+          - text: single-file pages
+        - generic [ref=f132e24]:
+          - generic [ref=f132e25]: OKLCH
+          - text: committed palettes
+        - generic [ref=f132e26]:
+          - generic [ref=f132e27]: 360→1440
+          - text: responsive
+    - generic [ref=f132e29]:
+      - generic [ref=f132e30]:
+        - generic [ref=f132e31]: Search pages
+        - searchbox "Search pages" [ref=f132e32]
+      - group "Filter by tier" [ref=f132e33]:
+        - generic [ref=f132e34]: Tier
+        - button "All" [pressed] [ref=f132e35] [cursor=pointer]
+        - button "Simple" [ref=f132e36] [cursor=pointer]
+        - button "Medium" [ref=f132e37] [cursor=pointer]
+        - button "Complex" [ref=f132e38] [cursor=pointer]
+      - group "Filter by color strategy" [ref=f132e39]:
+        - generic [ref=f132e40]: Strategy
+        - button "All" [pressed] [ref=f132e41] [cursor=pointer]
+        - button "Restrained" [ref=f132e42] [cursor=pointer]
+        - button "Committed" [ref=f132e43] [cursor=pointer]
+        - button "Full palette" [ref=f132e44] [cursor=pointer]
+        - button "Drenched" [ref=f132e45] [cursor=pointer]
+      - generic [ref=f132e46]:
+        - paragraph [ref=f132e47]:
+          - strong [ref=f132e48]: "100"
+          - text: pages
+        - group "View mode" [ref=f132e49]:
+          - button "Grid" [pressed] [ref=f132e50] [cursor=pointer]
+          - button "List" [ref=f132e51] [cursor=pointer]
+    - region "Landing page gallery" [ref=f132e52]:
+      - generic [ref=f132e53]:
+        - article [ref=f132e54]:
+          - generic [ref=f132e55]:
+            - generic:
+              - generic: "001"
+              - generic: Live
+            - generic [ref=f132e56]: "001"
+            - iframe [ref=f132e60]:
+              - generic [ref=f134e1]:
+                - banner [ref=f134e2]:
+                  - generic [ref=f134e3]:
+                    - link "Ember and Oak, back to top" [ref=f134e4] [cursor=pointer]:
+                      - /url: "#top"
+                      - text: Ember & Oak
+                    - navigation "Main" [ref=f134e7]:
+                      - link "The menu" [ref=f134e8] [cursor=pointer]:
+                        - /url: "#menu"
+                      - link "The room" [ref=f134e9] [cursor=pointer]:
+                        - /url: "#room"
+                      - link "Hours" [ref=f134e10] [cursor=pointer]:
+                        - /url: "#visit"
+                      - link "Book a table" [ref=f134e11] [cursor=pointer]:
+                        - /url: "#reserve"
+                - main [ref=f134e12]:
+                  - generic [ref=f134e13]:
+                    - img "A margherita pizza blistering on the stone deck of the oak-fired oven at Ember & Oak" [ref=f134e15]
+                    - generic [ref=f134e16]:
+                      - paragraph [ref=f134e17]: Oak-fired since 2014 · Portland, OR
+                      - heading "Ninety seconds in the fire." [level=1] [ref=f134e18]
+                      - paragraph [ref=f134e19]: Forty-eight hours of cold ferment, five hundred degrees of Oregon white oak, and a minute and a half you can taste. That's the whole trick. There is no other trick.
+                      - generic [ref=f134e20]:
+                        - link "Book a table" [ref=f134e21] [cursor=pointer]:
+                          - /url: "#reserve"
+                        - link "See the menu" [ref=f134e22] [cursor=pointer]:
+                          - /url: "#menu"
+                      - complementary [ref=f134e23]:
+                        - strong [ref=f134e24]: 485 °C
+                        - text: The oven runs white oak only, lit every morning at 7. By dinner the stone holds heat like a memory.
+                  - region [ref=f134e25]:
+                    - generic [ref=f134e26]:
+                      - generic [ref=f134e27]:
+                        - heading [level=2] [ref=f134e28]:
+                          - text: Dough is a patient thing.
+                          - emphasis [ref=f134e29]: We don't rush it.
+                        - paragraph [ref=f134e30]: Every ball of dough at Ember & Oak starts two days before you sit down. Caputo flour, water, sea salt, a whisper of starter — then forty-eight hours cold, slow, and undisturbed in the basement. It comes up to room temperature at noon and meets the fire at five.
+                        - paragraph [ref=f134e31]: What lands on your table is leopard-spotted, soft in the middle, crisp at the rim — the way a pizza behaves when the oven is hot enough to be a little scary.
+                        - list [ref=f134e32]:
+                          - listitem [ref=f134e33]: 48-hour cold ferment
+                          - listitem [ref=f134e34]: Oregon white oak
+                          - listitem [ref=f134e35]: 90-second bake
+                          - listitem [ref=f134e36]: Fior di latte, made daily
+                      - figure "The morning stretch — dough comes up from the cellar at noon sharp." [ref=f134e37]:
+                        - img "Hands stretching a ball of forty-eight-hour dough on the flour-dusted oak bench" [ref=f134e38]
+                  - region [ref=f134e40]:
+                    - generic [ref=f134e41]:
+                      - generic [ref=f134e42]:
+                        - heading "The menu, short on purpose" [level=2] [ref=f134e43]
+                        - paragraph [ref=f134e44]: Six pizzas, one oven, no substitutions on the margherita — we tried it your way in 2016 and we're still sorry.
+                      - list [ref=f134e45]:
+                        - listitem [ref=f134e46]:
+                          - generic [ref=f134e47]:
+                            - text: Margherita
+                            - generic [ref=f134e48]: the benchmark
+                          - generic [ref=f134e49]: San Marzano tomato, fior di latte pulled this morning, basil from the planter box out front, cold-pressed olive oil.
+                          - generic [ref=f134e50]: $14
+                        - listitem [ref=f134e51]:
+                          - generic [ref=f134e52]: Marinara
+                          - generic [ref=f134e53]: No cheese, no apology. Tomato, garlic confit, oregano, and the oven doing all the talking. Vegan as it stands.
+                          - generic [ref=f134e54]: $13
+                        - listitem [ref=f134e55]:
+                          - generic [ref=f134e56]: Funghi
+                          - generic [ref=f134e57]: Roasted maitake and cremini, taleggio, thyme, a little truffle oil — applied after the bake, where it belongs.
+                          - generic [ref=f134e58]: $17
+                        - listitem [ref=f134e59]:
+                          - generic [ref=f134e60]:
+                            - text: Diavola
+                            - generic [ref=f134e61]: brings heat
+                          - generic [ref=f134e62]: Spicy soppressata, Calabrian chili honey, smoked mozzarella. The honey goes on last and it matters.
+                          - generic [ref=f134e63]: $18
+                        - listitem [ref=f134e64]:
+                          - generic [ref=f134e65]: Mortadella e Pistacchio
+                          - generic [ref=f134e66]: Bianca base, mortadella laid on after the fire, crushed Sicilian pistachios, lemon zest, stracciatella.
+                          - generic [ref=f134e67]: $19
+                        - listitem [ref=f134e68]:
+                          - generic [ref=f134e69]: Bianca
+                          - generic [ref=f134e70]: Fior di latte, ricotta, garlic, rosemary, pecorino. Order it with a side of the chili honey and thank us later.
+                          - generic [ref=f134e71]: $16
+                      - paragraph [ref=f134e72]: Gluten-free dough is made in-house on Mondays — ask your server. Everything cuts into eight slices unless you say otherwise.
+                  - region [ref=f134e73]:
+                    - generic [ref=f134e74]:
+                      - figure "Forty seats, one long oak table, and the oven doing its impression of a fireplace." [ref=f134e75]:
+                        - img "The dining room at Ember & Oak at seven in the evening, oak tables lit by the oven's glow" [ref=f134e76]
+                      - generic [ref=f134e78]:
+                        - heading "Forty seats, one long table" [level=2] [ref=f134e79]
+                        - paragraph [ref=f134e80]: The room is small on purpose. There's the communal oak table down the middle — reclaimed from a barn outside Salem — a handful of two-tops along the window, and four stools at the oven counter where you can watch your dinner blister.
+                        - paragraph [ref=f134e81]: We keep a short list of natural wines and three local beers on tap. The soundtrack is whatever the kitchen is arguing about. Fridays, it's usually funk.
+                  - region [ref=f134e82]:
+                    - generic [ref=f134e83]:
+                      - generic [ref=f134e84]:
+                        - heading "When the fire's lit" [level=2] [ref=f134e85]
+                        - paragraph [ref=f134e86]: We bake until the dough runs out — some Fridays that's 9:40, some it's midnight. If the oak is stacked by the door, we're open. Walk-ins always welcome at the oven counter.
+                        - table [ref=f134e87]:
+                          - caption [ref=f134e88]: Oven hours
+                          - rowgroup [ref=f134e89]:
+                            - row [ref=f134e90]:
+                              - cell "Monday" [ref=f134e91]
+                              - cell "Oven rests" [ref=f134e92]
+                            - row [ref=f134e93]:
+                              - cell "Tuesday – Thursday" [ref=f134e94]
+                              - cell "5:00 pm – 10:00 pm" [ref=f134e95]
+                            - row [ref=f134e96]:
+                              - cell "Friday – Saturday" [ref=f134e97]
+                              - cell "5:00 pm – 11:00 pm" [ref=f134e98]
+                            - row [ref=f134e99]:
+                              - cell "Sunday" [ref=f134e100]
+                              - cell "4:00 pm – 9:00 pm" [ref=f134e101]
+                      - generic [ref=f134e102]:
+                        - heading "Book a table" [level=3] [ref=f134e103]
+                        - paragraph [ref=f134e104]: Parties of six or fewer, book online. Bigger crew, or the whole communal table? Call us — we like a full house.
+                        - link "(503) 555-0194" [ref=f134e105] [cursor=pointer]:
+                          - /url: tel:+15035550194
+                        - link "Reserve tonight" [ref=f134e106] [cursor=pointer]:
+                          - /url: tel:+15035550194
+                        - paragraph [ref=f134e107]: 214 Fournier Street, Portland, OR · Street parking on 21st, bike racks out front.
+                - contentinfo [ref=f134e108]:
+                  - generic [ref=f134e109]:
+                    - generic [ref=f134e110]: © 2026 Ember & Oak — wood-fired pizza, Portland OR
+                    - generic [ref=f134e111]: Dough's up at noon. Fire's lit at five.
+          - generic [ref=f132e61]:
+            - heading "Ember & Oak" [level=2] [ref=f132e62]
+            - paragraph [ref=f132e63]: wood-fired pizzeria
+            - paragraph [ref=f132e64]: “flour-dusted oak table beside a brick oven at 7pm”
+            - generic [ref=f132e65]:
+              - generic [ref=f132e66]: medium
+              - generic [ref=f132e67]: committed
+              - generic [ref=f132e68]: medium motion
+            - generic [ref=f132e69]:
+              - link "Open" [ref=f132e70] [cursor=pointer]:
+                - /url: landings/001-ember-oak.html
+              - button "Preview" [ref=f132e71] [cursor=pointer]
+        - article [ref=f132e72]:
+          - generic [ref=f132e73]:
+            - generic:
+              - generic: "002"
+              - generic: Live
+            - generic [ref=f132e74]: "002"
+            - iframe [ref=f132e78]:
+              - generic [ref=f135e1]:
+                - banner [ref=f135e2]:
+                  - img "A candlelit cellar table — bottles without labels, two half-poured glasses, somebody's bread crust." [ref=f135e3]
+                  - generic [ref=f135e4]:
+                    - heading "Feral" [level=1] [ref=f135e5]
+                    - paragraph [ref=f135e6]: Wine that was alive once. Still acts like it.
+                    - paragraph [ref=f135e7]: Natural wine bar · open tonight
+                - main [ref=f135e8]:
+                  - region [ref=f135e9]:
+                    - heading "Tonight's pours" [level=2] [ref=f135e10]
+                    - paragraph [ref=f135e11]: Written on the mirror in grease pencil at 4pm. When it's gone, we shrug and open something weirder.
+                    - generic [ref=f135e12]:
+                      - heading "La Grange de l'Oncle Charles, “Amicale”" [level=3] [ref=f135e13]
+                      - paragraph [ref=f135e14]: Alsace. Riesling that spent six months on skins and came back opinionated. Apricot, gunpowder tea, long goodbye.
+                      - generic [ref=f135e15]: "14"
+                    - generic [ref=f135e16]:
+                      - heading "Partida Creus, “TN”" [level=3] [ref=f135e17]
+                      - paragraph [ref=f135e18]: Penedès. Trepat the color of stained glass when the sun gives up. Sour cherry, wet slate, church basement.
+                      - generic [ref=f135e19]: "12"
+                    - generic [ref=f135e20]:
+                      - heading "Frères Soulier, “Grand Clos”" [level=3] [ref=f135e21]
+                      - paragraph [ref=f135e22]: Rhône. Gamay that tastes like the cellar it was raised in — dark fruit, black olive, a little feral, obviously.
+                      - generic [ref=f135e23]: "13"
+                    - generic [ref=f135e24]:
+                      - heading "Les Capriades, “Piege à Filles”" [level=3] [ref=f135e25]
+                      - paragraph [ref=f135e26]: Touraine. Pét-nat, cloudy, unrepentant. Pear skin and sea spray. We open it with a knife when nobody's watching.
+                      - generic [ref=f135e27]: "15"
+                    - paragraph [ref=f135e28]: Everything by the glass because bottles are a commitment and so are you not. Prices are for the glass; the mirror knows the bottles.
+                  - region [ref=f135e29]:
+                    - heading "Find the cellar" [level=2] [ref=f135e30]
+                    - generic [ref=f135e31]: 17 Rue de la Butte-aux-Cailles 75013 Paris, down the stairs, follow the candle
+                    - paragraph [ref=f135e32]: Wednesday – Sunday · 6pm until the last glass or 1am, whichever surrenders first.No reservations. No natural-wine lecture unless you ask — and please, ask.
+                    - link "Ask about Sunday magnums" [ref=f135e33] [cursor=pointer]:
+                      - /url: mailto:cellar@feral.bar
+                - contentinfo [ref=f135e34]:
+                  - paragraph [ref=f135e35]:
+                    - text: Feral · wine that was alive once ·
+                    - link "cellar@feral.bar" [ref=f135e36] [cursor=pointer]:
+                      - /url: mailto:cellar@feral.bar
+          - generic [ref=f132e79]:
+            - heading "Feral" [level=2] [ref=f132e80]
+            - paragraph [ref=f132e81]: natural wine bar
+            - paragraph [ref=f132e82]: “candlelit cellar, stained glass of gamay”
+            - generic [ref=f132e83]:
+              - generic [ref=f132e84]: simple
+              - generic [ref=f132e85]: drenched
+              - generic [ref=f132e86]: subtle motion
+            - generic [ref=f132e87]:
+              - link "Open" [ref=f132e88] [cursor=pointer]:
+                - /url: landings/002-feral.html
+              - button "Preview" [ref=f132e89] [cursor=pointer]
+        - article [ref=f132e90]:
+          - generic [ref=f132e91]:
+            - generic:
+              - generic: "003"
+              - generic: Live
+            - generic [ref=f132e92]: "003"
+            - iframe [ref=f132e96]:
+              - generic [ref=f136e1]:
+                - banner [ref=f136e2]:
+                  - generic [ref=f136e3]:
+                    - link "Monsoon" [ref=f136e4] [cursor=pointer]:
+                      - /url: "#top"
+                    - navigation "Main" [ref=f136e5]:
+                      - link "Teas" [ref=f136e6] [cursor=pointer]:
+                        - /url: "#teas"
+                      - link "Visit" [ref=f136e7] [cursor=pointer]:
+                        - /url: "#visit"
+                      - link "Reserve" [ref=f136e8] [cursor=pointer]:
+                        - /url: "#reserve"
+                - main [ref=f136e9]:
+                  - region [ref=f136e10]:
+                    - generic [ref=f136e11]:
+                      - heading "Tea, while the rain does its work." [level=1] [ref=f136e12]
+                      - paragraph [ref=f136e13]: A small tea house on North Mississippi Avenue. We steep three teas at a time, chosen with the season, poured without hurry.
+                      - link "Reserve a table for the afternoon" [ref=f136e14] [cursor=pointer]:
+                        - /url: mailto:table@monsoon-tea.example?subject=A%20table%20for%20two
+                    - img "A celadon porcelain gaiwan with an oxidized copper rim, steam rising" [ref=f136e16]
+                  - region [ref=f136e26]:
+                    - generic [ref=f136e27]:
+                      - heading "This month's three" [level=2] [ref=f136e28]
+                      - paragraph [ref=f136e29]: Each pot is weighed, timed, and poured at the table. Water is filtered and held at temperature — never reboiled.
+                      - generic [ref=f136e30]:
+                        - heading "First Flush Darjeeling" [level=3] [ref=f136e31]
+                        - paragraph [ref=f136e32]: 2 min 30 · 85°C · $9
+                        - paragraph [ref=f136e33]: Gopaldhara estate, picked the second week of March. Muscatel and green almond; a cup that tastes like the altitude it grew at.
+                      - generic [ref=f136e34]:
+                        - heading "Alishan High Mountain Oolong" [level=3] [ref=f136e35]
+                        - paragraph [ref=f136e36]: 3 min · 92°C · $11
+                        - paragraph [ref=f136e37]: Rolled by hand at 1,400 metres in Chiayi County. Lilac, warm milk, a long mineral finish. Good for three infusions, better for four.
+                      - generic [ref=f136e38]:
+                        - heading "Smoked Lapsang, Unsmoked Heart" [level=3] [ref=f136e39]
+                        - paragraph [ref=f136e40]: 2 min · 90°C · $8
+                        - paragraph [ref=f136e41]: A Wuyi lapsang dried over fruitwood instead of pine — longan and dried plum first, the smoke arriving quietly at the end.
+                  - img "Rows of tea bushes climbing a misted hillside, the first-flush field where March picking begins" [ref=f136e42]
+                  - region [ref=f136e43]:
+                    - heading "Come in out of the rain" [level=2] [ref=f136e44]
+                    - generic [ref=f136e45]:
+                      - generic [ref=f136e46]:
+                        - heading "Hours" [level=3] [ref=f136e47]
+                        - list [ref=f136e48]:
+                          - listitem [ref=f136e49]: Wednesday – Friday 11:00 – 18:00
+                          - listitem [ref=f136e50]: Saturday – Sunday 10:00 – 19:00
+                          - listitem [ref=f136e51]: Monday – Tuesday closed, for resting the water
+                      - generic [ref=f136e52]:
+                        - heading "Find us" [level=3] [ref=f136e53]
+                        - paragraph [ref=f136e54]: 3914 N Mississippi Ave, Portland, Oregon. Twelve seats, one long cedar counter, a window that fogs by noon.
+                      - generic [ref=f136e55]:
+                        - heading "Reservations" [level=3] [ref=f136e56]
+                        - paragraph [ref=f136e57]:
+                          - text: We hold six of the twelve seats. Write to
+                          - link "table@monsoon-tea.example" [ref=f136e58] [cursor=pointer]:
+                            - /url: mailto:table@monsoon-tea.example
+                          - text: with an afternoon in mind; we answer within the day.
+                - contentinfo [ref=f136e59]:
+                  - generic [ref=f136e60]:
+                    - generic [ref=f136e61]: Monsoon Tea House — Portland, est. 2019
+                    - generic [ref=f136e62]: Steeped slowly. Poured without hurry.
+          - generic [ref=f132e97]:
+            - heading "Monsoon" [level=2] [ref=f132e98]
+            - paragraph [ref=f132e99]: specialty tea house
+            - paragraph [ref=f132e100]: “first flush darjeeling steaming in a porcelain gaiwan”
+            - generic [ref=f132e101]:
+              - generic [ref=f132e102]: simple
+              - generic [ref=f132e103]: restrained
+              - generic [ref=f132e104]: subtle motion
+            - generic [ref=f132e105]:
+              - link "Open" [ref=f132e106] [cursor=pointer]:
+                - /url: landings/003-monsoon.html
+              - button "Preview" [ref=f132e107] [cursor=pointer]
+        - article [ref=f132e108]:
+          - generic [ref=f132e109]:
+            - generic:
+              - generic: "004"
+              - generic: Live
+            - generic [ref=f132e110]: "004"
+            - iframe [ref=f132e114]:
+              - generic [ref=f137e1]:
+                - navigation "Main" [ref=f137e2]:
+                  - generic [ref=f137e3]:
+                    - link "PLAINCHANT" [ref=f137e4] [cursor=pointer]:
+                      - /url: "#top"
+                    - list [ref=f137e5]:
+                      - listitem [ref=f137e6]:
+                        - link "The Ales" [ref=f137e7] [cursor=pointer]:
+                          - /url: "#ales"
+                      - listitem [ref=f137e8]:
+                        - link "The Rule" [ref=f137e9] [cursor=pointer]:
+                          - /url: "#rule"
+                      - listitem [ref=f137e10]:
+                        - link "Cellar Door" [ref=f137e11] [cursor=pointer]:
+                          - /url: "#visit"
+                - banner [ref=f137e12]:
+                  - generic [ref=f137e13]:
+                    - img [ref=f137e19]:
+                      - generic [ref=f137e22]: P
+                    - heading "Plainchant" [level=1] [ref=f137e23]
+                    - paragraph [ref=f137e24]: Ale brewed under a vow of silence. The monks do the talking through the glass.
+                - main [ref=f137e27]:
+                  - blockquote [ref=f137e30]:
+                    - text: “We have kept the same recipe since 1187. We considered changing it once, in 1493, and the brother who suggested it was asked to weed the turnips for a year.”
+                    - generic [ref=f137e31]: — Brother Anselm, Cellarer
+                  - figure "The north cellar, where the ales are aged and the novices are hushed." [ref=f137e32]:
+                    - img "Oak barrels resting in the cool dark of the abbey cellar" [ref=f137e33]
+                  - region [ref=f137e35]:
+                    - generic [ref=f137e36]:
+                      - generic [ref=f137e37]:
+                        - heading "Three Ales, Brewed by the Hours" [level=2] [ref=f137e38]
+                        - paragraph [ref=f137e39]: Each ale is named for the office at which it is racked. We brew what the barley allows and the abbot permits, in that order.
+                      - article [ref=f137e40]:
+                        - generic [ref=f137e41]:
+                          - heading "Mattins" [level=3] [ref=f137e42]
+                          - generic [ref=f137e43]: TABLE ALE · 3.4%
+                        - paragraph [ref=f137e44]:
+                          - text: Brewed for the long workday. Crust of brown bread, a whisper of honey, and a finish as brief as a good sermon.
+                          - emphasis [ref=f137e45]: Pairs with ploughman's lunches, tailors' lunches, and lunches generally.
+                        - generic [ref=f137e46]: £5.20 / 750ml
+                      - article [ref=f137e47]:
+                        - generic [ref=f137e48]:
+                          - heading "Vigils" [level=3] [ref=f137e49]
+                          - generic [ref=f137e50]: DARK MILD · 4.6%
+                        - paragraph [ref=f137e51]:
+                          - text: For the hour after midnight. Toasted hazelnut, dried fig, and the particular quiet of a chapel with one candle lit.
+                          - emphasis [ref=f137e52]: Best taken slowly, in wool, near a fire that someone else is tending.
+                        - generic [ref=f137e53]: £6.40 / 750ml
+                      - article [ref=f137e54]:
+                        - generic [ref=f137e55]:
+                          - heading "Compline" [level=3] [ref=f137e56]
+                          - generic [ref=f137e57]: BARLEYWINE · 9.1%
+                        - paragraph [ref=f137e58]:
+                          - text: The last office of the day, and the last word of the evening. Toffee, orange peel, old oak, and a warmth that lingers like incense.
+                          - emphasis [ref=f137e59]: One bottle is an evening. Two is a confession.
+                        - generic [ref=f137e60]: £9.80 / 750ml
+                  - blockquote [ref=f137e63]:
+                    - text: “Ora et labora. Pray and work. The brewing counts as both, which is why the brothers are so cheerful and so tired.”
+                    - generic [ref=f137e64]: — The Abbot, on being asked about output targets
+                  - region [ref=f137e65]:
+                    - generic [ref=f137e66]:
+                      - generic [ref=f137e67]:
+                        - heading "The Rule of the Brewery" [level=2] [ref=f137e68]
+                        - paragraph [ref=f137e69]: Chapter nine of the house rule concerns the brewhouse. It is read aloud each Brewsday. Extracts follow.
+                      - generic [ref=f137e70]:
+                        - generic [ref=f137e71]:
+                          - heading "Rule the First" [level=3] [ref=f137e72]
+                          - paragraph [ref=f137e73]: The kettle shall be scraped, for residue is pride, and pride is off-flavours.
+                        - generic [ref=f137e74]:
+                          - heading "Rule the Second" [level=3] [ref=f137e75]
+                          - paragraph [ref=f137e76]: Silence is kept from mashing-in until the wort is cooled. Humming is permitted. Whistling is not, for it frightens the yeast.
+                        - generic [ref=f137e77]:
+                          - heading "Rule the Third" [level=3] [ref=f137e78]
+                          - paragraph [ref=f137e79]: No brother shall taste from the conditioning cask before the appointed day, however persuasive his thirst. Brother Martin.
+                        - generic [ref=f137e80]:
+                          - heading "Rule the Fourth" [level=3] [ref=f137e81]
+                          - paragraph [ref=f137e82]: When the barley is poor, give thanks; when the barley is good, give more thanks and write down what you did.
+                        - generic [ref=f137e83]:
+                          - heading "Rule the Fifth" [level=3] [ref=f137e84]
+                          - paragraph [ref=f137e85]: The first bottle of every batch goes to the chapel roof fund. The roof has been leaking since 1342 and will continue to do so, but the gesture is the thing.
+                  - region [ref=f137e86]:
+                    - generic [ref=f137e88]:
+                      - img "Weathered abbey stone above the low door of the cellar shop" [ref=f137e89]
+                      - generic [ref=f137e90]:
+                        - heading "The Cellar Door" [level=2] [ref=f137e91]
+                        - paragraph [ref=f137e92]: Our shop is the low door beneath the chapter house, down eleven worn steps. Bring a stout bag and a soft voice; the door is low for a reason, and the reason is humility.
+                        - paragraph [ref=f137e93]: We sell bottles, wooden tokens for the winter market, and a small pamphlet of brewing psalms. We do not sell glasses, for drinking from the bottle builds character.
+                        - generic [ref=f137e95]:
+                          - term [ref=f137e96]: Thu–Sat
+                          - definition [ref=f137e97]: 14:00 – 19:00
+                          - term [ref=f137e98]: Sunday
+                          - definition [ref=f137e99]: After None, until Vespers
+                          - term [ref=f137e100]: Mon–Wed
+                          - definition [ref=f137e101]: Closed. The brothers are brewing.
+                          - term [ref=f137e102]: Find us
+                          - definition [ref=f137e103]: St. Mildburh's Abbey, Hallow Lane, Much Wenlock
+                - contentinfo [ref=f137e104]:
+                  - generic [ref=f137e105]:
+                    - paragraph [ref=f137e106]: IN SILENTIO, SAPIENTIA · EST. 1187
+                    - paragraph [ref=f137e107]: Plainchant Abbey Brewery. Brewed, bottled, and blessed on the premises. Please drink contemplatively.
+          - generic [ref=f132e115]:
+            - heading "Plainchant" [level=2] [ref=f132e116]
+            - paragraph [ref=f132e117]: monastery-brewed ale
+            - paragraph [ref=f132e118]: “abbey cellar by candlelight — honey through dark glass”
+            - generic [ref=f132e119]:
+              - generic [ref=f132e120]: medium
+              - generic [ref=f132e121]: committed
+              - generic [ref=f132e122]: subtle motion
+            - generic [ref=f132e123]:
+              - link "Open" [ref=f132e124] [cursor=pointer]:
+                - /url: landings/004-plainchant.html
+              - button "Preview" [ref=f132e125] [cursor=pointer]
+        - article [ref=f132e126]:
+          - generic [ref=f132e127]:
+            - generic:
+              - generic: "005"
+              - generic: Live
+            - generic [ref=f132e128]: "005"
+            - iframe [ref=f132e132]:
+              - generic [ref=f138e1]:
+                - banner [ref=f138e2]:
+                  - generic [ref=f138e3]:
+                    - link [ref=f138e4] [cursor=pointer]:
+                      - /url: "#top"
+                      - text: Vermouth
+                      - emphasis [ref=f138e5]: Hours
+                    - navigation "Main" [ref=f138e6]:
+                      - list [ref=f138e7]:
+                        - listitem [ref=f138e8]:
+                          - link "The ritual" [ref=f138e9] [cursor=pointer]:
+                            - /url: "#ritual"
+                        - listitem [ref=f138e10]:
+                          - link "Serves" [ref=f138e11] [cursor=pointer]:
+                            - /url: "#serves"
+                        - listitem [ref=f138e12]:
+                          - link "Stockists" [ref=f138e13] [cursor=pointer]:
+                            - /url: "#stockists"
+                    - link "Find a bottle" [ref=f138e14] [cursor=pointer]:
+                      - /url: "#stockists"
+                - main [ref=f138e15]:
+                  - region [ref=f138e16]:
+                    - generic [ref=f138e17]:
+                      - generic [ref=f138e18]:
+                        - generic [ref=f138e19]: Bottled in Milan, poured everywhere
+                        - heading "Six o'clock is a place. We bottle it." [level=1] [ref=f138e20]
+                        - paragraph [ref=f138e21]: Vermouth Hours is a bitter-orange aperitivo made for the best sixty minutes of the day — the ones where work is done, the table is set outside, and nobody is in a hurry. Twenty-one botanicals, one orange slice, zero emails.
+                        - generic [ref=f138e22]:
+                          - link "How to pour it" [ref=f138e23] [cursor=pointer]:
+                            - /url: "#serves"
+                          - link "Where to buy it" [ref=f138e24] [cursor=pointer]:
+                            - /url: "#stockists"
+                      - generic [ref=f138e25]:
+                        - 'figure "The house pour: Vermouth Hours, prosecco, soda, one thick orange slice." [ref=f138e26]':
+                          - img "Two spritz glasses glowing bitter orange on a white tablecloth, late-afternoon light" [ref=f138e27]
+                        - generic "Vermouth Hours bottle, 750 millilitres, 18 percent alcohol" [ref=f138e29]:
+                          - generic [ref=f138e34]:
+                            - text: VERMOUTH HOURS
+                            - generic [ref=f138e35]: Bitter Orange · 18%
+                          - paragraph [ref=f138e36]: 750 ml, 18% vol. €24 at the shop, less by the case.
+                  - region [ref=f138e37]:
+                    - generic [ref=f138e39]:
+                      - generic [ref=f138e40]:
+                        - heading "The ritual of the hour" [level=2] [ref=f138e41]
+                        - paragraph [ref=f138e42]: In Milan the aperitivo is not a drink, it's an appointment. The piazza fills, the light goes long and orange, and the first spritz arrives with a little plate of something salty. We made Vermouth Hours for that exact window — and wrote its schedule on the label, because rituals deserve timetables.
+                        - list [ref=f138e43]:
+                          - listitem [ref=f138e44]:
+                            - generic [ref=f138e45]: 17:45
+                            - generic [ref=f138e46]: Glasses out of the freezer. Yes, the freezer.
+                          - listitem [ref=f138e47]:
+                            - generic [ref=f138e48]: 18:00
+                            - generic [ref=f138e49]: First pour. Phones face-down.
+                          - listitem [ref=f138e50]:
+                            - generic [ref=f138e51]: 18:20
+                            - generic [ref=f138e52]: Olives, crisps, a small argument about football.
+                          - listitem [ref=f138e53]:
+                            - generic [ref=f138e54]: 19:00
+                            - generic [ref=f138e55]: Second pour, or dinner. Both correct.
+                      - figure "Piazza hours, as observed from table twelve." [ref=f138e56]:
+                        - img "A piazza table at golden hour with spritz glasses and a small plate of green olives" [ref=f138e57]
+                  - region [ref=f138e59]:
+                    - generic [ref=f138e60]:
+                      - generic [ref=f138e61]:
+                        - heading "Three ways to keep the hour" [level=2] [ref=f138e62]
+                        - paragraph [ref=f138e63]: "All three start the same way: a cold glass and no distractions."
+                      - list [ref=f138e64]:
+                        - listitem [ref=f138e65]:
+                          - generic [ref=f138e66]: The Piazza.
+                          - paragraph [ref=f138e67]:
+                            - strong [ref=f138e68]: 60 ml Vermouth Hours, 90 ml prosecco, 30 ml soda.
+                            - text: Built over ice in a big wine glass, orange slice dropped in last so it floats like a little sun. The one in the photograph, the one on the label.
+                          - generic [ref=f138e69]: €7 at the bar
+                        - listitem [ref=f138e70]:
+                          - generic [ref=f138e71]: The Balcony.
+                          - paragraph [ref=f138e72]:
+                            - strong [ref=f138e73]: 75 ml Vermouth Hours over one large cube, nothing else.
+                            - text: For when the bottle just came home and the freezer glass is still foggy. Bitter first, then orange peel, then a slow vanilla finish.
+                          - generic [ref=f138e74]: €5 at the bar
+                        - listitem [ref=f138e75]:
+                          - generic [ref=f138e76]: The Long Evening.
+                          - paragraph [ref=f138e77]:
+                            - strong [ref=f138e78]: 50 ml Vermouth Hours, 150 ml tonic, a rosemary sprig slapped awake.
+                            - text: Lower, longer, built for the second hour when dinner keeps not happening and nobody minds.
+                          - generic [ref=f138e79]: €6.50 at the bar
+                  - region [ref=f138e80]:
+                    - generic [ref=f138e81]:
+                      - generic [ref=f138e82]:
+                        - heading "Where the hour is kept" [level=2] [ref=f138e83]
+                        - paragraph [ref=f138e84]: Bottles on shelves, spritzes on terraces. Hours are local, naturally.
+                      - table [ref=f138e85]:
+                        - rowgroup [ref=f138e86]:
+                          - row [ref=f138e87]:
+                            - columnheader "Stockist" [ref=f138e88]
+                            - columnheader "City" [ref=f138e89]
+                            - columnheader "Keeps the hour" [ref=f138e90]
+                        - rowgroup [ref=f138e91]:
+                          - row [ref=f138e92]:
+                            - cell "Enoteca Lunetta" [ref=f138e93]
+                            - cell "Milano, Brera" [ref=f138e94]
+                            - cell "Mon–Sat, 17:30–20:00 on the terrace" [ref=f138e95]
+                          - row [ref=f138e96]:
+                            - cell "Bar Fondamenta" [ref=f138e97]
+                            - cell "Torino, Vanchiglia" [ref=f138e98]
+                            - cell "Daily, 18:00 sharp, with farinata" [ref=f138e99]
+                          - row [ref=f138e100]:
+                            - cell "Alimentari Rossi & Figli" [ref=f138e101]
+                            - cell "Bologna, Santo Stefano" [ref=f138e102]
+                            - cell "Bottles only, Thu–Sat till 19:30" [ref=f138e103]
+                          - row [ref=f138e104]:
+                            - cell "The Orange Counter" [ref=f138e105]
+                            - cell "London, Peckham" [ref=f138e106]
+                            - cell "Wed–Sun, spritz hours 17:00–19:00" [ref=f138e107]
+                          - row [ref=f138e108]:
+                            - cell "Café Zeezicht" [ref=f138e109]
+                            - cell "Amsterdam, De Pijp" [ref=f138e110]
+                            - cell "Daily from 16:30, canal-side" [ref=f138e111]
+                      - paragraph [ref=f138e112]:
+                        - text: Run a bar or a bottle shop? Write to
+                        - link "ciao@vermouthhours.example" [ref=f138e113] [cursor=pointer]:
+                          - /url: mailto:ciao@vermouthhours.example
+                        - text: — we ship cases of six across Europe.
+                - contentinfo [ref=f138e114]:
+                  - generic [ref=f138e115]:
+                    - link [ref=f138e116] [cursor=pointer]:
+                      - /url: "#top"
+                      - text: Vermouth
+                      - emphasis [ref=f138e117]: Hours
+                    - generic [ref=f138e118]: Drink the hour responsibly. 18% vol, serve cold, never rush. © 2026 Vermouth Hours S.r.l.
+          - generic [ref=f132e133]:
+            - heading "Vermouth Hours" [level=2] [ref=f132e134]
+            - paragraph [ref=f132e135]: aperitivo brand
+            - paragraph [ref=f132e136]: “Milan 6pm — orange slice against white tablecloth”
+            - generic [ref=f132e137]:
+              - generic [ref=f132e138]: medium
+              - generic [ref=f132e139]: full palette
+              - generic [ref=f132e140]: medium motion
+            - generic [ref=f132e141]:
+              - link "Open" [ref=f132e142] [cursor=pointer]:
+                - /url: landings/005-vermouth-hours.html
+              - button "Preview" [ref=f132e143] [cursor=pointer]
+        - article [ref=f132e144]:
+          - generic [ref=f132e145]:
+            - generic:
+              - generic: "006"
+              - generic: Live
+            - generic [ref=f132e146]: "006"
+          - generic [ref=f132e150]:
+            - heading "BITE" [level=2] [ref=f132e151]
+            - paragraph [ref=f132e152]: smash-burger food truck
+            - paragraph [ref=f132e153]: “diner napkin dispenser chrome + mustard squeeze bottle”
+            - generic [ref=f132e154]:
+              - generic [ref=f132e155]: simple
+              - generic [ref=f132e156]: drenched
+              - generic [ref=f132e157]: strong motion
+            - generic [ref=f132e158]:
+              - link "Open" [ref=f132e159] [cursor=pointer]:
+                - /url: landings/006-bite.html
+              - button "Preview" [ref=f132e160] [cursor=pointer]
+        - article [ref=f132e161]:
+          - generic [ref=f132e162]:
+            - generic:
+              - generic: "007"
+              - generic: Live
+            - generic [ref=f132e163]: "007"
+          - generic [ref=f132e167]:
+            - heading "Copper Kettle" [level=2] [ref=f132e168]
+            - paragraph [ref=f132e169]: ramen shop
+            - paragraph [ref=f132e170]: “midnight counter seat, steam off tonkotsu”
+            - generic [ref=f132e171]:
+              - generic [ref=f132e172]: medium
+              - generic [ref=f132e173]: committed
+              - generic [ref=f132e174]: medium motion
+            - generic [ref=f132e175]:
+              - link "Open" [ref=f132e176] [cursor=pointer]:
+                - /url: landings/007-copper-kettle.html
+              - button "Preview" [ref=f132e177] [cursor=pointer]
+        - article [ref=f132e178]:
+          - generic [ref=f132e179]:
+            - generic:
+              - generic: "008"
+              - generic: Live
+            - generic [ref=f132e180]: "008"
+          - generic [ref=f132e184]:
+            - heading "Neapolitan" [level=2] [ref=f132e185]
+            - paragraph [ref=f132e186]: gelato shop
+            - paragraph [ref=f132e187]: “three scoops on a marble slab”
+            - generic [ref=f132e188]:
+              - generic [ref=f132e189]: simple
+              - generic [ref=f132e190]: full palette
+              - generic [ref=f132e191]: medium motion
+            - generic [ref=f132e192]:
+              - link "Open" [ref=f132e193] [cursor=pointer]:
+                - /url: landings/008-neapolitan.html
+              - button "Preview" [ref=f132e194] [cursor=pointer]
+        - article [ref=f132e195]:
+          - generic [ref=f132e196]:
+            - generic:
+              - generic: "009"
+              - generic: Live
+            - generic [ref=f132e197]: "009"
+          - generic [ref=f132e201]:
+            - heading "Marigold" [level=2] [ref=f132e202]
+            - paragraph [ref=f132e203]: modern Indian restaurant
+            - paragraph [ref=f132e204]: “marigold garlands against aubergine silk”
+            - generic [ref=f132e205]:
+              - generic [ref=f132e206]: complex
+              - generic [ref=f132e207]: drenched
+              - generic [ref=f132e208]: strong motion
+            - generic [ref=f132e209]:
+              - link "Open" [ref=f132e210] [cursor=pointer]:
+                - /url: landings/009-marigold.html
+              - button "Preview" [ref=f132e211] [cursor=pointer]
+        - article [ref=f132e212]:
+          - generic [ref=f132e213]:
+            - generic:
+              - generic: "010"
+              - generic: Live
+            - generic [ref=f132e214]: "010"
+          - generic [ref=f132e218]:
+            - heading "Smoke Signal" [level=2] [ref=f132e219]
+            - paragraph [ref=f132e220]: Texas BBQ joint
+            - paragraph [ref=f132e221]: “post oak smoke at 4am, pink butcher paper”
+            - generic [ref=f132e222]:
+              - generic [ref=f132e223]: medium
+              - generic [ref=f132e224]: committed
+              - generic [ref=f132e225]: medium motion
+            - generic [ref=f132e226]:
+              - link "Open" [ref=f132e227] [cursor=pointer]:
+                - /url: landings/010-smoke-signal.html
+              - button "Preview" [ref=f132e228] [cursor=pointer]
+        - article [ref=f132e229]:
+          - generic [ref=f132e230]:
+            - generic:
+              - generic: "011"
+              - generic: Live
+            - generic [ref=f132e231]: "011"
+          - generic [ref=f132e235]:
+            - heading "Ground Control" [level=2] [ref=f132e236]
+            - paragraph [ref=f132e237]: coffee subscription
+            - paragraph [ref=f132e238]: “mission-control checklist clipped to a portafilter”
+            - generic [ref=f132e239]:
+              - generic [ref=f132e240]: simple
+              - generic [ref=f132e241]: restrained
+              - generic [ref=f132e242]: subtle motion
+            - generic [ref=f132e243]:
+              - link "Open" [ref=f132e244] [cursor=pointer]:
+                - /url: landings/011-ground-control.html
+              - button "Preview" [ref=f132e245] [cursor=pointer]
+        - article [ref=f132e246]:
+          - generic [ref=f132e247]:
+            - generic:
+              - generic: "012"
+              - generic: Live
+            - generic [ref=f132e248]: "012"
+          - generic [ref=f132e252]:
+            - heading "Gold Leaf" [level=2] [ref=f132e253]
+            - paragraph [ref=f132e254]: artisan chocolatier
+            - paragraph [ref=f132e255]: “gold leaf pressed onto 85% dark”
+            - generic [ref=f132e256]:
+              - generic [ref=f132e257]: medium
+              - generic [ref=f132e258]: committed
+              - generic [ref=f132e259]: medium motion
+            - generic [ref=f132e260]:
+              - link "Open" [ref=f132e261] [cursor=pointer]:
+                - /url: landings/012-gold-leaf.html
+              - button "Preview" [ref=f132e262] [cursor=pointer]
+        - article [ref=f132e263]:
+          - generic [ref=f132e264]:
+            - generic:
+              - generic: "013"
+              - generic: Live
+            - generic [ref=f132e265]: "013"
+          - generic [ref=f132e269]:
+            - heading "Hearthstone" [level=2] [ref=f132e270]
+            - paragraph [ref=f132e271]: sourdough bakery
+            - paragraph [ref=f132e272]: “flour in morning light, crackled crust”
+            - generic [ref=f132e273]:
+              - generic [ref=f132e274]: medium
+              - generic [ref=f132e275]: committed
+              - generic [ref=f132e276]: subtle motion
+            - generic [ref=f132e277]:
+              - link "Open" [ref=f132e278] [cursor=pointer]:
+                - /url: landings/013-hearthstone-bread.html
+              - button "Preview" [ref=f132e279] [cursor=pointer]
+        - article [ref=f132e280]:
+          - generic [ref=f132e281]:
+            - generic:
+              - generic: "014"
+              - generic: Live
+            - generic [ref=f132e282]: "014"
+          - generic [ref=f132e286]:
+            - heading "Night Market" [level=2] [ref=f132e287]
+            - paragraph [ref=f132e288]: street food festival
+            - paragraph [ref=f132e289]: “lantern light on wet pavement”
+            - generic [ref=f132e290]:
+              - generic [ref=f132e291]: complex
+              - generic [ref=f132e292]: drenched
+              - generic [ref=f132e293]: strong motion
+            - generic [ref=f132e294]:
+              - link "Open" [ref=f132e295] [cursor=pointer]:
+                - /url: landings/014-night-market.html
+              - button "Preview" [ref=f132e296] [cursor=pointer]
+        - article [ref=f132e297]:
+          - generic [ref=f132e298]:
+            - generic:
+              - generic: "015"
+              - generic: Live
+            - generic [ref=f132e299]: "015"
+          - generic [ref=f132e303]:
+            - heading "The Comma" [level=2] [ref=f132e304]
+            - paragraph [ref=f132e305]: literary café
+            - paragraph [ref=f132e306]: “red pencil in the margin of a clean manuscript”
+            - generic [ref=f132e307]:
+              - generic [ref=f132e308]: simple
+              - generic [ref=f132e309]: restrained
+              - generic [ref=f132e310]: subtle motion
+            - generic [ref=f132e311]:
+              - link "Open" [ref=f132e312] [cursor=pointer]:
+                - /url: landings/015-the-comma.html
+              - button "Preview" [ref=f132e313] [cursor=pointer]
+        - article [ref=f132e314]:
+          - generic [ref=f132e315]:
+            - generic:
+              - generic: "016"
+              - generic: Live
+            - generic [ref=f132e316]: "016"
+          - generic [ref=f132e320]:
+            - heading "Copper & Ash" [level=2] [ref=f132e321]
+            - paragraph [ref=f132e322]: cocktail bar
+            - paragraph [ref=f132e323]: “copper still catching bar light”
+            - generic [ref=f132e324]:
+              - generic [ref=f132e325]: medium
+              - generic [ref=f132e326]: committed
+              - generic [ref=f132e327]: medium motion
+            - generic [ref=f132e328]:
+              - link "Open" [ref=f132e329] [cursor=pointer]:
+                - /url: landings/016-copper-and-ash.html
+              - button "Preview" [ref=f132e330] [cursor=pointer]
+        - article [ref=f132e331]:
+          - generic [ref=f132e332]:
+            - generic:
+              - generic: "017"
+              - generic: Live
+            - generic [ref=f132e333]: "017"
+          - generic [ref=f132e337]:
+            - heading "Lowlands" [level=2] [ref=f132e338]
+            - paragraph [ref=f132e339]: Scotch distillery
+            - paragraph [ref=f132e340]: “warehouse No. 3 — cask ends disappearing into dark”
+            - generic [ref=f132e341]:
+              - generic [ref=f132e342]: complex
+              - generic [ref=f132e343]: full palette
+              - generic [ref=f132e344]: medium motion
+            - generic [ref=f132e345]:
+              - link "Open" [ref=f132e346] [cursor=pointer]:
+                - /url: landings/017-lowlands.html
+              - button "Preview" [ref=f132e347] [cursor=pointer]
+        - article [ref=f132e348]:
+          - generic [ref=f132e349]:
+            - generic:
+              - generic: "018"
+              - generic: Live
+            - generic [ref=f132e350]: "018"
+          - generic [ref=f132e354]:
+            - heading "Halcyon House" [level=2] [ref=f132e355]
+            - paragraph [ref=f132e356]: boutique coastal hotel
+            - paragraph [ref=f132e357]: “Aegean noon — white plaster, one blue”
+            - generic [ref=f132e358]:
+              - generic [ref=f132e359]: complex
+              - generic [ref=f132e360]: committed
+              - generic [ref=f132e361]: medium motion
+            - generic [ref=f132e362]:
+              - link "Open" [ref=f132e363] [cursor=pointer]:
+                - /url: landings/018-halcyon-house.html
+              - button "Preview" [ref=f132e364] [cursor=pointer]
+        - article [ref=f132e365]:
+          - generic [ref=f132e366]:
+            - generic:
+              - generic: "019"
+              - generic: Live
+            - generic [ref=f132e367]: "019"
+          - generic [ref=f132e371]:
+            - heading "Moonshine Motor Court" [level=2] [ref=f132e372]
+            - paragraph [ref=f132e373]: roadhouse motel
+            - paragraph [ref=f132e374]: “VACANCY neon over Route 66 asphalt”
+            - generic [ref=f132e375]:
+              - generic [ref=f132e376]: medium
+              - generic [ref=f132e377]: drenched
+              - generic [ref=f132e378]: medium motion
+            - generic [ref=f132e379]:
+              - link "Open" [ref=f132e380] [cursor=pointer]:
+                - /url: landings/019-moonshine-motor.html
+              - button "Preview" [ref=f132e381] [cursor=pointer]
+        - article [ref=f132e382]:
+          - generic [ref=f132e383]:
+            - generic:
+              - generic: "020"
+              - generic: Live
+            - generic [ref=f132e384]: "020"
+          - generic [ref=f132e388]:
+            - heading "Summit Oracle" [level=2] [ref=f132e389]
+            - paragraph [ref=f132e390]: ski resort
+            - paragraph [ref=f132e391]: “patrol jacket orange against whiteout”
+            - generic [ref=f132e392]:
+              - generic [ref=f132e393]: complex
+              - generic [ref=f132e394]: committed
+              - generic [ref=f132e395]: strong motion
+            - generic [ref=f132e396]:
+              - link "Open" [ref=f132e397] [cursor=pointer]:
+                - /url: landings/020-summit-oracle.html
+              - button "Preview" [ref=f132e398] [cursor=pointer]
+        - article [ref=f132e399]:
+          - generic [ref=f132e400]:
+            - generic:
+              - generic: "021"
+              - generic: Live
+            - generic [ref=f132e401]: "021"
+          - generic [ref=f132e405]:
+            - heading "Saltline" [level=2] [ref=f132e406]
+            - paragraph [ref=f132e407]: cold-water surf school
+            - paragraph [ref=f132e408]: “North Sea dawn — foam on dark water”
+            - generic [ref=f132e409]:
+              - generic [ref=f132e410]: medium
+              - generic [ref=f132e411]: committed
+              - generic [ref=f132e412]: medium motion
+            - generic [ref=f132e413]:
+              - link "Open" [ref=f132e414] [cursor=pointer]:
+                - /url: landings/021-saltline.html
+              - button "Preview" [ref=f132e415] [cursor=pointer]
+        - article [ref=f132e416]:
+          - generic [ref=f132e417]:
+            - generic:
+              - generic: "022"
+              - generic: Live
+            - generic [ref=f132e418]: "022"
+          - generic [ref=f132e422]:
+            - heading "Terrapin" [level=2] [ref=f132e423]
+            - paragraph [ref=f132e424]: kayak outfitter
+            - paragraph [ref=f132e425]: “cedar-strip hull on a green river”
+            - generic [ref=f132e426]:
+              - generic [ref=f132e427]: medium
+              - generic [ref=f132e428]: committed
+              - generic [ref=f132e429]: medium motion
+            - generic [ref=f132e430]:
+              - link "Open" [ref=f132e431] [cursor=pointer]:
+                - /url: landings/022-terrapin.html
+              - button "Preview" [ref=f132e432] [cursor=pointer]
+        - article [ref=f132e433]:
+          - generic [ref=f132e434]:
+            - generic:
+              - generic: "023"
+              - generic: Live
+            - generic [ref=f132e435]: "023"
+          - generic [ref=f132e439]:
+            - heading "Aurora Ice" [level=2] [ref=f132e440]
+            - paragraph [ref=f132e441]: Icelandic glacier tours
+            - paragraph [ref=f132e442]: “aurora over black sand”
+            - generic [ref=f132e443]:
+              - generic [ref=f132e444]: complex
+              - generic [ref=f132e445]: drenched
+              - generic [ref=f132e446]: strong motion
+            - generic [ref=f132e447]:
+              - link "Open" [ref=f132e448] [cursor=pointer]:
+                - /url: landings/023-aurora-ice.html
+              - button "Preview" [ref=f132e449] [cursor=pointer]
+        - article [ref=f132e450]:
+          - generic [ref=f132e451]:
+            - generic:
+              - generic: "024"
+              - generic: Live
+            - generic [ref=f132e452]: "024"
+          - generic [ref=f132e456]:
+            - heading "Driftlab" [level=2] [ref=f132e457]
+            - paragraph [ref=f132e458]: arctic research expedition
+            - paragraph [ref=f132e459]: “telemetry printout pinned to an ice-core crate”
+            - generic [ref=f132e460]:
+              - generic [ref=f132e461]: medium
+              - generic [ref=f132e462]: restrained
+              - generic [ref=f132e463]: medium motion
+            - generic [ref=f132e464]:
+              - link "Open" [ref=f132e465] [cursor=pointer]:
+                - /url: landings/024-driftlab.html
+              - button "Preview" [ref=f132e466] [cursor=pointer]
+        - article [ref=f132e467]:
+          - generic [ref=f132e468]:
+            - generic:
+              - generic: "025"
+              - generic: Live
+            - generic [ref=f132e469]: "025"
+          - generic [ref=f132e473]:
+            - heading "Northmark" [level=2] [ref=f132e474]
+            - paragraph [ref=f132e475]: hiking boots
+            - paragraph [ref=f132e476]: “waxed leather against trail dust”
+            - generic [ref=f132e477]:
+              - generic [ref=f132e478]: medium
+              - generic [ref=f132e479]: committed
+              - generic [ref=f132e480]: medium motion
+            - generic [ref=f132e481]:
+              - link "Open" [ref=f132e482] [cursor=pointer]:
+                - /url: landings/025-northmark.html
+              - button "Preview" [ref=f132e483] [cursor=pointer]
+        - article [ref=f132e484]:
+          - generic [ref=f132e485]:
+            - generic:
+              - generic: "026"
+              - generic: Live
+            - generic [ref=f132e486]: "026"
+          - generic [ref=f132e490]:
+            - heading "Velvet Circuit" [level=2] [ref=f132e491]
+            - paragraph [ref=f132e492]: synth-pop album launch
+            - paragraph [ref=f132e493]: “chrome bumper under neon at 2am”
+            - generic [ref=f132e494]:
+              - generic [ref=f132e495]: complex
+              - generic [ref=f132e496]: drenched
+              - generic [ref=f132e497]: strong motion
+            - generic [ref=f132e498]:
+              - link "Open" [ref=f132e499] [cursor=pointer]:
+                - /url: landings/026-velvet-circuit.html
+              - button "Preview" [ref=f132e500] [cursor=pointer]
+        - article [ref=f132e501]:
+          - generic [ref=f132e502]:
+            - generic:
+              - generic: "027"
+              - generic: Live
+            - generic [ref=f132e503]: "027"
+          - generic [ref=f132e507]:
+            - heading "Nocturne FM" [level=2] [ref=f132e508]
+            - paragraph [ref=f132e509]: late-night jazz radio
+            - paragraph [ref=f132e510]: “brass bell of a tenor sax in a dark room”
+            - generic [ref=f132e511]:
+              - generic [ref=f132e512]: medium
+              - generic [ref=f132e513]: committed
+              - generic [ref=f132e514]: subtle motion
+            - generic [ref=f132e515]:
+              - link "Open" [ref=f132e516] [cursor=pointer]:
+                - /url: landings/027-nocturne-fm.html
+              - button "Preview" [ref=f132e517] [cursor=pointer]
+        - article [ref=f132e518]:
+          - generic [ref=f132e519]:
+            - generic:
+              - generic: "028"
+              - generic: Live
+            - generic [ref=f132e520]: "028"
+          - generic [ref=f132e524]:
+            - heading "Semitone" [level=2] [ref=f132e525]
+            - paragraph [ref=f132e526]: piano bar
+            - paragraph [ref=f132e527]: “one red lamp over 88 keys”
+            - generic [ref=f132e528]:
+              - generic [ref=f132e529]: simple
+              - generic [ref=f132e530]: committed
+              - generic [ref=f132e531]: subtle motion
+            - generic [ref=f132e532]:
+              - link "Open" [ref=f132e533] [cursor=pointer]:
+                - /url: landings/028-semitone.html
+              - button "Preview" [ref=f132e534] [cursor=pointer]
+        - article [ref=f132e535]:
+          - generic [ref=f132e536]:
+            - generic:
+              - generic: "029"
+              - generic: Live
+            - generic [ref=f132e537]: "029"
+          - generic [ref=f132e541]:
+            - heading "Small Hours" [level=2] [ref=f132e542]
+            - paragraph [ref=f132e543]: insomnia podcast
+            - paragraph [ref=f132e544]: “ceiling at 3:47am, one streetlight through blinds”
+            - generic [ref=f132e545]:
+              - generic [ref=f132e546]: simple
+              - generic [ref=f132e547]: drenched
+              - generic [ref=f132e548]: subtle motion
+            - generic [ref=f132e549]:
+              - link "Open" [ref=f132e550] [cursor=pointer]:
+                - /url: landings/029-small-hours.html
+              - button "Preview" [ref=f132e551] [cursor=pointer]
+        - article [ref=f132e552]:
+          - generic [ref=f132e553]:
+            - generic:
+              - generic: "030"
+              - generic: Live
+            - generic [ref=f132e554]: "030"
+          - generic [ref=f132e558]:
+            - heading "Cold Open" [level=2] [ref=f132e559]
+            - paragraph [ref=f132e560]: podcast network
+            - paragraph [ref=f132e561]: “three shows, three mic flags”
+            - generic [ref=f132e562]:
+              - generic [ref=f132e563]: medium
+              - generic [ref=f132e564]: full palette
+              - generic [ref=f132e565]: medium motion
+            - generic [ref=f132e566]:
+              - link "Open" [ref=f132e567] [cursor=pointer]:
+                - /url: landings/030-cold-open.html
+              - button "Preview" [ref=f132e568] [cursor=pointer]
+        - article [ref=f132e569]:
+          - generic [ref=f132e570]:
+            - generic:
+              - generic: "031"
+              - generic: Live
+            - generic [ref=f132e571]: "031"
+          - generic [ref=f132e575]:
+            - heading "Vanishing Point" [level=2] [ref=f132e576]
+            - paragraph [ref=f132e577]: photography magazine
+            - paragraph [ref=f132e578]: “gallery wall, one red dot sold sticker”
+            - generic [ref=f132e579]:
+              - generic [ref=f132e580]: complex
+              - generic [ref=f132e581]: restrained
+              - generic [ref=f132e582]: medium motion
+            - generic [ref=f132e583]:
+              - link "Open" [ref=f132e584] [cursor=pointer]:
+                - /url: landings/031-vanishing-point.html
+              - button "Preview" [ref=f132e585] [cursor=pointer]
+        - article [ref=f132e586]:
+          - generic [ref=f132e587]:
+            - generic:
+              - generic: "032"
+              - generic: Live
+            - generic [ref=f132e588]: "032"
+          - generic [ref=f132e592]:
+            - heading "Half Light" [level=2] [ref=f132e593]
+            - paragraph [ref=f132e594]: film photography lab
+            - paragraph [ref=f132e595]: “safelight amber over developing trays”
+            - generic [ref=f132e596]:
+              - generic [ref=f132e597]: simple
+              - generic [ref=f132e598]: committed
+              - generic [ref=f132e599]: subtle motion
+            - generic [ref=f132e600]:
+              - link "Open" [ref=f132e601] [cursor=pointer]:
+                - /url: landings/032-half-light.html
+              - button "Preview" [ref=f132e602] [cursor=pointer]
+        - article [ref=f132e603]:
+          - generic [ref=f132e604]:
+            - generic:
+              - generic: "033"
+              - generic: Live
+            - generic [ref=f132e605]: "033"
+          - generic [ref=f132e609]:
+            - heading "Tintype" [level=2] [ref=f132e610]
+            - paragraph [ref=f132e611]: wedding photography
+            - paragraph [ref=f132e612]: “linen album, one gold foil initial”
+            - generic [ref=f132e613]:
+              - generic [ref=f132e614]: medium
+              - generic [ref=f132e615]: restrained
+              - generic [ref=f132e616]: subtle motion
+            - generic [ref=f132e617]:
+              - link "Open" [ref=f132e618] [cursor=pointer]:
+                - /url: landings/033-tintype.html
+              - button "Preview" [ref=f132e619] [cursor=pointer]
+        - article [ref=f132e620]:
+          - generic [ref=f132e621]:
+            - generic:
+              - generic: "034"
+              - generic: Live
+            - generic [ref=f132e622]: "034"
+          - generic [ref=f132e626]:
+            - heading "Prism Break" [level=2] [ref=f132e627]
+            - paragraph [ref=f132e628]: indie animation studio
+            - paragraph [ref=f132e629]: “cel on a lightbox — pink registration marks”
+            - generic [ref=f132e630]:
+              - generic [ref=f132e631]: complex
+              - generic [ref=f132e632]: full palette
+              - generic [ref=f132e633]: strong motion
+            - generic [ref=f132e634]:
+              - link "Open" [ref=f132e635] [cursor=pointer]:
+                - /url: landings/034-prism-break.html
+              - button "Preview" [ref=f132e636] [cursor=pointer]
+        - article [ref=f132e637]:
+          - generic [ref=f132e638]:
+            - generic:
+              - generic: "035"
+              - generic: Live
+            - generic [ref=f132e639]: "035"
+          - generic [ref=f132e643]:
+            - heading "Static Bloom" [level=2] [ref=f132e644]
+            - paragraph [ref=f132e645]: generative art collective
+            - paragraph [ref=f132e646]: “phosphor bloom on a dead channel”
+            - generic [ref=f132e647]:
+              - generic [ref=f132e648]: complex
+              - generic [ref=f132e649]: drenched
+              - generic [ref=f132e650]: strong motion
+            - generic [ref=f132e651]:
+              - link "Open" [ref=f132e652] [cursor=pointer]:
+                - /url: landings/035-static-bloom.html
+              - button "Preview" [ref=f132e653] [cursor=pointer]
+        - article [ref=f132e654]:
+          - generic [ref=f132e655]:
+            - generic:
+              - generic: "036"
+              - generic: Live
+            - generic [ref=f132e656]: "036"
+          - generic [ref=f132e660]:
+            - heading "Typecase" [level=2] [ref=f132e661]
+            - paragraph [ref=f132e662]: indie type foundry
+            - paragraph [ref=f132e663]: “specimen sheet fresh off the proof press”
+            - generic [ref=f132e664]:
+              - generic [ref=f132e665]: complex
+              - generic [ref=f132e666]: committed
+              - generic [ref=f132e667]: strong motion
+            - generic [ref=f132e668]:
+              - link "Open" [ref=f132e669] [cursor=pointer]:
+                - /url: landings/036-typecase.html
+              - button "Preview" [ref=f132e670] [cursor=pointer]
+        - article [ref=f132e671]:
+          - generic [ref=f132e672]:
+            - generic:
+              - generic: "037"
+              - generic: Live
+            - generic [ref=f132e673]: "037"
+          - generic [ref=f132e677]:
+            - heading "Tidal Press" [level=2] [ref=f132e678]
+            - paragraph [ref=f132e679]: letterpress studio
+            - paragraph [ref=f132e680]: “deep impression of blue ink in cotton paper”
+            - generic [ref=f132e681]:
+              - generic [ref=f132e682]: medium
+              - generic [ref=f132e683]: committed
+              - generic [ref=f132e684]: subtle motion
+            - generic [ref=f132e685]:
+              - link "Open" [ref=f132e686] [cursor=pointer]:
+                - /url: landings/037-tidal-press.html
+              - button "Preview" [ref=f132e687] [cursor=pointer]
+        - article [ref=f132e688]:
+          - generic [ref=f132e689]:
+            - generic:
+              - generic: "038"
+              - generic: Live
+            - generic [ref=f132e690]: "038"
+          - generic [ref=f132e694]:
+            - heading "Folkloric" [level=2] [ref=f132e695]
+            - paragraph [ref=f132e696]: weaving & textile studio
+            - paragraph [ref=f132e697]: “madder, indigo and weld drying on a line”
+            - generic [ref=f132e698]:
+              - generic [ref=f132e699]: medium
+              - generic [ref=f132e700]: full palette
+              - generic [ref=f132e701]: medium motion
+            - generic [ref=f132e702]:
+              - link "Open" [ref=f132e703] [cursor=pointer]:
+                - /url: landings/038-folkloric.html
+              - button "Preview" [ref=f132e704] [cursor=pointer]
+        - article [ref=f132e705]:
+          - generic [ref=f132e706]:
+            - generic:
+              - generic: "039"
+              - generic: Live
+            - generic [ref=f132e707]: "039"
+          - generic [ref=f132e711]:
+            - heading "Kiln & Co" [level=2] [ref=f132e712]
+            - paragraph [ref=f132e713]: ceramics studio
+            - paragraph [ref=f132e714]: “terracotta bisque waiting for celadon”
+            - generic [ref=f132e715]:
+              - generic [ref=f132e716]: medium
+              - generic [ref=f132e717]: committed
+              - generic [ref=f132e718]: subtle motion
+            - generic [ref=f132e719]:
+              - link "Open" [ref=f132e720] [cursor=pointer]:
+                - /url: landings/039-kiln-and-co.html
+              - button "Preview" [ref=f132e721] [cursor=pointer]
+        - article [ref=f132e722]:
+          - generic [ref=f132e723]:
+            - generic:
+              - generic: "040"
+              - generic: Live
+            - generic [ref=f132e724]: "040"
+          - generic [ref=f132e728]:
+            - heading "Brass & Bone" [level=2] [ref=f132e729]
+            - paragraph [ref=f132e730]: antique restoration
+            - paragraph [ref=f132e731]: “brass hardware on a green-lacquered cabinet”
+            - generic [ref=f132e732]:
+              - generic [ref=f132e733]: medium
+              - generic [ref=f132e734]: committed
+              - generic [ref=f132e735]: subtle motion
+            - generic [ref=f132e736]:
+              - link "Open" [ref=f132e737] [cursor=pointer]:
+                - /url: landings/040-brass-and-bone.html
+              - button "Preview" [ref=f132e738] [cursor=pointer]
+        - article [ref=f132e739]:
+          - generic [ref=f132e740]:
+            - generic:
+              - generic: "041"
+              - generic: Live
+            - generic [ref=f132e741]: "041"
+          - generic [ref=f132e745]:
+            - heading "Second Empire" [level=2] [ref=f132e746]
+            - paragraph [ref=f132e747]: vintage furniture
+            - paragraph [ref=f132e748]: “auction-house catalog — walnut and brass”
+            - generic [ref=f132e749]:
+              - generic [ref=f132e750]: medium
+              - generic [ref=f132e751]: restrained
+              - generic [ref=f132e752]: subtle motion
+            - generic [ref=f132e753]:
+              - link "Open" [ref=f132e754] [cursor=pointer]:
+                - /url: landings/041-second-empire.html
+              - button "Preview" [ref=f132e755] [cursor=pointer]
+        - article [ref=f132e756]:
+          - generic [ref=f132e757]:
+            - generic:
+              - generic: "042"
+              - generic: Live
+            - generic [ref=f132e758]: "042"
+          - generic [ref=f132e762]:
+            - heading "Cardinal Press" [level=2] [ref=f132e763]
+            - paragraph [ref=f132e764]: poetry small-press
+            - paragraph [ref=f132e765]: “one red bird on white paper”
+            - generic [ref=f132e766]:
+              - generic [ref=f132e767]: simple
+              - generic [ref=f132e768]: restrained
+              - generic [ref=f132e769]: subtle motion
+            - generic [ref=f132e770]:
+              - link "Open" [ref=f132e771] [cursor=pointer]:
+                - /url: landings/042-cardinal-press.html
+              - button "Preview" [ref=f132e772] [cursor=pointer]
+        - article [ref=f132e773]:
+          - generic [ref=f132e774]:
+            - generic:
+              - generic: "043"
+              - generic: Live
+            - generic [ref=f132e775]: "043"
+          - generic [ref=f132e779]:
+            - heading "The Marionette" [level=2] [ref=f132e780]
+            - paragraph [ref=f132e781]: puppet theater
+            - paragraph [ref=f132e782]: “footlights on velvet, gold braid”
+            - generic [ref=f132e783]:
+              - generic [ref=f132e784]: complex
+              - generic [ref=f132e785]: drenched
+              - generic [ref=f132e786]: strong motion
+            - generic [ref=f132e787]:
+              - link "Open" [ref=f132e788] [cursor=pointer]:
+                - /url: landings/043-the-marionette.html
+              - button "Preview" [ref=f132e789] [cursor=pointer]
+        - article [ref=f132e790]:
+          - generic [ref=f132e791]:
+            - generic:
+              - generic: "044"
+              - generic: Live
+            - generic [ref=f132e792]: "044"
+          - generic [ref=f132e796]:
+            - heading "Moss & Mortar" [level=2] [ref=f132e797]
+            - paragraph [ref=f132e798]: terrarium shop
+            - paragraph [ref=f132e799]: “moss under glass, morning condensation”
+            - generic [ref=f132e800]:
+              - generic [ref=f132e801]: simple
+              - generic [ref=f132e802]: committed
+              - generic [ref=f132e803]: subtle motion
+            - generic [ref=f132e804]:
+              - link "Open" [ref=f132e805] [cursor=pointer]:
+                - /url: landings/044-moss-and-mortar.html
+              - button "Preview" [ref=f132e806] [cursor=pointer]
+        - article [ref=f132e807]:
+          - generic [ref=f132e808]:
+            - generic:
+              - generic: "045"
+              - generic: Live
+            - generic [ref=f132e809]: "045"
+          - generic [ref=f132e813]:
+            - heading "Night Blooming" [level=2] [ref=f132e814]
+            - paragraph [ref=f132e815]: botanical garden night events
+            - paragraph [ref=f132e816]: “moonflower opening under bioluminescence”
+            - generic [ref=f132e817]:
+              - generic [ref=f132e818]: medium
+              - generic [ref=f132e819]: drenched
+              - generic [ref=f132e820]: strong motion
+            - generic [ref=f132e821]:
+              - link "Open" [ref=f132e822] [cursor=pointer]:
+                - /url: landings/045-night-blooming.html
+              - button "Preview" [ref=f132e823] [cursor=pointer]
+        - article [ref=f132e824]:
+          - generic [ref=f132e825]:
+            - generic:
+              - generic: "046"
+              - generic: Live
+            - generic [ref=f132e826]: "046"
+          - generic [ref=f132e830]:
+            - heading "Pollen" [level=2] [ref=f132e831]
+            - paragraph [ref=f132e832]: urban beekeeping honey
+            - paragraph [ref=f132e833]: “rooftop hive against a gray skyline”
+            - generic [ref=f132e834]:
+              - generic [ref=f132e835]: simple
+              - generic [ref=f132e836]: full palette
+              - generic [ref=f132e837]: medium motion
+            - generic [ref=f132e838]:
+              - link "Open" [ref=f132e839] [cursor=pointer]:
+                - /url: landings/046-pollen.html
+              - button "Preview" [ref=f132e840] [cursor=pointer]
+        - article [ref=f132e841]:
+          - generic [ref=f132e842]:
+            - generic:
+              - generic: "047"
+              - generic: Live
+            - generic [ref=f132e843]: "047"
+          - generic [ref=f132e847]:
+            - heading "Inkwell Society" [level=2] [ref=f132e848]
+            - paragraph [ref=f132e849]: fountain pen shop
+            - paragraph [ref=f132e850]: “iron-gall ink drying on cream-laid paper”
+            - generic [ref=f132e851]:
+              - generic [ref=f132e852]: medium
+              - generic [ref=f132e853]: committed
+              - generic [ref=f132e854]: subtle motion
+            - generic [ref=f132e855]:
+              - link "Open" [ref=f132e856] [cursor=pointer]:
+                - /url: landings/047-inkwell-society.html
+              - button "Preview" [ref=f132e857] [cursor=pointer]
+        - article [ref=f132e858]:
+          - generic [ref=f132e859]:
+            - generic:
+              - generic: "048"
+              - generic: Live
+            - generic [ref=f132e860]: "048"
+          - generic [ref=f132e864]:
+            - heading "Paper Planes" [level=2] [ref=f132e865]
+            - paragraph [ref=f132e866]: stationery subscription
+            - paragraph [ref=f132e867]: “three sheets of colored stock fanned out”
+            - generic [ref=f132e868]:
+              - generic [ref=f132e869]: simple
+              - generic [ref=f132e870]: full palette
+              - generic [ref=f132e871]: medium motion
+            - generic [ref=f132e872]:
+              - link "Open" [ref=f132e873] [cursor=pointer]:
+                - /url: landings/048-paper-planes.html
+              - button "Preview" [ref=f132e874] [cursor=pointer]
+        - article [ref=f132e875]:
+          - generic [ref=f132e876]:
+            - generic:
+              - generic: "049"
+              - generic: Live
+            - generic [ref=f132e877]: "049"
+          - generic [ref=f132e881]:
+            - heading "Little Obelisk" [level=2] [ref=f132e882]
+            - paragraph [ref=f132e883]: children's bookstore
+            - paragraph [ref=f132e884]: “storybook primaries on library paste”
+            - generic [ref=f132e885]:
+              - generic [ref=f132e886]: simple
+              - generic [ref=f132e887]: full palette
+              - generic [ref=f132e888]: medium motion
+            - generic [ref=f132e889]:
+              - link "Open" [ref=f132e890] [cursor=pointer]:
+                - /url: landings/049-little-obelisk.html
+              - button "Preview" [ref=f132e891] [cursor=pointer]
+        - article [ref=f132e892]:
+          - generic [ref=f132e893]:
+            - generic:
+              - generic: "050"
+              - generic: Live
+            - generic [ref=f132e894]: "050"
+          - generic [ref=f132e898]:
+            - heading "Paper Run" [level=2] [ref=f132e899]
+            - paragraph [ref=f132e900]: independent newspaper
+            - paragraph [ref=f132e901]: “above the fold, ink still tacky”
+            - generic [ref=f132e902]:
+              - generic [ref=f132e903]: medium
+              - generic [ref=f132e904]: restrained
+              - generic [ref=f132e905]: subtle motion
+            - generic [ref=f132e906]:
+              - link "Open" [ref=f132e907] [cursor=pointer]:
+                - /url: landings/050-paper-run.html
+              - button "Preview" [ref=f132e908] [cursor=pointer]
+        - article [ref=f132e909]:
+          - generic [ref=f132e910]:
+            - generic:
+              - generic: "051"
+              - generic: Live
+            - generic [ref=f132e911]: "051"
+          - generic [ref=f132e915]:
+            - heading "Brightstack" [level=2] [ref=f132e916]
+            - paragraph [ref=f132e917]: dev analytics SaaS
+            - paragraph [ref=f132e918]: “phosphor dashboard in a dark ops room”
+            - generic [ref=f132e919]:
+              - generic [ref=f132e920]: complex
+              - generic [ref=f132e921]: committed
+              - generic [ref=f132e922]: strong motion
+            - generic [ref=f132e923]:
+              - link "Open" [ref=f132e924] [cursor=pointer]:
+                - /url: landings/051-brightstack.html
+              - button "Preview" [ref=f132e925] [cursor=pointer]
+        - article [ref=f132e926]:
+          - generic [ref=f132e927]:
+            - generic:
+              - generic: "052"
+              - generic: Planned
+            - generic [ref=f132e928]: "052"
+          - generic [ref=f132e932]:
+            - heading "Gramercy" [level=2] [ref=f132e933]
+            - paragraph [ref=f132e934]: AI writing tool
+            - paragraph [ref=f132e935]: “manuscript with one coral editor's mark”
+            - generic [ref=f132e936]:
+              - generic [ref=f132e937]: complex
+              - generic [ref=f132e938]: restrained
+              - generic [ref=f132e939]: medium motion
+            - generic [ref=f132e940]: Coming soon
+        - article [ref=f132e941]:
+          - generic [ref=f132e942]:
+            - generic:
+              - generic: "053"
+              - generic: Live
+            - generic [ref=f132e943]: "053"
+          - generic [ref=f132e947]:
+            - heading "Circuit Breaker" [level=2] [ref=f132e948]
+            - paragraph [ref=f132e949]: cybersecurity firm
+            - paragraph [ref=f132e950]: “server-room LED in a dark rack aisle”
+            - generic [ref=f132e951]:
+              - generic [ref=f132e952]: medium
+              - generic [ref=f132e953]: committed
+              - generic [ref=f132e954]: strong motion
+            - generic [ref=f132e955]:
+              - link "Open" [ref=f132e956] [cursor=pointer]:
+                - /url: landings/053-circuit-breaker.html
+              - button "Preview" [ref=f132e957] [cursor=pointer]
+        - article [ref=f132e958]:
+          - generic [ref=f132e959]:
+            - generic:
+              - generic: "054"
+              - generic: Live
+            - generic [ref=f132e960]: "054"
+          - generic [ref=f132e964]:
+            - heading "Wayfind" [level=2] [ref=f132e965]
+            - paragraph [ref=f132e966]: offline maps app
+            - paragraph [ref=f132e967]: “ordnance survey sheet — contour brown, trail orange”
+            - generic [ref=f132e968]:
+              - generic [ref=f132e969]: complex
+              - generic [ref=f132e970]: committed
+              - generic [ref=f132e971]: strong motion
+            - generic [ref=f132e972]:
+              - link "Open" [ref=f132e973] [cursor=pointer]:
+                - /url: landings/054-wayfind.html
+              - button "Preview" [ref=f132e974] [cursor=pointer]
+        - article [ref=f132e975]:
+          - generic [ref=f132e976]:
+            - generic:
+              - generic: "055"
+              - generic: Planned
+            - generic [ref=f132e977]: "055"
+          - generic [ref=f132e981]:
+            - heading "Hush" [level=2] [ref=f132e982]
+            - paragraph [ref=f132e983]: sleep app
+            - paragraph [ref=f132e984]: “the sky 40 minutes after sunset”
+            - generic [ref=f132e985]:
+              - generic [ref=f132e986]: simple
+              - generic [ref=f132e987]: drenched
+              - generic [ref=f132e988]: subtle motion
+            - generic [ref=f132e989]: Coming soon
+        - article [ref=f132e990]:
+          - generic [ref=f132e991]:
+            - generic:
+              - generic: "056"
+              - generic: Live
+            - generic [ref=f132e992]: "056"
+          - generic [ref=f132e996]:
+            - heading "Sonder" [level=2] [ref=f132e997]
+            - paragraph [ref=f132e998]: travel journal app
+            - paragraph [ref=f132e999]: “passport stamps from three trips”
+            - generic [ref=f132e1000]:
+              - generic [ref=f132e1001]: medium
+              - generic [ref=f132e1002]: full palette
+              - generic [ref=f132e1003]: medium motion
+            - generic [ref=f132e1004]:
+              - link "Open" [ref=f132e1005] [cursor=pointer]:
+                - /url: landings/056-sonder.html
+              - button "Preview" [ref=f132e1006] [cursor=pointer]
+        - article [ref=f132e1007]:
+          - generic [ref=f132e1008]:
+            - generic:
+              - generic: "057"
+              - generic: Live
+            - generic [ref=f132e1009]: "057"
+          - generic [ref=f132e1013]:
+            - heading "Wild Type" [level=2] [ref=f132e1014]
+            - paragraph [ref=f132e1015]: biotech startup
+            - paragraph [ref=f132e1016]: “agar plate under a hood light”
+            - generic [ref=f132e1017]:
+              - generic [ref=f132e1018]: complex
+              - generic [ref=f132e1019]: restrained
+              - generic [ref=f132e1020]: strong motion
+            - generic [ref=f132e1021]:
+              - link "Open" [ref=f132e1022] [cursor=pointer]:
+                - /url: landings/057-wild-type.html
+              - button "Preview" [ref=f132e1023] [cursor=pointer]
+        - article [ref=f132e1024]:
+          - generic [ref=f132e1025]:
+            - generic:
+              - generic: "058"
+              - generic: Live
+            - generic [ref=f132e1026]: "058"
+          - generic [ref=f132e1030]:
+            - heading "Quorum" [level=2] [ref=f132e1031]
+            - paragraph [ref=f132e1032]: civic engagement platform
+            - paragraph [ref=f132e1033]: “ballot box and a sharpened pencil”
+            - generic [ref=f132e1034]:
+              - generic [ref=f132e1035]: medium
+              - generic [ref=f132e1036]: restrained
+              - generic [ref=f132e1037]: subtle motion
+            - generic [ref=f132e1038]:
+              - link "Open" [ref=f132e1039] [cursor=pointer]:
+                - /url: landings/058-quorum.html
+              - button "Preview" [ref=f132e1040] [cursor=pointer]
+        - article [ref=f132e1041]:
+          - generic [ref=f132e1042]:
+            - generic:
+              - generic: "059"
+              - generic: Live
+            - generic [ref=f132e1043]: "059"
+          - generic [ref=f132e1047]:
+            - heading "Bright Verb" [level=2] [ref=f132e1048]
+            - paragraph [ref=f132e1049]: language school
+            - paragraph [ref=f132e1050]: “flashcards fanned on a desk”
+            - generic [ref=f132e1051]:
+              - generic [ref=f132e1052]: simple
+              - generic [ref=f132e1053]: full palette
+              - generic [ref=f132e1054]: medium motion
+            - generic [ref=f132e1055]:
+              - link "Open" [ref=f132e1056] [cursor=pointer]:
+                - /url: landings/059-bright-verb.html
+              - button "Preview" [ref=f132e1057] [cursor=pointer]
+        - article [ref=f132e1058]:
+          - generic [ref=f132e1059]:
+            - generic:
+              - generic: "060"
+              - generic: Live
+            - generic [ref=f132e1060]: "060"
+          - generic [ref=f132e1064]:
+            - heading "The Forge" [level=2] [ref=f132e1065]
+            - paragraph [ref=f132e1066]: coding bootcamp
+            - paragraph [ref=f132e1067]: “molten steel meeting the anvil”
+            - generic [ref=f132e1068]:
+              - generic [ref=f132e1069]: complex
+              - generic [ref=f132e1070]: committed
+              - generic [ref=f132e1071]: strong motion
+            - generic [ref=f132e1072]:
+              - link "Open" [ref=f132e1073] [cursor=pointer]:
+                - /url: landings/060-the-forge.html
+              - button "Preview" [ref=f132e1074] [cursor=pointer]
+        - article [ref=f132e1075]:
+          - generic [ref=f132e1076]:
+            - generic:
+              - generic: "061"
+              - generic: Live
+            - generic [ref=f132e1077]: "061"
+          - generic [ref=f132e1081]:
+            - heading "Vaporware" [level=2] [ref=f132e1082]
+            - paragraph [ref=f132e1083]: retro-futurist game console
+            - paragraph [ref=f132e1084]: “rental-store carpet under a CRT glow”
+            - generic [ref=f132e1085]:
+              - generic [ref=f132e1086]: complex
+              - generic [ref=f132e1087]: drenched
+              - generic [ref=f132e1088]: strong motion
+            - generic [ref=f132e1089]:
+              - link "Open" [ref=f132e1090] [cursor=pointer]:
+                - /url: landings/061-vaporware.html
+              - button "Preview" [ref=f132e1091] [cursor=pointer]
+        - article [ref=f132e1092]:
+          - generic [ref=f132e1093]:
+            - generic:
+              - generic: "062"
+              - generic: Live
+            - generic [ref=f132e1094]: "062"
+          - generic [ref=f132e1098]:
+            - heading "Kernel" [level=2] [ref=f132e1099]
+            - paragraph [ref=f132e1100]: indie game studio
+            - paragraph [ref=f132e1101]: “save-point glow in a dark level”
+            - generic [ref=f132e1102]:
+              - generic [ref=f132e1103]: complex
+              - generic [ref=f132e1104]: drenched
+              - generic [ref=f132e1105]: strong motion
+            - generic [ref=f132e1106]:
+              - link "Open" [ref=f132e1107] [cursor=pointer]:
+                - /url: landings/062-kernel.html
+              - button "Preview" [ref=f132e1108] [cursor=pointer]
+        - article [ref=f132e1109]:
+          - generic [ref=f132e1110]:
+            - generic:
+              - generic: "063"
+              - generic: Live
+            - generic [ref=f132e1111]: "063"
+          - generic [ref=f132e1115]:
+            - heading "Voltage" [level=2] [ref=f132e1116]
+            - paragraph [ref=f132e1117]: esports team
+            - paragraph [ref=f132e1118]: “arena lights before the match starts”
+            - generic [ref=f132e1119]:
+              - generic [ref=f132e1120]: complex
+              - generic [ref=f132e1121]: drenched
+              - generic [ref=f132e1122]: strong motion
+            - generic [ref=f132e1123]:
+              - link "Open" [ref=f132e1124] [cursor=pointer]:
+                - /url: landings/063-voltage.html
+              - button "Preview" [ref=f132e1125] [cursor=pointer]
+        - article [ref=f132e1126]:
+          - generic [ref=f132e1127]:
+            - generic:
+              - generic: "064"
+              - generic: Live
+            - generic [ref=f132e1128]: "064"
+          - generic [ref=f132e1132]:
+            - heading "Cassette" [level=2] [ref=f132e1133]
+            - paragraph [ref=f132e1134]: 80s arcade bar
+            - paragraph [ref=f132e1135]: “token gold and neon pink on sticky carpet”
+            - generic [ref=f132e1136]:
+              - generic [ref=f132e1137]: medium
+              - generic [ref=f132e1138]: drenched
+              - generic [ref=f132e1139]: strong motion
+            - generic [ref=f132e1140]:
+              - link "Open" [ref=f132e1141] [cursor=pointer]:
+                - /url: landings/064-cassette.html
+              - button "Preview" [ref=f132e1142] [cursor=pointer]
+        - article [ref=f132e1143]:
+          - generic [ref=f132e1144]:
+            - generic:
+              - generic: "065"
+              - generic: Live
+            - generic [ref=f132e1145]: "065"
+          - generic [ref=f132e1149]:
+            - heading "Raptor" [level=2] [ref=f132e1150]
+            - paragraph [ref=f132e1151]: drone cinematography
+            - paragraph [ref=f132e1152]: “carbon props against a pale sky”
+            - generic [ref=f132e1153]:
+              - generic [ref=f132e1154]: complex
+              - generic [ref=f132e1155]: committed
+              - generic [ref=f132e1156]: strong motion
+            - generic [ref=f132e1157]:
+              - link "Open" [ref=f132e1158] [cursor=pointer]:
+                - /url: landings/065-raptor.html
+              - button "Preview" [ref=f132e1159] [cursor=pointer]
+        - article [ref=f132e1160]:
+          - generic [ref=f132e1161]:
+            - generic:
+              - generic: "066"
+              - generic: Live
+            - generic [ref=f132e1162]: "066"
+          - generic [ref=f132e1166]:
+            - heading "Apex Dynamics" [level=2] [ref=f132e1167]
+            - paragraph [ref=f132e1168]: electric hyperbike
+            - paragraph [ref=f132e1169]: “volt lime stitching on carbon leather”
+            - generic [ref=f132e1170]:
+              - generic [ref=f132e1171]: complex
+              - generic [ref=f132e1172]: committed
+              - generic [ref=f132e1173]: strong motion
+            - generic [ref=f132e1174]:
+              - link "Open" [ref=f132e1175] [cursor=pointer]:
+                - /url: landings/066-apex-dynamics.html
+              - button "Preview" [ref=f132e1176] [cursor=pointer]
+        - article [ref=f132e1177]:
+          - generic [ref=f132e1178]:
+            - generic:
+              - generic: "067"
+              - generic: Live
+            - generic [ref=f132e1179]: "067"
+          - generic [ref=f132e1183]:
+            - heading "Motor Pool" [level=2] [ref=f132e1184]
+            - paragraph [ref=f132e1185]: vintage motorcycle garage
+            - paragraph [ref=f132e1186]: “signal orange on oily concrete”
+            - generic [ref=f132e1187]:
+              - generic [ref=f132e1188]: medium
+              - generic [ref=f132e1189]: committed
+              - generic [ref=f132e1190]: medium motion
+            - generic [ref=f132e1191]:
+              - link "Open" [ref=f132e1192] [cursor=pointer]:
+                - /url: landings/067-motor-pool.html
+              - button "Preview" [ref=f132e1193] [cursor=pointer]
+        - article [ref=f132e1194]:
+          - generic [ref=f132e1195]:
+            - generic:
+              - generic: "068"
+              - generic: Live
+            - generic [ref=f132e1196]: "068"
+          - generic [ref=f132e1200]:
+            - heading "Alloy" [level=2] [ref=f132e1201]
+            - paragraph [ref=f132e1202]: custom bicycle frames
+            - paragraph [ref=f132e1203]: “raw titanium with brass brazing”
+            - generic [ref=f132e1204]:
+              - generic [ref=f132e1205]: medium
+              - generic [ref=f132e1206]: restrained
+              - generic [ref=f132e1207]: subtle motion
+            - generic [ref=f132e1208]:
+              - link "Open" [ref=f132e1209] [cursor=pointer]:
+                - /url: landings/068-alloy.html
+              - button "Preview" [ref=f132e1210] [cursor=pointer]
+        - article [ref=f132e1211]:
+          - generic [ref=f132e1212]:
+            - generic:
+              - generic: "069"
+              - generic: Planned
+            - generic [ref=f132e1213]: "069"
+          - generic [ref=f132e1217]:
+            - heading "Sprocket" [level=2] [ref=f132e1218]
+            - paragraph [ref=f132e1219]: bike repair co-op
+            - paragraph [ref=f132e1220]: “safety yellow tag on a repaired bike”
+            - generic [ref=f132e1221]:
+              - generic [ref=f132e1222]: simple
+              - generic [ref=f132e1223]: committed
+              - generic [ref=f132e1224]: subtle motion
+            - generic [ref=f132e1225]: Coming soon
+        - article [ref=f132e1226]:
+          - generic [ref=f132e1227]:
+            - generic:
+              - generic: "070"
+              - generic: Planned
+            - generic [ref=f132e1228]: "070"
+          - generic [ref=f132e1232]:
+            - heading "Ironroot" [level=2] [ref=f132e1233]
+            - paragraph [ref=f132e1234]: powerlifting gym
+            - paragraph [ref=f132e1235]: “chalk dust over a loaded bar”
+            - generic [ref=f132e1236]:
+              - generic [ref=f132e1237]: medium
+              - generic [ref=f132e1238]: drenched
+              - generic [ref=f132e1239]: strong motion
+            - generic [ref=f132e1240]: Coming soon
+        - article [ref=f132e1241]:
+          - generic [ref=f132e1242]:
+            - generic:
+              - generic: "071"
+              - generic: Live
+            - generic [ref=f132e1243]: "071"
+          - generic [ref=f132e1247]:
+            - heading "Pulse" [level=2] [ref=f132e1248]
+            - paragraph [ref=f132e1249]: boxing gym
+            - paragraph [ref=f132e1250]: “red gloves on navy canvas”
+            - generic [ref=f132e1251]:
+              - generic [ref=f132e1252]: medium
+              - generic [ref=f132e1253]: committed
+              - generic [ref=f132e1254]: strong motion
+            - generic [ref=f132e1255]:
+              - link "Open" [ref=f132e1256] [cursor=pointer]:
+                - /url: landings/071-pulse.html
+              - button "Preview" [ref=f132e1257] [cursor=pointer]
+        - article [ref=f132e1258]:
+          - generic [ref=f132e1259]:
+            - generic:
+              - generic: "072"
+              - generic: Live
+            - generic [ref=f132e1260]: "072"
+          - generic [ref=f132e1264]:
+            - heading "Quickstep" [level=2] [ref=f132e1265]
+            - paragraph [ref=f132e1266]: swing dance school
+            - paragraph [ref=f132e1267]: “brass section and teal taffeta”
+            - generic [ref=f132e1268]:
+              - generic [ref=f132e1269]: simple
+              - generic [ref=f132e1270]: full palette
+              - generic [ref=f132e1271]: medium motion
+            - generic [ref=f132e1272]:
+              - link "Open" [ref=f132e1273] [cursor=pointer]:
+                - /url: landings/072-quickstep.html
+              - button "Preview" [ref=f132e1274] [cursor=pointer]
+        - article [ref=f132e1275]:
+          - generic [ref=f132e1276]:
+            - generic:
+              - generic: "073"
+              - generic: Live
+            - generic [ref=f132e1277]: "073"
+          - generic [ref=f132e1281]:
+            - heading "Field Dress" [level=2] [ref=f132e1282]
+            - paragraph [ref=f132e1283]: hunting & outdoor apparel
+            - paragraph [ref=f132e1284]: “blaze orange over olive drab”
+            - generic [ref=f132e1285]:
+              - generic [ref=f132e1286]: medium
+              - generic [ref=f132e1287]: committed
+              - generic [ref=f132e1288]: subtle motion
+            - generic [ref=f132e1289]:
+              - link "Open" [ref=f132e1290] [cursor=pointer]:
+                - /url: landings/073-field-dress.html
+              - button "Preview" [ref=f132e1291] [cursor=pointer]
+        - article [ref=f132e1292]:
+          - generic [ref=f132e1293]:
+            - generic:
+              - generic: "074"
+              - generic: Live
+            - generic [ref=f132e1294]: "074"
+          - generic [ref=f132e1298]:
+            - heading "Wolf Pack" [level=2] [ref=f132e1299]
+            - paragraph [ref=f132e1300]: trail running race
+            - paragraph [ref=f132e1301]: “headlamp beam cutting the dark”
+            - generic [ref=f132e1302]:
+              - generic [ref=f132e1303]: medium
+              - generic [ref=f132e1304]: committed
+              - generic [ref=f132e1305]: strong motion
+            - generic [ref=f132e1306]:
+              - link "Open" [ref=f132e1307] [cursor=pointer]:
+                - /url: landings/074-wolf-pack.html
+              - button "Preview" [ref=f132e1308] [cursor=pointer]
+        - article [ref=f132e1309]:
+          - generic [ref=f132e1310]:
+            - generic:
+              - generic: "075"
+              - generic: Live
+            - generic [ref=f132e1311]: "075"
+          - generic [ref=f132e1315]:
+            - heading "Undercurrent" [level=2] [ref=f132e1316]
+            - paragraph [ref=f132e1317]: scuba diving center
+            - paragraph [ref=f132e1318]: “30 meters down — light going blue-green”
+            - generic [ref=f132e1319]:
+              - generic [ref=f132e1320]: complex
+              - generic [ref=f132e1321]: drenched
+              - generic [ref=f132e1322]: strong motion
+            - generic [ref=f132e1323]:
+              - link "Open" [ref=f132e1324] [cursor=pointer]:
+                - /url: landings/075-undercurrent.html
+              - button "Preview" [ref=f132e1325] [cursor=pointer]
+        - article [ref=f132e1326]:
+          - generic [ref=f132e1327]:
+            - generic:
+              - generic: "076"
+              - generic: Live
+            - generic [ref=f132e1328]: "076"
+          - generic [ref=f132e1332]:
+            - heading "Slow Orbit" [level=2] [ref=f132e1333]
+            - paragraph [ref=f132e1334]: space tourism
+            - paragraph [ref=f132e1335]: “earthglow on a visor”
+            - generic [ref=f132e1336]:
+              - generic [ref=f132e1337]: complex
+              - generic [ref=f132e1338]: drenched
+              - generic [ref=f132e1339]: strong motion
+            - generic [ref=f132e1340]:
+              - link "Open" [ref=f132e1341] [cursor=pointer]:
+                - /url: landings/076-slow-orbit.html
+              - button "Preview" [ref=f132e1342] [cursor=pointer]
+        - article [ref=f132e1343]:
+          - generic [ref=f132e1344]:
+            - generic:
+              - generic: "077"
+              - generic: Live
+            - generic [ref=f132e1345]: "077"
+          - generic [ref=f132e1349]:
+            - heading "Apogee" [level=2] [ref=f132e1350]
+            - paragraph [ref=f132e1351]: rocket launch startup
+            - paragraph [ref=f132e1352]: “graphite scorch on a white fairing”
+            - generic [ref=f132e1353]:
+              - generic [ref=f132e1354]: complex
+              - generic [ref=f132e1355]: committed
+              - generic [ref=f132e1356]: strong motion
+            - generic [ref=f132e1357]:
+              - link "Open" [ref=f132e1358] [cursor=pointer]:
+                - /url: landings/077-apogee.html
+              - button "Preview" [ref=f132e1359] [cursor=pointer]
+        - article [ref=f132e1360]:
+          - generic [ref=f132e1361]:
+            - generic:
+              - generic: "078"
+              - generic: Live
+            - generic [ref=f132e1362]: "078"
+          - generic [ref=f132e1366]:
+            - heading "The Observatory" [level=2] [ref=f132e1367]
+            - paragraph [ref=f132e1368]: stargazing retreat
+            - paragraph [ref=f132e1369]: “milky way over a cabin window”
+            - generic [ref=f132e1370]:
+              - generic [ref=f132e1371]: complex
+              - generic [ref=f132e1372]: drenched
+              - generic [ref=f132e1373]: strong motion
+            - generic [ref=f132e1374]:
+              - link "Open" [ref=f132e1375] [cursor=pointer]:
+                - /url: landings/078-the-observatory.html
+              - button "Preview" [ref=f132e1376] [cursor=pointer]
+        - article [ref=f132e1377]:
+          - generic [ref=f132e1378]:
+            - generic:
+              - generic: "079"
+              - generic: Live
+            - generic [ref=f132e1379]: "079"
+          - generic [ref=f132e1383]:
+            - heading "Orbit & Anchor" [level=2] [ref=f132e1384]
+            - paragraph [ref=f132e1385]: sailing school
+            - paragraph [ref=f132e1386]: “spinnaker red against deep water”
+            - generic [ref=f132e1387]:
+              - generic [ref=f132e1388]: medium
+              - generic [ref=f132e1389]: committed
+              - generic [ref=f132e1390]: medium motion
+            - generic [ref=f132e1391]:
+              - link "Open" [ref=f132e1392] [cursor=pointer]:
+                - /url: landings/079-orbit-anchor.html
+              - button "Preview" [ref=f132e1393] [cursor=pointer]
+        - article [ref=f132e1394]:
+          - generic [ref=f132e1395]:
+            - generic:
+              - generic: "080"
+              - generic: Live
+            - generic [ref=f132e1396]: "080"
+          - generic [ref=f132e1400]:
+            - heading "Helmsman" [level=2] [ref=f132e1401]
+            - paragraph [ref=f132e1402]: yacht charter
+            - paragraph [ref=f132e1403]: “navy blazer, gold buttons, white deck”
+            - generic [ref=f132e1404]:
+              - generic [ref=f132e1405]: complex
+              - generic [ref=f132e1406]: restrained
+              - generic [ref=f132e1407]: medium motion
+            - generic [ref=f132e1408]:
+              - link "Open" [ref=f132e1409] [cursor=pointer]:
+                - /url: landings/080-helmsman.html
+              - button "Preview" [ref=f132e1410] [cursor=pointer]
+        - article [ref=f132e1411]:
+          - generic [ref=f132e1412]:
+            - generic:
+              - generic: "081"
+              - generic: Live
+            - generic [ref=f132e1413]: "081"
+          - generic [ref=f132e1417]:
+            - heading "Chroma Drift" [level=2] [ref=f132e1418]
+            - paragraph [ref=f132e1419]: 3D printing studio
+            - paragraph [ref=f132e1420]: “filament spools on a steel shelf”
+            - generic [ref=f132e1421]:
+              - generic [ref=f132e1422]: complex
+              - generic [ref=f132e1423]: full palette
+              - generic [ref=f132e1424]: strong motion
+            - generic [ref=f132e1425]:
+              - link "Open" [ref=f132e1426] [cursor=pointer]:
+                - /url: landings/081-chroma-drift.html
+              - button "Preview" [ref=f132e1427] [cursor=pointer]
+        - article [ref=f132e1428]:
+          - generic [ref=f132e1429]:
+            - generic:
+              - generic: "082"
+              - generic: Live
+            - generic [ref=f132e1430]: "082"
+          - generic [ref=f132e1434]:
+            - heading "Floodline" [level=2] [ref=f132e1435]
+            - paragraph [ref=f132e1436]: climate data nonprofit
+            - paragraph [ref=f132e1437]: “flood gauge markings on a white wall”
+            - generic [ref=f132e1438]:
+              - generic [ref=f132e1439]: complex
+              - generic [ref=f132e1440]: committed
+              - generic [ref=f132e1441]: strong motion
+            - generic [ref=f132e1442]:
+              - link "Open" [ref=f132e1443] [cursor=pointer]:
+                - /url: landings/082-floodline.html
+              - button "Preview" [ref=f132e1444] [cursor=pointer]
+        - article [ref=f132e1445]:
+          - generic [ref=f132e1446]:
+            - generic:
+              - generic: "083"
+              - generic: Live
+            - generic [ref=f132e1447]: "083"
+          - generic [ref=f132e1451]:
+            - heading "Little Mercies" [level=2] [ref=f132e1452]
+            - paragraph [ref=f132e1453]: animal shelter
+            - paragraph [ref=f132e1454]: “collar tags on a corkboard”
+            - generic [ref=f132e1455]:
+              - generic [ref=f132e1456]: medium
+              - generic [ref=f132e1457]: full palette
+              - generic [ref=f132e1458]: medium motion
+            - generic [ref=f132e1459]:
+              - link "Open" [ref=f132e1460] [cursor=pointer]:
+                - /url: landings/083-little-mercies.html
+              - button "Preview" [ref=f132e1461] [cursor=pointer]
+        - article [ref=f132e1462]:
+          - generic [ref=f132e1463]:
+            - generic:
+              - generic: "084"
+              - generic: Live
+            - generic [ref=f132e1464]: "084"
+          - generic [ref=f132e1468]:
+            - heading "Field Notes" [level=2] [ref=f132e1469]
+            - paragraph [ref=f132e1470]: regenerative farm CSA
+            - paragraph [ref=f132e1471]: “soil profile cross-section”
+            - generic [ref=f132e1472]:
+              - generic [ref=f132e1473]: medium
+              - generic [ref=f132e1474]: committed
+              - generic [ref=f132e1475]: subtle motion
+            - generic [ref=f132e1476]:
+              - link "Open" [ref=f132e1477] [cursor=pointer]:
+                - /url: landings/084-field-notes-ag.html
+              - button "Preview" [ref=f132e1478] [cursor=pointer]
+        - article [ref=f132e1479]:
+          - generic [ref=f132e1480]:
+            - generic:
+              - generic: "085"
+              - generic: Live
+            - generic [ref=f132e1481]: "085"
+          - generic [ref=f132e1485]:
+            - heading "Opaline" [level=2] [ref=f132e1486]
+            - paragraph [ref=f132e1487]: perfume house
+            - paragraph [ref=f132e1488]: “opalescent glass catching window light”
+            - generic [ref=f132e1489]:
+              - generic [ref=f132e1490]: medium
+              - generic [ref=f132e1491]: drenched
+              - generic [ref=f132e1492]: subtle motion
+            - generic [ref=f132e1493]:
+              - link "Open" [ref=f132e1494] [cursor=pointer]:
+                - /url: landings/085-opaline.html
+              - button "Preview" [ref=f132e1495] [cursor=pointer]
+        - article [ref=f132e1496]:
+          - generic [ref=f132e1497]:
+            - generic:
+              - generic: "086"
+              - generic: Live
+            - generic [ref=f132e1498]: "086"
+          - generic [ref=f132e1502]:
+            - heading "Petrichor" [level=2] [ref=f132e1503]
+            - paragraph [ref=f132e1504]: rain-scent candle brand
+            - paragraph [ref=f132e1505]: “wet asphalt under a streetlamp”
+            - generic [ref=f132e1506]:
+              - generic [ref=f132e1507]: simple
+              - generic [ref=f132e1508]: drenched
+              - generic [ref=f132e1509]: subtle motion
+            - generic [ref=f132e1510]:
+              - link "Open" [ref=f132e1511] [cursor=pointer]:
+                - /url: landings/086-petrichor.html
+              - button "Preview" [ref=f132e1512] [cursor=pointer]
+        - article [ref=f132e1513]:
+          - generic [ref=f132e1514]:
+            - generic:
+              - generic: "087"
+              - generic: Planned
+            - generic [ref=f132e1515]: "087"
+          - generic [ref=f132e1519]:
+            - heading "Ledger & Black" [level=2] [ref=f132e1520]
+            - paragraph [ref=f132e1521]: accounting firm
+            - paragraph [ref=f132e1522]: “green ledger cloth, red pencil”
+            - generic [ref=f132e1523]:
+              - generic [ref=f132e1524]: medium
+              - generic [ref=f132e1525]: restrained
+              - generic [ref=f132e1526]: subtle motion
+            - generic [ref=f132e1527]: Coming soon
+        - article [ref=f132e1528]:
+          - generic [ref=f132e1529]:
+            - generic:
+              - generic: "088"
+              - generic: Live
+            - generic [ref=f132e1530]: "088"
+          - generic [ref=f132e1534]:
+            - heading "Blueprint & Bellow" [level=2] [ref=f132e1535]
+            - paragraph [ref=f132e1536]: blacksmith workshops
+            - paragraph [ref=f132e1537]: “steel at critical temperature”
+            - generic [ref=f132e1538]:
+              - generic [ref=f132e1539]: medium
+              - generic [ref=f132e1540]: drenched
+              - generic [ref=f132e1541]: strong motion
+            - generic [ref=f132e1542]:
+              - link "Open" [ref=f132e1543] [cursor=pointer]:
+                - /url: landings/088-blueprint-bellow.html
+              - button "Preview" [ref=f132e1544] [cursor=pointer]
+        - article [ref=f132e1545]:
+          - generic [ref=f132e1546]:
+            - generic:
+              - generic: "089"
+              - generic: Live
+            - generic [ref=f132e1547]: "089"
+          - generic [ref=f132e1551]:
+            - heading "Fresco" [level=2] [ref=f132e1552]
+            - paragraph [ref=f132e1553]: lime paint & plaster maker
+            - paragraph [ref=f132e1554]: “wet lime plaster with ochre pigment stirred in”
+            - generic [ref=f132e1555]:
+              - generic [ref=f132e1556]: medium
+              - generic [ref=f132e1557]: committed
+              - generic [ref=f132e1558]: subtle motion
+            - generic [ref=f132e1559]:
+              - link "Open" [ref=f132e1560] [cursor=pointer]:
+                - /url: landings/089-fresco.html
+              - button "Preview" [ref=f132e1561] [cursor=pointer]
+        - article [ref=f132e1562]:
+          - generic [ref=f132e1563]:
+            - generic:
+              - generic: "090"
+              - generic: Live
+            - generic [ref=f132e1564]: "090"
+          - generic [ref=f132e1568]:
+            - heading "Studio Verte" [level=2] [ref=f132e1569]
+            - paragraph [ref=f132e1570]: landscape architecture
+            - paragraph [ref=f132e1571]: “boxwood parterre on drafting paper”
+            - generic [ref=f132e1572]:
+              - generic [ref=f132e1573]: medium
+              - generic [ref=f132e1574]: committed
+              - generic [ref=f132e1575]: medium motion
+            - generic [ref=f132e1576]:
+              - link "Open" [ref=f132e1577] [cursor=pointer]:
+                - /url: landings/090-studio-verte.html
+              - button "Preview" [ref=f132e1578] [cursor=pointer]
+        - article [ref=f132e1579]:
+          - generic [ref=f132e1580]:
+            - generic:
+              - generic: "091"
+              - generic: Live
+            - generic [ref=f132e1581]: "091"
+          - generic [ref=f132e1585]:
+            - heading "Atlas & Thread" [level=2] [ref=f132e1586]
+            - paragraph [ref=f132e1587]: bespoke tailoring
+            - paragraph [ref=f132e1588]: “chalk marks on midnight wool”
+            - generic [ref=f132e1589]:
+              - generic [ref=f132e1590]: complex
+              - generic [ref=f132e1591]: committed
+              - generic [ref=f132e1592]: medium motion
+            - generic [ref=f132e1593]:
+              - link "Open" [ref=f132e1594] [cursor=pointer]:
+                - /url: landings/091-atlas-thread.html
+              - button "Preview" [ref=f132e1595] [cursor=pointer]
+        - article [ref=f132e1596]:
+          - generic [ref=f132e1597]:
+            - generic:
+              - generic: "092"
+              - generic: Live
+            - generic [ref=f132e1598]: "092"
+          - generic [ref=f132e1602]:
+            - heading "Touchdown" [level=2] [ref=f132e1603]
+            - paragraph [ref=f132e1604]: vintage football shirts
+            - paragraph [ref=f132e1605]: “1994 away kit under stadium floodlights”
+            - generic [ref=f132e1606]:
+              - generic [ref=f132e1607]: medium
+              - generic [ref=f132e1608]: full palette
+              - generic [ref=f132e1609]: medium motion
+            - generic [ref=f132e1610]:
+              - link "Open" [ref=f132e1611] [cursor=pointer]:
+                - /url: landings/092-touchdown.html
+              - button "Preview" [ref=f132e1612] [cursor=pointer]
+        - article [ref=f132e1613]:
+          - generic [ref=f132e1614]:
+            - generic:
+              - generic: "093"
+              - generic: Live
+            - generic [ref=f132e1615]: "093"
+          - generic [ref=f132e1619]:
+            - heading "Saturnalia" [level=2] [ref=f132e1620]
+            - paragraph [ref=f132e1621]: masquerade ball
+            - paragraph [ref=f132e1622]: “candlelight on a gold filigree mask”
+            - generic [ref=f132e1623]:
+              - generic [ref=f132e1624]: simple
+              - generic [ref=f132e1625]: drenched
+              - generic [ref=f132e1626]: strong motion
+            - generic [ref=f132e1627]:
+              - link "Open" [ref=f132e1628] [cursor=pointer]:
+                - /url: landings/093-saturnalia.html
+              - button "Preview" [ref=f132e1629] [cursor=pointer]
+        - article [ref=f132e1630]:
+          - generic [ref=f132e1631]:
+            - generic:
+              - generic: "094"
+              - generic: Live
+            - generic [ref=f132e1632]: "094"
+          - generic [ref=f132e1636]:
+            - heading "The Catacomb" [level=2] [ref=f132e1637]
+            - paragraph [ref=f132e1638]: escape room
+            - paragraph [ref=f132e1639]: “torchlight on carved stone”
+            - generic [ref=f132e1640]:
+              - generic [ref=f132e1641]: medium
+              - generic [ref=f132e1642]: drenched
+              - generic [ref=f132e1643]: strong motion
+            - generic [ref=f132e1644]:
+              - link "Open" [ref=f132e1645] [cursor=pointer]:
+                - /url: landings/094-the-catacomb.html
+              - button "Preview" [ref=f132e1646] [cursor=pointer]
+        - article [ref=f132e1647]:
+          - generic [ref=f132e1648]:
+            - generic:
+              - generic: "095"
+              - generic: Live
+            - generic [ref=f132e1649]: "095"
+          - generic [ref=f132e1653]:
+            - heading "Bright Harbor" [level=2] [ref=f132e1654]
+            - paragraph [ref=f132e1655]: coworking space
+            - paragraph [ref=f132e1656]: “harbor blue awning in morning sun”
+            - generic [ref=f132e1657]:
+              - generic [ref=f132e1658]: medium
+              - generic [ref=f132e1659]: committed
+              - generic [ref=f132e1660]: medium motion
+            - generic [ref=f132e1661]:
+              - link "Open" [ref=f132e1662] [cursor=pointer]:
+                - /url: landings/095-bright-harbor.html
+              - button "Preview" [ref=f132e1663] [cursor=pointer]
+        - article [ref=f132e1664]:
+          - generic [ref=f132e1665]:
+            - generic:
+              - generic: "096"
+              - generic: Live
+            - generic [ref=f132e1666]: "096"
+          - generic [ref=f132e1670]:
+            - heading "The Greenskeeper" [level=2] [ref=f132e1671]
+            - paragraph [ref=f132e1672]: historic golf club
+            - paragraph [ref=f132e1673]: “tartan and morning dew”
+            - generic [ref=f132e1674]:
+              - generic [ref=f132e1675]: medium
+              - generic [ref=f132e1676]: committed
+              - generic [ref=f132e1677]: subtle motion
+            - generic [ref=f132e1678]:
+              - link "Open" [ref=f132e1679] [cursor=pointer]:
+                - /url: landings/096-the-greenskeeper.html
+              - button "Preview" [ref=f132e1680] [cursor=pointer]
+        - article [ref=f132e1681]:
+          - generic [ref=f132e1682]:
+            - generic:
+              - generic: "097"
+              - generic: Live
+            - generic [ref=f132e1683]: "097"
+          - generic [ref=f132e1687]:
+            - heading "Opal Coast" [level=2] [ref=f132e1688]
+            - paragraph [ref=f132e1689]: campervan road trips
+            - paragraph [ref=f132e1690]: “outback dust on a teal van door”
+            - generic [ref=f132e1691]:
+              - generic [ref=f132e1692]: medium
+              - generic [ref=f132e1693]: full palette
+              - generic [ref=f132e1694]: medium motion
+            - generic [ref=f132e1695]:
+              - link "Open" [ref=f132e1696] [cursor=pointer]:
+                - /url: landings/097-opal-coast.html
+              - button "Preview" [ref=f132e1697] [cursor=pointer]
+        - article [ref=f132e1698]:
+          - generic [ref=f132e1699]:
+            - generic:
+              - generic: "098"
+              - generic: Live
+            - generic [ref=f132e1700]: "098"
+          - generic [ref=f132e1704]:
+            - heading "Bright Lattice" [level=2] [ref=f132e1705]
+            - paragraph [ref=f132e1706]: solar energy startup
+            - paragraph [ref=f132e1707]: “sun-path diagram on an engineer's print”
+            - generic [ref=f132e1708]:
+              - generic [ref=f132e1709]: medium
+              - generic [ref=f132e1710]: committed
+              - generic [ref=f132e1711]: medium motion
+            - generic [ref=f132e1712]:
+              - link "Open" [ref=f132e1713] [cursor=pointer]:
+                - /url: landings/098-bright-lattice.html
+              - button "Preview" [ref=f132e1714] [cursor=pointer]
+        - article [ref=f132e1715]:
+          - generic [ref=f132e1716]:
+            - generic:
+              - generic: "099"
+              - generic: Live
+            - generic [ref=f132e1717]: "099"
+          - generic [ref=f132e1721]:
+            - heading "Golden Hour" [level=2] [ref=f132e1722]
+            - paragraph [ref=f132e1723]: hot air balloon rides
+            - paragraph [ref=f132e1724]: “the sky ten minutes before sunrise”
+            - generic [ref=f132e1725]:
+              - generic [ref=f132e1726]: simple
+              - generic [ref=f132e1727]: drenched
+              - generic [ref=f132e1728]: subtle motion
+            - generic [ref=f132e1729]:
+              - link "Open" [ref=f132e1730] [cursor=pointer]:
+                - /url: landings/099-golden-hour.html
+              - button "Preview" [ref=f132e1731] [cursor=pointer]
+        - article [ref=f132e1732]:
+          - generic [ref=f132e1733]:
+            - generic:
+              - generic: "100"
+              - generic: Live
+            - generic [ref=f132e1734]: "100"
+          - generic [ref=f132e1738]:
+            - heading "Grand Terminal" [level=2] [ref=f132e1739]
+            - paragraph [ref=f132e1740]: historic train station hotel
+            - paragraph [ref=f132e1741]: “brass and steam under a vaulted glass roof”
+            - generic [ref=f132e1742]:
+              - generic [ref=f132e1743]: complex
+              - generic [ref=f132e1744]: full palette
+              - generic [ref=f132e1745]: strong motion
+            - generic [ref=f132e1746]:
+              - link "Open" [ref=f132e1747] [cursor=pointer]:
+                - /url: landings/100-grand-terminal.html
+              - button "Preview" [ref=f132e1748] [cursor=pointer]
+  - contentinfo [ref=f132e1749]:
+    - generic [ref=f132e1750]:
+      - paragraph [ref=f132e1751]: Landing Pages Refined · fictional brands for craft study · each file is self-contained.
+      - paragraph [ref=f132e1752]:
+        - link "Read the manifest" [ref=f132e1753] [cursor=pointer]:
+          - /url: landings/MANIFEST.md

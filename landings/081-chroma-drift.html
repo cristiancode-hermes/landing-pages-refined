@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chroma Drift — A 3D Printing Studio That Shows Its Failures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400..800&family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.995 0.002 240);
+    --gray: oklch(0.955 0.006 240);
+    --ink: oklch(0.30 0.02 260);
+    --muted: oklch(0.45 0.025 260);
+    --coral: oklch(0.62 0.17 35);
+    --coral-deep: oklch(0.52 0.15 35);
+    --cyan: oklch(0.62 0.11 210);
+    --cyan-ink: oklch(0.42 0.09 210);
+    --line: oklch(0.90 0.008 240);
+    --display: "Geologica", sans-serif;
+    --body: "Spline Sans", sans-serif;
+    --z-base: 0;
+    --z-canvas: 1;
+    --z-header: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--cyan-ink); }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .wrap { max-width: 72rem; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 3rem); }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: oklch(0.995 0.002 240 / 0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    max-width: 72rem; margin-inline: auto; padding: 0.85rem clamp(1.25rem, 4vw, 3rem);
+  }
+  .brand { font-family: var(--display); font-weight: 800; font-size: 1.05rem; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+  .brand span { color: var(--coral); }
+  nav ul { display: flex; gap: clamp(0.75rem, 2.5vw, 1.6rem); list-style: none; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+  nav a:hover { color: var(--coral-deep); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3rem, 9vh, 6rem); }
+  .hero-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 56rem) { .hero-grid { grid-template-columns: 1fr 1fr; } }
+  .hero .tag { font-weight: 700; color: var(--cyan-ink); font-size: 0.95rem; margin-bottom: 1rem; }
+  .hero h1 { font-size: clamp(2.2rem, 1.5rem + 3.4vw, 4.25rem); max-width: 15ch; }
+  .hero h1 em { font-style: normal; color: var(--coral); }
+  .hero p.lede { margin-top: 1.4rem; max-width: 52ch; color: var(--muted); font-size: clamp(1.02rem, 0.97rem + 0.3vw, 1.2rem); }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.25rem; }
+  .btn {
+    display: inline-block; padding: 0.85rem 1.9rem; border-radius: 999px;
+    font-weight: 700; font-size: 0.98rem; text-decoration: none; border: none; cursor: pointer;
+    font-family: var(--body);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-coral { background: var(--coral); color: oklch(0.99 0.005 40); }
+  .btn-quiet { background: transparent; color: var(--cyan-ink); border: 1px solid var(--cyan); }
+
+  .printer-stage {
+    position: relative;
+    background: var(--gray);
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  }
+  .printer-stage canvas { display: block; width: 100%; height: 100%; position: relative; z-index: var(--z-canvas); }
+  .stage-bar {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    padding: 0.9rem 1.1rem;
+    background: oklch(0.995 0.002 240 / 0.9);
+    border-top: 1px solid var(--line);
+  }
+  .stage-bar .lbl { font-size: 0.82rem; font-weight: 700; color: var(--muted); }
+  .chips { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.4rem 0.9rem; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--bg);
+    font-family: var(--body); font-weight: 600; font-size: 0.85rem; color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .chip:hover { transform: translateY(-1px); }
+  .chip[aria-pressed="true"] { border-color: var(--ink); }
+  .chip .dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 9vh, 6.5rem); }
+  .gray { background: var(--gray); }
+  .section-head { margin-bottom: clamp(2rem, 5vh, 3rem); max-width: 60ch; }
+  .section-head h2 { font-size: clamp(1.7rem, 1.3rem + 2vw, 2.9rem); }
+  .section-head p { color: var(--muted); margin-top: 0.9rem; }
+
+  /* materials */
+  .mat-list { display: flex; flex-direction: column; gap: 1rem; }
+  .mat {
+    display: grid; grid-template-columns: 1fr; gap: 0.4rem 2rem;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.5rem 1.6rem;
+  }
+  @media (min-width: 48rem) { .mat { grid-template-columns: 11rem 1fr auto; align-items: baseline; } }
+  .mat h3 { font-size: 1.2rem; }
+  .mat .note { color: var(--muted); font-size: 0.96rem; max-width: 56ch; }
+  .mat .price { font-weight: 700; color: var(--coral-deep); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* estimator */
+  .estimator {
+    display: grid; gap: clamp(2rem, 4vw, 3rem); grid-template-columns: 1fr;
+    background: var(--ink); color: oklch(0.93 0.01 240);
+    border-radius: 16px; padding: clamp(1.75rem, 4vw, 3rem);
+  }
+  @media (min-width: 56rem) { .estimator { grid-template-columns: 1.1fr 0.9fr; align-items: center; } }
+  .estimator h2 { color: oklch(0.97 0.005 240); font-size: clamp(1.5rem, 1.2rem + 1.6vw, 2.3rem); }
+  .estimator p.sub { color: oklch(0.72 0.02 240); margin-top: 0.8rem; max-width: 46ch; }
+  .est-controls { display: flex; flex-direction: column; gap: 1.25rem; }
+  .est-controls label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.45rem; color: oklch(0.85 0.015 240); }
+  .est-controls select, .est-controls input[type="range"] { width: 100%; }
+  .est-controls select {
+    padding: 0.65rem 0.8rem; border-radius: 10px; border: 1px solid oklch(0.45 0.03 260);
+    background: oklch(0.36 0.03 260); color: oklch(0.95 0.01 240);
+    font-family: var(--body); font-size: 0.95rem;
+  }
+  .est-controls input[type="range"] { accent-color: var(--coral); }
+  .est-out {
+    font-family: var(--display); font-weight: 800; letter-spacing: -0.02em;
+    font-size: clamp(2.4rem, 1.8rem + 3vw, 3.8rem);
+    color: var(--coral); font-variant-numeric: tabular-nums;
+  }
+  .est-out small { display: block; font-family: var(--body); font-weight: 600; letter-spacing: 0; font-size: 0.9rem; color: oklch(0.72 0.02 240); margin-top: 0.4rem; }
+  .range-val { color: var(--cyan); font-weight: 700; }
+
+  /* steps + failures */
+  .steps { list-style: none; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); counter-reset: step; }
+  .steps li {
+    counter-increment: step;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem;
+  }
+  .steps li::before {
+    content: counter(step, decimal-leading-zero);
+    display: block; font-family: var(--display); font-weight: 800; font-size: 1.6rem;
+    color: var(--cyan); margin-bottom: 0.6rem;
+  }
+  .steps h3 { font-size: 1.15rem; margin-bottom: 0.4rem; }
+  .steps p { color: var(--muted); font-size: 0.95rem; }
+
+  .fail-grid { display: grid; gap: 1.5rem; grid-template-columns: 1fr; }
+  @media (min-width: 48rem) { .fail-grid { grid-template-columns: 1.1fr 0.9fr; align-items: stretch; } }
+  .fail-photo { border-radius: 14px; overflow: hidden; }
+  .fail-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .fail-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .fail {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 1.2rem 1.4rem;
+  }
+  .fail h3 { font-size: 1.05rem; }
+  .fail h3 span { color: var(--coral-deep); }
+  .fail p { color: var(--muted); font-size: 0.93rem; margin-top: 0.35rem; }
+
+  /* tiers */
+  .tier-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .tier { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 1.75rem; display: flex; flex-direction: column; gap: 0.8rem; }
+  .tier.featured { border: 2px solid var(--coral); }
+  .tier h3 { font-size: 1.2rem; }
+  .tier .turn { font-family: var(--display); font-weight: 800; font-size: 1.9rem; color: var(--cyan-ink); letter-spacing: -0.02em; }
+  .tier.featured .turn { color: var(--coral-deep); }
+  .tier p { color: var(--muted); font-size: 0.95rem; }
+  .tier .from { margin-top: auto; font-weight: 700; }
+
+  /* nights */
+  .nights { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .night { background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: 1.5rem; }
+  .night .when { font-weight: 700; color: var(--cyan-ink); font-size: 0.9rem; }
+  .night h3 { font-size: 1.15rem; margin-top: 0.4rem; }
+  .night p { color: var(--muted); font-size: 0.95rem; margin-top: 0.5rem; }
+
+  footer { border-top: 1px solid var(--line); padding-block: 2.5rem; color: var(--muted); font-size: 0.9rem; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .chip { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" href="#top">CHROMA<span>·</span>DRIFT</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#materials">Materials</a></li>
+        <li><a href="#quote">Get a Quote</a></li>
+        <li><a href="#failures">Failures</a></li>
+        <li><a href="#turnaround">Turnaround</a></li>
+        <li><a href="#nights">Open Nights</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- hero -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="tag">A 3D printing studio in the old textile mill</p>
+        <h1>Your file, in your hands, <em>layer by honest layer.</em></h1>
+        <p class="lede">We run fourteen printers, stock nine materials, and tell you the truth about all of them. Upload a model, get a real quote from a real human, and watch it get made — failures included, because that's how you learn what a machine can do.</p>
+        <div class="hero-cta">
+          <a class="btn btn-coral" href="#quote">Upload a model</a>
+          <a class="btn btn-quiet" href="#materials">Read the material notes</a>
+        </div>
+      </div>
+      <div class="printer-stage" id="stage">
+        <canvas id="printerCanvas" aria-label="A low-poly vase model printing itself layer by layer, rebuilding in a loop" role="img"></canvas>
+        <div class="stage-bar">
+          <span class="lbl">Live filament:</span>
+          <div class="chips" role="group" aria-label="Choose filament color">
+            <button class="chip" data-color="coral" aria-pressed="true"><span class="dot" style="background: oklch(0.62 0.17 35)"></span>Coral PLA</button>
+            <button class="chip" data-color="cyan" aria-pressed="false"><span class="dot" style="background: oklch(0.62 0.11 210)"></span>Process Cyan</button>
+            <button class="chip" data-color="graphite" aria-pressed="false"><span class="dot" style="background: oklch(0.45 0.02 260)"></span>Graphite PETG</button>
+            <button class="chip" data-color="bone" aria-pressed="false"><span class="dot" style="background: oklch(0.90 0.02 80); border: 1px solid oklch(0.75 0.03 80)"></span>Bone ABS</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- materials -->
+  <section id="materials" class="gray">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The materials library, with the strength notes nobody prints on the spool</h2>
+        <p>Every material below has broken on us at least once. The notes say when it will break for you. Prices are per gram, finished part, support removal included.</p>
+      </div>
+      <div class="mat-list">
+        <article class="mat">
+          <h3>PLA</h3>
+          <p class="note">The easy one. Crisp detail, forty colors, and brittle as a cracker under side load. Perfect for prototypes and desk toys; wrong for anything that clips, snaps, or lives in a hot car.</p>
+          <span class="price">$0.06 / g</span>
+        </article>
+        <article class="mat">
+          <h3>PETG</h3>
+          <p class="note">Our default recommendation. Tougher than PLA, shrugs off weather, food-safe-ish. Strings like mozzarella if your file has lots of travel moves — we clean that up.</p>
+          <span class="price">$0.08 / g</span>
+        </article>
+        <article class="mat">
+          <h3>ABS</h3>
+          <p class="note">Heat-resistant and sandable, the one for car parts and enclosures. Warps on big flat bases; we print it in the enclosure and sometimes it still loses the argument.</p>
+          <span class="price">$0.09 / g</span>
+        </article>
+        <article class="mat">
+          <h3>TPU 95A</h3>
+          <p class="note">Flexible rubber-ish filament for gaskets, feet, and phone cases. Slow to print, impossible to glue, weirdly satisfying to squeeze. Max part size is smaller than you'd like.</p>
+          <span class="price">$0.14 / g</span>
+        </article>
+        <article class="mat">
+          <h3>Nylon CF</h3>
+          <p class="note">Carbon-fiber nylon for brackets that actually hold weight. Eats nozzles for breakfast (ours, not yours) and drinks humidity from the air — it lives in the dry box until the minute it prints.</p>
+          <span class="price">$0.22 / g</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- estimator -->
+  <section id="quote">
+    <div class="wrap">
+      <div class="estimator">
+        <div>
+          <h2>Rough print-time estimate, right now</h2>
+          <p class="sub">Slide it around. The real quote comes from a human who looks at your geometry — overhangs, thin walls, and that one hole that always needs support.</p>
+          <div class="est-out" style="margin-top: 1.75rem;">
+            <span id="estTime">6 h 20 min</span>
+            <small>at 0.2mm layers · machine queue included · honest to ±25%</small>
+          </div>
+        </div>
+        <form class="est-controls" onsubmit="return false;">
+          <div>
+            <label for="matSelect">Material</label>
+            <select id="matSelect">
+              <option value="1.0" selected>PLA — the easy one</option>
+              <option value="1.15">PETG — the sensible one</option>
+              <option value="1.25">ABS — the warm one</option>
+              <option value="1.8">TPU 95A — the slow one</option>
+              <option value="1.5">Nylon CF — the serious one</option>
+            </select>
+          </div>
+          <div>
+            <label for="heightRange">Tallest dimension — <span class="range-val" id="heightVal">80 mm</span></label>
+            <input type="range" id="heightRange" min="10" max="280" value="80" step="5">
+          </div>
+          <div>
+            <label for="infillRange">Infill — <span class="range-val" id="infillVal">20%</span></label>
+            <input type="range" id="infillRange" min="10" max="100" value="20" step="5">
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- upload flow -->
+  <section class="gray" aria-labelledby="flow">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="flow">From STL to doorstep</h2>
+        <p>Three steps, no account required, no spam after. We answer quotes within one business day — usually faster, because Dewi checks the inbox obsessively.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>Upload the file</h3>
+          <p>STL, STEP, or 3MF up to 200MB. Broken meshes get fixed free; impossible geometry gets a kind email explaining why.</p>
+        </li>
+        <li>
+          <h3>Approve the quote</h3>
+          <p>A human prices it with material options and honest trade-offs. Nothing prints until you say so. Change your mind, pay nothing.</p>
+        </li>
+        <li>
+          <h3>Watch it print</h3>
+          <p>You get a webcam link to your actual job on an actual printer. Most people check it more often than their email.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- failures -->
+  <section id="failures">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The "we failed this print" gallery</h2>
+        <p>Other studios show you perfect benchies. Here's what's on our reject shelf this month — because a shop that hides its spaghetti is a shop that's learning slowly.</p>
+      </div>
+      <div class="fail-grid">
+        <figure class="fail-photo">
+          <img src="https://picsum.photos/seed/print-1/800/600" width="800" height="600" alt="A printer mid-job, the toolhead tracing fresh layers of filament onto a half-finished part" loading="lazy">
+        </figure>
+        <div class="fail-cards">
+          <article class="fail">
+            <h3>The 41-hour lamp shade <span>· ABS</span></h3>
+            <p>Lifted off the bed at hour 39 like it had somewhere better to be. Now a very avant-garde fruit bowl. We reprinted it in PETG, free.</p>
+          </article>
+          <article class="fail">
+            <h3>Cthulhu the planter <span>· TPU</span></h3>
+            <p>Retraction settings were aspirational. The customer's herb pot grew tentacles. She kept it. We lowered the speed and our blood pressure.</p>
+          </article>
+          <article class="fail">
+            <h3>The bridge that wasn't <span>· Nylon CF</span></h3>
+            <p>A 70mm unsupported span, attempted on a dare. Gravity won in eleven seconds. The reprint with supports holds 18 kilos.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- turnaround -->
+  <section id="turnaround" class="gray">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Turnaround tiers</h2>
+        <p>Counted from quote approval, not from upload. Shipping is flat $8, or pick it up at the mill and see the machines.</p>
+      </div>
+      <div class="tier-grid">
+        <article class="tier">
+          <h3>Whenever</h3>
+          <p class="turn">5–7 days</p>
+          <p>Your job joins the queue and prints when the right machine frees up. Cheapest, calmest, most popular.</p>
+          <p class="from">Base rate</p>
+        </article>
+        <article class="tier featured">
+          <h3>This Week</h3>
+          <p class="turn">48 hours</p>
+          <p>Jumped to the front of the queue on the material you picked. The sweet spot for most deadlines.</p>
+          <p class="from">+40% on base</p>
+        </article>
+        <article class="tier">
+          <h3>Yesterday</h3>
+          <p class="turn">Same day</p>
+          <p>Approve by 10am, pick up by 6pm. We pause something polite and run yours. Dewi will also personally worry about it.</p>
+          <p class="from">+120% on base</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- education nights -->
+  <section id="nights">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Open nights at the mill</h2>
+        <p>Free, monthly, and genuinely beginner-safe. Bring a laptop if you have one; borrow ours if you don't. Pizza appears around 7:30.</p>
+      </div>
+      <div class="nights">
+        <article class="night">
+          <p class="when">First Thursday · 6–9pm</p>
+          <h3>Slicer School</h3>
+          <p>Learn what "tree supports" actually look like, why your walls are thin, and how to read a preview before wasting four hours of plastic.</p>
+        </article>
+        <article class="night">
+          <p class="when">Third Thursday · 6–9pm</p>
+          <h3>CAD for Cowards</h3>
+          <p>Make your first printable thing in one evening — a name tag, a hook, a replacement clip for the thing that broke. Leave with the file.</p>
+        </article>
+        <article class="night">
+          <p class="when">Last Saturday · 10am–2pm</p>
+          <h3>Fail Better Club</h3>
+          <p>Bring your worst print. The room diagnoses it together, kindly, with coffee. Membership requirement: having failed at least once.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Chroma Drift · Unit 4, Harrowgate Mill · Mon–Sat 9–6 · quotes answered within one business day</p>
+    <p>Fourteen printers. Nine materials. Zero secrets.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+  if (!window.THREE) {
+    document.write('<script src="https://unpkg.com/three@0.160.0/build/three.min.js"><\/script>');
+  }
+</script>
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------- print-time estimator ---------------- */
+  var estTimeEl = document.getElementById('estTime');
+  var matSelect = document.getElementById('matSelect');
+  var heightRange = document.getElementById('heightRange');
+  var infillRange = document.getElementById('infillRange');
+  var heightVal = document.getElementById('heightVal');
+  var infillVal = document.getElementById('infillVal');
+  var displayedMinutes = 380;
+  var estRaf = null;
+
+  function targetMinutes() {
+    var h = parseFloat(heightRange.value);
+    var infill = parseFloat(infillRange.value);
+    var mat = parseFloat(matSelect.value);
+    return Math.round(h * 2.4 * mat * (0.6 + infill / 60));
+  }
+  function fmt(mins) {
+    var h = Math.floor(mins / 60);
+    var m = mins % 60;
+    return h + ' h ' + (m < 10 ? '0' : '') + m + ' min';
+  }
+  function tickEstimate() {
+    if (estRaf) cancelAnimationFrame(estRaf);
+    var from = displayedMinutes;
+    var to = targetMinutes();
+    var start = null;
+    var DUR = 600;
+    function step(ts) {
+      if (!start) start = ts;
+      var t = Math.min((ts - start) / DUR, 1);
+      var e = 1 - Math.pow(1 - t, 4); // ease-out-quart
+      displayedMinutes = Math.round(from + (to - from) * e);
+      estTimeEl.textContent = fmt(displayedMinutes);
+      if (t < 1) estRaf = requestAnimationFrame(step);
+    }
+    estRaf = requestAnimationFrame(step);
+  }
+  matSelect.addEventListener('change', tickEstimate);
+  heightRange.addEventListener('input', function () {
+    heightVal.textContent = heightRange.value + ' mm';
+    tickEstimate();
+  });
+  infillRange.addEventListener('input', function () {
+    infillVal.textContent = infillRange.value + '%';
+    tickEstimate();
+  });
+
+  /* ---------------- three.js layer-build hero ---------------- */
+  if (!window.THREE) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canvas = document.getElementById('printerCanvas');
+  var stage = document.getElementById('stage');
+
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+  camera.position.set(0, 2.6, 7.2);
+  camera.lookAt(0, 1.1, 0);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+  var key = new THREE.DirectionalLight(0xffffff, 1.6);
+  key.position.set(4, 6, 5);
+  scene.add(key);
+  var rim = new THREE.DirectionalLight(0xffffff, 0.5);
+  rim.position.set(-5, 3, -4);
+  scene.add(rim);
+
+  // Vase profile: radius as a function of height fraction t in [0,1].
+  function profile(t) {
+    return 0.55 + 0.85 * Math.sin(Math.PI * (0.12 + 0.76 * t)) * (1 - 0.25 * t);
+  }
+
+  var COLORS = {
+    coral: 0xe0654a,
+    cyan: 0x3fa8c9,
+    graphite: 0x5c6470,
+    bone: 0xe8e0cc
+  };
+  var currentColor = 'coral';
+
+  var LAYERS = 22;
+  var TOTAL_H = 2.9;
+  var layerH = TOTAL_H / LAYERS;
+  var group = new THREE.Group();
+  scene.add(group);
+  var layers = [];
+
+  for (var i = 0; i < LAYERS; i++) {
+    var t0 = i / LAYERS, t1 = (i + 1) / LAYERS;
+    var geo = new THREE.CylinderGeometry(profile(t1), profile(t0), layerH * 0.94, 40, 1, false);
+    var mat = new THREE.MeshStandardMaterial({
+      color: COLORS[currentColor],
+      roughness: 0.55,
+      metalness: 0.05,
+      flatShading: true,
+      transparent: true,
+      opacity: 1
+    });
+    var mesh = new THREE.Mesh(geo, mat);
+    var finalY = layerH * (i + 0.5) - TOTAL_H / 2 + 1.1;
+    mesh.position.y = finalY;
+    mesh.userData.finalY = finalY;
+    mesh.userData.index = i;
+    group.add(mesh);
+    layers.push(mesh);
+  }
+
+  // Build plate
+  var plate = new THREE.Mesh(
+    new THREE.CylinderGeometry(2.1, 2.1, 0.12, 48),
+    new THREE.MeshStandardMaterial({ color: 0xd8dce2, roughness: 0.8, metalness: 0.1 })
+  );
+  plate.position.y = 1.1 - TOTAL_H / 2 - 0.08;
+  group.add(plate);
+
+  function setColor(name) {
+    currentColor = name;
+    layers.forEach(function (m) { m.material.color.setHex(COLORS[name]); });
+  }
+
+  // Build-loop state
+  var STAGGER = 130;   // ms between layer starts
+  var LAYER_DUR = 520; // ms per layer drop
+  var HOLD = 2600;     // ms to admire the finished print
+  var FADE = 700;      // ms to clear before rebuilding
+  var buildStart = null;
+  var phase = 'building'; // building -> holding -> clearing -> building
+  var phaseStart = null;
+
+  function resetBuild(now) {
+    buildStart = now;
+    phase = 'building';
+    phaseStart = now;
+    layers.forEach(function (m) {
+      m.position.y = m.userData.finalY + 2.4;
+      m.material.opacity = 0;
+    });
+  }
+
+  function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+  var rafId = null;
+  function tick(now) {
+    rafId = requestAnimationFrame(tick);
+    if (buildStart === null) resetBuild(now);
+
+    if (phase === 'building') {
+      var allDone = true;
+      layers.forEach(function (m) {
+        var local = (now - buildStart - m.userData.index * STAGGER) / LAYER_DUR;
+        if (local < 0) { m.position.y = m.userData.finalY + 2.4; m.material.opacity = 0; allDone = false; return; }
+        if (local >= 1) { m.position.y = m.userData.finalY; m.material.opacity = 1; return; }
+        allDone = false;
+        var e = easeOutQuart(local);
+        m.position.y = m.userData.finalY + 2.4 * (1 - e);
+        m.material.opacity = e;
+      });
+      if (allDone) { phase = 'holding'; phaseStart = now; }
+    } else if (phase === 'holding') {
+      if (now - phaseStart > HOLD) { phase = 'clearing'; phaseStart = now; }
+    } else if (phase === 'clearing') {
+      var t = Math.min((now - phaseStart) / FADE, 1);
+      layers.forEach(function (m) { m.material.opacity = 1 - t; });
+      if (t >= 1) resetBuild(now);
+    }
+
+    group.rotation.y += 0.004;
+    renderer.render(scene, camera);
+  }
+
+  function renderStatic() {
+    // Reduced motion: finished print, single frame per state change.
+    layers.forEach(function (m) {
+      m.position.y = m.userData.finalY;
+      m.material.opacity = 1;
+    });
+    group.rotation.y = 0.6;
+    renderer.render(scene, camera);
+  }
+
+  function resize() {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    if (reduceMotion) renderStatic();
+  }
+
+  function start() {
+    if (reduceMotion || rafId !== null) return;
+    rafId = requestAnimationFrame(tick);
+  }
+  function stop() {
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop(); else start();
+  });
+
+  window.addEventListener('resize', resize);
+
+  // Filament chips
+  var chips = document.querySelectorAll('.chip[data-color]');
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      chip.setAttribute('aria-pressed', 'true');
+      setColor(chip.getAttribute('data-color'));
+      if (reduceMotion) renderStatic();
+    });
+  });
+
+  resize();
+  if (reduceMotion) renderStatic(); else start();
+})();
+</script>
+
+</body>
+</html>

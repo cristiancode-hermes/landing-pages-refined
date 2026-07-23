@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiln &amp; Co — a working ceramics studio in the old rope factory.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;600;700;800&family=Gabarito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.955 0.018 62);
+    --surface: oklch(0.93 0.022 60);
+    --ink: oklch(0.29 0.035 55);
+    --ink-soft: oklch(0.42 0.04 56);
+    --terra: oklch(0.52 0.13 45);
+    --terra-deep: oklch(0.44 0.12 44);
+    --terra-dark: oklch(0.36 0.10 45);
+    --on-terra: oklch(0.965 0.015 65);
+    --on-terra-dim: oklch(0.87 0.045 58);
+    --celadon: oklch(0.86 0.05 160);
+    --celadon-deep: oklch(0.52 0.06 165);
+    --line: oklch(0.87 0.02 58);
+    --display: "Bitter", serif;
+    --body: "Gabarito", sans-serif;
+    --step--1: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    --step-1: clamp(1.25rem, 1.18rem + 0.35vw, 1.45rem);
+    --step-2: clamp(1.56rem, 1.42rem + 0.7vw, 2rem);
+    --step-3: clamp(1.95rem, 1.66rem + 1.45vw, 2.9rem);
+    --step-4: clamp(2.44rem, 1.85rem + 2.95vw, 4.4rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { max-width: 65ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--celadon-deep);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(3.5rem, 2.8rem + 4vw, 7rem); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.955 0.018 62 / 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--terra-dark);
+  }
+  .wheel {
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    animation: wheelspin 9s linear infinite;
+  }
+  @keyframes wheelspin { to { transform: rotate(360deg); } }
+  .site-nav { display: flex; align-items: center; gap: 1.5rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--terra-deep); }
+  @media (max-width: 640px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--on-terra);
+    background: var(--terra-deep);
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: var(--terra-dark); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.celadon { background: var(--celadon-deep); }
+  .btn.celadon:hover { background: var(--terra-dark); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    background: var(--terra);
+    color: var(--on-terra);
+    padding-block: clamp(3.5rem, 2.5rem + 5vw, 7rem);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero .est {
+    font-weight: 600;
+    font-size: var(--step--1);
+    color: var(--on-terra-dim);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    font-weight: 800;
+    margin-bottom: 1.3rem;
+    color: var(--on-terra);
+  }
+  .hero .lede {
+    font-size: var(--step-1);
+    color: var(--on-terra-dim);
+    max-width: 44ch;
+    margin-bottom: 2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+  .hero .btn { background: var(--on-terra); color: var(--terra-dark); }
+  .hero .btn:hover { background: oklch(1 0 0); }
+  .hero .btn.ghosty {
+    background: transparent;
+    color: var(--on-terra);
+    box-shadow: inset 0 0 0 2px var(--on-terra);
+  }
+  .hero .btn.ghosty:hover { background: var(--terra-deep); }
+  .hero figure {
+    border-radius: 14px;
+    overflow: hidden;
+    transform: rotate(1.2deg);
+  }
+  .hero figure img { width: 100%; }
+
+  /* ---------- membership vs classes ---------- */
+  .paths h2 { font-size: var(--step-3); color: var(--terra-dark); margin-bottom: 0.6rem; }
+  .paths .sub { color: var(--ink-soft); margin-bottom: 2.6rem; }
+  .paths-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.8rem;
+  }
+  .path {
+    background: oklch(0.985 0.012 65);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 2rem 1.9rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .path .who {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: var(--step--1);
+    color: var(--celadon-deep);
+    margin-bottom: 0.7rem;
+  }
+  .path h3 { font-size: var(--step-2); color: var(--terra-dark); margin-bottom: 0.4rem; }
+  .path .price {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-3);
+    color: var(--terra);
+    margin-bottom: 0.2rem;
+  }
+  .path .price small {
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .path ul { list-style: none; margin-block: 1.4rem; flex: 1; }
+  .path li {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    padding-block: 0.5rem;
+    border-bottom: 1px dashed var(--line);
+    line-height: 1.55;
+  }
+  .path li b { color: var(--ink); font-weight: 600; }
+  .path .btn { align-self: flex-start; }
+
+  /* ---------- community kiln ---------- */
+  .kiln { background: var(--surface); border-block: 1px solid var(--line); }
+  .kiln-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .kiln-grid { grid-template-columns: 1fr; } }
+  .kiln-copy h2 { font-size: var(--step-3); color: var(--terra-dark); margin-bottom: 1.1rem; }
+  .kiln-copy p { color: var(--ink-soft); margin-bottom: 1.1rem; }
+  .kiln-copy p b { color: var(--ink); }
+  .schedule {
+    margin-top: 1.8rem;
+    border-top: 2px solid var(--terra);
+  }
+  .schedule .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.7rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--step--1);
+  }
+  .schedule .row b { font-weight: 700; color: var(--ink); }
+  .schedule .row span { color: var(--ink-soft); text-align: right; }
+  .kiln figure {
+    border-radius: 14px;
+    overflow: hidden;
+    transform: rotate(-1deg);
+  }
+  .kiln figure img { width: 100%; }
+  .kiln figcaption {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    padding-top: 0.7rem;
+  }
+
+  /* ---------- seconds ---------- */
+  .seconds-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 900px) { .seconds-grid { grid-template-columns: 1fr; } }
+  .seconds h2 { font-size: var(--step-3); color: var(--terra-dark); margin-bottom: 1.1rem; }
+  .seconds .copy p { color: var(--ink-soft); margin-bottom: 1.1rem; }
+  .seconds .copy p b { color: var(--ink); }
+  .honesty {
+    background: oklch(0.985 0.012 65);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.9rem 1.8rem;
+  }
+  .honesty h3 { font-size: var(--step-1); color: var(--terra-dark); margin-bottom: 1rem; }
+  .honesty dl { font-size: var(--step--1); }
+  .honesty dt {
+    font-weight: 700;
+    color: var(--terra-deep);
+    margin-top: 0.9rem;
+  }
+  .honesty dt:first-of-type { margin-top: 0; }
+  .honesty dd { color: var(--ink-soft); line-height: 1.55; }
+  .honesty .note {
+    margin-top: 1.4rem;
+    padding-top: 1.1rem;
+    border-top: 1px dashed var(--line);
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ---------- glaze glossary ---------- */
+  .glazes { background: var(--terra-dark); color: var(--on-terra); }
+  .glazes h2 { font-size: var(--step-3); margin-bottom: 0.6rem; color: var(--on-terra); }
+  .glazes .sub { color: var(--on-terra-dim); margin-bottom: 2.6rem; max-width: 58ch; }
+  .glaze-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.6rem;
+  }
+  .glaze {
+    background: oklch(0.40 0.11 45);
+    border-radius: 12px;
+    padding: 1.5rem 1.4rem;
+    transition: transform 0.5s var(--ease-out);
+  }
+  .glaze:hover { transform: translateY(-4px); }
+  .swatch {
+    width: 100%;
+    height: 5.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  .glaze h3 { font-size: var(--step-1); font-weight: 600; margin-bottom: 0.4rem; }
+  .glaze p { font-size: var(--step--1); color: var(--on-terra-dim); line-height: 1.55; }
+  .glaze .cone { font-size: 0.75rem; color: var(--celadon); font-weight: 600; margin-top: 0.8rem; }
+
+  /* ---------- settle-in pieces ---------- */
+  .settle {
+    opacity: 1;
+    transform: translateY(10px) rotate(0.8deg);
+    transition: transform 1s var(--ease-out);
+  }
+  .settle.in { transform: none; }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--terra-dark);
+    color: var(--on-terra-dim);
+    border-top: 1px solid oklch(0.40 0.11 45);
+    padding-block: 2.4rem;
+    font-size: var(--step--1);
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    line-height: 1.7;
+  }
+  footer b { color: var(--on-terra); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .wheel { animation: none; }
+    .settle { transform: none; transition: none; }
+    .glaze, .glaze:hover { transition: none; transform: none; }
+    .btn, .btn:hover { transition: none; transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <svg class="wheel" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14" fill="none" stroke="var(--terra-deep)" stroke-width="2"/>
+        <circle cx="16" cy="16" r="3" fill="var(--terra-deep)"/>
+        <path d="M16 2 V9 M16 23 V30 M2 16 H9 M23 16 H30 M6 6 L11 11 M21 21 L26 26 M26 6 L21 11 M11 21 L6 26"
+              stroke="var(--terra)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      Kiln &amp; Co
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#paths">Classes &amp; membership</a>
+      <a href="#kiln">The kiln</a>
+      <a href="#seconds">Seconds sale</a>
+      <a class="btn small" href="#paths">Book a wheel</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="est">A working ceramics studio in the old rope factory · since 2014</p>
+        <h1>Mud in, mugs out. Bring your own patience.</h1>
+        <p class="lede">Twelve wheels, two kilns, one very opinionated glaze shelf. Kiln &amp; Co is a membership studio and a teaching studio — you can learn from us, or just work next to us.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#paths">See classes</a>
+          <a class="btn ghosty" href="#seconds">Seconds, first Saturday</a>
+        </div>
+      </div>
+      <figure class="settle">
+        <img src="https://picsum.photos/seed/ceramics-1/1600/900" width="1600" height="900"
+             alt="Hands centering a lump of grey stoneware on a spinning wheel, slip running down the wrists, studio light from the north windows.">
+      </figure>
+    </div>
+  </section>
+
+  <!-- PATHS -->
+  <section class="paths" id="paths">
+    <div class="wrap">
+      <h2>Two ways in.</h2>
+      <p class="sub">Take a class if you want a teacher and a syllabus. Take a membership if you already know which end of the rib is which. Either way, the clay is real and so is the learning curve.</p>
+      <div class="paths-grid">
+        <article class="path settle">
+          <p class="who">FOR BEGINNERS &amp; RETURNERS</p>
+          <h3>Six-week class</h3>
+          <p class="price">$260 <small>· all materials &amp; firings included</small></p>
+          <ul>
+            <li><b>One evening a week, 6:30–9 pm</b> — Mon, Wed, or Thu cohorts</li>
+            <li><b>Centering by week two</b> — we promise the wobble is normal</li>
+            <li><b>Cylinders, bowls, then a small lidded thing</b> if the clay cooperates</li>
+            <li><b>Max 9 students per teacher</b> — you will get muddy hands-on help</li>
+            <li>You keep <b>everything you throw</b> that survives the kiln, good or gloriously bad</li>
+          </ul>
+          <a class="btn" href="mailto:classes@kilnandco.example">Join the next cohort — 7 April</a>
+        </article>
+        <article class="path settle">
+          <p class="who">FOR PEOPLE WITH THEIR OWN APRON</p>
+          <h3>Studio membership</h3>
+          <p class="price">$140 <small>· per month, three-month minimum</small></p>
+          <ul>
+            <li><b>Open studio 7 am – 10 pm,</b> seven days, keycode entry</li>
+            <li><b>Your own shelf</b> (60 × 40 cm — bigger than it sounds, smaller than you want)</li>
+            <li><b>Cone 6 &amp; cone 10 firings</b> included up to one shelf per load</li>
+            <li><b>Studio clay at cost:</b> $18 per 12.5 kg bag, reclaim free</li>
+            <li>Vote at the quarterly glaze meeting. Bring strong opinions.</li>
+          </ul>
+          <a class="btn celadon" href="mailto:membership@kilnandco.example">Request a bench visit</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- KILN -->
+  <section class="kiln" id="kiln">
+    <div class="wrap kiln-grid">
+      <div class="kiln-copy">
+        <h2>The community kiln keeps its own calendar.</h2>
+        <p>Our two kilns — <b>Brünhilde</b> (electric, cone 6) and <b>Old Faithful</b> (gas, cone 10 reduction) — fire on a fixed weekly rhythm. Your work goes in when it's bone dry and comes out when the kiln says so, not before. We've never once opened early and had it go well.</p>
+        <p>Community firing is open to non-members: bring finished, bone-dry work and we charge <b>$4 per kilogram</b> of fired weight, glazed or bisque. We measure, you pay, Brünhilde decides.</p>
+        <div class="schedule">
+          <div class="row"><b>Tuesday</b><span>Bisque load in · out Thursday</span></div>
+          <div class="row"><b>Friday</b><span>Glaze load in · out Sunday (Brünhilde)</span></div>
+          <div class="row"><b>First Saturday monthly</b><span>Old Faithful reduction firing · cone 10</span></div>
+          <div class="row"><b>Every day</b><span>Damp room open for slow drying</span></div>
+        </div>
+      </div>
+      <figure class="settle">
+        <img src="https://picsum.photos/seed/ceramics-2/800/600" width="800" height="600"
+             alt="A ware shelf crowded with cups fresh from the bisque firing — warm terracotta bodies waiting for their celadon glaze coats.">
+        <figcaption>Thursday's bisque unload — shelf C, waiting on celadon.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- SECONDS -->
+  <section class="seconds" id="seconds">
+    <div class="wrap seconds-grid">
+      <div class="copy">
+        <h2>Seconds sale, first Saturday. We tell you exactly what's wrong.</h2>
+        <p>Every first Saturday, 9 am to noon, the trestle tables come out and so do the pieces that didn't make the shelf: <b>$5–$25 each</b>, cash or card, priced by how much we wince.</p>
+        <p>Nothing in the sale is dangerous. But some of it is weird, and we'd rather point at the weirdness than let you find it at home. Every piece carries a tag naming its flaw, written by the person who made it.</p>
+      </div>
+      <aside class="honesty settle">
+        <h3>The flaw glossary, straight from the tags</h3>
+        <dl>
+          <dt>Pinholed glaze</dt>
+          <dd>Tiny craters where gas escaped. Cosmetic only — the piece is fully vitrified and food-safe.</dd>
+          <dt>Warped rim</dt>
+          <dd>It leans. Holds liquid perfectly; looks like it's listening to you.</dd>
+          <dt>Crawled glaze</dt>
+          <dd>Bare patches where the glaze pulled away in the firing. Sealed with a food-safe touch-up or sold as a planter.</dd>
+          <dt>S-crack (repaired)</dt>
+          <dd>We don't sell these for food use, ever. Repaired ones become pencil cups and are tagged as such.</dd>
+        </dl>
+        <p class="note">If a flaw turns out worse than the tag said, bring it back. Full refund, no receipt needed — we remember our own work.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- GLAZES -->
+  <section class="glazes">
+    <div class="wrap">
+      <h2>The glaze shelf, a teaser.</h2>
+      <p class="sub">Forty-one glazes on the studio shelf, all mixed in-house, all argued over at the quarterly meeting. Four current favourites:</p>
+      <div class="glaze-grid">
+        <article class="glaze settle">
+          <div class="swatch" style="background: oklch(0.85 0.06 158)"></div>
+          <h3>Ropewalk Celadon</h3>
+          <p>Our signature. Breaks jade over throwing lines, pools glass-green in the bottom of a bowl.</p>
+          <p class="cone">CONE 10 REDUCTION · FOOD-SAFE</p>
+        </article>
+        <article class="glaze settle">
+          <div class="swatch" style="background: oklch(0.55 0.13 45)"></div>
+          <h3>Brickdust Shino</h3>
+          <p>Terracotta where it's thick, burnt orange where it runs. Catches the kiln's mood, for better or worse.</p>
+          <p class="cone">CONE 10 REDUCTION · FOOD-SAFE</p>
+        </article>
+        <article class="glaze settle">
+          <div class="swatch" style="background: oklch(0.33 0.02 60)"></div>
+          <h3>Factory Floor Tenmoku</h3>
+          <p>Near-black with a rust edge on the rim. Named for the building's original paint, found under seven coats.</p>
+          <p class="cone">CONE 6 OR 10 · FOOD-SAFE</p>
+        </article>
+        <article class="glaze settle">
+          <div class="swatch" style="background: oklch(0.93 0.03 75)"></div>
+          <h3>Morning Slip White</h3>
+          <p>A soft matte that shows every fingerprint of the making. Beginners' favourite, teachers' favourite too.</p>
+          <p class="cone">CONE 6 · FOOD-SAFE</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>Kiln &amp; Co</b> · Unit 4, The Old Rope Factory<br>14 Cable Street, Portside</span>
+    <span>Open studio daily <b>7 am – 10 pm</b><br>Shop &amp; seconds desk <b>Tue – Sat, 10 – 5</b></span>
+    <span>Brünhilde fires Fridays.<br>Old Faithful answers to no one.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var pieces = document.querySelectorAll(".settle");
+  if (reduced || !("IntersectionObserver" in window)) {
+    pieces.forEach(function (p) { p.classList.add("in"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e, i) {
+      if (e.isIntersecting) {
+        /* slight stagger so pieces settle one after another, like pots on a shelf */
+        setTimeout(function () { e.target.classList.add("in"); }, i * 90);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  pieces.forEach(function (p) { io.observe(p); });
+})();
+</script>
+</body>
+</html>

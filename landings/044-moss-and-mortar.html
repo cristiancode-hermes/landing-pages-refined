@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moss & Mortar — Small worlds under glass. Terrariums planted by hand in Lisbon, with a kill-proof promise.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --moss: oklch(0.42 0.09 150);
+    --moss-deep: oklch(0.32 0.075 152);
+    --moss-pale: oklch(0.95 0.02 150);
+    --glass: oklch(0.90 0.035 220);
+    --glass-soft: oklch(0.96 0.02 220);
+    --ink: oklch(0.30 0.025 230);
+    --ink-soft: oklch(0.45 0.03 228);
+    --on-moss: oklch(0.96 0.015 150);
+    --on-moss-soft: oklch(0.85 0.035 152);
+    --line: oklch(0.92 0.015 210);
+    --display: "Gabarito", sans-serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.84rem, 0.81rem + 0.14vw, 0.92rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.13rem);
+    --step-1: clamp(1.25rem, 1.17rem + 0.4vw, 1.5rem);
+    --step-2: clamp(1.56rem, 1.41rem + 0.75vw, 2.07rem);
+    --step-3: clamp(1.95rem, 1.66rem + 1.45vw, 2.99rem);
+    --step-4: clamp(2.44rem, 1.85rem + 2.95vw, 4.55rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-snail: 6;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p { max-width: 60ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--moss);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1080px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(3.5rem, 3rem + 4.5vw, 6.5rem); }
+
+  /* ---------- snail progress indicator ---------- */
+  .snail {
+    position: fixed;
+    right: 10px;
+    top: 12vh;
+    z-index: var(--z-snail);
+    pointer-events: none;
+    transition: transform 0.25s ease-out;
+    will-change: transform;
+  }
+  .snail-trail {
+    position: fixed;
+    right: 24px;
+    top: 12vh;
+    height: 76vh;
+    width: 2px;
+    background: var(--glass);
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky; top: 0; z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1.5rem; padding-block: 0.8rem;
+  }
+  .brand {
+    font-family: var(--display); font-weight: 700;
+    font-size: var(--step-1); text-decoration: none; color: var(--moss-deep);
+    letter-spacing: -0.02em;
+  }
+  .site-nav { display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { text-decoration: none; font-weight: 600; font-size: var(--step--1); color: var(--ink-soft); }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--moss); }
+  .btn {
+    display: inline-block; font-weight: 700; font-size: var(--step--1);
+    text-decoration: none; padding: 0.7rem 1.4rem; border-radius: 999px;
+    border: none; cursor: pointer;
+    transition: transform 0.45s var(--ease-out), background 0.3s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-moss { background: var(--moss); color: var(--on-moss); white-space: nowrap; flex-shrink: 0; }
+  .btn-moss:hover { background: var(--moss-deep); }
+  .btn-glass { background: var(--glass); color: oklch(0.32 0.06 230); }
+  .btn-glass:hover { background: oklch(0.85 0.045 220); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(4rem, 3rem + 6vw, 7.5rem); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+  }
+  .hero h1 { font-size: var(--step-4); color: var(--ink); margin-bottom: 1.2rem; }
+  .hero h1 em { font-style: normal; color: var(--moss); }
+  .hero p { color: var(--ink-soft); font-size: var(--step-1); line-height: 1.6; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+
+  /* fog: condensation that clears as the jar scrolls into view */
+  .jar {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .jar img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .jar .fog {
+    position: absolute; inset: 0;
+    background: oklch(0.96 0.02 200 / 0.55);
+    backdrop-filter: blur(14px) saturate(0.8);
+    -webkit-backdrop-filter: blur(14px) saturate(0.8);
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .js .jar .fog { opacity: 1; transition: opacity 1.6s var(--ease-out); }
+    .js .jar.clear .fog { opacity: 0; }
+  }
+  .jar figcaption {
+    font-size: var(--step--1); color: var(--ink-soft);
+    padding: 0.8rem 0.2rem 0; font-style: italic;
+  }
+
+  /* ---------- sizes ---------- */
+  .sizes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.6rem;
+  }
+  .size {
+    background: var(--glass-soft);
+    border-radius: 14px;
+    padding: 2rem 1.8rem 1.8rem;
+    display: flex; flex-direction: column; gap: 0.7rem;
+  }
+  .size .scale-mark {
+    font-family: var(--display); font-weight: 700;
+    font-size: var(--step-2); color: var(--moss);
+    line-height: 1;
+  }
+  .size h3 { font-size: var(--step-1); color: var(--ink); }
+  .size p { color: var(--ink-soft); font-size: var(--step--1); flex: 1; }
+  .size .price { font-family: var(--display); font-weight: 700; font-size: var(--step-1); color: var(--ink); }
+  .size .price span { font-family: var(--body); font-weight: 500; font-size: var(--step--1); color: var(--ink-soft); }
+
+  .sec-head { margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 44ch; }
+  .sec-head h2 { font-size: var(--step-3); margin-bottom: 0.7rem; color: var(--ink); }
+  .sec-head p { color: var(--ink-soft); }
+
+  /* ---------- promise ---------- */
+  .promise { background: var(--moss-deep); color: var(--on-moss); }
+  .promise .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+  .promise h2 { font-size: var(--step-3); color: var(--on-moss); margin-bottom: 1rem; }
+  .promise p { color: var(--on-moss-soft); }
+  .promise .small { font-size: var(--step--1); margin-top: 1.2rem; color: oklch(0.78 0.04 152); }
+
+  /* ---------- care cards ---------- */
+  .care-grid {
+    display: grid; grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(2rem, 5vw, 4rem); align-items: center;
+  }
+  .care-card-sample {
+    background: var(--moss-pale);
+    border-radius: 14px;
+    padding: 2.2rem 2rem;
+    transform: rotate(-1.5deg);
+    font-size: var(--step--1);
+    color: var(--ink);
+  }
+  .care-card-sample h3 { color: var(--moss-deep); font-size: var(--step-1); margin-bottom: 0.9rem; }
+  .care-card-sample ul { list-style: none; }
+  .care-card-sample li { padding-block: 0.5rem; border-bottom: 1px solid oklch(0.88 0.03 150); display: flex; gap: 0.7rem; }
+  .care-card-sample li:last-child { border-bottom: none; }
+  .care-card-sample li::before { content: "–"; color: var(--moss); font-weight: 700; }
+
+  /* ---------- repotting bar ---------- */
+  .bar { background: var(--glass-soft); }
+  .bar .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .bar-facts { list-style: none; margin-top: 1.6rem; }
+  .bar-facts li {
+    display: flex; justify-content: space-between; gap: 1rem;
+    padding-block: 0.85rem; border-bottom: 1px solid var(--line);
+    font-size: var(--step--1);
+  }
+  .bar-facts li:first-child { border-top: 1px solid var(--line); }
+  .bar-facts .k { font-weight: 700; color: var(--ink); }
+  .bar-facts .v { color: var(--ink-soft); text-align: right; }
+
+  /* ---------- footer ---------- */
+  .site-foot {
+    border-top: 1px solid var(--line);
+    padding-block: 3rem;
+    font-size: var(--step--1); color: var(--ink-soft);
+  }
+  .site-foot .wrap { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; align-items: center; }
+  .site-foot a { color: var(--moss); font-weight: 600; text-decoration: none; }
+  .site-foot a:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .hero-grid, .promise .wrap, .care-grid, .bar .wrap { grid-template-columns: 1fr; }
+    .snail, .snail-trail { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .btn:hover { transition: none; transform: none; }
+    .snail { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    .site-nav a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="snail-trail" aria-hidden="true"></div>
+<div class="snail" id="snail" aria-hidden="true">
+  <svg width="44" height="34" viewBox="0 0 44 34">
+    <ellipse cx="18" cy="18" rx="12" ry="11" fill="oklch(0.90 0.035 220)"/>
+    <path d="M18 18 m0 -7 a7 7 0 1 1 -7 7 a4.5 4.5 0 1 1 4.5 -4.5 a2.2 2.2 0 1 1 -2.2 2.2"
+          fill="none" stroke="oklch(0.42 0.09 150)" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M8 27 Q20 24 34 26 Q40 26 41 22" fill="none" stroke="oklch(0.42 0.09 150)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M38 22 L40 15 M42 22 L43 16" stroke="oklch(0.42 0.09 150)" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="40" cy="14.5" r="1.4" fill="oklch(0.42 0.09 150)"/>
+    <circle cx="43" cy="15.5" r="1.4" fill="oklch(0.42 0.09 150)"/>
+  </svg>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Moss &amp; Mortar</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#sizes">The three sizes</a>
+      <a href="#promise">Kill-proof promise</a>
+      <a href="#care">Care cards</a>
+      <a href="#bar">Repotting bar</a>
+      <a class="btn btn-moss" href="#sizes">Take one home</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Small worlds, <em>under glass.</em></h1>
+        <p>Moss &amp; Mortar is a tiny terrarium shop in Lisbon. We plant each jar by hand, label it with the day it was planted, and teach it to forgive you.</p>
+        <div class="hero-actions">
+          <a class="btn btn-moss" href="#sizes">Meet the three sizes</a>
+          <a class="btn btn-glass" href="#bar">Visit the repotting bar</a>
+        </div>
+      </div>
+      <figure class="jar" id="jarHero">
+        <img src="https://picsum.photos/seed/terrarium-1/1600/1200" width="1600" height="1200"
+             alt="A large glass jar holding a complete little world: cushion moss, a fern no taller than a thumb, and one smooth river stone" loading="eager">
+        <div class="fog" aria-hidden="true"></div>
+        <figcaption>The World, planted on a Tuesday in March. The fog lifts once it trusts you.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="sizes">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Three sizes. That's the whole catalog.</h2>
+        <p>We'd rather plant three things well than thirty things adequately. Every size ships with its care card and a small brass mister.</p>
+      </div>
+      <div class="sizes-grid">
+        <article class="size">
+          <span class="scale-mark" aria-hidden="true">·</span>
+          <h3>The Thumb</h3>
+          <p>A 12&nbsp;cm jar with one cushion of mood moss and a single pebble. Lives happily on a desk, asks for a misting every week or so, and forgives much worse.</p>
+          <p class="price">€24 <span>· planted to order, ready in 2 days</span></p>
+        </article>
+        <article class="size">
+          <span class="scale-mark" aria-hidden="true">●</span>
+          <h3>The Hand</h3>
+          <p>A 22&nbsp;cm jar with moss, a miniature fern, and a twig of cork oak bark. Our best seller and the one we give people who swear they kill everything.</p>
+          <p class="price">€58 <span>· planted to order, ready in 3 days</span></p>
+        </article>
+        <article class="size">
+          <span class="scale-mark" aria-hidden="true">⬤</span>
+          <h3>The World</h3>
+          <p>A 35&nbsp;cm closed jar with five species and its own water cycle. Once settled — about six weeks — it waters itself. You just watch the weather happen inside.</p>
+          <p class="price">€140 <span>· planted to order, ready in 1 week</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="promise" id="promise">
+    <div class="wrap">
+      <div>
+        <h2>The kill-proof promise</h2>
+        <p>If your terrarium dies within a year — for any reason, including honest neglect — bring the jar back and we replant it free. No receipt theater, no interrogation. We'd rather replant a hundred jars than have one person decide they're "not a plant person."</p>
+        <p class="small">In eight years we've replanted 612 jars. Some people are on their fifth. We know their names and we keep their moss ready.</p>
+      </div>
+      <figure class="jar" id="jarPromise">
+        <img src="https://picsum.photos/seed/terrarium-2/800/600" width="800" height="600"
+             alt="Two glass terrariums on the shop's workbench, one freshly replanted under the kill-proof promise, moss bright and new" loading="lazy">
+        <div class="fog" aria-hidden="true"></div>
+      </figure>
+    </div>
+  </section>
+
+  <section id="care">
+    <div class="wrap care-grid">
+      <div>
+        <div class="sec-head" style="margin-bottom: 1.6rem;">
+          <h2>Every jar ships with a care card</h2>
+          <p>Not a generic one — a card written for your jar, with the names of its actual plants and instructions short enough to fit on a 10&nbsp;cm square of card stock. If care advice can't fit on the card, the plant doesn't go in the jar. That rule has kept us honest for eight years.</p>
+        </div>
+        <a class="btn btn-moss" href="#bar">Learn to write your own</a>
+      </div>
+      <div class="care-card-sample" role="img" aria-label="A sample care card for The Hand, listing light, water, and trimming advice">
+        <h3>The Hand — planted 14 March</h3>
+        <ul>
+          <li>Light: bright room, no direct sun. North window is perfect.</li>
+          <li>Water: three spritzes when the moss looks dusty, roughly weekly.</li>
+          <li>Fern: trim any frond that touches the glass.</li>
+          <li>Worried? Bring it in. Looking is always free.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bar" id="bar">
+    <div class="wrap">
+      <div>
+        <div class="sec-head" style="margin-bottom: 0;">
+          <h2>The repotting bar, Saturdays</h2>
+          <p>Every Saturday we drag the big bench to the window and open the repotting bar. Bring your jar — ours or anyone's — and repot it with our moss, our tools, and our unsolicited encouragement. Coffee is included. Staying for three hours is normal.</p>
+        </div>
+      </div>
+      <ul class="bar-facts">
+        <li><span class="k">When</span><span class="v">Saturdays, 10:00 – 14:00</span></li>
+        <li><span class="k">Where</span><span class="v">Rua das Flores 88, Lisbon</span></li>
+        <li><span class="k">Cost</span><span class="v">Free with any jar; €8 for materials only</span></li>
+        <li><span class="k">Booking</span><span class="v">None — first come, first potted</span></li>
+        <li><span class="k">Kids &amp; dogs</span><span class="v">Both welcome, both supervised by staff</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="brand" href="#top">Moss &amp; Mortar</a>
+    <p>Rua das Flores 88, Lisbon · Tue–Sat 10–19 · <a href="mailto:hello@mossandmortar.example">hello@mossandmortar.example</a></p>
+    <p>© <span id="year">2026</span> Moss &amp; Mortar · Planted by hand, labeled by day.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --- jars: fog lifts as they scroll into view --- */
+  if (!reduced) {
+    document.documentElement.classList.add("js");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("clear");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.35 });
+    document.querySelectorAll(".jar").forEach(function (j) { io.observe(j); });
+  }
+
+  /* --- snail: creeps down the page edge with scroll --- */
+  var snail = document.getElementById("snail");
+  if (snail && !reduced) {
+    var ticking = false;
+    function creep() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? window.scrollY / max : 0;
+      var travel = window.innerHeight * 0.76 - 34;
+      snail.style.transform = "translateY(" + (p * travel).toFixed(1) + "px)";
+      ticking = false;
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(creep); }
+    }, { passive: true });
+    creep();
+  }
+
+  var y = document.getElementById("year");
+  if (y) y.textContent = String(new Date().getFullYear());
+})();
+</script>
+</body>
+</html>

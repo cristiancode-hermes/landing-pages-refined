@@ -1,0 +1,120 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Ember and Oak, back to top" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+        - text: Ember & Oak
+      - navigation "Main" [ref=e7]:
+        - link "The menu" [ref=e8] [cursor=pointer]:
+          - /url: "#menu"
+        - link "The room" [ref=e9] [cursor=pointer]:
+          - /url: "#room"
+        - link "Hours" [ref=e10] [cursor=pointer]:
+          - /url: "#visit"
+        - link "Book a table" [ref=e11] [cursor=pointer]:
+          - /url: "#reserve"
+  - main [ref=e12]:
+    - generic [ref=e13]:
+      - img "A margherita pizza blistering on the stone deck of the oak-fired oven at Ember & Oak" [ref=e15]
+      - generic [ref=e16]:
+        - paragraph [ref=e17]: Oak-fired since 2014 · Portland, OR
+        - heading "Ninety seconds in the fire." [level=1] [ref=e18]
+        - paragraph [ref=e19]: Forty-eight hours of cold ferment, five hundred degrees of Oregon white oak, and a minute and a half you can taste. That's the whole trick. There is no other trick.
+        - generic [ref=e20]:
+          - link "Book a table" [ref=e21] [cursor=pointer]:
+            - /url: "#reserve"
+          - link "See the menu" [ref=e22] [cursor=pointer]:
+            - /url: "#menu"
+        - complementary [ref=e23]:
+          - strong [ref=e24]: 485 °C
+          - text: The oven runs white oak only, lit every morning at 7. By dinner the stone holds heat like a memory.
+    - region [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - heading [level=2] [ref=e28]:
+            - text: Dough is a patient thing.
+            - emphasis [ref=e29]: We don't rush it.
+          - paragraph [ref=e30]: Every ball of dough at Ember & Oak starts two days before you sit down. Caputo flour, water, sea salt, a whisper of starter — then forty-eight hours cold, slow, and undisturbed in the basement. It comes up to room temperature at noon and meets the fire at five.
+          - paragraph [ref=e31]: What lands on your table is leopard-spotted, soft in the middle, crisp at the rim — the way a pizza behaves when the oven is hot enough to be a little scary.
+          - list [ref=e32]:
+            - listitem [ref=e33]: 48-hour cold ferment
+            - listitem [ref=e34]: Oregon white oak
+            - listitem [ref=e35]: 90-second bake
+            - listitem [ref=e36]: Fior di latte, made daily
+        - figure "The morning stretch — dough comes up from the cellar at noon sharp." [ref=e37]:
+          - img "Hands stretching a ball of forty-eight-hour dough on the flour-dusted oak bench" [ref=e38]
+    - region [ref=e40]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - heading "The menu, short on purpose" [level=2] [ref=e43]
+          - paragraph [ref=e44]: Six pizzas, one oven, no substitutions on the margherita — we tried it your way in 2016 and we're still sorry.
+        - list [ref=e45]:
+          - listitem [ref=e46]:
+            - generic [ref=e47]:
+              - text: Margherita
+              - generic [ref=e48]: the benchmark
+            - generic [ref=e49]: San Marzano tomato, fior di latte pulled this morning, basil from the planter box out front, cold-pressed olive oil.
+            - generic [ref=e50]: $14
+          - listitem [ref=e51]:
+            - generic [ref=e52]: Marinara
+            - generic [ref=e53]: No cheese, no apology. Tomato, garlic confit, oregano, and the oven doing all the talking. Vegan as it stands.
+            - generic [ref=e54]: $13
+          - listitem [ref=e55]:
+            - generic [ref=e56]: Funghi
+            - generic [ref=e57]: Roasted maitake and cremini, taleggio, thyme, a little truffle oil — applied after the bake, where it belongs.
+            - generic [ref=e58]: $17
+          - listitem [ref=e59]:
+            - generic [ref=e60]:
+              - text: Diavola
+              - generic [ref=e61]: brings heat
+            - generic [ref=e62]: Spicy soppressata, Calabrian chili honey, smoked mozzarella. The honey goes on last and it matters.
+            - generic [ref=e63]: $18
+          - listitem [ref=e64]:
+            - generic [ref=e65]: Mortadella e Pistacchio
+            - generic [ref=e66]: Bianca base, mortadella laid on after the fire, crushed Sicilian pistachios, lemon zest, stracciatella.
+            - generic [ref=e67]: $19
+          - listitem [ref=e68]:
+            - generic [ref=e69]: Bianca
+            - generic [ref=e70]: Fior di latte, ricotta, garlic, rosemary, pecorino. Order it with a side of the chili honey and thank us later.
+            - generic [ref=e71]: $16
+        - paragraph [ref=e72]: Gluten-free dough is made in-house on Mondays — ask your server. Everything cuts into eight slices unless you say otherwise.
+    - region [ref=e73]:
+      - generic [ref=e74]:
+        - figure "Forty seats, one long oak table, and the oven doing its impression of a fireplace." [ref=e75]:
+          - img "The dining room at Ember & Oak at seven in the evening, oak tables lit by the oven's glow" [ref=e76]
+        - generic [ref=e78]:
+          - heading "Forty seats, one long table" [level=2] [ref=e79]
+          - paragraph [ref=e80]: The room is small on purpose. There's the communal oak table down the middle — reclaimed from a barn outside Salem — a handful of two-tops along the window, and four stools at the oven counter where you can watch your dinner blister.
+          - paragraph [ref=e81]: We keep a short list of natural wines and three local beers on tap. The soundtrack is whatever the kitchen is arguing about. Fridays, it's usually funk.
+    - region [ref=e82]:
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - heading "When the fire's lit" [level=2] [ref=e85]
+          - paragraph [ref=e86]: We bake until the dough runs out — some Fridays that's 9:40, some it's midnight. If the oak is stacked by the door, we're open. Walk-ins always welcome at the oven counter.
+          - table [ref=e87]:
+            - caption [ref=e88]: Oven hours
+            - rowgroup [ref=e89]:
+              - row [ref=e90]:
+                - cell "Monday" [ref=e91]
+                - cell "Oven rests" [ref=e92]
+              - row [ref=e93]:
+                - cell "Tuesday – Thursday" [ref=e94]
+                - cell "5:00 pm – 10:00 pm" [ref=e95]
+              - row [ref=e96]:
+                - cell "Friday – Saturday" [ref=e97]
+                - cell "5:00 pm – 11:00 pm" [ref=e98]
+              - row [ref=e99]:
+                - cell "Sunday" [ref=e100]
+                - cell "4:00 pm – 9:00 pm" [ref=e101]
+        - generic [ref=e102]:
+          - heading "Book a table" [level=3] [ref=e103]
+          - paragraph [ref=e104]: Parties of six or fewer, book online. Bigger crew, or the whole communal table? Call us — we like a full house.
+          - link "(503) 555-0194" [ref=e105] [cursor=pointer]:
+            - /url: tel:+15035550194
+          - link "Reserve tonight" [ref=e106] [cursor=pointer]:
+            - /url: tel:+15035550194
+          - paragraph [ref=e107]: 214 Fournier Street, Portland, OR · Street parking on 21st, bike racks out front.
+  - contentinfo [ref=e108]:
+    - generic [ref=e109]:
+      - generic [ref=e110]: © 2026 Ember & Oak — wood-fired pizza, Portland OR
+      - generic [ref=e111]: Dough's up at noon. Fire's lit at five.

@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summit Oracle — 47 runs, one honest snow report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;900&family=Geologica:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --ice: oklch(0.955 0.015 230);
+    --ink: oklch(0.34 0.03 250);
+    --muted: oklch(0.47 0.025 250);
+    --glacier: oklch(0.55 0.11 230);
+    --glacier-deep: oklch(0.38 0.08 230);
+    --orange: oklch(0.66 0.18 55);
+    --orange-deep: oklch(0.54 0.15 55);
+    --font-display: "Archivo", sans-serif;
+    --font-body: "Geologica", sans-serif;
+    --z-header: 10;
+    --z-snow: 2;
+    --z-hero-copy: 3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    text-transform: uppercase;
+  }
+
+  h1 { font-size: clamp(2.2rem, 6vw, 4.4rem); color: oklch(0.99 0.005 230); }
+  h2 { font-size: clamp(1.8rem, 4.2vw, 3rem); }
+  h3 { font-size: clamp(1.1rem, 2vw, 1.35rem); letter-spacing: -0.015em; }
+
+  p { max-width: 68ch; text-wrap: pretty; }
+  img { display: block; max-width: 100%; height: auto; }
+
+  a { color: var(--glacier-deep); text-underline-offset: 3px; }
+  a:hover { color: var(--orange-deep); }
+
+  .wrap { width: min(1160px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--glacier-deep);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.85rem;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: oklch(0.99 0.005 230);
+    text-decoration: none;
+  }
+
+  .brand em { font-style: normal; color: var(--orange); }
+
+  nav ul { display: flex; gap: 1.5rem; list-style: none; }
+
+  nav a {
+    color: oklch(0.92 0.02 230);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+  }
+
+  nav a:hover { color: oklch(0.99 0.005 230); }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.92rem;
+    text-decoration: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    background: var(--orange);
+    color: oklch(0.22 0.04 55);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; flex-shrink: 0; }
+
+  .btn:hover { background: oklch(0.72 0.17 55); transform: translateY(-2px); color: oklch(0.22 0.04 55); }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--glacier-deep);
+    box-shadow: inset 0 0 0 2px var(--glacier-deep);
+  }
+
+  .btn--ghost:hover { background: var(--glacier-deep); color: oklch(0.99 0.005 230); }
+
+  @media (max-width: 760px) { nav ul { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: min(88vh, 760px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, oklch(0.25 0.06 250 / 0.78), oklch(0.25 0.06 250 / 0.12) 55%);
+  }
+
+  #snowCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-snow);
+    pointer-events: none;
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: var(--z-hero-copy);
+    padding: clamp(3rem, 8vw, 5rem) 0 clamp(2.5rem, 6vw, 4rem);
+    color: oklch(0.99 0.005 230);
+  }
+
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    background: oklch(0.99 0.005 230 / 0.16);
+    padding: 0.4rem 0.95rem;
+    border-radius: 999px;
+    margin-bottom: 1.3rem;
+  }
+
+  .hero-kicker .dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  .hero-copy .lede {
+    font-size: clamp(1.1rem, 2vw, 1.3rem);
+    line-height: 1.55;
+    color: oklch(0.94 0.02 230);
+    margin-top: 1.3rem;
+    max-width: 56ch;
+  }
+
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.9rem; }
+
+  .hero-actions .btn--ghost {
+    color: oklch(0.99 0.005 230);
+    box-shadow: inset 0 0 0 2px oklch(0.99 0.005 230 / 0.7);
+  }
+
+  .hero-actions .btn--ghost:hover { background: oklch(0.99 0.005 230); color: var(--glacier-deep); }
+
+  /* ---------- sections ---------- */
+  section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+
+  .section-head { margin-bottom: clamp(2rem, 5vw, 3rem); }
+  .section-head p { color: var(--muted); margin-top: 0.9rem; }
+
+  /* snow report */
+  .report { background: var(--ice); }
+
+  .report-panel {
+    background: var(--bg);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .report-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 1.3rem 1.6rem;
+    background: var(--glacier-deep);
+    color: oklch(0.99 0.005 230);
+  }
+
+  .report-top strong {
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    font-size: 1.05rem;
+  }
+
+  .report-top time { font-size: 0.9rem; color: oklch(0.85 0.03 230); }
+
+  .report-rows { list-style: none; }
+
+  .report-rows li {
+    display: grid;
+    grid-template-columns: minmax(130px, 200px) 1fr auto;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 1.05rem 1.6rem;
+    border-bottom: 1px solid oklch(0.92 0.015 230);
+  }
+
+  .report-rows li:last-child { border-bottom: none; }
+
+  .report-rows .label { font-weight: 700; font-size: 0.95rem; }
+  .report-rows .detail { color: var(--muted); font-size: 0.95rem; }
+  .report-rows .value {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1.15rem;
+    color: var(--glacier-deep);
+    white-space: nowrap;
+  }
+
+  .report-rows .value.hot { color: var(--orange-deep); }
+
+  @media (max-width: 620px) {
+    .report-rows li { grid-template-columns: 1fr auto; }
+    .report-rows .detail { grid-column: 1 / -1; }
+  }
+
+  /* trail map */
+  .trails-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
+  .map-frame {
+    background: var(--ice);
+    border-radius: 16px;
+    padding: clamp(0.8rem, 2vw, 1.5rem);
+  }
+
+  .map-frame svg { width: 100%; height: auto; display: block; }
+
+  .trail-path {
+    fill: none;
+    stroke-width: 5;
+    stroke-linecap: round;
+    cursor: pointer;
+    transition: stroke-width 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .trail-path:hover, .trail-path:focus-visible { stroke-width: 9; outline: none; }
+
+  .trail-status {
+    background: var(--glacier-deep);
+    color: oklch(0.99 0.005 230);
+    border-radius: 16px;
+    padding: 1.8rem;
+    position: sticky;
+    top: 5.5rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .trail-status.lifted { transform: translateY(-6px); }
+
+  .trail-status .tag {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.9rem;
+    background: var(--orange);
+    color: oklch(0.22 0.04 55);
+  }
+
+  .trail-status h3 { color: oklch(0.99 0.005 230); margin-bottom: 0.7rem; }
+
+  .trail-status p { color: oklch(0.88 0.03 230); font-size: 0.95rem; }
+
+  .trail-status dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1.2rem;
+    margin-top: 1.2rem;
+    font-size: 0.92rem;
+  }
+
+  .trail-status dt { color: oklch(0.75 0.05 230); font-weight: 500; }
+  .trail-status dd { font-weight: 700; text-align: right; }
+
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+
+  .map-legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .map-legend i {
+    width: 18px; height: 5px; border-radius: 999px; display: inline-block;
+  }
+
+  /* vertical drop band */
+  .drop-band {
+    background: var(--glacier-deep);
+    color: oklch(0.99 0.005 230);
+    text-align: center;
+    padding: clamp(3rem, 7vw, 5rem) 0;
+  }
+
+  .drop-number {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(3.2rem, 9vw, 6rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .drop-number small { font-size: 0.4em; letter-spacing: -0.01em; }
+
+  .drop-band p {
+    margin: 1rem auto 0;
+    color: oklch(0.85 0.03 230);
+    max-width: 52ch;
+  }
+
+  /* passes */
+  .passes { background: var(--ice); }
+
+  .pass-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .pass {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .pass.featured { background: var(--glacier-deep); color: oklch(0.99 0.005 230); }
+  .pass.featured h3, .pass.featured .price { color: oklch(0.99 0.005 230); }
+  .pass.featured p, .pass.featured li { color: oklch(0.88 0.03 230); }
+
+  .price {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--glacier-deep);
+  }
+
+  .price small { font-family: var(--font-body); font-weight: 500; font-size: 0.85rem; color: var(--muted); }
+  .pass.featured .price small { color: oklch(0.8 0.04 230); }
+
+  .pass ul { list-style: none; display: grid; gap: 0.45rem; font-size: 0.95rem; color: var(--muted); margin-bottom: 0.6rem; }
+  .pass li::before { content: "— "; color: var(--orange-deep); font-weight: 700; }
+  .pass.featured li::before { color: var(--orange); }
+  .pass .btn { margin-top: auto; text-align: center; }
+
+  /* ski school */
+  .school-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .school-grid img { border-radius: 16px; width: 100%; }
+
+  .school-tiers { list-style: none; margin-top: 1.6rem; display: grid; gap: 0; }
+
+  .school-tiers li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid oklch(0.9 0.02 230);
+  }
+
+  .school-tiers li:last-child { border-bottom: none; }
+  .school-tiers .tier { font-weight: 700; }
+  .school-tiers .meta { color: var(--muted); text-align: right; font-size: 0.95rem; }
+
+  @media (max-width: 780px) {
+    .trails-layout, .school-grid { grid-template-columns: 1fr; }
+    .trail-status { position: static; }
+  }
+
+  /* webcam */
+  .webcam { background: var(--glacier-deep); }
+
+  .webcam-frame {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .webcam-frame img { width: 100%; }
+
+  .live-chip {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: oklch(0.25 0.06 250 / 0.8);
+    color: oklch(0.99 0.005 230);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+  }
+
+  .live-chip .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--orange);
+    animation: pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+
+  .webcam-caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-top: 1.2rem;
+    color: oklch(0.88 0.03 230);
+    font-size: 0.95rem;
+  }
+
+  .webcam .section-head h2 { color: oklch(0.99 0.005 230); }
+  .webcam .section-head p { color: oklch(0.85 0.03 230); }
+  .webcam a { color: var(--orange); }
+  .webcam a:hover { color: oklch(0.99 0.005 230); }
+
+  /* footer */
+  footer { padding: 2.6rem 0; background: var(--ink); color: oklch(0.8 0.02 250); }
+  footer .foot-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+  footer .brand { color: oklch(0.99 0.005 230); }
+  footer small { font-size: 0.85rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .live-chip .dot { animation: none; }
+    .btn, .trail-status, .trail-path { transition: none; }
+    .trail-status.lifted { transform: none; }
+    .trail-path:hover, .trail-path:focus-visible { stroke-width: 5; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    header nav a { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">Summit <em>Oracle</em></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#report">Snow report</a></li>
+        <li><a href="#trails">Trail map</a></li>
+        <li><a href="#passes">Lift passes</a></li>
+        <li><a href="#school">Ski school</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#passes">Buy a pass</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <img class="hero-photo" src="https://picsum.photos/seed/ski-1/1600/900" width="1600" height="900" alt="A skier arcing through knee-deep powder under a flat white alpine sky">
+    <div class="hero-shade" aria-hidden="true"></div>
+    <canvas id="snowCanvas" aria-hidden="true"></canvas>
+    <div class="wrap hero-copy">
+      <span class="hero-kicker"><span class="dot" aria-hidden="true"></span>Lifts spinning 08:30–16:45</span>
+      <h1 id="hero-title">The mountain tells you where to go</h1>
+      <p class="lede">Summit Oracle is 47 runs across two bowls and one very honest north face. We groom what needs grooming, leave the powder where it falls, and publish the snow report before the first chair turns.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#report">Read today's report</a>
+        <a class="btn btn--ghost" href="#trails">Open the trail map</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="report" id="report" aria-labelledby="report-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="report-title">Snow report</h2>
+        <p>Measured at 2,400 m by patrol, not by optimism. If it's icy, we say icy.</p>
+      </div>
+      <div class="report-panel">
+        <div class="report-top">
+          <strong>Morning bulletin</strong>
+          <time datetime="2026-02-14T06:40">Updated 06:40 by patrol lead M. Aubert</time>
+        </div>
+        <ul class="report-rows">
+          <li><span class="label">New snow, 24 h</span><span class="detail">Dry chalk on a firm base — the good kind</span><span class="value hot">18 cm</span></li>
+          <li><span class="label">New snow, 72 h</span><span class="detail">Three refills since Tuesday</span><span class="value">41 cm</span></li>
+          <li><span class="label">Base depth, summit</span><span class="detail">Settled, well anchored on the north face</span><span class="value">212 cm</span></li>
+          <li><span class="label">Temperature, 3,020 m</span><span class="detail">Rising to −4° by midday</span><span class="value">−9°C</span></li>
+          <li><span class="label">Wind, ridge</span><span class="detail">Gusting 40 from the northwest — Oracle chair on hold</span><span class="value">40 km/h</span></li>
+          <li><span class="label">Runs open</span><span class="detail">Everything except Couloir 9 and the west trees</span><span class="value">43 / 47</span></li>
+          <li><span class="label">Lifts open</span><span class="detail">All chairs and both gondolas; T-bar 4 after 10:00</span><span class="value">11 / 12</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="trails" aria-labelledby="trails-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="trails-title">Trail map</h2>
+        <p>Run a finger — or a cursor — over any line to see its condition before you commit your knees.</p>
+      </div>
+      <div class="trails-layout">
+        <div>
+          <div class="map-frame">
+            <svg viewBox="0 0 640 420" role="group" aria-label="Simplified trail map of Summit Oracle. Six runs are selectable.">
+              <polygon points="320,20 60,400 580,400" fill="oklch(0.99 0.005 230)" stroke="oklch(0.88 0.02 230)" stroke-width="2"/>
+              <path d="M320 20 L120 400" fill="none" stroke="oklch(0.88 0.02 230)" stroke-width="2" stroke-dasharray="6 8"/>
+              <path d="M320 20 L520 400" fill="none" stroke="oklch(0.88 0.02 230)" stroke-width="2" stroke-dasharray="6 8"/>
+              <path class="trail-path" tabindex="0" data-run="0" stroke="oklch(0.6 0.12 155)" d="M310 40 C 250 120, 230 220, 150 390"/>
+              <path class="trail-path" tabindex="0" data-run="1" stroke="oklch(0.55 0.11 230)" d="M330 40 C 340 140, 300 260, 270 390"/>
+              <path class="trail-path" tabindex="0" data-run="2" stroke="oklch(0.55 0.11 230)" d="M340 45 C 390 130, 420 250, 450 390"/>
+              <path class="trail-path" tabindex="0" data-run="3" stroke="oklch(0.3 0.02 250)" d="M320 35 C 360 120, 340 220, 350 390"/>
+              <path class="trail-path" tabindex="0" data-run="4" stroke="oklch(0.3 0.02 250)" d="M335 40 C 420 110, 480 240, 520 390"/>
+              <path class="trail-path" tabindex="0" data-run="5" stroke="oklch(0.66 0.18 55)" d="M315 45 C 280 150, 320 260, 210 390"/>
+              <circle cx="320" cy="20" r="7" fill="oklch(0.66 0.18 55)"/>
+              <text x="336" y="26" font-family="Geologica, sans-serif" font-size="14" font-weight="700" fill="oklch(0.34 0.03 250)">3,020 m</text>
+            </svg>
+          </div>
+          <div class="map-legend" aria-hidden="true">
+            <span><i style="background: oklch(0.6 0.12 155)"></i>Cruiser</span>
+            <span><i style="background: oklch(0.55 0.11 230)"></i>Intermediate</span>
+            <span><i style="background: oklch(0.3 0.02 250)"></i>Expert</span>
+            <span><i style="background: oklch(0.66 0.18 55)"></i>Patrol favourite</span>
+          </div>
+        </div>
+        <aside class="trail-status" id="trailStatus" aria-live="polite">
+          <span class="tag" id="tsTag">Open · groomed</span>
+          <h3 id="tsName">Glacier Mile</h3>
+          <p id="tsDesc">The signature top-to-bottom blue. Corduroy until about ten, soft bumps after lunch, and the best view of the north face without leaving a marked run.</p>
+          <dl>
+            <dt>Difficulty</dt><dd id="tsDiff">Intermediate</dd>
+            <dt>Length</dt><dd id="tsLen">6.2 km</dd>
+            <dt>Vertical</dt><dd id="tsVert">980 m</dd>
+            <dt>Condition</dt><dd id="tsCond">Groomed 06:00</dd>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="drop-band" aria-labelledby="drop-title">
+    <div class="wrap">
+      <div class="drop-number"><span id="dropCounter">0</span><small> m</small></div>
+      <h2 id="drop-title" style="font-size: clamp(1.2rem, 2.4vw, 1.6rem); margin-top: 0.8rem;">of vertical, summit to village</h2>
+      <p>One gondola, two chairs, no flat sections. Your legs will file a complaint around run six.</p>
+    </div>
+  </section>
+
+  <section class="passes" id="passes" aria-labelledby="passes-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="passes-title">Lift passes</h2>
+        <p>Prices include the gondola, the webcam, and unlimited second-guessing at the trail map.</p>
+      </div>
+      <div class="pass-grid">
+        <div class="pass">
+          <h3>Day</h3>
+          <div class="price">CHF 74 <small>/ adult</small></div>
+          <p>First chair to last, one mountain, zero regrets.</p>
+          <ul>
+            <li>All 12 lifts, 08:30–16:45</li>
+            <li>Kids under 10 ride free</li>
+            <li>Half-day from 12:00, CHF 52</li>
+          </ul>
+          <a class="btn btn--ghost" href="#passes">Buy day pass</a>
+        </div>
+        <div class="pass featured">
+          <h3>Season Oracle</h3>
+          <div class="price">CHF 890 <small>/ winter</small></div>
+          <p>For the ones who check the snow report before their email.</p>
+          <ul>
+            <li>Unlimited riding, Nov 28 – Apr 19</li>
+            <li>First-tracks Fridays, 07:30 gondola</li>
+            <li>10% off at the summit kitchen</li>
+            <li>Free parking in lot B, the close one</li>
+          </ul>
+          <a class="btn" href="#passes">Buy season pass</a>
+        </div>
+        <div class="pass">
+          <h3>Beginner bundle</h3>
+          <div class="price">CHF 129 <small>/ day</small></div>
+          <p>Pass, rental, and a two-hour lesson. Stand up by lunch.</p>
+          <ul>
+            <li>Learner lift + lower mountain</li>
+            <li>Skis, boots, helmet included</li>
+            <li>Group lesson, max 6 per instructor</li>
+          </ul>
+          <a class="btn btn--ghost" href="#passes">Book bundle</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="school" aria-labelledby="school-title">
+    <div class="wrap school-grid">
+      <figure>
+        <img src="https://picsum.photos/seed/ski-2/800/600" width="800" height="600" alt="A chairlift carrying skiers over a ridge, chairs swaying against a white sky">
+        <figcaption style="font-size: 0.9rem; color: var(--muted); margin-top: 0.6rem;">Chair 6, where every lesson begins and every podcast finishes.</figcaption>
+      </figure>
+      <div>
+        <h2 id="school-title">Ski school</h2>
+        <p style="color: var(--muted); margin-top: 1rem;">Fourteen instructors, three languages, one rule: nobody gets left at the top of something they can't get down. Lessons meet at the orange flag outside the gondola station.</p>
+        <ul class="school-tiers">
+          <li><span class="tier">First Turns (never-ever)</span><span class="meta">2 h · CHF 65 · mornings</span></li>
+          <li><span class="tier">Parallel &amp; Beyond</span><span class="meta">2.5 h · CHF 78 · afternoons</span></li>
+          <li><span class="tier">Powder clinic (off-piste intro)</span><span class="meta">3 h · CHF 110 · Thu &amp; Sat</span></li>
+          <li><span class="tier">Private, any level</span><span class="meta">from CHF 190 / half-day</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="webcam" aria-labelledby="webcam-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="webcam-title">Summit cam</h2>
+        <p>Live from the lodge deck at 3,020 m. Refresh rate: whenever the weather feels like it.</p>
+      </div>
+      <div class="webcam-frame">
+        <img src="https://picsum.photos/seed/ski-3/1600/900" width="1600" height="900" alt="The summit lodge at first light, windows lit, rime ice on the railing">
+        <span class="live-chip"><span class="dot" aria-hidden="true"></span>LIVE · 3,020 m</span>
+      </div>
+      <div class="webcam-caption">
+        <span>Frame grabbed 06:58 — visibility 12 km, ridge wind NW 40.</span>
+        <a href="#top">Watch the full stream →</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top">Summit <em>Oracle</em></a>
+    <small>Lift status can change faster than this footer. Ski in control. © 2026 Summit Oracle Bergbahnen AG.</small>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- snow particle canvas ---------- */
+  (function snow() {
+    var canvas = document.getElementById("snowCanvas");
+    if (!canvas || reduceMotion) return;
+    var ctx = canvas.getContext("2d");
+    var flakes = [];
+    var W = 0, H = 0, raf = null, running = false;
+
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var rect = canvas.parentElement.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawn(n) {
+      flakes = [];
+      for (var i = 0; i < n; i++) {
+        flakes.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: 0.8 + Math.random() * 2.4,
+          vy: 0.35 + Math.random() * 0.9,
+          vx: -0.25 + Math.random() * 0.5,
+          drift: Math.random() * Math.PI * 2,
+          o: 0.35 + Math.random() * 0.55
+        });
+      }
+    }
+
+    function tick() {
+      if (!running) return;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = "oklch(0.99 0.005 230)";
+      for (var i = 0; i < flakes.length; i++) {
+        var f = flakes[i];
+        f.drift += 0.012;
+        f.x += f.vx + Math.sin(f.drift) * 0.4;
+        f.y += f.vy;
+        if (f.y > H + 4) { f.y = -4; f.x = Math.random() * W; }
+        if (f.x > W + 4) f.x = -4;
+        if (f.x < -4) f.x = W + 4;
+        ctx.globalAlpha = f.o;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = window.requestAnimationFrame(tick);
+    }
+
+    function start() { if (!running) { running = true; tick(); } }
+    function stop() { running = false; if (raf) window.cancelAnimationFrame(raf); }
+
+    resize();
+    spawn(Math.max(60, Math.round(W / 12)));
+    start();
+
+    window.addEventListener("resize", function () { resize(); spawn(Math.max(60, Math.round(W / 12))); }, { passive: true });
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else start();
+    });
+  })();
+
+  /* ---------- interactive trail map ---------- */
+  (function trails() {
+    var data = [
+      { name: "Marmot Meadow", tag: "Open · groomed", diff: "Cruiser", len: "3.1 km", vert: "410 m", cond: "Groomed 06:10", desc: "The warm-up lap. Wide, gentle, and full of people remembering how their edges work. Perfect first run, honest last run." },
+      { name: "Glacier Mile", tag: "Open · groomed", diff: "Intermediate", len: "6.2 km", vert: "980 m", cond: "Groomed 06:00", desc: "The signature top-to-bottom blue. Corduroy until about ten, soft bumps after lunch, and the best view of the north face without leaving a marked run." },
+      { name: "Oracle Ridge", tag: "Open · wind-buffed", diff: "Intermediate", len: "4.4 km", vert: "860 m", cond: "Buffed by NW wind", desc: "Follows the ridge the resort is named for. The wind does the grooming here; today it did a decent job. Hold your line near the cornice markers." },
+      { name: "Couloir 9", tag: "Closed · avalanche control", diff: "Expert", len: "1.1 km", vert: "520 m", cond: "Closed today", desc: "Forty degrees of commitment between two rock walls. Patrol is throwing charges this morning; check back tomorrow and bring a transceiver." },
+      { name: "The Sermon", tag: "Open · bumps", diff: "Expert", len: "2.0 km", vert: "640 m", cond: "Ungroomed, soft moguls", desc: "A long black that preaches humility. Moguls the size of armchairs by 14:00. The locals lap it before work; you can tell by the limping." },
+      { name: "Powder Pulpit", tag: "Open · 18 cm fresh", diff: "Patrol favourite", len: "2.8 km", vert: "720 m", cond: "Untracked till ~09:30", desc: "Where last night's snow is hiding. North-facing, so it stays chalky all day. Patrol skis it first — the orange line on the map is their commute." }
+    ];
+
+    var panel = document.getElementById("trailStatus");
+    var els = {
+      tag: document.getElementById("tsTag"),
+      name: document.getElementById("tsName"),
+      desc: document.getElementById("tsDesc"),
+      diff: document.getElementById("tsDiff"),
+      len: document.getElementById("tsLen"),
+      vert: document.getElementById("tsVert"),
+      cond: document.getElementById("tsCond")
+    };
+    var paths = document.querySelectorAll(".trail-path");
+    var liftTimer = null;
+
+    function show(i) {
+      var d = data[i];
+      if (!d) return;
+      els.tag.textContent = d.tag;
+      els.name.textContent = d.name;
+      els.desc.textContent = d.desc;
+      els.diff.textContent = d.diff;
+      els.len.textContent = d.len;
+      els.vert.textContent = d.vert;
+      els.cond.textContent = d.cond;
+      panel.classList.add("lifted");
+      if (liftTimer) window.clearTimeout(liftTimer);
+      liftTimer = window.setTimeout(function () { panel.classList.remove("lifted"); }, 450);
+    }
+
+    paths.forEach(function (p) {
+      var i = parseInt(p.getAttribute("data-run"), 10);
+      p.addEventListener("mouseenter", function () { show(i); });
+      p.addEventListener("focus", function () { show(i); });
+      p.addEventListener("click", function () { show(i); });
+    });
+  })();
+
+  /* ---------- vertical drop counter ---------- */
+  (function counter() {
+    var el = document.getElementById("dropCounter");
+    if (!el) return;
+    var target = 1247;
+
+    function format(n) { return n.toLocaleString("en-US"); }
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      el.textContent = format(target);
+      return;
+    }
+
+    var done = false;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting || done) return;
+        done = true;
+        io.disconnect();
+        var start = null;
+        var duration = 1700;
+        function step(ts) {
+          if (start === null) start = ts;
+          var t = Math.min(1, (ts - start) / duration);
+          var eased = t === 1 ? 1 : 1 - Math.pow(2, -10 * t); /* easeOutExpo */
+          el.textContent = format(Math.round(target * eased));
+          if (t < 1) window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+      });
+    }, { threshold: 0.5 });
+    io.observe(el);
+  })();
+})();
+</script>
+
+</body>
+</html>

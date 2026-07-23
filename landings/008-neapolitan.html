@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neapolitan — gelato churned this morning, gone by evening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.975 0.004 100);
+    --ink: oklch(0.30 0.03 40);
+    --ink-soft: oklch(0.42 0.03 40);
+    --pistachio: oklch(0.87 0.09 145);
+    --pistachio-deep: oklch(0.62 0.10 145);
+    --strawberry: oklch(0.87 0.07 15);
+    --strawberry-deep: oklch(0.62 0.15 15);
+    --vanilla: oklch(0.95 0.03 90);
+    --cone: oklch(0.72 0.10 70);
+    --cone-line: oklch(0.52 0.08 60);
+    --line: oklch(0.90 0.02 60);
+    --z-header: 10;
+    --z-overlay: 20;
+    --font-display: "Bagel Fat One", system-ui, sans-serif;
+    --font-body: "Nunito", system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.94rem + 0.3vw, 1.125rem);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(2.6rem, 1.6rem + 5vw, 5rem); }
+  h2 { font-size: clamp(2rem, 1.4rem + 3vw, 3.4rem); }
+  h3 { font-size: clamp(1.3rem, 1.1rem + 1vw, 1.7rem); }
+  p { max-width: 68ch; text-wrap: pretty; }
+
+  a { color: inherit; }
+  :focus-visible {
+    outline: 3px solid var(--strawberry-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .brand .dot { color: var(--strawberry-deep); }
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    background: var(--pistachio);
+    color: var(--ink);
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+  }
+  .status::before {
+    content: "";
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--pistachio-deep);
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3rem, 8vw, 6rem) clamp(2.5rem, 6vw, 4rem); }
+  .hero-in {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  .hero p.lede {
+    font-size: clamp(1.1rem, 1rem + 0.6vw, 1.35rem);
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-top: 1.25rem;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 0.85rem 1.7rem;
+    border-radius: 999px;
+    border: 0;
+    cursor: pointer;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-3px); }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 2px var(--ink);
+  }
+
+  /* the cone */
+  .cone-stage { display: grid; place-items: center; }
+  .cone-svg { width: min(320px, 78vw); overflow: visible; }
+  .scoop {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: drop-squash 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .scoop-1 { animation-delay: 0.15s; }
+  .scoop-2 { animation-delay: 0.45s; }
+  .scoop-3 { animation-delay: 0.75s; }
+  .cone-body {
+    transform-box: fill-box;
+    transform-origin: 50% 0%;
+    animation: cone-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes drop-squash {
+    0%   { transform: translateY(-340px) scale(1, 1); }
+    58%  { transform: translateY(0) scale(1, 1); }
+    70%  { transform: translateY(5px) scale(1.14, 0.80); }
+    84%  { transform: translateY(-2px) scale(0.96, 1.06); }
+    100% { transform: translateY(0) scale(1, 1); }
+  }
+  @keyframes cone-rise {
+    from { transform: translateY(60px); }
+    to   { transform: translateY(0); }
+  }
+
+  /* ---------- photo band ---------- */
+  .case-photo { margin-block: clamp(1rem, 4vw, 3rem); }
+  .case-photo figure {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .case-photo figcaption {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    padding-top: 0.6rem;
+  }
+
+  /* ---------- flavors ---------- */
+  .flavors { padding-block: clamp(3rem, 8vw, 5.5rem); background: var(--surface); }
+  .flavors .intro { max-width: 62ch; margin-top: 1rem; color: var(--ink-soft); font-weight: 600; }
+  .chip-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    list-style: none;
+  }
+  .chip {
+    perspective: 700px;
+    min-height: 5.2rem;
+  }
+  .chip-btn {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 5.2rem;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font-family: var(--font-body);
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .chip:hover .chip-btn,
+  .chip:focus-within .chip-btn { transform: rotateY(180deg); }
+  .chip-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.15rem;
+    border-radius: 999px;
+    backface-visibility: hidden;
+    padding: 0.5rem 1rem;
+    text-align: center;
+  }
+  .chip-front { font-weight: 800; font-size: 1rem; color: var(--ink); }
+  .chip-front small { font-weight: 700; font-size: 0.72rem; color: var(--ink-soft); }
+  .chip-back {
+    transform: rotateY(180deg);
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  .f-pistachio { background: var(--pistachio); }
+  .f-strawberry { background: var(--strawberry); }
+  .f-vanilla { background: var(--vanilla); box-shadow: inset 0 0 0 1px var(--line); }
+  .f-cone { background: var(--cone); color: oklch(0.25 0.04 50); }
+  .f-cone small { color: oklch(0.34 0.05 55); }
+
+  .allergy-note {
+    margin-top: 2.5rem;
+    background: var(--strawberry);
+    border-radius: 16px;
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .allergy-note .badge {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    background: var(--bg);
+    color: var(--strawberry-deep);
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+  }
+  .allergy-note h3 { margin-bottom: 0.4rem; }
+  .allergy-note p { font-weight: 600; }
+
+  /* ---------- visit ---------- */
+  .visit { padding-block: clamp(3rem, 8vw, 5.5rem); }
+  .visit-in {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .hours { list-style: none; margin-top: 1.5rem; }
+  .hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--line);
+    font-weight: 700;
+  }
+  .hours li span:last-child { color: var(--ink-soft); }
+  .sellout {
+    background: var(--pistachio);
+    border-radius: 16px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+  }
+  .sellout h3 { margin-bottom: 0.75rem; }
+  .sellout p { font-weight: 600; }
+  .sellout .big {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem);
+    line-height: 1.1;
+    display: block;
+    margin-top: 1.25rem;
+    color: var(--pistachio-deep);
+    letter-spacing: -0.01em;
+  }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    display: block;
+  }
+  .footer-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+
+  @media (max-width: 760px) {
+    .hero-in, .visit-in { grid-template-columns: 1fr; }
+    .cone-stage { order: -1; }
+    .allergy-note { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .scoop, .cone-body { animation: none; }
+    .chip-btn { transition: none; }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="brand" href="#top">Neapolitan<span class="dot">.</span></a>
+    <span class="status" id="openStatus">Open today until we sell out</span>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-in">
+      <div>
+        <h1>Three scoops. No&nbsp;shortcuts.</h1>
+        <p class="lede">Small-batch gelato churned every morning on a marble slab that’s older than the shop. Twelve flavors a day — when they’re gone, we’re gone.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#flavors">See today’s twelve</a>
+          <a class="btn btn-ghost" href="#visit">Find the shop</a>
+        </div>
+      </div>
+      <div class="cone-stage" aria-hidden="true">
+        <svg class="cone-svg" viewBox="0 0 300 400" role="img" aria-label="A waffle cone with pistachio, strawberry and stracciatella scoops">
+          <g class="scoop scoop-2">
+            <circle cx="98" cy="205" r="58" fill="var(--strawberry)"/>
+            <circle cx="82" cy="188" r="9" fill="var(--strawberry-deep)" opacity="0.35"/>
+            <circle cx="116" cy="216" r="6" fill="var(--strawberry-deep)" opacity="0.3"/>
+          </g>
+          <g class="scoop scoop-3">
+            <circle cx="202" cy="205" r="58" fill="var(--vanilla)"/>
+            <circle cx="186" cy="190" r="3" fill="var(--ink)"/>
+            <circle cx="212" cy="205" r="3.5" fill="var(--ink)"/>
+            <circle cx="196" cy="222" r="2.5" fill="var(--ink)"/>
+            <circle cx="220" cy="185" r="2.5" fill="var(--ink)"/>
+          </g>
+          <g class="scoop scoop-1">
+            <circle cx="150" cy="138" r="64" fill="var(--pistachio)"/>
+            <circle cx="132" cy="120" r="8" fill="var(--pistachio-deep)" opacity="0.35"/>
+            <circle cx="168" cy="148" r="6" fill="var(--pistachio-deep)" opacity="0.3"/>
+          </g>
+          <g class="cone-body">
+            <polygon points="92,238 208,238 150,392" fill="var(--cone)"/>
+            <path d="M100 250 L164 380 M120 250 L178 368 M140 250 L192 356 M160 250 L196 322 M180 250 L198 292" stroke="var(--cone-line)" stroke-width="3" fill="none" opacity="0.6"/>
+            <path d="M200 250 L136 380 M180 250 L122 368 M160 250 L108 356 M140 250 L104 322 M120 250 L102 292" stroke="var(--cone-line)" stroke-width="3" fill="none" opacity="0.6"/>
+            <rect x="86" y="228" width="128" height="14" rx="7" fill="var(--cone-line)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-photo">
+    <div class="wrap">
+      <figure>
+        <img src="https://picsum.photos/seed/gelato-1/1600/900" width="1600" height="900"
+             alt="The gelato case at opening — twelve steel tins in a row, still frosted from the morning churn">
+        <figcaption>The case at 11am sharp. By 4 on a hot Saturday, half of these tins are scraped clean.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="flavors" id="flavors">
+    <div class="wrap">
+      <h2>Today’s twelve</h2>
+      <p class="intro">Flip a scoop to see exactly what’s in it. The board changes with the market — yesterday’s melon is today’s fig, and we never chase a flavor that’s out of season.</p>
+
+      <ul class="chip-grid">
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-pistachio">Pistachio di Bronte<small>the one we’re known for</small></span>
+          <span class="chip-face chip-back">Milk, pistachios. Stone-ground, never pasted green.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-strawberry">Strawberry Sorrento<small>just fruit, milk, sugar</small></span>
+          <span class="chip-face chip-back">Milk. Berries from the Tuesday market only.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-vanilla">Stracciatella<small>chips cracked by hand</small></span>
+          <span class="chip-face chip-back">Milk, 72% chocolate. Egg-free, gluten-free.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-vanilla">Fior di Latte<small>the purist’s order</small></span>
+          <span class="chip-face chip-back">Milk. Nothing else. That’s the whole point.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-pistachio">Lemon &amp; Basil<small>vegan</small></span>
+          <span class="chip-face chip-back">No milk, no nuts. Churned first, before anything dairy.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-cone">Salted Waffle<small>tastes like the cone</small></span>
+          <span class="chip-face chip-back">Milk, egg, gluten. Toasted cone pieces folded in.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-vanilla">Chocolate 72%<small>dark as espresso</small></span>
+          <span class="chip-face chip-back">Milk, single-origin cacao. Egg-free.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-strawberry">Amarena Cherry<small>sour, on purpose</small></span>
+          <span class="chip-face chip-back">Milk. Cherries in syrup, pits already out.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-vanilla">Coffee Affogato<small>double-shot strength</small></span>
+          <span class="chip-face chip-back">Milk. Real espresso, not flavoring. Caffeine, obviously.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-strawberry">Melon &amp; Verbena<small>vegan</small></span>
+          <span class="chip-face chip-back">No milk, no nuts. Sorbet — fruit, water, sugar, done.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-pistachio">Hazelnut<small>roasted in-house</small></span>
+          <span class="chip-face chip-back">Milk, hazelnuts. Churned after the nut-free batches.</span>
+        </button></li>
+        <li class="chip"><button class="chip-btn" type="button">
+          <span class="chip-face chip-front f-strawberry">Coconut Lime<small>vegan</small></span>
+          <span class="chip-face chip-back">No milk, no nuts. Coconut cream, lime zest, sea salt.</span>
+        </button></li>
+      </ul>
+
+      <div class="allergy-note">
+        <span class="badge" aria-hidden="true">!</span>
+        <div>
+          <h3>The honest part</h3>
+          <p>Nut flavors are churned after the nut-free ones, vegan tins get their own spatulas, and gluten cones are wrapped before they ever touch the counter. If you ask, we’ll walk the case with you — we’d rather talk for five minutes than guess.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap visit-in">
+      <div>
+        <h2>Come early. Seriously.</h2>
+        <ul class="hours">
+          <li><span>Tuesday – Friday</span><span>11:00 – 19:00</span></li>
+          <li><span>Saturday – Sunday</span><span>10:00 – 20:00</span></li>
+          <li><span>Monday</span><span>Closed — churn day</span></li>
+        </ul>
+      </div>
+      <div class="sellout">
+        <h3>214 Mulberry Street</h3>
+        <p>Two blocks from the park, look for the queue. We make one batch per flavor per day, and when a tin is scraped clean it comes off the board.</p>
+        <span class="big">Closed when we sell out — on hot Saturdays that’s usually 4pm.</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <span>Neapolitan Gelateria — churned daily since 1987</span>
+    <span>Cones from $4.50 · Three scoops from $7 · Cash and card</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    // Update the header status from the shop clock: churn day Monday, else open hours.
+    var status = document.getElementById('openStatus');
+    var now = new Date();
+    var day = now.getDay(); // 0 Sun … 6 Sat
+    var hour = now.getHours() + now.getMinutes() / 60;
+    var open = day !== 1 && hour >= (day === 0 || day === 6 ? 10 : 11) && hour < (day === 0 || day === 6 ? 20 : 19);
+    status.textContent = open
+      ? 'Open now — until we sell out'
+      : 'Closed — churning for tomorrow';
+    if (!open) {
+      status.style.background = 'var(--strawberry)';
+    }
+  })();
+</script>
+</body>
+</html>

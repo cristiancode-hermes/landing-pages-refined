@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Observatory — a dark-sky retreat on Cederberg Ridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: oklch(0.13 0.02 262);
+  --bg-deep: oklch(0.10 0.018 262);
+  --surface: oklch(0.18 0.025 262);
+  --ink: oklch(0.95 0.008 260);
+  --muted: oklch(0.72 0.02 262);
+  --silver: oklch(0.87 0.012 260);
+  --amber: oklch(0.80 0.12 82);
+  --amber-deep: oklch(0.70 0.12 80);
+  --line: oklch(0.95 0.008 260 / 0.16);
+  --on-amber: oklch(0.18 0.03 80);
+  --z-base: 0;
+  --z-raised: 1;
+  --z-sticky: 10;
+  --font-display: "Marcellus", serif;
+  --font-body: "Jost", sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+*,*::before,*::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+img{ display: block; max-width: 100%; height: auto; }
+h1,h2,h3{
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-wrap: balance;
+  margin: 0;
+}
+h1{ font-size: clamp(3rem, 2rem + 5.5vw, 5.6rem); }
+h2{ font-size: clamp(2.1rem, 1.5rem + 3vw, 3.4rem); }
+h3{ font-size: clamp(1.4rem, 1.2rem + 0.9vw, 1.8rem); }
+p{ margin: 0; max-width: 62ch; text-wrap: pretty; }
+a{ color: var(--amber); }
+a:focus-visible, button:focus-visible{
+  outline: 3px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.wrap{ width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+/* ---------- header ---------- */
+.site-header{
+  position: sticky; top: 0; z-index: var(--z-sticky);
+  background: oklch(0.13 0.02 262 / 0.9);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap{
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; padding-block: 0.95rem;
+}
+.wordmark{
+  font-family: var(--font-display);
+  font-size: 1.5rem; text-decoration: none; color: var(--ink);
+}
+.main-nav{ display: flex; gap: 1.5rem; align-items: baseline; flex-wrap: wrap; }
+.main-nav a:not(.nav-cta):not(.btn):not(.head-cta){ text-decoration: none; font-weight: 500; font-size: 0.95rem; color: var(--muted); }
+.main-nav a:not(.nav-cta):not(.btn):not(.head-cta):hover{ color: var(--ink); }
+.main-nav .nav-cta{
+  color: var(--on-amber); background: var(--amber);
+  padding: 0.35rem 1rem; border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+.main-nav .nav-cta:hover{ background: var(--amber-deep); color: var(--on-amber); }
+
+/* ---------- hero (three.js sky) ---------- */
+.hero{
+  position: relative; height: min(92vh, 860px); min-height: 500px;
+  overflow: hidden; display: grid; align-items: center;
+  background: var(--bg-deep);
+}
+#sky{
+  position: absolute; inset: 0; z-index: var(--z-base);
+  width: 100%; height: 100%; display: block;
+}
+.hero-inner{
+  position: relative; z-index: var(--z-raised);
+  text-align: center; pointer-events: none;
+}
+.hero-inner a, .hero-inner .btn{ pointer-events: auto; }
+.hero-eyebrow{
+  font-size: 1.05rem; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--amber); margin-bottom: 1rem;
+}
+.hero-sub{
+  margin: 1.4rem auto 0; max-width: 48ch;
+  color: var(--muted); font-size: 1.15em; font-weight: 300;
+}
+.hero-scroll{
+  margin-top: 2.6rem; font-size: 0.9rem; color: var(--muted); letter-spacing: 0.06em;
+}
+
+/* constellation connectors — lines draw as sections enter */
+.constellation{
+  display: block; width: min(180px, 40%); height: auto;
+  margin-bottom: 1.4rem;
+}
+.constellation circle{ fill: var(--silver); }
+.constellation polyline{
+  fill: none; stroke: var(--amber); stroke-width: 1.2; opacity: 0.85;
+  stroke-dasharray: 400; stroke-dashoffset: 400;
+}
+.in-view .constellation polyline{
+  animation: connect 1.8s var(--ease-out) forwards;
+}
+@keyframes connect{ to{ stroke-dashoffset: 0; } }
+
+/* ---------- sections ---------- */
+section.block{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; border-top: 1px solid var(--line); }
+.lede{ font-size: 1.2em; color: var(--ink); font-weight: 300; margin-top: 1.4rem; }
+.muted{ color: var(--muted); }
+.muted p, p.muted{ color: var(--muted); }
+
+/* cabins */
+.cabins-grid{
+  display: grid; grid-template-columns: 0.95fr 1.05fr;
+  gap: clamp(2rem, 5vw, 4rem); align-items: start;
+  margin-top: 2.5rem;
+}
+.cabins-grid figure{ margin: 0; }
+.cabins-grid img{ width: 100%; border-radius: 14px; }
+.cabins-grid figcaption{ margin-top: 0.7rem; font-size: 0.9rem; color: var(--muted); }
+.cabin-list{ margin: 0; padding: 0; list-style: none; }
+.cabin-list li{
+  padding: 1.5rem 0; border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr auto; gap: 0.4rem 2rem; align-items: baseline;
+}
+.cabin-list li:first-child{ border-top: 0; padding-top: 0; }
+.cabin-name{ font-family: var(--font-display); font-size: 1.6rem; }
+.cabin-rate{ font-weight: 600; color: var(--amber); white-space: nowrap; }
+.cabin-desc{ grid-column: 1 / -1; color: var(--muted); max-width: 56ch; }
+
+/* dark-sky story */
+.story-grid{
+  display: grid; grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(2rem, 5vw, 4rem); align-items: center;
+}
+.story-copy p + p{ margin-top: 1.1rem; }
+.story-copy p{ color: var(--muted); }
+.story-copy .lede{ color: var(--ink); }
+.story-figure{ margin: 0; }
+.story-figure img{ width: 100%; border-radius: 14px; }
+.story-figure figcaption{ margin-top: 0.7rem; font-size: 0.9rem; color: var(--muted); }
+.story-facts{
+  margin-top: 1.8rem; display: flex; flex-wrap: wrap; gap: 0.6rem;
+}
+.story-facts span{
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 0.3rem 0.9rem; font-size: 0.9rem; color: var(--silver);
+}
+
+/* moon calendar */
+.moon-cal{ margin-top: 2.4rem; }
+.moon-cal-head{
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+  align-items: baseline; gap: 0.8rem; margin-bottom: 1.4rem;
+}
+.moon-cal-head h3{ font-family: var(--font-body); font-weight: 600; font-size: 1.05rem; }
+.moon-legend{ font-size: 0.88rem; color: var(--muted); display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.moon-legend i{
+  display: inline-block; width: 11px; height: 11px; border-radius: 50%;
+  margin-right: 0.4rem; vertical-align: -1px; background: var(--silver);
+}
+.moon-legend .l-new i{ background: var(--surface); border: 1px solid var(--line); }
+.moon-grid{
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem;
+}
+.moon-day{
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 0.6rem 0.6rem 0.7rem;
+  min-height: 74px;
+  display: grid; align-content: space-between; gap: 0.4rem;
+}
+.moon-day .d{ font-size: 0.8rem; color: var(--muted); }
+.moon{
+  width: 15px; height: 15px; border-radius: 50%;
+  background: var(--silver); position: relative; overflow: hidden;
+}
+.moon::after{
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: var(--surface);
+  transform: translateX(var(--p, 0%));
+}
+.moon-day.new-moon{
+  background: oklch(0.24 0.04 262);
+  box-shadow: inset 0 0 0 1px var(--amber);
+}
+.moon-day.new-moon .d{ color: var(--amber); font-weight: 600; }
+.moon-day.pad{ background: transparent; }
+.moon-note{ margin-top: 1.2rem; font-size: 0.93rem; color: var(--muted); }
+
+/* bring list */
+.bring-grid{
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem);
+}
+.bring-list{ margin: 1.6rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.9rem; }
+.bring-list li{
+  display: grid; grid-template-columns: auto 1fr; gap: 0.8rem; align-items: baseline;
+  color: var(--muted);
+}
+.bring-list li::before{
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--amber); transform: translateY(-1px);
+}
+.bring-list li b{ color: var(--ink); font-weight: 500; }
+.provided{
+  background: var(--surface); border-radius: 14px; padding: 1.6rem 1.7rem;
+  align-self: start;
+}
+.provided h3{ font-size: 1.3rem; margin-bottom: 1rem; }
+.provided ul{ margin: 0; padding: 0; list-style: none; display: grid; gap: 0.6rem; color: var(--muted); }
+.provided li{ display: flex; justify-content: space-between; gap: 1rem; font-size: 0.97rem; }
+.provided li span:last-child{ color: var(--silver); }
+
+/* booking */
+.booking{
+  text-align: center;
+  background: var(--bg-deep);
+}
+.booking h2{ max-width: 20ch; margin-inline: auto; }
+.booking p{ margin: 1.2rem auto 0; max-width: 52ch; color: var(--muted); }
+.btn{
+  display: inline-block; margin-top: 1.8rem;
+  background: var(--amber); color: var(--on-amber);
+  font-weight: 600; text-decoration: none; font-size: 1.02rem;
+  padding: 0.9rem 2rem; border-radius: 999px;
+  transition: background 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.btn:hover{ background: var(--amber-deep); transform: translateY(-2px); }
+.booking .alt{ display: block; margin-top: 1rem; font-size: 0.93rem; }
+.winter{
+  margin: 2.6rem auto 0; max-width: 560px;
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 1.4rem 1.6rem;
+  display: flex; justify-content: space-between; gap: 1.5rem; align-items: baseline;
+  text-align: left;
+}
+.winter .k{ color: var(--muted); }
+.winter .v{ font-family: var(--font-display); font-size: 1.5rem; color: var(--amber); white-space: nowrap; }
+
+/* footer */
+.site-footer{
+  border-top: 1px solid var(--line);
+  padding: 2.6rem 0;
+  color: var(--muted); font-size: 0.95rem;
+}
+.site-footer .wrap{
+  display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; justify-content: space-between;
+}
+.site-footer strong{ display: block; color: var(--ink); font-family: var(--font-display); font-weight: 400; font-size: 1.1rem; margin-bottom: 0.3rem; }
+
+@media (max-width: 820px){
+  .cabins-grid, .story-grid, .bring-grid{ grid-template-columns: 1fr; }
+  .moon-grid{ gap: 0.35rem; }
+  .moon-day{ min-height: 60px; padding: 0.45rem; }
+  .winter{ flex-direction: column; gap: 0.3rem; }
+}
+@media (prefers-reduced-motion: reduce){
+  .constellation polyline{ stroke-dashoffset: 0; }
+  .in-view .constellation polyline{ animation: none; }
+  .btn{ transition: none; }
+}
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  .nav-cta {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .nav-cta {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    .main-nav a:not(.nav-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#top">The Observatory</a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="#cabins">Cabins</a>
+      <a href="#dark-sky">Dark sky</a>
+      <a href="#moon">Moon calendar</a>
+      <a class="nav-cta" href="#book">Book a night</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <p class="hero-eyebrow">A dark-sky retreat on Cederberg Ridge</p>
+      <h1>The Milky Way, from your cabin window.</h1>
+      <p class="hero-sub">Three cabins, one telescope field, and a sky so dark
+      the ridge earned its certification in 2019. Bring warm socks. Leave the
+      white flashlight.</p>
+      <p class="hero-scroll">Scroll — the constellations will introduce themselves</p>
+    </div>
+  </section>
+
+  <section class="block" id="cabins">
+    <div class="wrap">
+      <svg class="constellation" viewBox="0 0 180 70" aria-hidden="true">
+        <polyline points="14,52 52,30 96,40 138,14 166,34"/>
+        <circle cx="14" cy="52" r="3"/><circle cx="52" cy="30" r="2.4"/>
+        <circle cx="96" cy="40" r="2.8"/><circle cx="138" cy="14" r="2.4"/>
+        <circle cx="166" cy="34" r="3"/>
+      </svg>
+      <h2>Three cabins, named for what hangs above them</h2>
+      <div class="cabins-grid">
+        <figure>
+          <img src="https://picsum.photos/seed/cabin-1/800/600" width="800" height="600"
+               alt="Cabin Lyra at blue hour, one amber window lit against the ridge">
+          <figcaption>Lyra at dusk. The window light is amber, always — white
+          light curfew begins at nine.</figcaption>
+        </figure>
+        <ul class="cabin-list">
+          <li>
+            <span class="cabin-name">Lyra</span>
+            <span class="cabin-rate">$260 / night</span>
+            <p class="cabin-desc">Sleeps two. East-facing deck for the moonrise,
+            a wood stove, and the best shower pressure on the ridge — a detail
+            no astronomy site mentions and every guest does.</p>
+          </li>
+          <li>
+            <span class="cabin-name">Cygnus</span>
+            <span class="cabin-rate">$340 / night</span>
+            <p class="cabin-desc">Sleeps four. Two rooms, a long table for maps
+            and mugs, and a private path to the telescope field. The family
+            one.</p>
+          </li>
+          <li>
+            <span class="cabin-name">Cassiopeia</span>
+            <span class="cabin-rate">$310 / night</span>
+            <p class="cabin-desc">Sleeps two, with a glass roof panel over the
+            bed. You will set an alarm for 3 a.m. You will not regret it.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="dark-sky">
+    <div class="wrap">
+      <svg class="constellation" viewBox="0 0 180 70" aria-hidden="true">
+        <polyline points="20,20 60,48 104,22 150,50"/>
+        <circle cx="20" cy="20" r="2.6"/><circle cx="60" cy="48" r="3"/>
+        <circle cx="104" cy="22" r="2.4"/><circle cx="150" cy="50" r="2.8"/>
+      </svg>
+      <div class="story-grid">
+        <div class="story-copy">
+          <h2>Certified dark, on purpose</h2>
+          <p class="lede">In 2019 the ridge was measured at 21.7 magnitudes per
+          square arcsecond — dark enough to read star charts by the Milky Way,
+          almost.</p>
+          <p>Keeping it that way is a daily practice, not a plaque. Every
+          exterior light on the property is amber and shielded. The path lights
+          go out at nine. The nearest town agreed to downward-facing lamps in
+          2021, after we brought their council up here one October night and
+          simply pointed up.</p>
+          <p>Your host, Dr. Amara Osei, ran the university observatory in the
+          valley for fourteen years. She still gives the 10 p.m. sky tour when
+          the clouds allow — which here is roughly 280 nights a year.</p>
+          <div class="story-facts">
+            <span>Bortle class 2</span>
+            <span>21.7 mag/arcsec²</span>
+            <span>~280 clear nights / year</span>
+            <span>Light curfew 21:00</span>
+          </div>
+        </div>
+        <figure class="story-figure">
+          <img src="https://picsum.photos/seed/cabin-2/800/600" width="800" height="600"
+               alt="The fourteen-inch telescope on the field, waiting for full dark">
+          <figcaption>The 14-inch Dobsonian on the telescope field. Guests book
+          it in one-hour slots; nobody has ever used only one.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="moon">
+    <div class="wrap">
+      <svg class="constellation" viewBox="0 0 180 70" aria-hidden="true">
+        <polyline points="16,34 58,16 96,52 134,20 164,44"/>
+        <circle cx="16" cy="34" r="2.4"/><circle cx="58" cy="16" r="2.8"/>
+        <circle cx="96" cy="52" r="2.4"/><circle cx="134" cy="20" r="3"/>
+        <circle cx="164" cy="44" r="2.4"/>
+      </svg>
+      <h2>Book by the moon</h2>
+      <p class="lede">New-moon weeks are for galaxies. Full-moon weeks are for
+      moonrise itself, and for people who say they &ldquo;just want to
+      look.&rdquo; Both are right.</p>
+      <div class="moon-cal">
+        <div class="moon-cal-head">
+          <h3>August — Cederberg Ridge</h3>
+          <div class="moon-legend">
+            <span class="l-new"><i></i>new moon — book first</span>
+            <span><i></i>waxing / full</span>
+          </div>
+        </div>
+        <div class="moon-grid" role="img"
+             aria-label="August moon-phase calendar: new moon on the 4th, full moon on the 19th, returning to new moon in early September">
+          <div class="moon-day pad"></div><div class="moon-day pad"></div>
+          <div class="moon-day pad"></div><div class="moon-day pad"></div>
+          <div class="moon-day"><span class="d">1</span><span class="moon" style="--p:18%"></span></div>
+          <div class="moon-day"><span class="d">2</span><span class="moon" style="--p:12%"></span></div>
+          <div class="moon-day"><span class="d">3</span><span class="moon" style="--p:6%"></span></div>
+          <div class="moon-day new-moon"><span class="d">4 · new</span><span class="moon" style="--p:0%"></span></div>
+          <div class="moon-day"><span class="d">5</span><span class="moon" style="--p:-8%"></span></div>
+          <div class="moon-day"><span class="d">6</span><span class="moon" style="--p:-16%"></span></div>
+          <div class="moon-day"><span class="d">7</span><span class="moon" style="--p:-24%"></span></div>
+          <div class="moon-day"><span class="d">8</span><span class="moon" style="--p:-32%"></span></div>
+          <div class="moon-day"><span class="d">9</span><span class="moon" style="--p:-40%"></span></div>
+          <div class="moon-day"><span class="d">10</span><span class="moon" style="--p:-48%"></span></div>
+          <div class="moon-day"><span class="d">11</span><span class="moon" style="--p:-56%"></span></div>
+          <div class="moon-day"><span class="d">12</span><span class="moon" style="--p:-64%"></span></div>
+          <div class="moon-day"><span class="d">13</span><span class="moon" style="--p:-72%"></span></div>
+          <div class="moon-day"><span class="d">14</span><span class="moon" style="--p:-80%"></span></div>
+          <div class="moon-day"><span class="d">15</span><span class="moon" style="--p:-88%"></span></div>
+          <div class="moon-day"><span class="d">16</span><span class="moon" style="--p:-94%"></span></div>
+          <div class="moon-day"><span class="d">17</span><span class="moon" style="--p:-100%"></span></div>
+          <div class="moon-day"><span class="d">18</span><span class="moon" style="--p:-105%"></span></div>
+          <div class="moon-day"><span class="d">19 · full</span><span class="moon" style="--p:-115%"></span></div>
+          <div class="moon-day"><span class="d">20</span><span class="moon" style="--p:105%"></span></div>
+          <div class="moon-day"><span class="d">21</span><span class="moon" style="--p:96%"></span></div>
+          <div class="moon-day"><span class="d">22</span><span class="moon" style="--p:88%"></span></div>
+          <div class="moon-day"><span class="d">23</span><span class="moon" style="--p:78%"></span></div>
+          <div class="moon-day"><span class="d">24</span><span class="moon" style="--p:68%"></span></div>
+          <div class="moon-day"><span class="d">25</span><span class="moon" style="--p:58%"></span></div>
+          <div class="moon-day"><span class="d">26</span><span class="moon" style="--p:47%"></span></div>
+          <div class="moon-day"><span class="d">27</span><span class="moon" style="--p:36%"></span></div>
+          <div class="moon-day"><span class="d">28</span><span class="moon" style="--p:26%"></span></div>
+          <div class="moon-day"><span class="d">29</span><span class="moon" style="--p:17%"></span></div>
+          <div class="moon-day"><span class="d">30</span><span class="moon" style="--p:9%"></span></div>
+          <div class="moon-day"><span class="d">31</span><span class="moon" style="--p:4%"></span></div>
+        </div>
+        <p class="moon-note">New-moon weekends (Aug 2–4, Aug 30–Sep 1) are
+        typically gone eight weeks out. Weeknights around them are kinder to
+        spontaneous people.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="bring">
+    <div class="wrap">
+      <svg class="constellation" viewBox="0 0 180 70" aria-hidden="true">
+        <polyline points="30,50 70,22 112,46 152,18"/>
+        <circle cx="30" cy="50" r="2.8"/><circle cx="70" cy="22" r="2.4"/>
+        <circle cx="112" cy="46" r="3"/><circle cx="152" cy="18" r="2.6"/>
+      </svg>
+      <div class="bring-grid">
+        <div>
+          <h2>What to bring, honestly</h2>
+          <ul class="bring-list">
+            <li><span><b>Real layers.</b> It is 4°C at the telescope field at
+            2 a.m., even in August. Bring the fleece you think you won&rsquo;t
+            need. You will need it.</span></li>
+            <li><span><b>Patience for your own eyes.</b> Full dark adaptation
+            takes thirty minutes. Every phone glance resets the clock.</span></li>
+            <li><span><b>Food you like.</b> The cabins have proper kitchens;
+            the nearest store is forty minutes down the mountain.</span></li>
+            <li><span><b>Nothing that glows white.</b> No white flashlights, no
+            car interior lights left on, no exceptions after 21:00. Red light
+            only — we provide the torches.</span></li>
+          </ul>
+        </div>
+        <aside class="provided">
+          <h3>Waiting in your cabin</h3>
+          <ul>
+            <li><span>Red-light torches</span><span>×2</span></li>
+            <li><span>Star charts, laminated</span><span>×3</span></li>
+            <li><span>Reclining observing chairs</span><span>×2</span></li>
+            <li><span>Binoculars, 10×50</span><span>×1</span></li>
+            <li><span>Wool blankets for the deck</span><span>×4</span></li>
+            <li><span>Thermos + the good cocoa</span><span>yes</span></li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="block booking" id="book">
+    <div class="wrap">
+      <h2>The sky does the entertaining. We just keep it dark.</h2>
+      <p>Two-night minimum, three on new-moon weekends. Write with your dates
+      and which cabin has your name on it — Amara answers every message
+      herself, usually after the sky tour.</p>
+      <a class="btn" href="mailto:stay@theobservatory.example">Ask about your nights</a>
+      <span class="alt">or call <a href="tel:+15550198841">(555) 019-8841</a> between 10:00 and 18:00</span>
+      <div class="winter">
+        <span class="k"><b>Winter rates, November – March</b><br>
+        Longer nights, colder decks, lower prices. The Geminids in December are
+        worth the gloves.</span>
+        <span class="v">from $180 / night</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <strong>The Observatory</strong>
+      Cederberg Ridge · three cabins · est. 2017
+    </div>
+    <div>
+      <strong>Find us</strong>
+      <a href="mailto:stay@theobservatory.example">stay@theobservatory.example</a><br>
+      <a href="tel:+15550198841">(555) 019-8841</a>
+    </div>
+    <div>
+      <strong>House rules</strong>
+      Red light after 21:00.<br>Silence on the field after midnight.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+if (typeof THREE === "undefined") {
+  document.write('<script src="https://unpkg.com/three@0.160.0/build/three.min.js"><\/script>');
+}
+</script>
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- constellation connectors ---------- */
+  if (!reduce && "IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll("section.block").forEach(function (s) { io.observe(s); });
+  } else {
+    document.querySelectorAll("section.block").forEach(function (s) {
+      s.classList.add("in-view");
+    });
+  }
+
+  /* ---------- three.js starfield ---------- */
+  var canvas = document.getElementById("sky");
+  if (!canvas || typeof THREE === "undefined") return;
+
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  } catch (e) {
+    return; // no WebGL — hero copy still carries the page
+  }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(60, 1, 0.1, 200);
+  camera.position.set(0, 0, 42);
+
+  // Three depth layers of stars; nearer layers drift more under parallax.
+  function makeLayer(count, spread, size, tintChance) {
+    var positions = new Float32Array(count * 3);
+    var colors = new Float32Array(count * 3);
+    var silver = new THREE.Color(0.87, 0.88, 0.92);
+    var amber = new THREE.Color(0.95, 0.78, 0.45);
+    for (var i = 0; i < count; i++) {
+      positions[i * 3]     = (Math.random() - 0.5) * spread;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * spread * 0.6;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      var c = Math.random() < tintChance ? amber : silver;
+      var dim = 0.45 + Math.random() * 0.55;
+      colors[i * 3] = c.r * dim;
+      colors[i * 3 + 1] = c.g * dim;
+      colors[i * 3 + 2] = c.b * dim;
+    }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    var mat = new THREE.PointsMaterial({
+      size: size, vertexColors: true, sizeAttenuation: true,
+      transparent: true, opacity: 0.95, depthWrite: false
+    });
+    return new THREE.Points(geo, mat);
+  }
+
+  var farLayer   = makeLayer(900, 160, 0.35, 0.05);
+  var midLayer   = makeLayer(500, 120, 0.55, 0.08);
+  var nearLayer  = makeLayer(220,  90, 0.9, 0.12);
+  scene.add(farLayer, midLayer, nearLayer);
+
+  // Occasional meteors — a short bright streak crossing the field.
+  var meteors = [];
+  var meteorMat = new THREE.LineBasicMaterial({
+    color: 0xf2e6c8, transparent: true, opacity: 0.9
+  });
+  function spawnMeteor() {
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(6), 3));
+    var line = new THREE.Line(geo, meteorMat.clone());
+    var meteor = {
+      line: line,
+      x: -70 + Math.random() * 140,
+      y: 25 + Math.random() * 25,
+      vx: 0.55 + Math.random() * 0.5,
+      vy: -(0.28 + Math.random() * 0.25),
+      life: 1
+    };
+    meteors.push(meteor);
+    scene.add(line);
+  }
+  function stepMeteors() {
+    for (var i = meteors.length - 1; i >= 0; i--) {
+      var m = meteors[i];
+      m.x += m.vx; m.y += m.vy; m.life -= 0.016;
+      var pos = m.line.geometry.attributes.position.array;
+      pos[0] = m.x;            pos[1] = m.y;            pos[2] = 0;
+      pos[3] = m.x - m.vx * 9; pos[4] = m.y - m.vy * 9; pos[5] = 0;
+      m.line.geometry.attributes.position.needsUpdate = true;
+      m.line.material.opacity = Math.max(m.life, 0) * 0.9;
+      if (m.life <= 0 || m.y < -40) {
+        scene.remove(m.line);
+        m.line.geometry.dispose();
+        m.line.material.dispose();
+        meteors.splice(i, 1);
+      }
+    }
+  }
+
+  // Depth parallax — pointer and scroll, eased.
+  var targetX = 0, targetY = 0, curX = 0, curY = 0;
+  window.addEventListener("pointermove", function (e) {
+    targetX = (e.clientX / window.innerWidth - 0.5) * 2;
+    targetY = (e.clientY / window.innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  function resize() {
+    var w = canvas.clientWidth || canvas.parentElement.clientWidth;
+    var h = canvas.clientHeight || canvas.parentElement.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  var nextMeteorAt = performance.now() + 2500;
+  var rafId = null;
+
+  function frame(now) {
+    rafId = requestAnimationFrame(frame);
+    curX += (targetX - curX) * 0.04;
+    curY += (targetY - curY) * 0.04;
+    var scrollDrift = Math.min(window.scrollY / window.innerHeight, 1) * 6;
+    farLayer.position.x  = curX * 1.2;  farLayer.position.y  = -curY * 0.8 - scrollDrift * 0.3;
+    midLayer.position.x  = curX * 2.6;  midLayer.position.y  = -curY * 1.8 - scrollDrift * 0.7;
+    nearLayer.position.x = curX * 4.5;  nearLayer.position.y = -curY * 3.0 - scrollDrift * 1.2;
+    farLayer.rotation.z  += 0.00008;
+    midLayer.rotation.z  += 0.00012;
+    if (now > nextMeteorAt) {
+      spawnMeteor();
+      nextMeteorAt = now + 3500 + Math.random() * 5500;
+    }
+    stepMeteors();
+    renderer.render(scene, camera);
+  }
+
+  if (reduce) {
+    // Static frame for reduced-motion users.
+    renderer.render(scene, camera);
+  } else {
+    rafId = requestAnimationFrame(frame);
+    // Pause rendering when the tab is hidden.
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      } else if (rafId === null) {
+        rafId = requestAnimationFrame(frame);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

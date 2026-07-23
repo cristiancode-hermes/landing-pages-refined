@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wayfind — offline maps that outlast your signal</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='oklch%280.48%200.14%2055%29'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Gabarito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(0.965 0.012 70);
+    --card: oklch(0.99 0.007 70);
+    --paper-deep: oklch(0.935 0.015 70);
+    --ink: oklch(0.32 0.025 250);
+    --ink-soft: oklch(0.45 0.02 250);
+    --orange: oklch(0.60 0.16 55);
+    --orange-deep: oklch(0.48 0.14 55);
+    --brown: oklch(0.42 0.05 60);
+    --contour: oklch(0.845 0.028 68);
+    --contour-index: oklch(0.76 0.04 65);
+    --hairline: oklch(0.885 0.02 70);
+    --z-topo: 0;
+    --z-hero: 1;
+    --z-header: 10;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Gabarito", system-ui, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--orange); color: oklch(1 0 0); }
+
+  a { color: var(--orange-deep); }
+  a:hover { color: var(--brown); }
+
+  :focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { width: min(70rem, calc(100% - 3rem)); margin-inline: auto; }
+
+  h1, h2, h3 {
+    font-family: "Archivo", system-ui, sans-serif;
+    font-weight: 800;
+    text-wrap: balance;
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: oklch(0.965 0.012 70 / 0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    text-decoration: none;
+    color: var(--ink);
+    font-family: "Archivo", system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+  .wordmark svg { display: block; }
+  .site-nav { display: flex; gap: 1.6rem; font-size: 0.95rem; font-weight: 500; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { color: var(--ink-soft); text-decoration: none; transition: color 0.35s var(--ease-out-expo); }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--orange-deep); }
+  .head-cta {
+    background: var(--orange-deep);
+    color: oklch(0.99 0 0);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 999px;
+    transition: background 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo); white-space: nowrap; flex-shrink: 0; }
+  .head-cta:hover { background: var(--orange); transform: translateY(-1px); color: oklch(0.99 0 0); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .topo {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-topo);
+    width: 100%;
+    height: 100%;
+  }
+  .topo path.contour { fill: none; stroke: var(--contour); stroke-width: 1.5; }
+  .topo path.index { fill: none; stroke: var(--contour-index); stroke-width: 2.5; }
+  .route-line {
+    fill: none;
+    stroke: var(--orange);
+    stroke-width: 4.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .hero.anim .route-line {
+    stroke-dasharray: var(--len);
+    stroke-dashoffset: var(--len);
+    animation: draw 2.6s var(--ease-out-expo) 0.4s forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .wpt { fill: var(--orange-deep); stroke: oklch(0.99 0 0); stroke-width: 2.5; }
+  .hero.anim .wpt { opacity: 0; animation: pop 0.5s var(--ease-out-expo) forwards; }
+  .hero.anim .wpt.w1 { animation-delay: 0.7s; }
+  .hero.anim .wpt.w2 { animation-delay: 1.6s; }
+  .hero.anim .wpt.w3 { animation-delay: 2.7s; }
+  @keyframes pop {
+    0% { opacity: 0; transform: scale(0.3); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: var(--z-hero);
+    padding-block: clamp(4rem, 10vw, 8rem) clamp(2.5rem, 5vw, 4rem);
+    max-width: 44rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 900;
+  }
+  .hero h1 .trail { color: var(--orange-deep); }
+  .hero .lede {
+    margin-top: 1.3rem;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 36rem;
+    text-wrap: pretty;
+  }
+  .hero-actions { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+  .btn {
+    background: var(--orange-deep);
+    color: oklch(0.99 0 0);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.85rem 1.7rem;
+    border-radius: 999px;
+    transition: background 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo);
+  }
+  .btn:hover { background: var(--orange); transform: translateY(-2px); }
+  .btn-ghost {
+    color: var(--brown);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 2px solid var(--orange);
+    padding-bottom: 2px;
+  }
+  .size-note {
+    margin-top: 1.6rem;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    max-width: 36rem;
+  }
+  .size-note .count {
+    font-family: "Archivo", system-ui, sans-serif;
+    font-weight: 800;
+    color: var(--orange-deep);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* elevation profile */
+  .elev {
+    position: relative;
+    z-index: var(--z-hero);
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .elev svg { display: block; width: 100%; height: auto; }
+  .elev .fill { fill: oklch(0.60 0.16 55 / 0.16); }
+  .elev .line { fill: none; stroke: var(--orange-deep); stroke-width: 2.5; }
+  .hero.anim .elev-clip { animation: elevfill 2.2s var(--ease-out-expo) 2.4s both; }
+  @keyframes elevfill {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  .elev figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- sections ---------- */
+  section.block { padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .block.tint { background: var(--paper-deep); border-block: 1px solid var(--hairline); }
+  h2 {
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.8rem;
+  }
+  .intro { color: var(--ink-soft); max-width: 38rem; margin-bottom: 2.4rem; text-wrap: pretty; font-size: 1.08rem; }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 4.5rem);
+    align-items: center;
+  }
+  .split figure img { width: 100%; height: auto; display: block; border-radius: 12px; }
+  .split figcaption { margin-top: 0.7rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .split p + p { margin-top: 1em; }
+  .split .body { max-width: 34rem; text-wrap: pretty; }
+
+  /* map packs — index-sheet rows */
+  .packs { list-style: none; }
+  .packs li {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto auto;
+    gap: 1.25rem;
+    align-items: baseline;
+    padding-block: 1.2rem;
+  }
+  .packs li + li { border-top: 1px solid var(--hairline); }
+  .packs .region { font-family: "Archivo", system-ui, sans-serif; font-weight: 800; font-size: 1.2rem; letter-spacing: -0.015em; }
+  .packs .what { color: var(--ink-soft); font-size: 0.97rem; }
+  .packs .size { color: var(--brown); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .packs .price { font-family: "Archivo", system-ui, sans-serif; font-weight: 800; color: var(--orange-deep); white-space: nowrap; }
+
+  /* battery table */
+  .battery { width: 100%; border-collapse: collapse; }
+  .battery th, .battery td {
+    text-align: left;
+    padding: 1rem 1rem 1rem 0;
+    vertical-align: top;
+  }
+  .battery thead th {
+    font-family: "Archivo", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--brown);
+    border-bottom: 2px solid var(--brown);
+  }
+  .battery tbody tr + tr td { border-top: 1px solid var(--hairline); }
+  .battery td.mode { font-weight: 600; }
+  .battery td.num { font-family: "Archivo", system-ui, sans-serif; font-weight: 800; color: var(--orange-deep); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .honest {
+    margin-top: 1.8rem;
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    max-width: 40rem;
+  }
+  .honest strong { color: var(--orange-deep); }
+
+  /* beacon */
+  .beacon-list { list-style: none; margin-top: 1.4rem; }
+  .beacon-list li { padding-block: 0.9rem; display: flex; gap: 0.9rem; align-items: baseline; }
+  .beacon-list li + li { border-top: 1px solid var(--hairline); }
+  .beacon-list .tick { color: var(--orange-deep); font-weight: 700; }
+
+  /* pricing */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  .tier {
+    background: var(--card);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .tier.best {
+    background: var(--orange-deep);
+    color: oklch(0.99 0 0);
+    border-color: var(--orange-deep);
+  }
+  .tier h3 { font-size: 1.35rem; letter-spacing: -0.015em; }
+  .tier .amount {
+    font-family: "Archivo", system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 2.4rem;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .tier .amount small { font-size: 1rem; font-weight: 700; }
+  .tier p { font-size: 0.97rem; color: var(--ink-soft); text-wrap: pretty; }
+  .tier.best p { color: oklch(0.93 0.02 55); }
+  .tier .go {
+    margin-top: auto;
+    padding-top: 0.9rem;
+    font-weight: 700;
+  }
+  .tier.best .go { color: oklch(0.99 0 0); }
+
+  /* footer */
+  .site-foot {
+    border-top: 1px solid var(--hairline);
+    padding-block: 2rem;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px) {
+    .split { grid-template-columns: 1fr; }
+    .split figure { order: -1; }
+    .site-nav { display: none; }
+  }
+  @media (max-width: 560px) {
+    .packs li { grid-template-columns: minmax(0, 1fr) auto; }
+    .packs .what { grid-column: 1 / -1; }
+    .battery thead { display: none; }
+    .battery, .battery tbody, .battery tr, .battery td { display: block; width: 100%; }
+    .battery td { padding: 0.35rem 0; }
+    .battery td.num { padding-bottom: 1rem; }
+    .battery tbody tr + tr td:first-child { border-top: 1px solid var(--hairline); padding-top: 1rem; }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .hero.anim .route-line { animation: none; stroke-dashoffset: 0; }
+    .hero.anim .wpt { animation: none; opacity: 1; }
+    .hero.anim .elev-clip { animation: none; clip-path: inset(0 0 0 0); }
+    .head-cta, .btn, .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+    .head-cta:hover, .btn:hover { transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  .head-cta {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    .site-nav a:not(.head-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="Wayfind home">
+      <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true">
+        <circle cx="13" cy="13" r="11" fill="none" stroke="oklch(0.48 0.14 55)" stroke-width="2.5"/>
+        <path d="M13 5 L17 17 L13 14.2 L9 17 Z" fill="oklch(0.48 0.14 55)"/>
+      </svg>
+      Wayfind
+    </a>
+    <nav class="site-nav" aria-label="Sections">
+      <a href="#packs">Map packs</a>
+      <a href="#battery">Battery</a>
+      <a href="#beacon">Beacons</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <a class="head-cta" href="#pricing">Get the app</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <svg class="topo" viewBox="0 0 1200 760" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <!-- contour field -->
+      <path class="contour" d="M-40 120 C 180 60, 420 90, 640 40 S 1080 30, 1260 90"/>
+      <path class="contour" d="M-40 200 C 160 150, 380 190, 600 140 S 1060 120, 1260 180"/>
+      <path class="index"   d="M-40 290 C 150 250, 360 300, 580 250 S 1040 230, 1260 280"/>
+      <path class="contour" d="M-40 380 C 140 350, 340 410, 560 360 S 1020 340, 1260 390"/>
+      <path class="contour" d="M-40 470 C 130 450, 330 510, 550 470 S 1000 450, 1260 500"/>
+      <path class="index"   d="M-40 560 C 120 550, 320 610, 540 570 S 980 560, 1260 600"/>
+      <path class="contour" d="M-40 650 C 110 650, 310 700, 530 670 S 960 660, 1260 700"/>
+      <path class="contour" d="M-40 740 C 100 750, 300 790, 520 770 S 940 760, 1260 790"/>
+      <!-- a hill, nested contours -->
+      <path class="contour" d="M820 180 c 60 -50, 170 -50, 210 10 c 40 60, -10 140, -100 150 c -90 10, -160 -60, -110 -160 Z"/>
+      <path class="index"   d="M850 210 c 40 -35, 120 -35, 150 5 c 30 45, -5 105, -75 112 c -70 7, -115 -47, -75 -117 Z"/>
+      <path class="contour" d="M885 240 c 25 -22, 78 -22, 98 4 c 20 28, -4 66, -48 70 c -44 4, -72 -30, -50 -74 Z"/>
+      <!-- the route -->
+      <path class="route-line" id="route"
+        d="M40 700 C 180 640, 240 520, 380 480 C 520 440, 560 560, 700 500 C 840 440, 860 300, 1000 260 C 1080 238, 1130 250, 1170 200"/>
+      <circle class="wpt w1" cx="40" cy="700" r="8"/>
+      <circle class="wpt w2" cx="700" cy="500" r="8"/>
+      <circle class="wpt w3" cx="1170" cy="200" r="8"/>
+    </svg>
+
+    <div class="wrap">
+      <div class="hero-inner">
+        <h1 id="hero-title">Your map shouldn't end <span class="trail">where the signal does.</span></h1>
+        <p class="lede">Wayfind downloads the whole mountain before you leave the house. Trails, contours, bothies, water sources — all of it works in airplane mode, because that's where you actually are.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#pricing">Download Wayfind</a>
+          <a class="btn-ghost" href="#packs">Browse map packs</a>
+        </div>
+        <p class="size-note">The whole Lake District — 218 km², 214 fells, every wall and stile — downloads as <span class="count" id="sizeCount" data-target="38">0</span>&nbsp;MB. Less than four summit selfies.</p>
+      </div>
+
+      <figure class="elev">
+        <svg viewBox="0 0 1200 130" preserveAspectRatio="none" role="img" aria-label="Elevation profile of the route: a steady climb with two false summits, 612 metres of total ascent">
+          <g class="elev-clip">
+            <path class="fill" d="M0 118 L0 100 C 150 92, 220 70, 350 62 C 470 55, 520 80, 650 66 C 780 52, 830 24, 950 18 C 1040 14, 1120 20, 1200 8 L1200 118 Z"/>
+            <path class="line" d="M0 100 C 150 92, 220 70, 350 62 C 470 55, 520 80, 650 66 C 780 52, 830 24, 950 18 C 1040 14, 1120 20, 1200 8"/>
+          </g>
+        </svg>
+        <figcaption>Today's route: 14.2 km, 612 m of climb, two false summits. The profile fills in as the route downloads.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="story" aria-labelledby="story-title">
+    <div class="wrap split">
+      <div>
+        <h2 id="story-title">The dead zone is the point</h2>
+        <div class="body">
+          <p>In March, one of our testers lost signal eleven minutes up Helvellyn and didn't see a bar again for six hours. Nothing went wrong — that's the interesting part. The map kept working, the track kept logging, and the only thing that stopped was the group chat.</p>
+          <p>That's what Wayfind is for. Not emergencies — though it helps there too — but the ordinary, wonderful fact that the best places have no reception. We build the map for the 94% of the trail your carrier forgot.</p>
+          <p>Every pack is checked on foot. If a path on our map is wrong, someone on the team walked it wrong first, got wet, and fixed it.</p>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/trail-1/800/600" width="800" height="600"
+             alt="A single walker on a stony ridge path above the cloud line, no phone mast for miles" loading="lazy">
+        <figcaption>Helvellyn via Striding Edge. Signal: none. Map: fine.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block tint" id="packs" aria-labelledby="packs-title">
+    <div class="wrap">
+      <h2 id="packs-title">Map packs, by region</h2>
+      <p class="intro">Download once, keep forever. Every pack includes contours at 10 m, marked and unmarked trails, bothies, water sources, and the pubs that matter.</p>
+      <ul class="packs">
+        <li>
+          <span class="region">Lake District</span>
+          <span class="what">218 km², all 214 Wainwrights</span>
+          <span class="size">38 MB</span>
+          <span class="price">£3.99</span>
+        </li>
+        <li>
+          <span class="region">Snowdonia</span>
+          <span class="what">Eryri in full, slate quarries included</span>
+          <span class="size">29 MB</span>
+          <span class="price">£3.49</span>
+        </li>
+        <li>
+          <span class="region">Scottish Highlands</span>
+          <span class="what">282 Munros, bothy network, midgie reports</span>
+          <span class="size">61 MB</span>
+          <span class="price">£4.99</span>
+        </li>
+        <li>
+          <span class="region">Pyrenees — GR10</span>
+          <span class="what">The whole traverse, refuge to refuge</span>
+          <span class="size">54 MB</span>
+          <span class="price">£4.99</span>
+        </li>
+        <li>
+          <span class="region">Norway, all of it</span>
+          <span class="what">Every DNT hut and the trails between</span>
+          <span class="size">210 MB</span>
+          <span class="price">£9.99</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="battery" aria-labelledby="battery-title">
+    <div class="wrap">
+      <h2 id="battery-title">Battery math, honestly</h2>
+      <p class="intro">GPS is thirsty and we won't pretend otherwise. Here's exactly what Wayfind costs you, measured on a three-year-old phone in the rain:</p>
+      <table class="battery">
+        <thead>
+          <tr><th scope="col">What you're doing</th><th scope="col">What it costs</th><th scope="col">What that means</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mode">Navigating, screen on</td>
+            <td class="num">4% / hour</td>
+            <td>A full day of active guiding on one charge</td>
+          </tr>
+          <tr>
+            <td class="mode">Track logging, screen off</td>
+            <td class="num">1.2% / hour</td>
+            <td>Record the whole weekend, check at camp</td>
+          </tr>
+          <tr>
+            <td class="mode">Airplane mode + logging</td>
+            <td class="num">100% → 61%</td>
+            <td>Friday 18:00 to Sunday 09:00, one charge</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="honest"><strong>Straight talk:</strong> if your phone dies, the map dies with it. Above the tree line, in winter, carry a paper map and know how to read it. We sell software, not invincibility.</p>
+    </div>
+  </section>
+
+  <section class="block tint" id="beacon" aria-labelledby="beacon-title">
+    <div class="wrap split">
+      <figure>
+        <img src="https://picsum.photos/seed/trail-2/800/600" width="800" height="600"
+             alt="Two walkers checking a route at a cairn in low cloud, one phone in a waterproof case between them" loading="lazy">
+        <figcaption>Route check at the cairn. The beacon stays in the lid pocket, paired and ready.</figcaption>
+      </figure>
+      <div>
+        <h2 id="beacon-title">Talks to your rescue beacon</h2>
+        <div class="body">
+          <p>Wayfind pairs over Bluetooth with Garmin inReach and ZOLEO devices. If you trigger an SOS, your last synced position, your planned route, and your track log go with it — so rescue starts looking where you actually are.</p>
+          <ul class="beacon-list">
+            <li><span class="tick">→</span><span>SOS attaches your live track log, not just a single dot</span></li>
+            <li><span class="tick">→</span><span>Planned route shared automatically with your emergency contact at start time</span></li>
+            <li><span class="tick">→</span><span>Check-in messages pre-filled with your position and remaining distance</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="pricing" aria-labelledby="pricing-title">
+    <div class="wrap">
+      <h2 id="pricing-title">Pay for the map, not the permission</h2>
+      <p class="intro">No account required to walk. No ads on the trail. No "premium" compass.</p>
+      <div class="tiers">
+        <div class="tier">
+          <h3>First Park Free</h3>
+          <p class="amount">£0</p>
+          <p>One national park of your choice, forever, with every update. Enough to find out if we're telling the truth.</p>
+          <a class="go" href="#pricing">Start walking →</a>
+        </div>
+        <div class="tier best">
+          <h3>Annual</h3>
+          <p class="amount">£24<small> / year</small></p>
+          <p>Every pack, every region, every update for a year. Costs less than the parking at Pen y Pass.</p>
+          <a class="go" href="#pricing">Get a year →</a>
+        </div>
+        <div class="tier">
+          <h3>Lifetime</h3>
+          <p class="amount">£89</p>
+          <p>Pay once, walk forever. Includes every region we'll ever map — the Alps are coming this autumn.</p>
+          <a class="go" href="#pricing">Get lifetime →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot wrap">
+  <span>Wayfind — made by people who own too many head torches</span>
+  <span>Works best where your carrier doesn't</span>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var hero = document.querySelector(".hero");
+    var route = document.getElementById("route");
+    var count = document.getElementById("sizeCount");
+    var target = parseInt(count.dataset.target, 10);
+
+    if (reduce) {
+      // everything already visible; set the counter to its final value
+      count.textContent = String(target);
+      return;
+    }
+
+    // route draws itself: measure, then enable the CSS animation
+    var len = Math.ceil(route.getTotalLength());
+    route.style.setProperty("--len", len);
+    hero.classList.add("anim");
+
+    // download-size counter, eased like the route draw
+    var dur = 1400, start = null;
+    function tick(ts) {
+      if (start === null) start = ts;
+      var t = Math.min(1, (ts - start) / dur);
+      var eased = 1 - Math.pow(2, -10 * t); // expo out
+      count.textContent = String(Math.round(eased * target));
+      if (t < 1) requestAnimationFrame(tick);
+      else count.textContent = String(target);
+    }
+    window.setTimeout(function () { requestAnimationFrame(tick); }, 1800);
+  })();
+</script>
+
+</body>
+</html>

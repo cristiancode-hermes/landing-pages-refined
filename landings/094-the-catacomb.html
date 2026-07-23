@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Catacomb — three escape rooms under Old Mill Street. 60 minutes, honest odds.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Cutive+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: oklch(0.11 0.012 60);
+    --stone: oklch(0.17 0.015 60);
+    --stone-2: oklch(0.23 0.018 60);
+    --ink: oklch(0.93 0.015 90);
+    --muted: oklch(0.74 0.02 85);
+    --torch: oklch(0.76 0.14 70);
+    --torch-hot: oklch(0.86 0.12 75);
+    --teal: oklch(0.72 0.11 180);
+    --z-header: 10;
+    --z-torch: 1;
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--black);
+    color: var(--ink);
+    font-family: "Cutive Mono", "Courier New", monospace;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--torch); color: var(--black); }
+
+  :focus-visible {
+    outline: 2.5px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    width: min(66rem, calc(100% - 2.5rem));
+    margin-inline: auto;
+  }
+
+  h1, h2, h3 {
+    font-family: "Rozha One", Georgia, serif;
+    font-weight: 400;
+    line-height: 1.08;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  p { text-wrap: pretty; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--black);
+    border-bottom: 1px solid var(--stone-2);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.95rem;
+  }
+  .wordmark {
+    font-family: "Rozha One", serif;
+    font-size: 1.35rem;
+    color: var(--torch-hot);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+  .site-nav { display: flex; gap: 1.6rem; font-size: 0.85rem; flex-wrap: wrap; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-expo);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--teal); }
+
+  /* ---------- hero with torch light ---------- */
+  .hero {
+    position: relative;
+    min-height: min(84svh, 52rem);
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+  }
+  .hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.42) saturate(0.75);
+  }
+  /* two torch glows, each breathing on its own irregular rhythm */
+  .hero .torch-glow {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-torch);
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .torch-glow.left {
+    background: radial-gradient(38rem 30rem at 12% 78%, oklch(0.76 0.14 70 / 0.34), transparent 68%);
+    animation: torch-a 3.7s linear infinite;
+  }
+  .torch-glow.right {
+    background: radial-gradient(34rem 28rem at 88% 30%, oklch(0.76 0.14 70 / 0.26), transparent 70%);
+    animation: torch-b 5.3s linear infinite;
+  }
+  @keyframes torch-a {
+    0%, 100% { opacity: 1; }
+    7% { opacity: 0.72; } 9% { opacity: 0.96; }
+    31% { opacity: 1; } 33% { opacity: 0.6; } 35% { opacity: 0.98; }
+    58% { opacity: 0.85; } 60% { opacity: 1; }
+    83% { opacity: 0.68; } 86% { opacity: 0.94; }
+  }
+  @keyframes torch-b {
+    0%, 100% { opacity: 0.9; }
+    12% { opacity: 0.55; } 14% { opacity: 0.95; }
+    44% { opacity: 1; } 46% { opacity: 0.66; } 49% { opacity: 0.92; }
+    71% { opacity: 0.8; } 73% { opacity: 1; }
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-torch);
+    background: linear-gradient(to top, var(--black) 4%, transparent 55%);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(3rem, 9vh, 6rem);
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 9vw, 5.5rem);
+    max-width: 13ch;
+    margin-bottom: 1.2rem;
+    text-shadow: 0 2px 30px oklch(0.05 0.01 60 / 0.9);
+  }
+  .hero .lede {
+    max-width: 52ch;
+    color: var(--ink);
+    font-size: 1.02rem;
+  }
+  .hero .lede strong { color: var(--torch-hot); font-weight: 700; }
+
+  /* ---------- countdown demo ---------- */
+  .clock {
+    background: var(--stone);
+    border-block: 1px solid var(--stone-2);
+    padding-block: clamp(2.5rem, 6vh, 4rem);
+  }
+  .clock .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .clock-face {
+    font-family: "Cutive Mono", monospace;
+    font-size: clamp(3rem, 9vw, 5rem);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    color: var(--teal);
+    line-height: 1;
+    transition: color 0.5s var(--ease-expo);
+  }
+  .clock-face.is-low { color: var(--torch-hot); }
+  .clock-copy { max-width: 40ch; }
+  .clock-copy h2 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin-bottom: 0.6rem; }
+  .clock-copy p { color: var(--muted); font-size: 0.95rem; }
+  .clock-start {
+    font: inherit;
+    font-weight: 700;
+    color: var(--black);
+    background: var(--teal);
+    border: none;
+    border-radius: 999px;
+    padding: 0.85rem 2rem;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-expo), background 0.35s var(--ease-expo);
+  }
+  .clock-start:hover { background: var(--torch-hot); transform: translateY(-2px); }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 9vh, 6rem); }
+  section > .wrap > h2 {
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    margin-bottom: clamp(1.5rem, 4vh, 2.75rem);
+  }
+  section h2 em { font-style: normal; color: var(--torch-hot); }
+
+  /* ---------- rooms ---------- */
+  .rooms {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .room {
+    background: var(--stone);
+    border: 1px solid var(--stone-2);
+    border-radius: 12px;
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+  }
+  .room h3 { font-size: 1.7rem; color: var(--torch-hot); }
+  .room .meta {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .room .rate {
+    font-size: 2.1rem;
+    font-family: "Rozha One", serif;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .room .rate small {
+    font-family: "Cutive Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: block;
+    margin-top: 0.3rem;
+  }
+  .room p { font-size: 0.92rem; color: var(--muted); }
+
+  /* the lock that clicks on hover */
+  .lock {
+    width: 2.6rem;
+    height: auto;
+    display: block;
+    color: var(--teal);
+    cursor: pointer;
+    background: none;
+    border: 1px solid var(--stone-2);
+    border-radius: 8px;
+    padding: 0.45rem;
+    transition: color 0.35s var(--ease-expo), border-color 0.35s var(--ease-expo);
+  }
+  .lock:hover, .lock:focus-visible { color: var(--torch-hot); border-color: var(--torch); }
+  .lock .shackle {
+    transform-origin: 12px 11px;
+    transition: transform 0.5s var(--ease-expo);
+  }
+  .lock:hover .shackle, .lock:focus-visible .shackle {
+    transform: rotate(-32deg) translateY(-1.5px);
+  }
+  .lock .body { transition: transform 0.5s var(--ease-expo); }
+  .lock:hover .body, .lock:focus-visible .body { transform: translateY(1px); }
+
+  /* ---------- policy ---------- */
+  .policy { background: var(--stone); border-block: 1px solid var(--stone-2); }
+  .policy .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  @media (max-width: 760px) { .policy .wrap { grid-template-columns: 1fr; } }
+  .policy h2 { font-size: clamp(1.8rem, 5vw, 3rem); margin-bottom: 1rem; }
+  .policy p { color: var(--muted); max-width: 54ch; }
+  .policy p + p { margin-top: 1rem; }
+  .policy strong { color: var(--ink); }
+  .policy figure {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--stone-2);
+  }
+  .policy figure img { display: block; width: 100%; height: auto; filter: brightness(0.75) saturate(0.8); }
+  .policy figcaption { padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--muted); }
+
+  /* ---------- booking calendar ---------- */
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+  .cal-day {
+    background: var(--stone);
+    border: 1px solid var(--stone-2);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+  .cal-day h3 {
+    font-family: "Cutive Mono", monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--stone-2);
+    padding-bottom: 0.5rem;
+  }
+  .slots { display: grid; gap: 0.45rem; }
+  .slot {
+    font: inherit;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 0.45rem 0.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--teal);
+    background: transparent;
+    color: var(--teal);
+    cursor: pointer;
+    transition: background 0.3s var(--ease-expo), color 0.3s var(--ease-expo), transform 0.3s var(--ease-expo);
+  }
+  .slot:hover { background: var(--teal); color: var(--black); transform: translateY(-1px); }
+  .slot[aria-pressed="true"] { background: var(--torch-hot); border-color: var(--torch-hot); color: var(--black); }
+  .slot:disabled {
+    border-color: var(--stone-2);
+    color: oklch(0.5 0.02 80);
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+  .slot:disabled:hover { background: transparent; transform: none; }
+  .cal-note { margin-top: 1.5rem; color: var(--muted); font-size: 0.88rem; max-width: 56ch; }
+  .cal-note strong { color: var(--torch-hot); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--stone-2);
+    padding-block: 2.25rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  footer a { color: var(--teal); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .hero .torch-glow { animation: none; opacity: 0.85; }
+    .lock .shackle, .lock .body, .clock-face, .slot, .clock-start, .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+    .lock:hover .shackle, .lock:focus-visible .shackle { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">The Catacomb</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#rooms">The Rooms</a>
+      <a href="#policy">The Rules</a>
+      <a href="#book">Book a Descent</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Descend">
+    <img src="https://picsum.photos/seed/catacomb-1/1600/900" width="1600" height="900"
+         alt="A low stone corridor swallowed by darkness, lit only by two wavering torch flames on the walls" fetchpriority="high">
+    <div class="torch-glow left" aria-hidden="true"></div>
+    <div class="torch-glow right" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <h1>Sixty minutes below Old Mill Street.</h1>
+      <p class="lede">
+        Three rooms, carved into a real 1880s grain cellar. No actors grabbing your arm,
+        no strobe lights — just stone, lamplight, and puzzles that respect you.
+        <strong>The door locks behind you. It has never not opened.</strong>
+      </p>
+    </div>
+  </section>
+
+  <div class="clock" aria-label="Countdown demonstration">
+    <div class="wrap">
+      <output class="clock-face" id="clockFace" aria-live="polite">60:00</output>
+      <div class="clock-copy">
+        <h2>Feel the clock before you pay for it.</h2>
+        <p>This is the exact timer that hangs in each room. Start it. Notice how the last ten minutes turn amber — in the cellar, so does the lamplight.</p>
+      </div>
+      <button class="clock-start" id="clockStart" type="button">Start the clock</button>
+    </div>
+  </div>
+
+  <section id="rooms" aria-labelledby="rooms-h">
+    <div class="wrap">
+      <h2 id="rooms-h">Three rooms, <em>honest odds</em></h2>
+      <div class="rooms">
+        <article class="room">
+          <button class="lock" type="button" aria-label="Hover the padlock — this one opens for you">
+            <svg viewBox="0 0 24 24" width="100%" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+              <path class="shackle" d="M7 11 V7.5 a5 5 0 0 1 10 0 V11"/>
+              <rect class="body" x="5" y="11" width="14" height="9" rx="2"/>
+              <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+          <h3>The Ossuary</h3>
+          <p class="meta">2–6 players · 60 min · good first descent</p>
+          <p class="rate">41% <small>of teams escape</small></p>
+          <p>A bone-sorter's workshop with a ledger that doesn't add up. Tactile puzzles, real padlocks, one wall that is not a wall. Most teams fail on the last door with ninety seconds left.</p>
+        </article>
+        <article class="room">
+          <button class="lock" type="button" aria-label="Hover the padlock — this one opens for you">
+            <svg viewBox="0 0 24 24" width="100%" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+              <path class="shackle" d="M7 11 V7.5 a5 5 0 0 1 10 0 V11"/>
+              <rect class="body" x="5" y="11" width="14" height="9" rx="2"/>
+              <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+          <h3>The Alchemist's Cell</h3>
+          <p class="meta">3–6 players · 60 min · puzzle-dense</p>
+          <p class="rate">28% <small>of teams escape</small></p>
+          <p>Distillation glassware, a cipher in four hands, and ingredients that must be combined in the order the ceiling tells you. Bring someone who reads instructions out loud.</p>
+        </article>
+        <article class="room">
+          <button class="lock" type="button" aria-label="Hover the padlock — this one opens for you">
+            <svg viewBox="0 0 24 24" width="100%" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+              <path class="shackle" d="M7 11 V7.5 a5 5 0 0 1 10 0 V11"/>
+              <rect class="body" x="5" y="11" width="14" height="9" rx="2"/>
+              <circle cx="12" cy="15.5" r="1.4" fill="currentColor" stroke="none"/>
+            </svg>
+          </button>
+          <h3>The Flooded Crypt</h3>
+          <p class="meta">4–8 players · 60 min · veterans only</p>
+          <p class="rate">12% <small>of teams escape</small></p>
+          <p>Knee-deep sound design (the room stays dry), a rising-water mechanic that physically removes puzzle pieces from reach, and a final lock that has beaten 47 stag parties in a row.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="policy" class="policy" aria-labelledby="policy-h">
+    <div class="wrap">
+      <div>
+        <h2 id="policy-h">The no-jump-scares policy</h2>
+        <p>
+          <strong>Nothing will touch you. Nothing will leap out.</strong> Dread doesn't
+          need a hand on your shoulder — it needs a locked door, a ticking lamp, and a
+          clue you walked past four times.
+        </p>
+        <p>
+          Every room has a lit exit path, a panic button within arm's reach at all times,
+          and a game master watching on camera who will talk you down or walk you out in
+          under a minute. Claustrophobic? Tell us at booking — we'll seat you near the door
+          and keep the lantern bright. Nobody has ever needed it twice.
+        </p>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/catacomb-2/800/600" width="800" height="600"
+             alt="Close view of a brass combination mechanism set into carved stone, its dials worn smooth by hundreds of hands" loading="lazy">
+        <figcaption>The Ossuary's third lock. Brass, 1962, oiled weekly. It clicks loud enough to hear from the corridor.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="book" aria-labelledby="book-h">
+    <div class="wrap">
+      <h2 id="book-h">Book a descent</h2>
+      <div class="cal-grid" id="calGrid">
+        <div class="cal-day">
+          <h3>THU 24</h3>
+          <div class="slots">
+            <button class="slot" type="button" aria-pressed="false">18:00</button>
+            <button class="slot" type="button" aria-pressed="false" disabled>19:30</button>
+            <button class="slot" type="button" aria-pressed="false">21:00</button>
+          </div>
+        </div>
+        <div class="cal-day">
+          <h3>FRI 25</h3>
+          <div class="slots">
+            <button class="slot" type="button" aria-pressed="false">18:00</button>
+            <button class="slot" type="button" aria-pressed="false">19:30</button>
+            <button class="slot" type="button" aria-pressed="false" disabled>21:00</button>
+          </div>
+        </div>
+        <div class="cal-day">
+          <h3>SAT 26</h3>
+          <div class="slots">
+            <button class="slot" type="button" aria-pressed="false">14:00</button>
+            <button class="slot" type="button" aria-pressed="false" disabled>16:00</button>
+            <button class="slot" type="button" aria-pressed="false" disabled>18:00</button>
+            <button class="slot" type="button" aria-pressed="false">20:00</button>
+          </div>
+        </div>
+        <div class="cal-day">
+          <h3>SUN 27</h3>
+          <div class="slots">
+            <button class="slot" type="button" aria-pressed="false">13:00</button>
+            <button class="slot" type="button" aria-pressed="false">15:00</button>
+            <button class="slot" type="button" aria-pressed="false">17:00</button>
+          </div>
+        </div>
+        <div class="cal-day">
+          <h3>MON 28</h3>
+          <div class="slots">
+            <button class="slot" type="button" aria-pressed="false">18:00</button>
+            <button class="slot" type="button" aria-pressed="false">19:30</button>
+          </div>
+        </div>
+        <div class="cal-day">
+          <h3>TUE 29</h3>
+          <div class="slots">
+            <button class="slot" type="button" aria-pressed="false" disabled>18:00</button>
+            <button class="slot" type="button" aria-pressed="false">19:30</button>
+          </div>
+        </div>
+      </div>
+      <p class="cal-note" id="calNote">
+        Pick a slot above to hold it — <strong>$32 per player, rooms private to your party,
+        no strangers ever added.</strong> Struck-through slots are sealed. Arrive fifteen
+        minutes early; the stairs down are steep and the briefing is worth hearing.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>The Catacomb · 9 Old Mill Street, down the iron stairs · Wed–Sun</span>
+    <span>Questions from the surface: <a href="mailto:keeper@thecatacomb.example">keeper@thecatacomb.example</a></span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    // --- 60:00 countdown demo ---
+    var face = document.getElementById("clockFace");
+    var startBtn = document.getElementById("clockStart");
+    var remaining = 3600;
+    var timer = null;
+
+    function render() {
+      var m = Math.floor(remaining / 60);
+      var s = remaining % 60;
+      face.textContent = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+      face.classList.toggle("is-low", remaining <= 600 && remaining > 0);
+    }
+
+    function stop(label) {
+      if (timer) { clearInterval(timer); timer = null; }
+      startBtn.textContent = label;
+    }
+
+    startBtn.addEventListener("click", function () {
+      if (timer) { // reset on a second press
+        remaining = 3600;
+        render();
+        return;
+      }
+      remaining = 3600;
+      render();
+      startBtn.textContent = "Reset the clock";
+      timer = setInterval(function () {
+        remaining -= 1;
+        render();
+        if (remaining <= 0) {
+          face.textContent = "00:00";
+          face.classList.add("is-low");
+          stop("Start the clock");
+        }
+      }, 1000);
+    });
+
+    // Pause the demo when the tab is hidden; the clock waits for you, unlike the real one.
+    document.addEventListener("visibilitychange", function () {
+      if (!timer) return;
+      if (document.hidden) {
+        clearInterval(timer);
+        timer = null;
+        startBtn.textContent = "Resume the clock";
+        startBtn.dataset.paused = "1";
+      } else if (startBtn.dataset.paused) {
+        delete startBtn.dataset.paused;
+        timer = setInterval(function () {
+          remaining -= 1;
+          render();
+          if (remaining <= 0) {
+            face.textContent = "00:00";
+            face.classList.add("is-low");
+            stop("Start the clock");
+          }
+        }, 1000);
+      }
+    });
+
+    // --- booking slots: hold/release, single selection ---
+    var slots = document.querySelectorAll(".slot:not([disabled])");
+    var note = document.getElementById("calNote");
+    var original = note.innerHTML;
+    slots.forEach(function (slot) {
+      slot.addEventListener("click", function () {
+        var wasHeld = slot.getAttribute("aria-pressed") === "true";
+        slots.forEach(function (s) { s.setAttribute("aria-pressed", "false"); });
+        if (wasHeld) {
+          note.innerHTML = original;
+          return;
+        }
+        slot.setAttribute("aria-pressed", "true");
+        var day = slot.closest(".cal-day").querySelector("h3").textContent;
+        note.innerHTML = "<strong>" + day + " at " + slot.textContent +
+          " is held for you for ten minutes.</strong> $32 per player, paid on arrival or by card link — " +
+          "the room is yours alone either way.";
+      });
+    });
+
+    // --- padlocks: a tiny click of acknowledgment on press ---
+    document.querySelectorAll(".lock").forEach(function (lock) {
+      lock.addEventListener("click", function () {
+        lock.style.transform = "translateY(1px)";
+        setTimeout(function () { lock.style.transform = ""; }, 140);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

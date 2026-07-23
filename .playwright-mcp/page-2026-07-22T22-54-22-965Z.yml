@@ -1,0 +1,128 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+        - text: Vermouth
+        - emphasis [ref=e5]: Hours
+      - navigation "Main" [ref=e6]:
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "The ritual" [ref=e9] [cursor=pointer]:
+              - /url: "#ritual"
+          - listitem [ref=e10]:
+            - link "Serves" [ref=e11] [cursor=pointer]:
+              - /url: "#serves"
+          - listitem [ref=e12]:
+            - link "Stockists" [ref=e13] [cursor=pointer]:
+              - /url: "#stockists"
+      - link "Find a bottle" [ref=e14] [cursor=pointer]:
+        - /url: "#stockists"
+  - main [ref=e15]:
+    - region [ref=e16]:
+      - generic [ref=e17]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: Bottled in Milan, poured everywhere
+          - heading "Six o'clock is a place. We bottle it." [level=1] [ref=e20]
+          - paragraph [ref=e21]: Vermouth Hours is a bitter-orange aperitivo made for the best sixty minutes of the day — the ones where work is done, the table is set outside, and nobody is in a hurry. Twenty-one botanicals, one orange slice, zero emails.
+          - generic [ref=e22]:
+            - link "How to pour it" [ref=e23] [cursor=pointer]:
+              - /url: "#serves"
+            - link "Where to buy it" [ref=e24] [cursor=pointer]:
+              - /url: "#stockists"
+        - generic [ref=e25]:
+          - 'figure "The house pour: Vermouth Hours, prosecco, soda, one thick orange slice." [ref=e26]':
+            - img "Two spritz glasses glowing bitter orange on a white tablecloth, late-afternoon light" [ref=e27]
+          - generic "Vermouth Hours bottle, 750 millilitres, 18 percent alcohol" [ref=e29]:
+            - generic [ref=e34]:
+              - text: VERMOUTH HOURS
+              - generic [ref=e35]: Bitter Orange · 18%
+            - paragraph [ref=e36]: 750 ml, 18% vol. €24 at the shop, less by the case.
+    - region [ref=e37]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - heading "The ritual of the hour" [level=2] [ref=e41]
+          - paragraph [ref=e42]: In Milan the aperitivo is not a drink, it's an appointment. The piazza fills, the light goes long and orange, and the first spritz arrives with a little plate of something salty. We made Vermouth Hours for that exact window — and wrote its schedule on the label, because rituals deserve timetables.
+          - list [ref=e43]:
+            - listitem [ref=e44]:
+              - generic [ref=e45]: 17:45
+              - generic [ref=e46]: Glasses out of the freezer. Yes, the freezer.
+            - listitem [ref=e47]:
+              - generic [ref=e48]: 18:00
+              - generic [ref=e49]: First pour. Phones face-down.
+            - listitem [ref=e50]:
+              - generic [ref=e51]: 18:20
+              - generic [ref=e52]: Olives, crisps, a small argument about football.
+            - listitem [ref=e53]:
+              - generic [ref=e54]: 19:00
+              - generic [ref=e55]: Second pour, or dinner. Both correct.
+        - figure "Piazza hours, as observed from table twelve." [ref=e56]:
+          - img "A piazza table at golden hour with spritz glasses and a small plate of green olives" [ref=e57]
+    - region [ref=e59]:
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - heading "Three ways to keep the hour" [level=2] [ref=e62]
+          - paragraph [ref=e63]: "All three start the same way: a cold glass and no distractions."
+        - list [ref=e64]:
+          - listitem [ref=e65]:
+            - generic [ref=e66]: The Piazza.
+            - paragraph [ref=e67]:
+              - strong [ref=e68]: 60 ml Vermouth Hours, 90 ml prosecco, 30 ml soda.
+              - text: Built over ice in a big wine glass, orange slice dropped in last so it floats like a little sun. The one in the photograph, the one on the label.
+            - generic [ref=e69]: €7 at the bar
+          - listitem [ref=e70]:
+            - generic [ref=e71]: The Balcony.
+            - paragraph [ref=e72]:
+              - strong [ref=e73]: 75 ml Vermouth Hours over one large cube, nothing else.
+              - text: For when the bottle just came home and the freezer glass is still foggy. Bitter first, then orange peel, then a slow vanilla finish.
+            - generic [ref=e74]: €5 at the bar
+          - listitem [ref=e75]:
+            - generic [ref=e76]: The Long Evening.
+            - paragraph [ref=e77]:
+              - strong [ref=e78]: 50 ml Vermouth Hours, 150 ml tonic, a rosemary sprig slapped awake.
+              - text: Lower, longer, built for the second hour when dinner keeps not happening and nobody minds.
+            - generic [ref=e79]: €6.50 at the bar
+    - region [ref=e80]:
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - heading "Where the hour is kept" [level=2] [ref=e83]
+          - paragraph [ref=e84]: Bottles on shelves, spritzes on terraces. Hours are local, naturally.
+        - table [ref=e85]:
+          - rowgroup [ref=e86]:
+            - row [ref=e87]:
+              - columnheader "Stockist" [ref=e88]
+              - columnheader "City" [ref=e89]
+              - columnheader "Keeps the hour" [ref=e90]
+          - rowgroup [ref=e91]:
+            - row [ref=e92]:
+              - cell "Enoteca Lunetta" [ref=e93]
+              - cell "Milano, Brera" [ref=e94]
+              - cell "Mon–Sat, 17:30–20:00 on the terrace" [ref=e95]
+            - row [ref=e96]:
+              - cell "Bar Fondamenta" [ref=e97]
+              - cell "Torino, Vanchiglia" [ref=e98]
+              - cell "Daily, 18:00 sharp, with farinata" [ref=e99]
+            - row [ref=e100]:
+              - cell "Alimentari Rossi & Figli" [ref=e101]
+              - cell "Bologna, Santo Stefano" [ref=e102]
+              - cell "Bottles only, Thu–Sat till 19:30" [ref=e103]
+            - row [ref=e104]:
+              - cell "The Orange Counter" [ref=e105]
+              - cell "London, Peckham" [ref=e106]
+              - cell "Wed–Sun, spritz hours 17:00–19:00" [ref=e107]
+            - row [ref=e108]:
+              - cell "Café Zeezicht" [ref=e109]
+              - cell "Amsterdam, De Pijp" [ref=e110]
+              - cell "Daily from 16:30, canal-side" [ref=e111]
+        - paragraph [ref=e112]:
+          - text: Run a bar or a bottle shop? Write to
+          - link "ciao@vermouthhours.example" [ref=e113] [cursor=pointer]:
+            - /url: mailto:ciao@vermouthhours.example
+          - text: — we ship cases of six across Europe.
+  - contentinfo [ref=e114]:
+    - generic [ref=e115]:
+      - link [ref=e116] [cursor=pointer]:
+        - /url: "#top"
+        - text: Vermouth
+        - emphasis [ref=e117]: Hours
+      - generic [ref=e118]: Drink the hour responsibly. 18% vol, serve cold, never rush. © 2026 Vermouth Hours S.r.l.

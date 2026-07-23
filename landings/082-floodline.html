@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Floodline — the water is rising; here is the data</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='4' y='10' width='16' height='4' fill='oklch(0.45 0.11 232)'/%3E%3Crect x='4' y='17' width='10' height='3' fill='oklch(0.72 0.14 85)'/%3E%3Crect x='4' y='3' width='13' height='4' fill='oklch(0.45 0.11 232)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.965 0.006 232);
+    --ink: oklch(0.22 0.02 250);
+    --ink-muted: oklch(0.42 0.02 250);
+    --flood: oklch(0.45 0.11 232);
+    --flood-deep: oklch(0.35 0.09 235);
+    --flood-pale: oklch(0.91 0.025 232);
+    --amber: oklch(0.72 0.14 85);
+    --amber-deep: oklch(0.52 0.11 78);
+    --line: oklch(0.89 0.008 240);
+    --display: "Archivo", sans-serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+    --step-2: clamp(1.56rem, 1.35rem + 1vw, 2.1rem);
+    --step-3: clamp(1.95rem, 1.5rem + 2.2vw, 3.1rem);
+    --step-4: clamp(2.44rem, 1.6rem + 4vw, 4.5rem);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  a { color: var(--flood); }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--flood);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1160px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+
+  .btn {
+    display: inline-block;
+    background: var(--flood);
+    color: oklch(0.99 0 0);
+    font-weight: 700;
+    font-size: var(--step--1);
+    text-decoration: none;
+    padding: 0.85rem 1.75rem;
+    border-radius: 999px;
+    border: 0;
+    cursor: pointer;
+    transition: background 0.3s var(--ease), transform 0.3s var(--ease); white-space: nowrap; flex-shrink: 0; }
+  .btn:hover { background: var(--flood-deep); transform: translateY(-2px); }
+  .btn.ghost {
+    background: transparent;
+    border: 1px solid var(--flood);
+    color: var(--flood);
+  }
+  .btn.ghost:hover { background: var(--flood-pale); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.93);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand em { color: var(--flood); font-style: normal; }
+  .site-nav { display: flex; align-items: center; gap: 1.75rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 500;
+    transition: color 0.3s var(--ease);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--flood); }
+  @media (max-width: 780px) { .site-nav a:not(.btn) { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; padding-block: clamp(4rem, 9vw, 7rem) clamp(3rem, 6vw, 5rem); }
+  /* literal staff-gauge motif along the hero's left edge */
+  .gauge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 42px;
+    border-right: 2px solid var(--flood);
+    color: var(--flood);
+    font-size: 0.6rem;
+    font-weight: 600;
+    pointer-events: none;
+  }
+  .gauge i {
+    position: absolute;
+    left: 0;
+    height: 2px;
+    background: var(--flood);
+    width: 12px;
+    font-style: normal;
+  }
+  .gauge i:nth-child(5n+1) { width: 22px; }
+  .gauge i span { position: absolute; left: 26px; top: -0.55em; display: none; }
+  .gauge i:nth-child(10n+1) span { display: block; }
+  @media (max-width: 700px) { .gauge { display: none; } }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .hero h1 { font-size: var(--step-4); margin-bottom: 1.5rem; }
+  .hero h1 .mark { color: var(--flood); }
+  .hero .lead {
+    font-size: var(--step-1);
+    color: var(--ink-muted);
+    max-width: 50ch;
+    margin-bottom: 2.25rem;
+    text-wrap: pretty;
+  }
+  .hero .lead strong { color: var(--ink); }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .hero-stat {
+    margin-top: 2.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    max-width: 46ch;
+  }
+  .hero-stat b { color: var(--amber-deep); font-weight: 700; }
+  .hero figure img { border-radius: 14px; }
+  .hero figcaption { margin-top: 0.75rem; font-size: var(--step--1); color: var(--ink-muted); }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- section heads ---------- */
+  .sect-head { max-width: 64ch; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .sect-head h2 { font-size: var(--step-3); margin-bottom: 1.1rem; }
+  .sect-head h2 .mark { color: var(--flood); }
+  .sect-head p { color: var(--ink-muted); max-width: 60ch; text-wrap: pretty; }
+  .sect-head p strong { color: var(--ink); }
+
+  /* ---------- tide chart ---------- */
+  .chart-sect { background: var(--surface); border-block: 1px solid var(--line); }
+  .chart-frame {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(1rem, 3vw, 2.5rem);
+  }
+  .chart-frame svg { width: 100%; height: auto; display: block; }
+  .tide-fill {
+    clip-path: inset(0 100% 0 0);
+  }
+  .chart-frame.in .tide-fill {
+    animation: sweep 2.6s var(--ease) 0.2s forwards;
+  }
+  @keyframes sweep {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1.25rem;
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+  .chart-legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .swatch { width: 22px; height: 3px; display: inline-block; }
+  .chart-note { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-muted); max-width: 68ch; }
+
+  /* ---------- counters ---------- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2.5rem;
+  }
+  .stat .num {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-3);
+    color: var(--flood);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  .stat .num .amber { color: var(--amber-deep); }
+  .stat h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0; }
+  .stat p { font-size: var(--step--1); color: var(--ink-muted); text-wrap: pretty; }
+
+  /* ---------- methodology ---------- */
+  .method { background: var(--surface); border-block: 1px solid var(--line); }
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2.5rem;
+  }
+  .method-item { border-top: 3px solid var(--flood); padding-top: 1.25rem; }
+  .method-item:nth-child(2) { border-top-color: var(--steel, var(--amber)); border-top-color: var(--amber); }
+  .method-item h3 { font-size: var(--step-1); margin-bottom: 0.75rem; }
+  .method-item p { color: var(--ink-muted); text-wrap: pretty; }
+
+  /* ---------- programs ---------- */
+  .programs { display: grid; gap: 1.5rem; }
+  .program {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  }
+  .program h3 { font-size: var(--step-1); margin-bottom: 0.75rem; }
+  .program .where {
+    font-size: var(--step--1);
+    font-weight: 700;
+    color: var(--flood);
+    margin-bottom: 0.5rem;
+  }
+  .program p { color: var(--ink-muted); font-size: var(--step-0); text-wrap: pretty; }
+  .budget { }
+  .budget .amount {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-2);
+    letter-spacing: -0.02em;
+  }
+  .budget .of { font-size: var(--step--1); color: var(--ink-muted); margin-bottom: 0.75rem; }
+  .budget-bar {
+    height: 10px;
+    background: var(--flood-pale);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .budget-bar i {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--flood);
+    border-radius: 999px;
+    transition: width 1.4s var(--ease);
+  }
+  .program.in .budget-bar i { width: var(--fill); }
+  .budget .pct { margin-top: 0.5rem; font-size: var(--step--1); color: var(--ink-muted); }
+  .budget .pct b { color: var(--amber-deep); }
+  @media (max-width: 800px) { .program { grid-template-columns: 1fr; } }
+
+  /* ---------- map pins ---------- */
+  .map-sect { background: var(--surface); border-block: 1px solid var(--line); }
+  .pin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .pin-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.5rem;
+  }
+  .pin-card h3 { font-size: 1.05rem; margin-bottom: 0.25rem; }
+  .pin-card .count { font-size: var(--step--1); color: var(--ink-muted); margin-bottom: 1rem; }
+  .pin-card .count b { color: var(--flood); }
+  .pin-card svg { width: 100%; height: auto; display: block; }
+  .pin-card.in .pin {
+    animation: pop 0.5s var(--ease) both;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ---------- report ---------- */
+  .report-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .report-grid p { color: var(--ink-muted); margin-bottom: 1.1rem; max-width: 56ch; text-wrap: pretty; }
+  .report-grid p strong { color: var(--ink); }
+  .report-facts { list-style: none; display: grid; gap: 0; }
+  .report-facts li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--step-0);
+  }
+  .report-facts li span:last-child { font-weight: 700; white-space: nowrap; }
+  .report-facts li .bad { color: var(--amber-deep); }
+  @media (max-width: 860px) { .report-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- donate ---------- */
+  .donate { background: var(--flood-deep); color: oklch(0.96 0.01 232); }
+  .donate .sect-head h2 { color: oklch(0.99 0 0); }
+  .donate .sect-head p { color: oklch(0.85 0.02 232); }
+  .donate-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .amounts { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+  .amt {
+    background: transparent;
+    border: 1px solid oklch(0.60 0.06 232);
+    color: oklch(0.96 0.01 232);
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: var(--step-0);
+    padding: 0.8rem 1.5rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+  .amt:hover { border-color: oklch(0.96 0.01 232); }
+  .amt[aria-pressed="true"] {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--ink);
+  }
+  .impact {
+    font-size: var(--step-1);
+    font-weight: 600;
+    color: oklch(0.99 0 0);
+    min-height: 2.6em;
+    text-wrap: pretty;
+  }
+  .alloc { display: grid; gap: 1.1rem; }
+  .alloc-row { display: grid; gap: 0.4rem; }
+  .alloc-row .lbl {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--step--1);
+    font-weight: 600;
+  }
+  .alloc-bar {
+    height: 12px;
+    background: oklch(0.28 0.05 235);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .alloc-bar i {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--amber);
+    transition: width 0.9s var(--ease);
+  }
+  .alloc-bar i.blue { background: oklch(0.68 0.09 222); }
+  .donate-cta { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .donate-cta .btn { background: var(--amber); color: var(--ink); }
+  .donate-cta .btn:hover { background: oklch(0.78 0.15 87); }
+  .donate-cta .note { font-size: var(--step--1); color: oklch(0.80 0.02 232); }
+  @media (max-width: 860px) { .donate-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- volunteer ---------- */
+  .vol-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .vol-grid p { color: var(--ink-muted); margin-bottom: 1.1rem; max-width: 54ch; text-wrap: pretty; }
+  .vol-grid p strong { color: var(--ink); }
+  .vol-grid figure img { border-radius: 14px; }
+  .vol-grid figcaption { margin-top: 0.75rem; font-size: var(--step--1); color: var(--ink-muted); }
+  @media (max-width: 860px) { .vol-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- footer ---------- */
+  .site-foot {
+    border-top: 1px solid var(--line);
+    padding-block: 2rem;
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+  .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  .site-foot .sig { color: var(--flood); font-weight: 600; }
+
+  /* ---------- reveals ---------- */
+  .reveal.in { animation: rise 0.9s var(--ease) both; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    .tide-fill { clip-path: inset(0 0 0 0); animation: none; }
+    .chart-frame.in .tide-fill { animation: none; }
+    .pin-card.in .pin, .reveal.in { animation: none; }
+    .program .budget-bar i, .program.in .budget-bar i { transition: none; width: var(--fill); }
+    .alloc-bar i { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Flood<em>line</em></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#data">The data</a>
+      <a href="#programs">Programs</a>
+      <a href="#report">Annual report</a>
+      <a class="btn" href="#donate">Donate</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="gauge" aria-hidden="true">
+      <i style="top:2%"><span>300</span></i><i style="top:6%"></i><i style="top:10%"></i><i style="top:14%"></i><i style="top:18%"></i>
+      <i style="top:22%"></i><i style="top:26%"></i><i style="top:30%"></i><i style="top:34%"></i><i style="top:38%"></i>
+      <i style="top:42%"><span>200</span></i><i style="top:46%"></i><i style="top:50%"></i><i style="top:54%"></i><i style="top:58%"></i>
+      <i style="top:62%"></i><i style="top:66%"></i><i style="top:70%"></i><i style="top:74%"></i><i style="top:78%"></i>
+      <i style="top:82%"><span>100</span></i><i style="top:86%"></i><i style="top:90%"></i><i style="top:94%"></i><i style="top:98%"></i>
+    </div>
+    <div class="wrap hero-grid">
+      <div>
+        <h1 id="hero-h">The water is rising. <span class="mark">We count every centimeter.</span></h1>
+        <p class="lead">Floodline is a climate-data nonprofit. We run <strong>218 river and coastal gauges</strong>, publish every reading openly, and turn the numbers into early warnings for the people the water reaches first.</p>
+        <div class="hero-ctas">
+          <a class="btn" href="#donate">Fund a gauge</a>
+          <a class="btn ghost" href="#data">See the data</a>
+        </div>
+        <p class="hero-stat"><b>41.6 million people</b> have been displaced by floods since 2008 — more than by any other disaster type. Most had less than six hours of warning.</p>
+      </div>
+      <figure class="reveal">
+        <img src="https://picsum.photos/seed/flood-1/1600/900" width="1600" height="900"
+             alt="A residential street under brown floodwater, porches and mailboxes just above the surface" loading="lazy">
+        <figcaption>Bonnet Carreé basin, March 2024. Our gauge GL-118 flagged this rise 31 hours before the crest.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="chart-sect" id="data" aria-labelledby="chart-h">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 id="chart-h">One chart, <span class="mark">fifty years of tide</span></h2>
+        <p>Mean relative sea level at our longest-running station network, observed through 2025 and projected to 2050 under the current emissions path. This is the chart we take to city councils.</p>
+      </div>
+      <div class="chart-frame" data-chart>
+        <svg viewBox="0 0 820 380" role="img" aria-label="Line chart of mean sea level in centimeters above the year-2000 baseline, rising from 0 in 2000 to 8.9 observed in 2025, projected to reach 28.7 by 2050">
+          <!-- axes gridlines (literal measurement surface) -->
+          <g stroke="oklch(0.89 0.008 240)" stroke-width="1">
+            <line x1="60" y1="320" x2="760" y2="320"/>
+            <line x1="60" y1="220" x2="760" y2="220"/>
+            <line x1="60" y1="120" x2="760" y2="120"/>
+            <line x1="60" y1="20" x2="760" y2="20"/>
+          </g>
+          <g font-family="Hanken Grotesk, sans-serif" font-size="12" fill="oklch(0.42 0.02 250)">
+            <text x="20" y="324">0 cm</text>
+            <text x="20" y="224">10</text>
+            <text x="20" y="124">20</text>
+            <text x="20" y="24">30</text>
+            <text x="60" y="350">2000</text>
+            <text x="395" y="350">2025</text>
+            <text x="735" y="350">2050</text>
+          </g>
+          <g class="tide-fill">
+            <!-- area under the curve -->
+            <path d="M60,320 L130,308 L200,294 L270,277 L340,256 L410,231 L480,202 L550,168 L620,129 L690,84 L760,33 L760,320 L60,320 Z"
+                  fill="oklch(0.91 0.025 232)"/>
+            <!-- observed -->
+            <path d="M60,320 L130,308 L200,294 L270,277 L340,256 L410,231"
+                  fill="none" stroke="oklch(0.45 0.11 232)" stroke-width="3.5" stroke-linejoin="round"/>
+            <!-- projected -->
+            <path d="M410,231 L480,202 L550,168 L620,129 L690,84 L760,33"
+                  fill="none" stroke="oklch(0.45 0.11 232)" stroke-width="3.5" stroke-dasharray="10 8" stroke-linejoin="round"/>
+            <!-- today marker -->
+            <line x1="410" y1="231" x2="410" y2="320" stroke="oklch(0.52 0.11 78)" stroke-width="2"/>
+            <circle cx="410" cy="231" r="6" fill="oklch(0.72 0.14 85)" stroke="oklch(0.52 0.11 78)" stroke-width="2"/>
+            <text x="424" y="222" font-family="Hanken Grotesk, sans-serif" font-size="13" font-weight="700" fill="oklch(0.52 0.11 78)">today · 8.9 cm</text>
+            <text x="610" y="60" font-family="Hanken Grotesk, sans-serif" font-size="13" font-weight="700" fill="oklch(0.35 0.09 235)">2050 · +28.7 cm</text>
+          </g>
+        </svg>
+        <div class="chart-legend">
+          <span><i class="swatch" style="background:var(--flood);"></i> Observed, 34-station mean</span>
+          <span><i class="swatch" style="background:repeating-linear-gradient(90deg, var(--flood) 0 6px, transparent 6px 10px);"></i> Projected, current path</span>
+          <span><i class="swatch" style="background:var(--amber);"></i> 2025 reading</span>
+        </div>
+        <p class="chart-note">Method: tide-gauge and satellite-altimetry fusion, bias-corrected against 12 co-located GPS stations. Full dataset, codebooks, and the raw CSV behind this chart are on our open data page. Uncertainty band omitted here for legibility; it is published with the data.</p>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="stats-h">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 id="stats-h">What the numbers <span class="mark">mean on the ground</span></h2>
+      </div>
+      <div class="stat-grid">
+        <div class="stat reveal">
+          <span class="num"><span class="amber"><span data-count="41.6" data-decimals="1">0</span>M</span></span>
+          <h3>Displaced by floods since 2008</h3>
+          <p>More than storms, quakes, or wildfire. Internal displacement only — border crossings aren't even counted.</p>
+        </div>
+        <div class="stat reveal">
+          <span class="num"><span data-count="218">0</span></span>
+          <h3>Gauges reporting live</h3>
+          <p>River and coastal sensors across 14 basins, each one publishing a reading every 15 minutes, openly licensed.</p>
+        </div>
+        <div class="stat reveal">
+          <span class="num"><span data-count="31">0</span> hrs</span>
+          <h3>Median warning lead time</h3>
+          <p>From our first alert to observed crest across 62 flood events in 2024–25. Six hours used to be the norm.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="method" aria-labelledby="method-h">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 id="method-h">How we know <span class="mark">what we know</span></h2>
+        <p>Every number on this page traces back to a sensor, a satellite pass, or a person with a measuring stick. Here is the chain.</p>
+      </div>
+      <div class="method-grid">
+        <div class="method-item reveal">
+          <h3>Gauges</h3>
+          <p>Pressure transducers bolted to bridge pilings and gauge houses, solar-powered, checked by hand twice a year. When one drifts more than 2 cm, we pull it and say so in the changelog.</p>
+        </div>
+        <div class="method-item reveal">
+          <h3>Satellites</h3>
+          <p>Radar altimetry and optical flood extent from public constellations, cross-checked against the gauges. Satellites see the big picture; gauges keep them honest.</p>
+        </div>
+        <div class="method-item reveal">
+          <h3>Community reports</h3>
+          <p>4,100 trained volunteers photograph staff gauges and high-water marks after every event. Their readings settle arguments the instruments can't.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="programs" aria-labelledby="programs-h">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 id="programs-h">Three active programs, <span class="mark">three real budgets</span></h2>
+        <p>This is where the money goes in fiscal 2026. Funded percentages are live — they move when donations land.</p>
+      </div>
+      <div class="programs">
+        <article class="program reveal" style="--fill: 78%;">
+          <div>
+            <p class="where">Gulf Coast, USA</p>
+            <h3>Early-warning SMS network</h3>
+            <p>Street-level flood alerts in English, Spanish, and Vietnamese for 340,000 residents across three parishes and two counties. Messages go out when a gauge crosses a locally-set threshold — no committee approval required.</p>
+          </div>
+          <div class="budget">
+            <p class="amount">$1.24M</p>
+            <p class="of">FY26 budget</p>
+            <div class="budget-bar"><i style="--fill: 78%;"></i></div>
+            <p class="pct"><b>78% funded</b> — $273k to go</p>
+          </div>
+        </article>
+        <article class="program reveal" style="--fill: 54%;">
+          <div>
+            <p class="where">Mekong Delta, Vietnam</p>
+            <h3>Community gauge mapping</h3>
+            <p>74 new gauges plus village-led flood mapping with provincial water authorities, in partnership with the Can Tho hydrology institute. Local teams own the hardware and the data from day one.</p>
+          </div>
+          <div class="budget">
+            <p class="amount">$860k</p>
+            <p class="of">FY26 budget</p>
+            <div class="budget-bar"><i style="--fill: 54%;"></i></div>
+            <p class="pct"><b>54% funded</b> — $396k to go</p>
+          </div>
+        </article>
+        <article class="program reveal" style="--fill: 91%;">
+          <div>
+            <p class="where">Appalachia, USA</p>
+            <h3>Creek flash-flood sensors</h3>
+            <p>48 low-cost sensors on steep mountain creeks where floods rise in under an hour. Built with county emergency managers after the 2022 eastern Kentucky floods, where warning lead time averaged 22 minutes.</p>
+          </div>
+          <div class="budget">
+            <p class="amount">$410k</p>
+            <p class="of">FY26 budget</p>
+            <div class="budget-bar"><i style="--fill: 91%;"></i></div>
+            <p class="pct"><b>91% funded</b> — $37k to go</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-sect" aria-labelledby="map-h">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 id="map-h">Where the gauges <span class="mark">stand today</span></h2>
+        <p>218 live sensors, clustered by basin. Amber pins came online in the last 90 days.</p>
+      </div>
+      <div class="pin-grid">
+        <div class="pin-card reveal" data-pins>
+          <h3>Gulf Coast</h3>
+          <p class="count"><b>96 gauges</b> · 8 new this quarter</p>
+          <svg viewBox="0 0 300 170" aria-hidden="true">
+            <circle class="pin" cx="60" cy="110" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:0ms"/>
+            <circle class="pin" cx="95" cy="90" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:60ms"/>
+            <circle class="pin" cx="130" cy="120" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:120ms"/>
+            <circle class="pin" cx="160" cy="85" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:180ms"/>
+            <circle class="pin" cx="200" cy="110" r="6" fill="oklch(0.72 0.14 85)" style="animation-delay:240ms"/>
+            <circle class="pin" cx="230" cy="75" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:300ms"/>
+            <circle class="pin" cx="120" cy="60" r="6" fill="oklch(0.72 0.14 85)" style="animation-delay:360ms"/>
+            <circle class="pin" cx="80" cy="140" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:420ms"/>
+          </svg>
+        </div>
+        <div class="pin-card reveal" data-pins>
+          <h3>Mekong Delta</h3>
+          <p class="count"><b>74 gauges</b> · 11 new this quarter</p>
+          <svg viewBox="0 0 300 170" aria-hidden="true">
+            <circle class="pin" cx="150" cy="30" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:0ms"/>
+            <circle class="pin" cx="140" cy="65" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:60ms"/>
+            <circle class="pin" cx="160" cy="95" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:120ms"/>
+            <circle class="pin" cx="120" cy="120" r="6" fill="oklch(0.72 0.14 85)" style="animation-delay:180ms"/>
+            <circle class="pin" cx="185" cy="125" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:240ms"/>
+            <circle class="pin" cx="105" cy="85" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:300ms"/>
+            <circle class="pin" cx="200" cy="70" r="6" fill="oklch(0.72 0.14 85)" style="animation-delay:360ms"/>
+            <circle class="pin" cx="155" cy="150" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:420ms"/>
+          </svg>
+        </div>
+        <div class="pin-card reveal" data-pins>
+          <h3>Appalachia</h3>
+          <p class="count"><b>48 gauges</b> · 6 new this quarter</p>
+          <svg viewBox="0 0 300 170" aria-hidden="true">
+            <circle class="pin" cx="80" cy="45" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:0ms"/>
+            <circle class="pin" cx="110" cy="70" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:60ms"/>
+            <circle class="pin" cx="145" cy="55" r="6" fill="oklch(0.72 0.14 85)" style="animation-delay:120ms"/>
+            <circle class="pin" cx="175" cy="85" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:180ms"/>
+            <circle class="pin" cx="140" cy="105" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:240ms"/>
+            <circle class="pin" cx="205" cy="115" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:300ms"/>
+            <circle class="pin" cx="110" cy="130" r="6" fill="oklch(0.45 0.11 232)" style="animation-delay:360ms"/>
+            <circle class="pin" cx="230" cy="80" r="6" fill="oklch(0.72 0.14 85)" style="animation-delay:420ms"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="report" aria-labelledby="report-h">
+    <div class="wrap report-grid">
+      <div>
+        <div class="sect-head" style="margin-bottom:1.75rem;">
+          <h2 id="report-h">The annual report, <span class="mark">including the misses</span></h2>
+        </div>
+        <p><strong>An honest report has a "what went wrong" chapter. Ours is chapter four.</strong> In FY25 we over-promised sensor uptime in the Mekong pilot (94% promised, 89% delivered — monsoon flooding took out 6 units before we raised the mounts), and our first SMS vendor dropped 3% of alerts during the July crest. We switched vendors in August and published the postmortem.</p>
+        <p>Everything below is from the audited FY25 statements, which we publish in full, unedited, every January.</p>
+        <p><a href="#donate">Read the FY25 annual report (PDF, audited)</a></p>
+      </div>
+      <ul class="report-facts reveal">
+        <li><span>Program spending</span><span>84.2%</span></li>
+        <li><span>Operations + fundraising</span><span>15.8%</span></li>
+        <li><span>Gauge network uptime</span><span class="bad">89% (target 94%)</span></li>
+        <li><span>Alerts delivered, July crest</span><span class="bad">97% — postmortem published</span></li>
+        <li><span>Datasets downloaded</span><span>1.9M</span></li>
+        <li><span>Executive pay ratio</span><span>2.1 : 1</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="donate" id="donate" aria-labelledby="donate-h">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 id="donate-h">Fund the next <span style="color:var(--amber);">thirty-one hours</span></h2>
+        <p>Pick an amount. We'll show you exactly where it goes — the same split we report to auditors.</p>
+      </div>
+      <div class="donate-grid">
+        <div>
+          <div class="amounts" role="group" aria-label="Donation amount">
+            <button class="amt" type="button" aria-pressed="false" data-amt="25">$25</button>
+            <button class="amt" type="button" aria-pressed="true" data-amt="50">$50</button>
+            <button class="amt" type="button" aria-pressed="false" data-amt="120">$120</button>
+            <button class="amt" type="button" aria-pressed="false" data-amt="400">$400</button>
+          </div>
+          <p class="impact" id="impact">$50 keeps one creek gauge reporting for a full month.</p>
+          <div class="donate-cta">
+            <a class="btn" href="#donate" id="donate-btn">Donate $50</a>
+            <span class="note">One-time or monthly. Cancel in two clicks, no phone call.</span>
+          </div>
+        </div>
+        <div class="alloc" aria-label="Allocation breakdown">
+          <div class="alloc-row">
+            <div class="lbl"><span>Gauge hardware + maintenance</span><span data-alloc="62">$31.00</span></div>
+            <div class="alloc-bar"><i class="blue" id="bar-62" style="width:62%;"></i></div>
+          </div>
+          <div class="alloc-row">
+            <div class="lbl"><span>Flood mapping + open data</span><span data-alloc="23">$11.50</span></div>
+            <div class="alloc-bar"><i class="blue" id="bar-23" style="width:23%;"></i></div>
+          </div>
+          <div class="alloc-row">
+            <div class="lbl"><span>SMS alerts</span><span data-alloc="11">$5.50</span></div>
+            <div class="alloc-bar"><i id="bar-11" style="width:11%;"></i></div>
+          </div>
+          <div class="alloc-row">
+            <div class="lbl"><span>Operations</span><span data-alloc="4">$2.00</span></div>
+            <div class="alloc-bar"><i id="bar-4" style="width:4%;"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="volunteer" aria-labelledby="vol-h">
+    <div class="wrap vol-grid">
+      <div>
+        <div class="sect-head" style="margin-bottom:1.75rem;">
+          <h2 id="vol-h">Hold the stick. <span class="mark">Read the water.</span></h2>
+        </div>
+        <p><strong>Our 4,100 volunteers are the third instrument in the network.</strong> After a flood, you walk your assigned reach with a staff gauge and a phone, photograph the high-water marks, and upload the readings. Two hours of training, one Saturday a season.</p>
+        <p>No waders required — the marks are on bridges and walls, and we never send anyone into moving water. Ever.</p>
+        <p><a class="btn ghost" href="mailto:volunteer@floodline.example">Join a gauge crew</a></p>
+      </div>
+      <figure class="reveal">
+        <img src="https://picsum.photos/seed/flood-2/800/600" width="800" height="600"
+             alt="A volunteer reading a striped staff gauge bolted to a bridge piling above a swollen creek" loading="lazy">
+        <figcaption>Gauge crew 12, Loyalsock Creek. Reading: 4.2 feet and falling.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>© 2026 Floodline — climate data nonprofit · 501(c)(3), EIN 47-2091533</span>
+    <span class="sig">Every reading, open. Every dollar, counted.</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---------- reveals, chart sweep, pin pops, budget bars ---------- */
+    var animTargets = document.querySelectorAll('.reveal, [data-chart], [data-pins], .program');
+    if (!reduce && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.25 });
+      animTargets.forEach(function (el) { io.observe(el); });
+    } else {
+      animTargets.forEach(function (el) { el.classList.add('in'); });
+    }
+
+    /* ---------- stat counters ---------- */
+    var counters = document.querySelectorAll('[data-count]');
+    function runCounter(el) {
+      var target = parseFloat(el.getAttribute('data-count'));
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      function fmt(v) {
+        return decimals ? v.toFixed(decimals) : Math.round(v).toLocaleString('en-US');
+      }
+      if (reduce) { el.textContent = fmt(target); return; }
+      var t0 = null, dur = 1700;
+      function tick(t) {
+        if (!t0) t0 = t;
+        var k = Math.min((t - t0) / dur, 1);
+        var eased = 1 - Math.pow(2, -10 * k);
+        el.textContent = fmt(target * eased);
+        if (k < 1) requestAnimationFrame(tick);
+        else el.textContent = fmt(target);
+      }
+      requestAnimationFrame(tick);
+    }
+    if ('IntersectionObserver' in window && !reduce) {
+      var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          runCounter(entry.target);
+          cio.unobserve(entry.target);
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(function (el) { cio.observe(el); });
+    } else {
+      counters.forEach(runCounter);
+    }
+
+    /* ---------- donate flow ---------- */
+    var IMPACT = {
+      25: '$25 replaces the solar cell on one river gauge.',
+      50: '$50 keeps one creek gauge reporting for a full month.',
+      120: '$120 sends flood alerts to 1,000 households for a season.',
+      400: '$400 funds a full community mapping day — kit, training, and lunch.'
+    };
+    var SPLIT = [62, 23, 11, 4];
+    var amounts = document.querySelectorAll('.amt');
+    var impact = document.getElementById('impact');
+    var donateBtn = document.getElementById('donate-btn');
+    function applyAmount(amt) {
+      impact.textContent = IMPACT[amt];
+      donateBtn.textContent = 'Donate $' + amt;
+      document.querySelectorAll('[data-alloc]').forEach(function (el) {
+        var pct = parseInt(el.getAttribute('data-alloc'), 10);
+        el.textContent = '$' + (amt * pct / 100).toFixed(2);
+      });
+      SPLIT.forEach(function (pct) {
+        var bar = document.getElementById('bar-' + pct);
+        if (bar) bar.style.width = pct + '%';
+      });
+    }
+    amounts.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        amounts.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+        btn.setAttribute('aria-pressed', 'true');
+        applyAmount(parseInt(btn.getAttribute('data-amt'), 10));
+      });
+    });
+    applyAmount(50);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raptor Aerial — drone cinematography, licensed and airborne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Gabarito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --sky: oklch(0.95 0.015 230);
+    --carbon: oklch(0.20 0.01 260);
+    --carbon-2: oklch(0.26 0.012 260);
+    --ink: oklch(0.22 0.01 260);
+    --ink-soft: oklch(0.42 0.015 260);
+    --ivory: oklch(0.96 0.008 95);
+    --ivory-dim: oklch(0.78 0.01 260);
+    --red: oklch(0.50 0.19 25);
+    --red-bright: oklch(0.58 0.20 25);
+    --line: oklch(0.88 0.01 250);
+    --line-dark: oklch(0.34 0.012 260);
+    --z-header: 10;
+    --z-scene: 1;
+    --z-hero-copy: 2;
+    --font-display: "Archivo", system-ui, sans-serif;
+    --font-body: "Gabarito", system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    text-transform: uppercase;
+  }
+  h1 { font-size: clamp(2.6rem, 1.5rem + 5.4vw, 5.4rem); }
+  h2 { font-size: clamp(1.9rem, 1.35rem + 2.8vw, 3.2rem); }
+  h3 { font-size: clamp(1.15rem, 1.05rem + 0.8vw, 1.5rem); letter-spacing: -0.015em; }
+  p { max-width: 66ch; text-wrap: pretty; }
+  a { color: var(--red); }
+  :focus-visible {
+    outline: 3px solid var(--red-bright);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap { width: min(1160px, 100% - 2.5rem); margin-inline: auto; }
+  .section { padding-block: clamp(3.5rem, 9vw, 6.5rem); }
+  .lede { color: var(--ink-soft); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.25rem); margin-top: 1rem; }
+  .on-dark .lede { color: var(--ivory-dim); }
+  .rec-dot {
+    display: inline-block; width: 0.65rem; height: 0.65rem; border-radius: 50%;
+    background: var(--red-bright); margin-right: 0.6rem;
+    animation: rec-blink 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  @keyframes rec-blink {
+    0%, 55% { opacity: 1; }
+    70%, 90% { opacity: 0.15; }
+    100% { opacity: 1; }
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: var(--carbon);
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .header-in { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.9rem; }
+  .brand {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.4rem;
+    letter-spacing: 0.04em; color: var(--ivory); text-decoration: none; text-transform: uppercase;
+  }
+  .brand span { color: var(--red-bright); }
+  .nav { display: flex; gap: 1.75rem; }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--ivory-dim); text-decoration: none; font-size: 0.92rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--ivory); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    background: var(--sky);
+    overflow: hidden;
+  }
+  #scene {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    z-index: var(--z-scene);
+    cursor: grab;
+    touch-action: pan-y;
+  }
+  #scene:active { cursor: grabbing; }
+  .scene-fallback {
+    position: absolute; inset: 0; z-index: var(--z-scene);
+    display: none; place-items: center; text-align: center; padding: 2rem;
+  }
+  .scene-fallback svg { width: min(420px, 80vw); }
+  .hero-copy {
+    position: relative; z-index: var(--z-hero-copy);
+    padding-block: clamp(5rem, 12vw, 8rem);
+    pointer-events: none;
+  }
+  .hero-copy .inner { max-width: 30rem; pointer-events: auto; }
+  .hero-copy .lede { color: var(--ink-soft); font-weight: 500; margin-top: 1.25rem; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.25rem; }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body); font-weight: 700; font-size: 0.95rem;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    text-decoration: none; padding: 0.9rem 1.8rem; border-radius: 999px;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-3px); }
+  .btn-primary { background: var(--red); color: var(--ivory); }
+  .btn-ghost { color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+  .alt-chip {
+    position: absolute; top: clamp(5rem, 10vw, 7rem); right: max(1.25rem, calc((100vw - 1160px) / 2));
+    z-index: var(--z-hero-copy);
+    background: var(--carbon); color: var(--ivory);
+    border-radius: 12px; padding: 0.8rem 1.1rem;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em;
+    pointer-events: none;
+  }
+  .alt-chip b { display: block; font-size: 1.6rem; letter-spacing: -0.01em; color: var(--red-bright); }
+  .drag-hint {
+    position: absolute; bottom: 1.5rem; left: 0; right: 0;
+    z-index: var(--z-hero-copy);
+    text-align: center; font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+    pointer-events: none;
+  }
+
+  /* ---------- showreels ---------- */
+  .reel {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .reel:last-of-type { border-bottom: 0; }
+  .reel .meta {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; list-style: none;
+  }
+  .reel .meta li {
+    font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    background: var(--sky); color: var(--ink-soft);
+    padding: 0.35rem 0.85rem; border-radius: 999px;
+  }
+  .reel p { color: var(--ink-soft); margin-top: 1rem; }
+  .timeline {
+    background: var(--carbon); border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .timeline .frame {
+    border-radius: 8px; overflow: hidden; margin-bottom: 1.1rem;
+  }
+  .timeline img { width: 100%; }
+  .scrub-track {
+    position: relative; height: 3.5rem;
+  }
+  .scrub-bar {
+    position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px;
+    background: var(--line-dark); border-radius: 2px;
+  }
+  .scrub-fill {
+    position: absolute; left: 0; top: 50%; height: 4px; margin-top: -2px; width: 100%;
+    background: var(--red-bright); border-radius: 2px;
+    transform-origin: left center;
+    transform: scaleX(var(--scrub, 0));
+  }
+  .scrub-chapters {
+    position: absolute; inset: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 1.6rem;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--ivory-dim);
+  }
+  .scrub-head {
+    position: absolute; top: 50%; left: 0;
+    width: 14px; height: 14px; margin: -7px 0 0 -7px;
+    border-radius: 50%; background: var(--red-bright);
+    transform: translateX(calc(var(--scrub, 0) * (100cqw - 14px)));
+  }
+  .scrub-track { container-type: inline-size; }
+  .timeline .timecode {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.1em;
+    color: var(--ivory-dim); margin-bottom: 0.5rem;
+  }
+  .timeline .timecode b { color: var(--red-bright); }
+
+  /* ---------- dark credibility ---------- */
+  .on-dark { background: var(--carbon); color: var(--ivory); }
+  .cred-grid {
+    margin-top: 3rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    list-style: none;
+  }
+  .cred-grid li {
+    background: var(--carbon-2); border-radius: 16px; padding: 1.75rem;
+  }
+  .cred-grid h3 { font-size: 1.05rem; margin-bottom: 0.5rem; color: var(--ivory); }
+  .cred-grid p { color: var(--ivory-dim); font-size: 0.95rem; }
+  .cred-grid .ticket {
+    display: inline-block; margin-bottom: 1rem;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--red-bright);
+  }
+
+  /* ---------- equipment ---------- */
+  .kit { margin-top: 3rem; }
+  .kit-row {
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 1.5rem; align-items: baseline;
+    padding: 1.4rem 0; border-bottom: 1px solid var(--line);
+  }
+  .kit-row .name { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; text-transform: uppercase; letter-spacing: -0.01em; }
+  .kit-row .role { color: var(--red); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .kit-row p { color: var(--ink-soft); font-size: 0.98rem; }
+
+  /* ---------- aerial photos ---------- */
+  .aerials { background: var(--sky); }
+  .aerial-grid {
+    margin-top: 3rem;
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; align-items: start;
+  }
+  .aerial-grid figure { border-radius: 16px; overflow: hidden; }
+  .aerial-grid img { width: 100%; }
+  .aerial-grid figcaption { padding: 0.8rem 0.25rem 0; font-size: 0.9rem; color: var(--ink-soft); font-weight: 500; }
+
+  /* ---------- rates ---------- */
+  .rates-table { margin-top: 3rem; }
+  .rate-row {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem;
+    padding: 1.5rem 0; border-bottom: 1px solid var(--line-dark);
+  }
+  .rate-row h3 { color: var(--ivory); }
+  .rate-row .what p { color: var(--ivory-dim); font-size: 0.95rem; margin-top: 0.3rem; }
+  .rate-row .price {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem);
+    color: var(--red-bright); white-space: nowrap;
+  }
+  .booking { text-align: center; padding-block: clamp(3rem, 8vw, 6rem); }
+  .booking p { margin: 1rem auto 2rem; color: var(--ivory-dim); max-width: 52ch; }
+
+  footer { background: var(--carbon); border-top: 1px solid var(--line-dark); padding-block: 2rem; font-size: 0.9rem; color: var(--ivory-dim); }
+  .footer-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+
+  @media (max-width: 800px) {
+    .nav { display: none; }
+    .reel { grid-template-columns: 1fr; }
+    .kit-row { grid-template-columns: 1fr; gap: 0.3rem; }
+    .aerial-grid { grid-template-columns: 1fr; }
+    .alt-chip { position: static; display: inline-block; margin-top: 1.5rem; }
+    .hero-copy { padding-block: 4rem 7rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .rec-dot { animation: none; }
+    .btn, .nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+    .btn:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="brand" href="#top">Raptor<span>●</span>Aerial</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#reels">Showreels</a>
+      <a href="#licensed">Licensed</a>
+      <a href="#kit">Kit</a>
+      <a href="#rates">Day rates</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div id="scene" aria-label="Interactive 3D model of the Raptor X8 cinema drone — drag to orbit"></div>
+    <div class="scene-fallback" id="sceneFallback">
+      <div>
+        <svg viewBox="0 0 400 220" role="img" aria-label="Raptor X8 drone silhouette: carbon body, four arms, eight propellers, underslung camera">
+          <g stroke="oklch(0.26 0.012 260)" stroke-width="10" stroke-linecap="round">
+            <line x1="200" y1="90" x2="90" y2="40"/>
+            <line x1="200" y1="90" x2="310" y2="40"/>
+            <line x1="200" y1="110" x2="90" y2="170"/>
+            <line x1="200" y1="110" x2="310" y2="170"/>
+          </g>
+          <g fill="oklch(0.26 0.012 260)">
+            <ellipse cx="90" cy="38" rx="46" ry="7"/>
+            <ellipse cx="310" cy="38" rx="46" ry="7"/>
+            <ellipse cx="90" cy="172" rx="46" ry="7"/>
+            <ellipse cx="310" cy="172" rx="46" ry="7"/>
+            <rect x="160" y="70" width="80" height="46" rx="14"/>
+            <circle cx="200" cy="140" r="18"/>
+          </g>
+          <circle cx="200" cy="140" r="6" fill="oklch(0.58 0.20 25)"/>
+        </svg>
+        <p style="color: var(--ink-soft); font-weight: 600;">The Raptor X8 — 3D view unavailable on this connection.</p>
+      </div>
+    </div>
+    <div class="wrap hero-copy">
+      <div class="inner">
+        <h1>The shot is up there.</h1>
+        <p class="lede">Cinema-grade aerials for film, live sport and survey. Our own airframes, our own pilots, and a standing obsession with the move nobody’s flown yet.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#rates">Book a flight day</a>
+          <a class="btn btn-ghost" href="#reels">Watch the reels</a>
+        </div>
+      </div>
+    </div>
+    <div class="alt-chip">CURRENT CEILING<b><span id="altCount">0</span> m AGL</b></div>
+    <p class="drag-hint">Drag the airframe to orbit</p>
+  </section>
+
+  <section class="section" id="reels">
+    <div class="wrap">
+      <h2><span class="rec-dot" aria-hidden="true"></span>Three reels, three kinds of flying</h2>
+      <p class="lede">Scroll, and the playhead scrubs — each reel is cut to the length of the shot it’s selling.</p>
+
+      <article class="reel">
+        <div>
+          <h3>Film &amp; Drama</h3>
+          <p>Long-lens chase work and 6K masters for features and streaming. We fly the X8 with a Komodo on a three-axis gimbal, and we rehearse the move on the ground until the first take is the one.</p>
+          <ul class="meta">
+            <li>6K RAW</li><li>140 km/h tracking</li><li>2 pilots + op</li>
+          </ul>
+        </div>
+        <div class="timeline">
+          <div class="timecode"><b>REEL 01</b><span>RT 01:42</span></div>
+          <div class="frame">
+            <img src="https://picsum.photos/seed/aerial-1/1600/900" width="1600" height="900"
+                 alt="Aerial frame from the film reel — a coastline at first light, cliff shadows raking across the water">
+          </div>
+          <div class="scrub-track" data-scrub>
+            <span class="scrub-bar"></span>
+            <span class="scrub-fill"></span>
+            <span class="scrub-head"></span>
+            <span class="scrub-chapters"><span>Cold open</span><span>Chase</span><span>Reveal</span><span>Button</span></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="reel">
+        <div>
+          <h3>Live Sport</h3>
+          <p>FPV through the grandstand gap, over the peloton, down the halfpipe. One pilot, one spotter, zero second chances — the broadcast truck takes our feed clean or not at all.</p>
+          <ul class="meta">
+            <li>FPV one-take</li><li>Live 1080p feed</li><li>Crowd-waiver crew</li>
+          </ul>
+        </div>
+        <div class="timeline">
+          <div class="timecode"><b>REEL 02</b><span>RT 00:58</span></div>
+          <div class="frame">
+            <img src="https://picsum.photos/seed/aerial-2/800/600" width="800" height="600"
+                 alt="FPV frame from the sport reel — a city circuit from ten meters up, barriers blurring past">
+          </div>
+          <div class="scrub-track" data-scrub>
+            <span class="scrub-bar"></span>
+            <span class="scrub-fill"></span>
+            <span class="scrub-head"></span>
+            <span class="scrub-chapters"><span>Warm-up</span><span>The gap</span><span>Finish</span></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="reel">
+        <div>
+          <h3>Survey &amp; Mapping</h3>
+          <p>The quiet work that pays for the loud work. Photogrammetry at 61 megapixels, orthomosaics stitched overnight, centimetre accuracy with ground control we place ourselves.</p>
+          <ul class="meta">
+            <li>61MP stills</li><li>±2 cm accuracy</li><li>Next-day delivery</li>
+          </ul>
+        </div>
+        <div class="timeline">
+          <div class="timecode"><b>REEL 03</b><span>RT 01:15</span></div>
+          <div class="frame">
+            <img src="https://picsum.photos/seed/aerial-1/800/600" width="800" height="600"
+                 alt="Survey frame — a quarry face gridded into flight lines, each pass overlapping the last">
+          </div>
+          <div class="scrub-track" data-scrub>
+            <span class="scrub-bar"></span>
+            <span class="scrub-fill"></span>
+            <span class="scrub-head"></span>
+            <span class="scrub-chapters"><span>Grid</span><span>Passes</span><span>Model</span></span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section on-dark" id="licensed">
+    <div class="wrap">
+      <h2>Licensed, insured, and boring about it</h2>
+      <p class="lede">The exciting part is the footage. The paperwork is deliberately the least exciting thing we do — and the first thing we send you.</p>
+      <ul class="cred-grid">
+        <li>
+          <span class="ticket">Certification</span>
+          <h3>Every pilot, every ticket</h3>
+          <p>FAA Part 107 and CAA GVC across the crew, night operations and flight-over-people waivers held, renewed before they lapse — never after.</p>
+        </li>
+        <li>
+          <span class="ticket">Cover</span>
+          <h3>£5M public liability</h3>
+          <p>Aviation-specific cover, not a rider on a general policy. Certificates issued to your production office before call time, every job.</p>
+        </li>
+        <li>
+          <span class="ticket">Airspace</span>
+          <h3>We file our own NOTAMs</h3>
+          <p>Controlled airspace, helipad coordination, stadium TFRs — our ops desk handles clearance so your 1st AD never has to think about it.</p>
+        </li>
+        <li>
+          <span class="ticket">Safety</span>
+          <h3>A no is a no</h3>
+          <p>Wind over limits, crowd drift into the flight corridor, a bird that won’t leave — we land and talk it through. The day rate doesn’t change the answer.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="kit">
+    <div class="wrap">
+      <h2>The hangar list</h2>
+      <p class="lede">Three airframes, each with a job it does better than the others. We pick per shot, not per habit.</p>
+      <div class="kit">
+        <div class="kit-row">
+          <span class="name">Raptor X8</span>
+          <span class="role">Heavy lift · cinema</span>
+          <p>Coaxial octocopter carrying a RED Komodo 6K on a three-axis gimbal. Forty minutes aloft, 140 km/h flat out, rock steady at a hover in 30 knots.</p>
+        </div>
+        <div class="kit-row">
+          <span class="name">Scout FPV</span>
+          <span class="role">Cinewhoop · one-takes</span>
+          <p>Ducted, quiet enough for dialogue scenes, small enough for a window frame. The grandstand-gap specialist — if a ball fits through, so does Scout.</p>
+        </div>
+        <div class="kit-row">
+          <span class="name">Surveyor Quad</span>
+          <span class="role">Photogrammetry</span>
+          <p>61-megapixel mapping rig with RTK positioning. Flies the grid while we place ground control; the orthomosaic lands in your inbox before breakfast.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section aerials">
+    <div class="wrap">
+      <h2>Frames, not promises</h2>
+      <div class="aerial-grid">
+        <figure>
+          <img src="https://picsum.photos/seed/aerial-1/1600/900" width="1600" height="900"
+               alt="Coastal aerial from the X8 — headland at low sun, water going from slate to gold at the horizon">
+          <figcaption>X8 over the north coast, 06:40. Second take; the first was for rehearsal.</figcaption>
+        </figure>
+        <figure>
+          <img src="https://picsum.photos/seed/aerial-2/800/600" width="800" height="600"
+               alt="City aerial from the survey quad — rooftops and a river bend from 120 meters, streets in hard shadow">
+          <figcaption>Survey pass over the old town, 120 m. Every roofline lands within two centimetres.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-dark" id="rates">
+    <div class="wrap">
+      <h2>Day rates, on the table</h2>
+      <p class="lede">No “call for pricing.” These are the numbers; the only things that move them are travel and weather days, and we tell you both up front.</p>
+      <div class="rates-table">
+        <div class="rate-row">
+          <div class="what">
+            <h3>Half day — X8 cinema</h3>
+            <p>Four hours on site, pilot + operator, Komodo package, media handed over on the day.</p>
+          </div>
+          <span class="price">£1,200</span>
+        </div>
+        <div class="rate-row">
+          <div class="what">
+            <h3>Full day — X8 cinema</h3>
+            <p>Ten hours, up to twelve flights, two batteries deep. Weather hold at half rate, cancelled at nothing.</p>
+          </div>
+          <span class="price">£2,100</span>
+        </div>
+        <div class="rate-row">
+          <div class="what">
+            <h3>FPV specialist day</h3>
+            <p>Scout, pilot and spotter, unlimited one-takes within battery reality. Live feed to your truck included.</p>
+          </div>
+          <span class="price">£2,600</span>
+        </div>
+        <div class="rate-row">
+          <div class="what">
+            <h3>Survey per site</h3>
+            <p>Up to 40 hectares, ground control placed, orthomosaic and point cloud delivered next morning.</p>
+          </div>
+          <span class="price">from £950</span>
+        </div>
+      </div>
+
+      <div class="booking">
+        <h2>Tell us the shot.</h2>
+        <p>Send the storyboard, the coordinates, or just the sentence in the script that starts with “aerial.” We reply within one working day with a flight plan and a weather window.</p>
+        <a class="btn btn-primary" href="mailto:fly@raptor-aerial.example">fly@raptor-aerial.example</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <span>Raptor Aerial Ltd — hangar at the old airfield, gate 4</span>
+    <span>CAA GVC · FAA Part 107 · £5M liability · est. 2016</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---------- altitude counter (hero chip) ---------- */
+    var altEl = document.getElementById('altCount');
+    var ALT = 128;
+    if (reduce) {
+      altEl.textContent = ALT;
+    } else {
+      var aStart = null;
+      (function altStep(ts) {
+        if (!aStart) aStart = ts;
+        var p = Math.min((ts - aStart) / 1800, 1);
+        altEl.textContent = Math.round(ALT * (1 - Math.pow(2, -10 * p)));
+        if (p < 1) requestAnimationFrame(altStep);
+        else altEl.textContent = ALT;
+      })(performance.now());
+    }
+
+    /* ---------- showreel scroll scrub ---------- */
+    var tracks = Array.prototype.slice.call(document.querySelectorAll('[data-scrub]'));
+    var scrubTicking = false;
+    function scrub() {
+      scrubTicking = false;
+      var vh = window.innerHeight;
+      tracks.forEach(function (t) {
+        var reel = t.closest('.reel') || t;
+        var r = reel.getBoundingClientRect();
+        var p = (vh * 0.85 - r.top) / (vh * 0.7 + r.height);
+        p = Math.max(0, Math.min(1, p));
+        t.style.setProperty('--scrub', reduce ? 0.42 : p.toFixed(3));
+      });
+    }
+    function onScroll() {
+      if (!scrubTicking) { scrubTicking = true; requestAnimationFrame(scrub); }
+    }
+    if (tracks.length) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      scrub();
+    }
+
+    /* ---------- three.js drone hero ---------- */
+    function showFallback() {
+      var fb = document.getElementById('sceneFallback');
+      var sc = document.getElementById('scene');
+      if (fb) fb.style.display = 'grid';
+      if (sc) sc.style.display = 'none';
+    }
+
+    function initScene() {
+      if (!window.THREE) { showFallback(); return; }
+      var holder = document.getElementById('scene');
+
+      /* Resolve oklch palette to THREE colors via the browser's CSS parser. */
+      function col(css) {
+        var el = document.createElement('span');
+        el.style.color = css;
+        el.style.display = 'none';
+        document.body.appendChild(el);
+        var rgb = getComputedStyle(el).color;
+        document.body.removeChild(el);
+        var m = rgb.match(/[\d.]+/g).map(Number);
+        return new THREE.Color().setRGB(m[0] / 255, m[1] / 255, m[2] / 255, THREE.SRGBColorSpace);
+      }
+      var carbonCol = col('oklch(0.26 0.012 260)');
+      var carbonLight = col('oklch(0.38 0.015 260)');
+      var redCol = col('oklch(0.58 0.20 25)');
+
+      var renderer;
+      try {
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      } catch (e) { showFallback(); return; }
+      renderer.setClearColor(0x000000, 0);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      renderer.setPixelRatio(dpr);
+      holder.appendChild(renderer.domElement);
+
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+
+      var hemi = new THREE.HemisphereLight(col('oklch(0.98 0.01 230)'), col('oklch(0.70 0.03 240)'), 1.1);
+      scene.add(hemi);
+      var key = new THREE.DirectionalLight(col('oklch(1 0 0)'), 1.6);
+      key.position.set(4, 6, 3);
+      scene.add(key);
+      var rim = new THREE.DirectionalLight(redCol, 0.5);
+      rim.position.set(-5, 2, -4);
+      scene.add(rim);
+
+      /* the X8 airframe, built from primitives */
+      var drone = new THREE.Group();
+      var matBody = new THREE.MeshStandardMaterial({ color: carbonCol, roughness: 0.45, metalness: 0.55 });
+      var matArm = new THREE.MeshStandardMaterial({ color: carbonLight, roughness: 0.5, metalness: 0.6 });
+      var matRed = new THREE.MeshStandardMaterial({ color: redCol, roughness: 0.3, metalness: 0.2, emissive: redCol, emissiveIntensity: 0.7 });
+
+      var body = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.32, 1.05), matBody);
+      drone.add(body);
+      var canopy = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.18, 0.6), matArm);
+      canopy.position.y = 0.25;
+      drone.add(canopy);
+
+      var props = [];
+      var armGeo = new THREE.CylinderGeometry(0.05, 0.05, 1.5, 12);
+      var motorGeo = new THREE.CylinderGeometry(0.11, 0.13, 0.22, 16);
+      var propGeo = new THREE.BoxGeometry(1.35, 0.02, 0.09);
+      var corners = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+      corners.forEach(function (c) {
+        var arm = new THREE.Mesh(armGeo, matArm);
+        var ang = Math.atan2(c[1], c[0]);
+        arm.rotation.z = Math.PI / 2;
+        arm.rotation.y = -ang;
+        arm.position.set(c[0] * 0.72, 0.05, c[1] * 0.72);
+        drone.add(arm);
+
+        var motor = new THREE.Mesh(motorGeo, matBody);
+        motor.position.set(c[0] * 1.35, 0.1, c[1] * 1.35);
+        drone.add(motor);
+
+        var prop = new THREE.Mesh(propGeo, matArm);
+        prop.position.set(c[0] * 1.35, 0.24, c[1] * 1.35);
+        prop.rotation.y = ang + Math.PI / 4;
+        drone.add(prop);
+        props.push(prop);
+      });
+
+      /* gimbal + camera + record light */
+      var gimbal = new THREE.Mesh(new THREE.SphereGeometry(0.16, 20, 16), matArm);
+      gimbal.position.set(0, -0.28, 0.28);
+      drone.add(gimbal);
+      var cam = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.22, 0.24), matBody);
+      cam.position.set(0, -0.42, 0.34);
+      drone.add(cam);
+      var rec = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 10), matRed);
+      rec.position.set(0, -0.34, 0.5);
+      drone.add(rec);
+
+      /* landing skids */
+      var skidGeo = new THREE.CylinderGeometry(0.03, 0.03, 1.1, 8);
+      [-0.55, 0.55].forEach(function (x) {
+        var skid = new THREE.Mesh(skidGeo, matArm);
+        skid.rotation.x = Math.PI / 2;
+        skid.position.set(x, -0.55, 0);
+        drone.add(skid);
+        var leg = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.4, 8), matArm);
+        leg.position.set(x, -0.36, 0.3);
+        drone.add(leg);
+        var leg2 = leg.clone();
+        leg2.position.z = -0.3;
+        drone.add(leg2);
+      });
+
+      drone.rotation.y = 0.6;
+      scene.add(drone);
+
+      /* manual orbit control: drag to change theta/phi, slow auto-spin otherwise */
+      var theta = 0.6, phi = 1.15, radius = 6.2;
+      var targetTheta = theta, targetPhi = phi;
+      var dragging = false, px = 0, py = 0;
+      var autoSpin = !reduce;
+
+      holder.addEventListener('pointerdown', function (e) {
+        dragging = true; px = e.clientX; py = e.clientY;
+        holder.setPointerCapture(e.pointerId);
+      });
+      holder.addEventListener('pointermove', function (e) {
+        if (!dragging) return;
+        targetTheta += (e.clientX - px) * 0.008;
+        targetPhi = Math.max(0.35, Math.min(2.6, targetPhi - (e.clientY - py) * 0.006));
+        px = e.clientX; py = e.clientY;
+      });
+      ['pointerup', 'pointercancel'].forEach(function (ev) {
+        holder.addEventListener(ev, function () { dragging = false; });
+      });
+
+      function place() {
+        var w = holder.clientWidth, h = holder.clientHeight;
+        if (!w || !h) return;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      }
+      place();
+      window.addEventListener('resize', function () { place(); if (reduce) renderOnce(); });
+
+      function updateCamera() {
+        camera.position.set(
+          radius * Math.sin(phi) * Math.sin(theta),
+          radius * Math.cos(phi) + 0.4,
+          radius * Math.sin(phi) * Math.cos(theta)
+        );
+        camera.lookAt(0, -0.1, 0);
+      }
+
+      function renderOnce() {
+        theta = targetTheta; phi = targetPhi;
+        updateCamera();
+        renderer.render(scene, camera);
+      }
+
+      if (reduce) { renderOnce(); return; }
+
+      var raf = null;
+      var last = 0;
+      function loop(ts) {
+        raf = requestAnimationFrame(loop);
+        var dt = Math.min((ts - last) / 1000, 0.05);
+        last = ts;
+        if (autoSpin && !dragging) targetTheta += dt * 0.12;
+        /* exponential approach for a damped, expo-eased feel */
+        theta += (targetTheta - theta) * 0.08;
+        phi += (targetPhi - phi) * 0.08;
+        props.forEach(function (p, i) { p.rotation.y += dt * (18 + i * 1.5); });
+        drone.position.y = Math.sin(ts * 0.0012) * 0.08;
+        updateCamera();
+        renderer.render(scene, camera);
+      }
+      function start() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(loop); } }
+      function stop() { if (raf) { cancelAnimationFrame(raf); raf = null; } }
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) stop(); else start();
+      });
+      start();
+    }
+
+    if (window.THREE) {
+      initScene();
+    } else {
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/three@0.160.0/build/three.min.js';
+      s.onload = initScene;
+      s.onerror = showFallback;
+      document.head.appendChild(s);
+    }
+  })();
+</script>
+</body>
+</html>

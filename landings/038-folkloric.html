@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folkloric — A weaving & natural-dye studio where cloth is still made the slow way, on purpose.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Literata:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.965 0.012 90);
+    --surface: oklch(0.945 0.015 88);
+    --madder: oklch(0.44 0.125 30);
+    --madder-deep: oklch(0.36 0.11 28);
+    --indigo: oklch(0.36 0.09 265);
+    --indigo-deep: oklch(0.29 0.08 266);
+    --weld: oklch(0.87 0.13 100);
+    --ink: oklch(0.27 0.015 60);
+    --ink-soft: oklch(0.42 0.02 65);
+    --on-deep: oklch(0.96 0.012 90);
+    --on-deep-soft: oklch(0.84 0.03 92);
+    --line: oklch(0.88 0.02 85);
+    --display: "Zilla Slab", serif;
+    --body: "Literata", serif;
+    --step--1: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem);
+    --step-0: clamp(1rem, 0.95rem + 0.22vw, 1.14rem);
+    --step-1: clamp(1.25rem, 1.16rem + 0.44vw, 1.53rem);
+    --step-2: clamp(1.56rem, 1.39rem + 0.85vw, 2.12rem);
+    --step-3: clamp(1.95rem, 1.64rem + 1.55vw, 3.05rem);
+    --step-4: clamp(2.44rem, 1.8rem + 3.2vw, 4.7rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p { max-width: 66ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--indigo);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; position: relative; }
+  section { padding-block: clamp(4rem, 3rem + 5vw, 7rem); }
+
+  /* ---------- loom: warp threads draw down, then weft across ---------- */
+  .loom {
+    position: relative;
+    height: 64px;
+    margin-bottom: clamp(1.6rem, 3vw, 2.4rem);
+    overflow: hidden;
+  }
+  .loom .warp, .loom .weft { position: absolute; }
+  .loom .warp {
+    top: 0; bottom: 0;
+    width: 2px;
+    background: var(--madder);
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  .loom .weft {
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--indigo);
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .loom.on-dark .warp { background: var(--weld); }
+  .loom.on-dark .weft { background: var(--on-deep-soft); }
+  @media (prefers-reduced-motion: no-preference) {
+    .js .loom .warp { transform: scaleY(0); transition: transform 0.9s var(--ease-out); }
+    .js .loom .weft { transform: scaleX(0); transition: transform 0.9s var(--ease-out); }
+    .js .loom.woven .warp { transform: scaleY(1); }
+    .js .loom.woven .weft { transform: scaleX(1); }
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky; top: 0; z-index: var(--z-sticky);
+    background: oklch(0.965 0.012 90 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1.5rem; padding-block: 0.8rem;
+  }
+  .brand {
+    font-family: var(--display); font-weight: 700;
+    font-size: var(--step-1); text-decoration: none; color: var(--madder-deep);
+    letter-spacing: -0.01em;
+  }
+  .site-nav { display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { text-decoration: none; font-weight: 600; font-size: var(--step--1); color: var(--ink-soft); font-family: var(--display); }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--madder); }
+  .btn {
+    display: inline-block; font-family: var(--display); font-weight: 600;
+    font-size: var(--step--1); text-decoration: none; padding: 0.7rem 1.4rem;
+    border-radius: 999px; border: none; cursor: pointer;
+    transition: transform 0.45s var(--ease-out), background 0.3s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-madder { background: var(--madder); color: var(--on-deep); white-space: nowrap; flex-shrink: 0; }
+  .btn-madder:hover { background: var(--madder-deep); }
+  .btn-indigo { background: var(--indigo); color: var(--on-deep); }
+  .btn-indigo:hover { background: var(--indigo-deep); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(4.5rem, 3rem + 7vw, 8rem); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem); align-items: center;
+  }
+  .hero h1 { font-size: var(--step-4); color: var(--ink); margin-bottom: 1.2rem; }
+  .hero h1 .madder { color: var(--madder); }
+  .hero h1 .indigo { color: var(--indigo); }
+  .hero p { color: var(--ink-soft); font-size: var(--step-1); line-height: 1.6; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  .hero-photo { border-radius: 14px; overflow: hidden; }
+  .hero-photo img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .hero-photo figcaption {
+    font-size: var(--step--1); color: var(--ink-soft);
+    padding: 0.8rem 0.2rem 0; font-style: italic;
+  }
+
+  /* ---------- section heads ---------- */
+  .sec-head { margin-bottom: clamp(2rem, 4vw, 3rem); max-width: 46ch; }
+  .sec-head h2 { font-size: var(--step-3); margin-bottom: 0.7rem; color: var(--ink); }
+  .sec-head p { color: var(--ink-soft); }
+  .on-dark .sec-head h2 { color: var(--on-deep); }
+  .on-dark .sec-head p { color: var(--on-deep-soft); }
+
+  /* ---------- calendar ---------- */
+  .calendar { background: var(--surface); }
+  .cal-list { list-style: none; }
+  .cal-list li {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr auto;
+    gap: 1.4rem;
+    align-items: baseline;
+    padding-block: 1.2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .cal-list li:first-child { border-top: 1px solid var(--line); }
+  .cal-date {
+    font-family: var(--display); font-weight: 700; color: var(--madder);
+    font-size: var(--step-1); line-height: 1.2;
+  }
+  .cal-date span { display: block; font-size: 0.75rem; font-weight: 600; color: var(--ink-soft); letter-spacing: 0.02em; }
+  .cal-what h3 { font-size: var(--step-1); color: var(--ink); margin-bottom: 0.25rem; }
+  .cal-what p { font-size: var(--step--1); color: var(--ink-soft); }
+  .cal-spots { font-family: var(--display); font-weight: 600; font-size: var(--step--1); white-space: nowrap; color: var(--indigo); }
+  .cal-spots.full { color: var(--madder); }
+  .cal-note { margin-top: 1.4rem; font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- commission process (a real sequence) ---------- */
+  .process { background: var(--indigo-deep); color: var(--on-deep); }
+  .steps { list-style: none; counter-reset: step; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2rem; }
+  .steps li { counter-increment: step; }
+  .steps li::before {
+    content: counter(step, decimal-leading-zero);
+    display: block;
+    font-family: var(--display); font-weight: 700;
+    font-size: var(--step-2); color: var(--weld);
+    margin-bottom: 0.5rem;
+  }
+  .steps h3 { font-size: var(--step-1); color: var(--on-deep); margin-bottom: 0.4rem; }
+  .steps p { font-size: var(--step--1); color: var(--on-deep-soft); }
+
+  /* ---------- dye library ---------- */
+  .dye-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.4rem;
+  }
+  .dye { cursor: default; }
+  .swatch {
+    height: 130px;
+    border-radius: 12px;
+    transition: transform 0.5s var(--ease-out);
+  }
+  .dye:hover .swatch, .dye:focus-within .swatch { transform: scale(1.08) rotate(-1deg); }
+  .sw-madder { background: var(--madder); }
+  .sw-indigo { background: var(--indigo); }
+  .sw-weld { background: var(--weld); }
+  .sw-walnut { background: oklch(0.34 0.045 60); }
+  .sw-cochineal { background: oklch(0.5 0.16 350); }
+  .sw-onion { background: oklch(0.72 0.11 75); }
+  .dye h3 { font-size: var(--step-1); margin-top: 0.85rem; color: var(--ink); }
+  .dye p { font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- stockists ---------- */
+  .stockists { background: var(--madder-deep); color: var(--on-deep); }
+  .stock-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.8rem 3rem;
+  }
+  .stock h3 { font-size: var(--step-1); color: var(--weld); margin-bottom: 0.3rem; }
+  .stock p { font-size: var(--step--1); color: var(--on-deep-soft); }
+  .stock .city { font-family: var(--display); font-weight: 600; color: var(--on-deep); }
+
+  /* ---------- footer ---------- */
+  .site-foot {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding-block: 3rem;
+    font-size: var(--step--1); color: var(--ink-soft);
+  }
+  .site-foot .wrap { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; align-items: center; }
+  .site-foot a { color: var(--madder); font-weight: 600; text-decoration: none; }
+  .site-foot a:hover { text-decoration: underline; }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .cal-list li { grid-template-columns: 5.5rem 1fr; }
+    .cal-spots { grid-column: 2; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .swatch, .dye:hover .swatch, .btn, .btn:hover { transition: none; transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    .site-nav a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Folkloric</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#calendar">Workshops</a>
+      <a href="#commission">Commissions</a>
+      <a href="#dyes">Dye library</a>
+      <a href="#stockists">Stockists</a>
+      <a class="btn btn-madder" href="#calendar">Book a bench</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="loom" aria-hidden="true"></div>
+        <h1>Cloth made the <span class="madder">slow way</span>, on <span class="indigo">purpose</span>.</h1>
+        <p>Folkloric is a working weaving and natural-dye studio in Pawlet, Vermont. Eight floor looms, a dye garden out back, and a stubborn belief that a tea towel should outlive the person who wove it.</p>
+        <div class="hero-actions">
+          <a class="btn btn-madder" href="#calendar">See the workshop calendar</a>
+          <a class="btn btn-indigo" href="#commission">Commission a piece</a>
+        </div>
+      </div>
+      <figure class="hero-photo">
+        <img src="https://picsum.photos/seed/weave-1/1600/1000" width="1600" height="1000"
+             alt="The big Glimåkra loom mid-warp, hundreds of madder-red threads stretched tight and waiting for the weft" loading="eager">
+        <figcaption>The Glimåkra, mid-warp. This one becomes a run of forty kitchen towels by November.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="calendar" id="calendar">
+    <div class="wrap">
+      <div class="loom" aria-hidden="true"></div>
+      <div class="sec-head">
+        <h2>Workshop calendar, autumn session</h2>
+        <p>Small benches, real looms, no experience assumed. Every workshop ends with something woven by your own hands — even the disastrous first one, which we insist you keep.</p>
+      </div>
+      <ul class="cal-list">
+        <li>
+          <span class="cal-date">Sep 13<span>Saturday, 10–4</span></span>
+          <div class="cal-what">
+            <h3>First Warp: rigid-heddle basics</h3>
+            <p>Warp, weave, and finish a wool scarf in one long, satisfying day. Lunch from the studio kitchen included.</p>
+          </div>
+          <span class="cal-spots">3 of 6 benches left · $145</span>
+        </li>
+        <li>
+          <span class="cal-date">Sep 27<span>Saturday, 10–1</span></span>
+          <div class="cal-what">
+            <h3>Dye Garden Day: madder & weld</h3>
+            <p>Harvest roots and leaves, build two dye baths, and take home a skein dyed in each. Boots recommended; hands will stain.</p>
+          </div>
+          <span class="cal-spots">5 of 8 benches left · $85</span>
+        </li>
+        <li>
+          <span class="cal-date">Oct 11<span>Saturday, 10–4</span></span>
+          <div class="cal-what">
+            <h3>Four-Shaft Sunday: twill samplers</h3>
+            <p>For returning weavers. Thread a floor loom and weave six twill structures on one warp. Bring your reading glasses.</p>
+          </div>
+          <span class="cal-spots full">Full — waitlist open · $160</span>
+        </li>
+        <li>
+          <span class="cal-date">Oct 25<span>Saturday, 10–2</span></span>
+          <div class="cal-what">
+            <h3>Indigo Vat Club</h3>
+            <p>Monthly tending of the studio's fermentation vat. Bring anything white-ish and leave with it gloriously blue.</p>
+          </div>
+          <span class="cal-spots">7 of 10 benches left · $45</span>
+        </li>
+      </ul>
+      <p class="cal-note">All materials included in the bench fee. Workshops run with a minimum of three weavers — if we cancel, you choose a full refund or first pick of the next session.</p>
+    </div>
+  </section>
+
+  <section class="process on-dark" id="commission">
+    <div class="wrap">
+      <div class="loom on-dark" aria-hidden="true"></div>
+      <div class="sec-head">
+        <h2>How a commission works</h2>
+        <p>From first letter to finished cloth is usually ten to fourteen weeks. Hand work refuses to be rushed, and we've stopped apologizing for that.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <h3>The letter</h3>
+          <p>Write to us — actual email is fine — about the piece: a blanket, a length of suiting, napkins for a wedding. Tell us what it's for and what it should feel like.</p>
+        </li>
+        <li>
+          <h3>Yarn & color</h3>
+          <p>We send physical swatch cards and dyed yarn samples by post. You decide with your hands, not a screen. This round trips as many times as it needs to.</p>
+        </li>
+        <li>
+          <h3>The warp</h3>
+          <p>We dress the loom and send a photo of the first woven inches for your approval. After this point the structure is set — color talk is over, weaving begins.</p>
+        </li>
+        <li>
+          <h3>Cloth & care</h3>
+          <p>Off the loom, washed, pressed, hemmed, and shipped with a care card and a small length of your own yarn for future mends. Mending is free, forever.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="dyes">
+    <div class="wrap">
+      <div class="loom" aria-hidden="true"></div>
+      <div class="sec-head">
+        <h2>The natural-dye library</h2>
+        <p>Everything we color starts as a plant, an insect, or a kitchen scrap. These are the six baths we keep in regular rotation — hover a swatch to see it the way it catches morning light in the dye room.</p>
+      </div>
+      <div class="dye-grid">
+        <div class="dye" tabindex="0">
+          <div class="swatch sw-madder"></div>
+          <h3>Madder</h3>
+          <p><em>Rubia tinctorum.</em> Three-year-old roots give the deep brick red of old barns. Our oldest recipe — 212 batches logged since 2014.</p>
+        </div>
+        <div class="dye" tabindex="0">
+          <div class="swatch sw-indigo"></div>
+          <h3>Indigo</h3>
+          <p>Fermented leaf vat, fed on Fridays. The only blue that was ever worth the trouble. Smells terrible, behaves beautifully.</p>
+        </div>
+        <div class="dye" tabindex="0">
+          <div class="swatch sw-weld"></div>
+          <h3>Weld</h3>
+          <p><em>Reseda luteola.</em> The clear, ringing yellow medieval dyers called "the queen." Grown in the studio garden, harvested in August.</p>
+        </div>
+        <div class="dye" tabindex="0">
+          <div class="swatch sw-walnut"></div>
+          <h3>Black walnut</h3>
+          <p>Hulls gathered from the neighbor's tree each October, in exchange for a woven runner. No mordant needed — it dyes on its own terms.</p>
+        </div>
+        <div class="dye" tabindex="0">
+          <div class="swatch sw-cochineal"></div>
+          <h3>Cochineal</h3>
+          <p>The only import we allow. Seventy thousand insects to the kilo, and worth every one for that impossible carmine.</p>
+        </div>
+        <div class="dye" tabindex="0">
+          <div class="swatch sw-onion"></div>
+          <h3>Onion skins</h3>
+          <p>Saved from the studio kitchen all winter. A soft bronze that surprises everyone — proof the best dyes are sometimes free.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stockists on-dark" id="stockists">
+    <div class="wrap">
+      <div class="loom on-dark" aria-hidden="true"></div>
+      <div class="sec-head">
+        <h2>Where to find the cloth</h2>
+        <p>Five shops carry Folkloric year-round. Each stocks a slightly different range — call ahead if you're after something specific, or visit the studio itself on open Saturdays.</p>
+      </div>
+      <div class="stock-grid">
+        <div class="stock">
+          <h3>North Hollow Dry Goods</h3>
+          <p class="city">Burlington, VT</p>
+          <p>Full table-linen range, seconds basket by the door, and the friendliest dog in retail.</p>
+        </div>
+        <div class="stock">
+          <h3>The Woolen Mill Store</h3>
+          <p class="city">Brattleboro, VT</p>
+          <p>Blankets and throws only. They keep the indigo ones in the window, which we didn't ask for but secretly love.</p>
+        </div>
+        <div class="stock">
+          <h3>Field & Fold</h3>
+          <p class="city">Great Barrington, MA</p>
+          <p>Kitchen textiles and the occasional one-off commission piece that never made it to its ceremony.</p>
+        </div>
+        <div class="stock">
+          <h3>Alder & Ash</h3>
+          <p class="city">Portland, ME</p>
+          <p>Our entire dye-library skein range for home knitters, restocked the first Tuesday of each month.</p>
+        </div>
+        <div class="stock">
+          <h3>The Studio Itself</h3>
+          <p class="city">Pawlet, VT</p>
+          <p>Open Saturdays 10–2, October through April. Coffee's on, the looms are running, and someone will absolutely put a shuttle in your hand.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="brand" href="#top">Folkloric</a>
+    <p>418 Mill Brook Rd, Pawlet, Vermont · Studio visits Saturdays 10–2 · <a href="mailto:hello@folkloric.example">hello@folkloric.example</a></p>
+    <p>© <span id="year">2026</span> Folkloric Weaving Studio · Cloth worth keeping.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --- weave reveal: warp threads draw down, then weft across --- */
+  document.querySelectorAll(".loom").forEach(function (loom) {
+    // warp: vertical threads
+    for (var i = 0; i < 14; i++) {
+      var w = document.createElement("span");
+      w.className = "warp";
+      w.style.left = (i * 7.2) + "%";
+      w.style.transitionDelay = (i * 45) + "ms";
+      loom.appendChild(w);
+    }
+    // weft: horizontal picks, delayed until warp lands
+    for (var j = 0; j < 4; j++) {
+      var f = document.createElement("span");
+      f.className = "weft";
+      f.style.top = (j * 16 + 8) + "px";
+      f.style.transitionDelay = (650 + j * 110) + "ms";
+      loom.appendChild(f);
+    }
+  });
+
+  if (!reduced) {
+    document.documentElement.classList.add("js");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add("woven");
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll(".loom").forEach(function (l) { io.observe(l); });
+  }
+
+  var y = document.getElementById("year");
+  if (y) y.textContent = String(new Date().getFullYear());
+})();
+</script>
+</body>
+</html>

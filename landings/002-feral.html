@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feral — a natural wine bar. Wine that was alive once.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.28 0.075 355);
+    --bg-deep: oklch(0.225 0.06 355);
+    --ink: oklch(0.93 0.025 85);
+    --muted: oklch(0.76 0.04 20);
+    --accent: oklch(0.87 0.095 95);
+    --line: oklch(0.45 0.05 355);
+    --z-base: 0;
+    --z-image: 1;
+    --z-swirl: 2;
+    --z-content: 3;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Jost", sans-serif;
+    font-weight: 300;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: var(--bg-deep); }
+  a { color: var(--accent); text-decoration-color: oklch(0.87 0.095 95 / 0.4); text-underline-offset: 0.2em; }
+  a:hover { text-decoration-color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  h1, h2, h3 {
+    font-family: "Marcellus", serif;
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero img {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-image);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.42) saturate(0.72) sepia(0.28) hue-rotate(-14deg);
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-image);
+    background:
+      radial-gradient(120% 90% at 50% 110%, oklch(0.225 0.06 355 / 0.95), transparent 60%),
+      linear-gradient(oklch(0.225 0.06 355 / 0.45), oklch(0.225 0.06 355 / 0.2));
+  }
+  .swirl {
+    position: absolute;
+    z-index: var(--z-swirl);
+    width: min(72vmax, 900px);
+    aspect-ratio: 1;
+    left: 0; top: 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side,
+      oklch(0.87 0.095 95 / 0.20),
+      oklch(0.62 0.11 350 / 0.14) 42%,
+      transparent 72%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    will-change: transform;
+  }
+  .hero-inner {
+    position: relative;
+    z-index: var(--z-content);
+    text-align: center;
+    padding: 4rem 1.5rem;
+  }
+  .hero-word {
+    font-family: "Marcellus", serif;
+    font-size: clamp(3.5rem, 14vw, 6rem);
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .hero-tag {
+    margin-top: 1.1rem;
+    font-size: clamp(1.05rem, 0.9rem + 0.8vw, 1.5rem);
+    font-weight: 300;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .hero-note {
+    margin-top: 3.2rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---------- pours ---------- */
+  main { background: var(--bg-deep); }
+  .wrap { max-width: 46rem; margin-inline: auto; padding: clamp(4.5rem, 10vw, 8rem) 1.5rem; }
+  .pours h2 {
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.05rem);
+    margin-bottom: 0.6rem;
+  }
+  .pours .sub {
+    color: var(--muted);
+    margin-bottom: 3rem;
+    max-width: 42ch;
+  }
+  .pour {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.15rem 1.5rem;
+    padding: 1.4rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .pour:last-child { border-bottom: 1px solid var(--line); }
+  .pour h3 {
+    grid-column: 1;
+    font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.6rem);
+    color: var(--accent);
+  }
+  .pour .price {
+    font-family: "Marcellus", serif;
+    font-size: 1.25rem;
+    color: var(--ink);
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+  .pour p {
+    grid-column: 1;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 44ch;
+  }
+  .pours-foot {
+    margin-top: 2.5rem;
+    font-style: italic;
+    color: var(--muted);
+    max-width: 46ch;
+  }
+
+  /* ---------- find us ---------- */
+  .find { text-align: center; }
+  .find h2 {
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.05rem);
+    margin-bottom: 1.6rem;
+  }
+  .find address {
+    font-style: normal;
+    line-height: 2;
+    font-size: 1.05rem;
+  }
+  .find .hours { color: var(--muted); margin-top: 0.8rem; }
+  .find .walkin {
+    margin-top: 2.8rem;
+    display: inline-block;
+    padding: 0.85rem 2.2rem;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.45s cubic-bezier(0.16, 1, 0.3, 1), color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .find .walkin:hover { background: var(--accent); color: var(--bg-deep); }
+
+  footer {
+    background: var(--bg-deep);
+    text-align: center;
+    padding: 2.5rem 1.5rem 3rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .swirl { transform: none !important; inset: 50% auto auto 50%; translate: -50% -50%; }
+    .find .walkin { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img src="https://picsum.photos/seed/feral-cellar/1600/900" width="1600" height="900"
+       alt="A candlelit cellar table — bottles without labels, two half-poured glasses, somebody's bread crust.">
+  <div class="swirl" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <h1 class="hero-word">Feral</h1>
+    <p class="hero-tag">Wine that was alive once. Still acts like it.</p>
+    <p class="hero-note">Natural wine bar · open tonight</p>
+  </div>
+</header>
+
+<main>
+  <section class="wrap pours" aria-labelledby="pours-heading">
+    <h2 id="pours-heading">Tonight's pours</h2>
+    <p class="sub">Written on the mirror in grease pencil at 4pm. When it's gone, we shrug and open something weirder.</p>
+
+    <div class="pour">
+      <h3>La Grange de l'Oncle Charles, “Amicale”</h3>
+      <p>Alsace. Riesling that spent six months on skins and came back opinionated. Apricot, gunpowder tea, long goodbye.</p>
+      <span class="price">14</span>
+    </div>
+    <div class="pour">
+      <h3>Partida Creus, “TN”</h3>
+      <p>Penedès. Trepat the color of stained glass when the sun gives up. Sour cherry, wet slate, church basement.</p>
+      <span class="price">12</span>
+    </div>
+    <div class="pour">
+      <h3>Frères Soulier, “Grand Clos”</h3>
+      <p>Rhône. Gamay that tastes like the cellar it was raised in — dark fruit, black olive, a little feral, obviously.</p>
+      <span class="price">13</span>
+    </div>
+    <div class="pour">
+      <h3>Les Capriades, “Piege à Filles”</h3>
+      <p>Touraine. Pét-nat, cloudy, unrepentant. Pear skin and sea spray. We open it with a knife when nobody's watching.</p>
+      <span class="price">15</span>
+    </div>
+
+    <p class="pours-foot">Everything by the glass because bottles are a commitment and so are you not. Prices are for the glass; the mirror knows the bottles.</p>
+  </section>
+
+  <section class="wrap find" aria-labelledby="find-heading">
+    <h2 id="find-heading">Find the cellar</h2>
+    <address>
+      17 Rue de la Butte-aux-Cailles<br>
+      75013 Paris, down the stairs, follow the candle
+    </address>
+    <p class="hours">Wednesday – Sunday · 6pm until the last glass or 1am, whichever surrenders first.<br>No reservations. No natural-wine lecture unless you ask — and please, ask.</p>
+    <a class="walkin" href="mailto:cellar@feral.bar">Ask about Sunday magnums</a>
+  </section>
+</main>
+
+<footer>
+  <p>Feral · wine that was alive once · <a href="mailto:cellar@feral.bar">cellar@feral.bar</a></p>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var swirl = document.querySelector(".swirl");
+  var hero = document.querySelector(".hero");
+  if (reduce || !swirl || !hero) return;
+
+  var cx = window.innerWidth / 2, cy = window.innerHeight * 0.42;
+  var tx = cx, ty = cy;
+  var t = 0;
+
+  hero.addEventListener("pointermove", function (e) {
+    var r = hero.getBoundingClientRect();
+    tx = e.clientX - r.left;
+    ty = e.clientY - r.top;
+  });
+
+  function frame() {
+    t += 0.004;
+    // slow wine-swirl drift layered under the cursor target
+    var driftX = Math.cos(t * 1.7) * 60;
+    var driftY = Math.sin(t * 2.3) * 40;
+    cx += (tx - cx) * 0.035;
+    cy += (ty - cy) * 0.035;
+    var half = swirl.offsetWidth / 2;
+    swirl.style.transform =
+      "translate(" + (cx + driftX - half) + "px," + (cy + driftY - half) + "px) rotate(" + (t * 40) + "deg)";
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

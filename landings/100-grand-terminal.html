@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grand Terminal — the 1912 station hotel. Check in at Platform One.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='oklch%280.17%200.008%2080%29'/%3E%3Ccircle cx='8' cy='8' r='4' fill='none' stroke='oklch%280.72%200.11%2085%29' stroke-width='1.5'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Cutive+Mono:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: oklch(1 0 0);
+    --paper: oklch(0.985 0.006 85);
+    --black: oklch(0.17 0.008 80);
+    --black-hi: oklch(0.22 0.01 80);
+    --ink: oklch(0.20 0.008 80);
+    --muted: oklch(0.44 0.012 80);
+    --brass: oklch(0.72 0.11 85);
+    --brass-text: oklch(0.47 0.09 85);
+    --manila: oklch(0.90 0.05 85);
+    --manila-deep: oklch(0.86 0.055 85);
+    --ink-on-black: oklch(0.93 0.012 85);
+    --dim-on-black: oklch(0.76 0.015 85);
+    --hairline: oklch(0.88 0.012 85);
+    --board-line: oklch(0.30 0.012 80);
+    --z-steam: 1;
+    --z-clock: 2;
+    --z-header: 10;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--white);
+    color: var(--ink);
+    font-family: "Cutive Mono", "Courier New", monospace;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--brass); color: var(--black); }
+
+  a { color: var(--brass-text); }
+  a:hover { color: var(--ink); }
+
+  :focus-visible {
+    outline: 3px solid var(--brass);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { width: min(70rem, calc(100% - 3rem)); margin-inline: auto; }
+
+  h1, h2, h3 {
+    font-family: "Marcellus", Georgia, serif;
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: oklch(1 0 0 / 0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.95rem;
+  }
+  .wordmark {
+    font-family: "Marcellus", Georgia, serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wordmark small { font-family: "Cutive Mono", monospace; font-size: 0.75rem; color: var(--brass-text); letter-spacing: 0.2em; margin-left: 0.6rem; }
+  .site-nav { display: flex; gap: 1.6rem; font-size: 0.9rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { color: var(--muted); text-decoration: none; transition: color 0.35s var(--ease-out-expo); }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--brass-text); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 5.8vw, 4.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+  .hero .lede {
+    margin-top: 1.4rem;
+    color: var(--muted);
+    max-width: 33rem;
+    font-size: 1.02rem;
+    text-wrap: pretty;
+  }
+  .hero-actions { margin-top: 2rem; display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+  .btn {
+    background: var(--black);
+    color: var(--brass);
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    padding: 0.85rem 1.7rem;
+    border-radius: 6px;
+    transition: background 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo);
+  }
+  .btn:hover { background: var(--black-hi); transform: translateY(-2px); }
+  .btn-quiet {
+    color: var(--brass-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--brass);
+    padding-bottom: 2px;
+  }
+
+  .hero-visual { position: relative; }
+  .hero-visual img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+  }
+  .steam {
+    position: absolute;
+    z-index: var(--z-steam);
+    width: 55%;
+    height: 45%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, oklch(1 0 0 / 0.55), oklch(1 0 0 / 0));
+    filter: blur(14px);
+    pointer-events: none;
+  }
+  .steam.s1 { bottom: -8%; left: -20%; animation: drift 16s linear infinite; }
+  .steam.s2 { bottom: 6%; left: -35%; width: 45%; height: 36%; animation: drift 22s linear 5s infinite; }
+  @keyframes drift {
+    from { transform: translateX(0); }
+    to   { transform: translateX(320%); }
+  }
+
+  /* platform clock */
+  .clock {
+    position: absolute;
+    z-index: var(--z-clock);
+    top: -2rem;
+    right: -1rem;
+    width: 108px;
+    height: 108px;
+    background: var(--black);
+    border-radius: 50%;
+    box-shadow: 0 4px 8px oklch(0.17 0.008 80 / 0.3);
+  }
+  .clock svg { display: block; width: 100%; height: 100%; }
+  .clock .hand { transition: transform 0.3s var(--ease-out-expo); transform-origin: 50px 50px; }
+  .clock .sec { transition: none; }
+
+  /* ---------- departure board ---------- */
+  .board-section { background: var(--black); color: var(--ink-on-black); padding-block: clamp(2.5rem, 6vw, 4rem); }
+  .board {
+    border: 1px solid var(--board-line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .board-head, .board-row {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.4rem;
+  }
+  .board-head {
+    color: var(--dim-on-black);
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    border-bottom: 1px solid var(--board-line);
+  }
+  .board-row {
+    text-decoration: none;
+    color: var(--brass);
+    font-size: clamp(0.95rem, 2.4vw, 1.3rem);
+    letter-spacing: 0.08em;
+    transition: background 0.4s var(--ease-out-expo);
+  }
+  .board-row:hover, .board-row:focus-visible { background: var(--black-hi); }
+  .board-row + .board-row { border-top: 1px solid var(--board-line); }
+  .board-row .trk { color: var(--dim-on-black); }
+  .board-row .status { color: var(--ink-on-black); font-size: 0.85em; letter-spacing: 0.15em; white-space: nowrap; }
+  .flap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .flap .cell {
+    display: inline-block;
+    min-width: 0.62em;
+    text-align: center;
+    border-right: 1px solid oklch(0.26 0.012 80);
+    padding-inline: 0.02em;
+  }
+  .flap .cell:last-child { border-right: 0; }
+  .board-note {
+    margin-top: 1rem;
+    color: var(--dim-on-black);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ---------- sections ---------- */
+  section.block { padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .block.black { background: var(--black); color: var(--ink-on-black); }
+  .block.black h2 { color: var(--ink-on-black); }
+  .block.black .intro { color: var(--dim-on-black); }
+  h2 {
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.8rem;
+  }
+  .intro { color: var(--muted); max-width: 38rem; margin-bottom: 2.4rem; text-wrap: pretty; }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 4.5rem);
+    align-items: center;
+  }
+  .split figure img { width: 100%; height: auto; display: block; border-radius: 10px; }
+  .split figcaption { margin-top: 0.7rem; font-size: 0.85rem; color: var(--muted); }
+  .split .body { max-width: 34rem; text-wrap: pretty; }
+  .split .body p + p { margin-top: 1em; }
+  .story-fact {
+    margin-top: 1.6rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--hairline);
+    font-size: 0.9rem;
+    color: var(--brass-text);
+    letter-spacing: 0.05em;
+  }
+
+  /* rooms + manila tickets */
+  .rooms { list-style: none; }
+  .rooms li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding-block: 1.6rem;
+  }
+  .rooms li + li { border-top: 1px solid var(--hairline); }
+  .rooms h3 { font-size: 1.55rem; letter-spacing: 0; margin-bottom: 0.3rem; }
+  .rooms p { color: var(--muted); font-size: 0.95rem; max-width: 34rem; text-wrap: pretty; }
+  .ticket {
+    background: var(--manila);
+    border: 1px solid var(--manila-deep);
+    border-radius: 8px;
+    padding: 0.8rem 1.3rem;
+    text-align: center;
+    position: relative;
+    color: var(--ink);
+    min-width: 8.5rem;
+  }
+  .ticket::before, .ticket::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    background: var(--white);
+    border: 1px solid var(--manila-deep);
+    border-radius: 50%;
+    transform: translateY(-50%);
+  }
+  .ticket::before { left: -8px; }
+  .ticket::after { right: -8px; }
+  .ticket .price {
+    font-family: "Marcellus", Georgia, serif;
+    font-size: 1.6rem;
+    line-height: 1.1;
+    display: block;
+  }
+  .ticket .per { font-size: 0.75rem; letter-spacing: 0.15em; color: var(--brass-text); }
+
+  /* restaurant (black section) */
+  .black .hours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .black .hours-grid div {
+    border-top: 2px solid var(--brass);
+    padding-top: 0.9rem;
+  }
+  .black .hours-grid .what { color: var(--brass); font-size: 0.85rem; letter-spacing: 0.18em; }
+  .black .hours-grid p { color: var(--dim-on-black); font-size: 0.93rem; margin-top: 0.4rem; }
+  .black a { color: var(--brass); }
+
+  /* packages */
+  .packages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  .pkg {
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    padding: 1.7rem;
+  }
+  .pkg h3 { font-size: 1.4rem; margin-bottom: 0.4rem; }
+  .pkg .fare { color: var(--brass-text); font-size: 0.9rem; letter-spacing: 0.12em; margin-bottom: 0.7rem; }
+  .pkg p { color: var(--muted); font-size: 0.95rem; text-wrap: pretty; }
+
+  /* footer */
+  .site-foot {
+    background: var(--black);
+    color: var(--dim-on-black);
+    padding-block: 2.2rem;
+    font-size: 0.85rem;
+  }
+  .site-foot .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .site-foot .brass { color: var(--brass); letter-spacing: 0.2em; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px) {
+    .hero, .split { grid-template-columns: 1fr; }
+    .split figure { order: -1; }
+    .clock { width: 88px; height: 88px; top: -1.6rem; right: 0.4rem; }
+    .site-nav { gap: 1rem; font-size: 0.82rem; }
+  }
+  @media (max-width: 560px) {
+    .board-head, .board-row { grid-template-columns: 2.6rem minmax(0, 1fr); }
+    .board-head span:last-child, .board-row .status { display: none; }
+    .rooms li { grid-template-columns: 1fr; }
+    .ticket { justify-self: start; }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .steam { display: none; }
+    .clock .hand { transition: none; }
+    .board-row, .btn, .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+    .btn:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">Grand Terminal<small>EST. 1912</small></a>
+    <nav class="site-nav" aria-label="Hotel">
+      <a href="#stay">Stay</a>
+      <a href="#dine">Dine</a>
+      <a href="#bar">The Bar</a>
+      <a href="#arrive">Arrive</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div>
+      <h1 id="hero-title">Check in at Platform One.</h1>
+      <p class="lede">A 63-room hotel inside the old terminus. The trains still run beneath your window, the clock still keeps the city's time, and the porters still know which carriage you'll be in.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#stay">SEE THE ROOMS</a>
+        <a class="btn-quiet" href="#arrive">Arrive by train, save 15%</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="clock" role="img" aria-label="The platform clock, showing the actual time">
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" fill="oklch(0.93 0.012 85)"/>
+          <circle cx="50" cy="50" r="46" fill="none" stroke="oklch(0.72 0.11 85)" stroke-width="3"/>
+          <g stroke="oklch(0.17 0.008 80)" stroke-width="2.5">
+            <line x1="50" y1="8" x2="50" y2="15"/>
+            <line x1="50" y1="85" x2="50" y2="92"/>
+            <line x1="8" y1="50" x2="15" y2="50"/>
+            <line x1="85" y1="50" x2="92" y2="50"/>
+          </g>
+          <line id="handH" class="hand" x1="50" y1="50" x2="50" y2="28" stroke="oklch(0.17 0.008 80)" stroke-width="4" stroke-linecap="round"/>
+          <line id="handM" class="hand" x1="50" y1="50" x2="50" y2="16" stroke="oklch(0.17 0.008 80)" stroke-width="2.8" stroke-linecap="round"/>
+          <line id="handS" class="hand sec" x1="50" y1="54" x2="50" y2="14" stroke="oklch(0.55 0.16 25)" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="50" cy="50" r="3.4" fill="oklch(0.17 0.008 80)"/>
+        </svg>
+      </div>
+      <img src="https://picsum.photos/seed/station-1/1600/900" width="1600" height="900"
+           alt="The vaulted glass roof of the train shed, morning light falling through steam onto Platform One">
+      <span class="steam s1" aria-hidden="true"></span>
+      <span class="steam s2" aria-hidden="true"></span>
+    </div>
+  </section>
+
+  <section class="board-section" aria-label="Departure board — also the menu">
+    <div class="wrap">
+      <div class="board">
+        <div class="board-head" aria-hidden="true">
+          <span>TRK</span><span>DESTINATION</span><span>REMARKS</span>
+        </div>
+        <a class="board-row" href="#stay" data-flap data-text="STAY — THE FIRST-CLASS WING" data-status="ON TIME">
+          <span class="trk">1</span><span class="flap">STAY — THE FIRST-CLASS WING</span><span class="status">ON TIME</span>
+        </a>
+        <a class="board-row" href="#dine" data-flap data-text="DINE — UNDER THE CLOCK" data-status="BOARDING">
+          <span class="trk">2</span><span class="flap">DINE — UNDER THE CLOCK</span><span class="status">BOARDING</span>
+        </a>
+        <a class="board-row" href="#bar" data-flap data-text="DRINK — THE TROLLEY, PLATFORM 2" data-status="ON TIME">
+          <span class="trk">3</span><span class="flap">DRINK — THE TROLLEY, PLATFORM 2</span><span class="status">ON TIME</span>
+        </a>
+        <a class="board-row" href="#arrive" data-flap data-text="ARRIVE — BY RAIL, SAVE 15%" data-status="DAILY">
+          <span class="trk">4</span><span class="flap">ARRIVE — BY RAIL, SAVE 15%</span><span class="status">DAILY</span>
+        </a>
+      </div>
+      <p class="board-note">THE BOARD IS THE MENU. CHOOSE A DEPARTURE.</p>
+    </div>
+  </section>
+
+  <section class="block" id="story" aria-labelledby="story-title">
+    <div class="wrap split">
+      <div>
+        <h2 id="story-title">The station that refused to close</h2>
+        <div class="body">
+          <p>Grand Terminal opened on the first of May, 1912, with a glass roof the papers called "the largest room in the North." It survived two wars, the Beeching cuts, and a 1974 proposal to replace the façade with something made of concrete and regret.</p>
+          <p>When the last scheduled service left in 1989, the building did what stations do: it waited. The restoration took six years. We reopened the booking hall as a lobby, the first-class waiting rooms as bedrooms, and the clock — always the clock — over the restaurant.</p>
+          <p class="story-fact">ORIGINAL FIXTURES KEPT: THE CLOCK (1912), THE TICKET WINDOWS (NOW THE BAR BACK), 4,100 PANES OF ROOF GLASS, AND ONE GHOST, UNVERIFIED.</p>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/station-2/800/600" width="800" height="600"
+             alt="A long platform at dusk, lamp light on wet stone, a single figure with a leather suitcase" loading="lazy">
+        <figcaption>Platform Two, where the sleeper still calls at 23:40.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="stay" style="background: var(--paper); border-block: 1px solid var(--hairline);" aria-labelledby="stay-title">
+    <div class="wrap">
+      <h2 id="stay-title">Rooms in the first-class wing</h2>
+      <p class="intro">Sixty-three rooms in the old first-class waiting rooms and the stationmaster's floors above. High ceilings, thick walls, and the low, pleasant rumble of arrivals.</p>
+      <ul class="rooms">
+        <li>
+          <div>
+            <h3>The Porter's Rest</h3>
+            <p>Our smallest room, under the eaves. Double bed, rain shower, a window that frames the clock tower. Books fast on Fridays.</p>
+          </div>
+          <span class="ticket"><span class="price">£145</span><span class="per">PER NIGHT</span></span>
+        </li>
+        <li>
+          <div>
+            <h3>First-Class Double</h3>
+            <p>A former waiting room, so it waits well: four-metre ceilings, a reading chair by the tall window, breakfast under the clock included.</p>
+          </div>
+          <span class="ticket"><span class="price">£230</span><span class="per">PER NIGHT</span></span>
+        </li>
+        <li>
+          <div>
+            <h3>The Engineer's Suite</h3>
+            <p>Two rooms over the booking hall with a copper bath, a record player, and the best view of the roof glass in the building. Champagne on arrival, obviously.</p>
+          </div>
+          <span class="ticket"><span class="price">£340</span><span class="per">PER NIGHT</span></span>
+        </li>
+        <li>
+          <div>
+            <h3>The Waiting Room</h3>
+            <p>Four bunks in the old third-class waiting room, for walkers, cyclists, and school trips. Shared bathroom, unshared character.</p>
+          </div>
+          <span class="ticket"><span class="price">£52</span><span class="per">PER BUNK</span></span>
+        </li>
+      </ul>
+      <figure style="margin-top: 2.5rem;">
+        <img src="https://picsum.photos/seed/station-3/800/600" width="800" height="600"
+             alt="A first-class double: brass bed, tall sash window, the station clock face glowing through the glass" loading="lazy"
+             style="width:100%;height:auto;display:block;border-radius:10px;">
+      </figure>
+    </div>
+  </section>
+
+  <section class="block black" id="dine" aria-labelledby="dine-title">
+    <div class="wrap">
+      <h2 id="dine-title">The Buffer Stop — dinner under the clock</h2>
+      <p class="intro">The restaurant sits where the buffers once stood, directly beneath the great clock. The menu is set, the pace is not; nobody has ever missed a train because of our cheese course, but two people have missed one on purpose.</p>
+      <div class="hours-grid">
+        <div>
+          <span class="what">SET MENU</span>
+          <p>Three courses, £48. Five courses, £68. The 1912 menu (oysters, game, a serious pudding) on the last Friday of the month.</p>
+        </div>
+        <div>
+          <span class="what">HOURS</span>
+          <p>Dinner 18:00–22:30, Tuesday to Saturday. Sunday lunch under the clock, 12:30–15:00.</p>
+        </div>
+        <div>
+          <span class="what">TABLES</span>
+          <p>Book the Clock Table — one table, directly underneath, seatings at 18:00 and 20:45. <a href="#dine">Reserve by telephone</a>, as is proper.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="bar" aria-labelledby="bar-title">
+    <div class="wrap split">
+      <div>
+        <h2 id="bar-title">The Trolley — drinks, platform side</h2>
+        <div class="body">
+          <p>The bar is built around the station's original luggage trolley, which carried mail sacks for forty years and now carries better cargo. Cocktails are named for destinations the line no longer serves.</p>
+          <p>Order a <strong>Millgate Junction</strong> (rye, amaro, coal-smoke bitters) and sit by the glass as the 23:40 sleeper pulls in. Last orders are at 00:42 — when the last train leaves, so does the barman.</p>
+          <p class="story-fact">NO DRESS CODE. THE 23:40 PASSENGERS ARE IN PYJAMAS AND NOBODY MINDS.</p>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/station-4/800/600" width="800" height="600"
+             alt="The Trolley bar at night: brass rails, low lamps, a coupe glass catching the platform lights" loading="lazy">
+        <figcaption>The Trolley, ten minutes before the sleeper.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="arrive" style="background: var(--paper); border-top: 1px solid var(--hairline);" aria-labelledby="arrive-title">
+    <div class="wrap">
+      <h2 id="arrive-title">Arrive by train. We'll carry the rest.</h2>
+      <p class="intro">You are already at the station. Show a same-day rail ticket at the desk and take 15% off the room rate — our small campaign against the airport hotel.</p>
+      <div class="packages">
+        <div class="pkg">
+          <h3>The Sleeper Special</h3>
+          <p class="fare">FROM £260 · SUNDAY–THURSDAY</p>
+          <p>Arrive on the 23:40, find your key waiting and a nightcap on the house. Late checkout at 14:00, because nobody should rush a morning like that.</p>
+        </div>
+        <div class="pkg">
+          <h3>The Day Return</h3>
+          <p class="fare">£95 · MONDAY–FRIDAY</p>
+          <p>A First-Class Double from 09:00 to 17:00 with lunch under the clock. For writers, interview dodgers, and people between trains and lives.</p>
+        </div>
+        <div class="pkg">
+          <h3>The Honeymoon Express</h3>
+          <p class="fare">£540 · TWO NIGHTS</p>
+          <p>The Engineer's Suite, dinner at the Clock Table, and breakfast delivered by trolley — the good trolley, not the bar one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>Grand Terminal Hotel · 1 Terminus Square · reservations 0161 496 0191</span>
+    <span class="brass">EST. 1912 · STILL ON TIME</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---------- platform clock: real time ---------- */
+    var h = document.getElementById("handH");
+    var m = document.getElementById("handM");
+    var s = document.getElementById("handS");
+    function setClock() {
+      var now = new Date();
+      var sec = now.getSeconds();
+      var min = now.getMinutes() + sec / 60;
+      var hr = (now.getHours() % 12) + min / 60;
+      s.style.transform = "rotate(" + sec * 6 + "deg)";
+      m.style.transform = "rotate(" + min * 6 + "deg)";
+      h.style.transform = "rotate(" + hr * 30 + "deg)";
+    }
+    setClock();
+    if (!reduce) {
+      window.setInterval(setClock, 1000);
+    } else {
+      // reduced motion: the clock still tells the truth, just without the tick
+      s.style.display = "none";
+      window.setInterval(setClock, 60000);
+    }
+
+    /* ---------- split-flap departure board ---------- */
+    var CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789—-%·";
+    var rows = Array.prototype.slice.call(document.querySelectorAll("[data-flap]"));
+
+    function cellify(flap, text) {
+      flap.textContent = "";
+      for (var i = 0; i < text.length; i++) {
+        var cell = document.createElement("span");
+        cell.className = "cell";
+        cell.textContent = text[i] === " " ? " " : text[i];
+        flap.appendChild(cell);
+      }
+    }
+
+    function scramble(flap, finalText, baseDelay) {
+      var cells = Array.prototype.slice.call(flap.children);
+      cells.forEach(function (cell, i) {
+        var target = finalText[i] === " " ? " " : finalText[i];
+        var settleAt = baseDelay + i * 35;
+        var elapsed = 0;
+        var step = 45;
+        function flip() {
+          elapsed += step;
+          if (elapsed >= settleAt || cell.textContent === target && elapsed > baseDelay) {
+            cell.textContent = target;
+            return;
+          }
+          cell.textContent = CHARS[Math.floor(Math.random() * CHARS.length)];
+          window.setTimeout(flip, step);
+        }
+        window.setTimeout(flip, step);
+      });
+    }
+
+    if (reduce) {
+      // static board, already legible — just add the cell dividers
+      rows.forEach(function (row) {
+        var flap = row.querySelector(".flap");
+        cellify(flap, row.dataset.text);
+      });
+      return;
+    }
+
+    // board assembles on load, staggered by row
+    rows.forEach(function (row, r) {
+      var flap = row.querySelector(".flap");
+      var text = row.dataset.text;
+      cellify(flap, text);
+      scramble(flap, text, 150 + r * 260);
+      // a row re-flips when you point at it, like the board noticing you
+      row.addEventListener("mouseenter", function () { scramble(flap, text, 0); });
+      row.addEventListener("focus", function () { scramble(flap, text, 0); });
+    });
+
+    // statuses cycle the way real boards do: BOARDING, then ON TIME again
+    var statuses = rows.map(function (row) { return row.querySelector(".status"); });
+    var originals = statuses.map(function (el) { return el.textContent; });
+    var idx = 0;
+    window.setInterval(function () {
+      var el = statuses[idx % statuses.length];
+      var orig = originals[idx % statuses.length];
+      el.textContent = el.textContent === orig ? "BOARDING" : orig;
+      idx++;
+    }, 4000);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opal Coast — campervans, seven days, one good road</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tilt+Warp&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.97 0.01 190);
+    --ink: oklch(0.27 0.03 245);
+    --ink-soft: oklch(0.44 0.025 245);
+    --rust: oklch(0.53 0.15 45);
+    --rust-deep: oklch(0.45 0.14 45);
+    --teal: oklch(0.52 0.09 190);
+    --teal-deep: oklch(0.42 0.085 192);
+    --teal-soft: oklch(0.93 0.025 190);
+    --sun: oklch(0.85 0.14 100);
+    --sun-deep: oklch(0.72 0.13 95);
+    --line: oklch(0.9 0.012 200);
+    --display: "Tilt Warp", sans-serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.45rem);
+    --step-2: clamp(1.56rem, 1.35rem + 1vw, 2.2rem);
+    --step-3: clamp(1.95rem, 1.55rem + 2vw, 3rem);
+    --step-4: clamp(2.44rem, 1.75rem + 3.4vw, 4.5rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  .measure { max-width: 62ch; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--teal-deep);
+  }
+  .brand svg { width: 2rem; height: 1.4rem; flex: none; }
+  .site-nav { display: flex; align-items: center; gap: 1.75rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--rust-deep); }
+  .btn {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: oklch(0.99 0.005 90);
+    background: var(--rust-deep);
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+  .btn:hover { background: var(--rust); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.ghost { background: transparent; color: var(--teal-deep); border: 2px solid var(--teal); }
+  .btn.ghost:hover { background: var(--teal-deep); border-color: var(--teal-deep); color: oklch(0.99 0.005 190); }
+  @media (max-width: 640px) {
+    .site-nav a:not(.btn) { display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3.5rem, 8vw, 6.5rem) clamp(3rem, 6vw, 5rem); }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero h1 { font-size: var(--step-4); margin-bottom: 1.25rem; }
+  .hero h1 .teal { color: var(--teal-deep); }
+  .hero .lede {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: 32rem;
+    margin-bottom: 2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.6rem; }
+  .tag {
+    font-size: var(--step--1);
+    font-weight: 700;
+    background: var(--sun);
+    color: oklch(0.35 0.06 70);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+  }
+  .tag.teal { background: var(--teal-soft); color: var(--teal-deep); }
+  @media (max-width: 880px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- coastal route map ---------- */
+  .map-figure {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1rem;
+  }
+  .mapsvg { width: 100%; height: auto; display: block; }
+  .ocean { fill: var(--teal-soft); }
+  .coastline { fill: none; stroke: var(--teal); stroke-width: 2; }
+  #coast-route {
+    fill: none;
+    stroke: var(--rust);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 3.2s var(--ease-out);
+  }
+  .waypoint {
+    fill: var(--sun);
+    stroke: var(--rust-deep);
+    stroke-width: 2;
+  }
+  .map-label {
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: 13px;
+    fill: var(--ink-soft);
+  }
+  #van { }
+  @keyframes vanHop {
+    0% { transform: translateY(0); }
+    40% { transform: translateY(-7px); }
+    100% { transform: translateY(0); }
+  }
+  #van.hop { animation: vanHop 0.5s var(--ease-out); }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .section-head { margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .section-head h2 { font-size: var(--step-3); margin-bottom: 0.9rem; }
+  .section-head h2 .rust { color: var(--rust-deep); }
+  .section-head h2 .teal { color: var(--teal-deep); }
+  .section-head p { color: var(--ink-soft); font-size: var(--step-1); }
+
+  /* ---------- vans ---------- */
+  .vans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.75rem;
+  }
+  .van {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  .van .band {
+    padding: 1.25rem 1.5rem 1rem;
+    color: oklch(0.99 0.005 90);
+  }
+  .van:nth-child(1) .band { background: var(--teal-deep); }
+  .van:nth-child(2) .band { background: var(--rust-deep); }
+  .van:nth-child(3) .band { background: oklch(0.45 0.05 240); }
+  .van .band h3 { font-size: var(--step-2); }
+  .van .band .spec { font-size: var(--step--1); opacity: 0.85; }
+  .van .body { padding: 1.25rem 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.9rem; flex: 1; }
+  .van .rate {
+    font-family: var(--display);
+    font-size: var(--step-2);
+    color: var(--ink);
+  }
+  .van .rate small { font-family: var(--body); font-size: var(--step--1); font-weight: 600; color: var(--ink-soft); }
+  .van p { font-size: var(--step--1); color: var(--ink-soft); }
+  .van .quirk {
+    margin-top: auto;
+    background: var(--sun);
+    color: oklch(0.35 0.06 70);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    font-size: var(--step--1);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .van .quirk strong { display: block; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.2rem; }
+
+  /* ---------- 7-day route ---------- */
+  .route-section { background: var(--surface); border-block: 1px solid var(--line); }
+  .route-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .route-grid img { border-radius: 14px; width: 100%; }
+  .days { list-style: none; display: grid; gap: 0; margin-top: 1.75rem; }
+  .days li {
+    display: grid;
+    grid-template-columns: 4.6rem 1fr;
+    gap: 1rem;
+    padding-block: 0.85rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  .days li:first-child { border-top: 1px dashed var(--line); }
+  .days .d {
+    font-family: var(--display);
+    color: var(--rust-deep);
+    font-size: var(--step-0);
+  }
+  .days strong { font-weight: 700; }
+  .days span { color: var(--ink-soft); font-size: var(--step--1); }
+  @media (max-width: 880px) {
+    .route-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- included honesty ---------- */
+  .included .wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .col h3 { font-size: var(--step-1); margin-bottom: 1.1rem; }
+  .col ul { list-style: none; display: grid; gap: 0.8rem; }
+  .col li { display: flex; gap: 0.7rem; align-items: baseline; font-size: var(--step-0); color: var(--ink-soft); }
+  .col li strong { color: var(--ink); }
+  .col.yes li::before { content: "✓"; color: var(--teal-deep); font-weight: 700; }
+  .col.no li::before { content: "✗"; color: var(--rust-deep); font-weight: 700; }
+  .oneway {
+    margin-top: 3rem;
+    background: var(--teal-soft);
+    border-radius: 14px;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+  .oneway .badge {
+    font-family: var(--display);
+    font-size: var(--step-2);
+    color: oklch(0.99 0.005 190);
+    background: var(--teal-deep);
+    border-radius: 12px;
+    padding: 0.6rem 1rem;
+    line-height: 1.1;
+    text-align: center;
+  }
+  .oneway h3 { font-size: var(--step-1); margin-bottom: 0.4rem; }
+  .oneway p { color: var(--ink-soft); font-size: var(--step-0); }
+  @media (max-width: 880px) {
+    .included .wrap { grid-template-columns: 1fr; }
+    .oneway { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- availability ---------- */
+  .calendar-wrap { overflow-x: auto; }
+  table.calendar {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 620px;
+    font-size: var(--step--1);
+  }
+  .calendar caption {
+    text-align: left;
+    font-family: var(--display);
+    font-size: var(--step-1);
+    padding-bottom: 1rem;
+    color: var(--ink);
+  }
+  .calendar th, .calendar td {
+    border: 1px solid var(--line);
+    padding: 0.55rem 0.5rem;
+    text-align: center;
+    min-width: 2.4rem;
+  }
+  .calendar thead th { background: var(--surface); font-weight: 700; color: var(--ink-soft); }
+  .calendar tbody th { text-align: left; font-family: var(--display); font-weight: 400; padding-inline: 0.9rem; }
+  .calendar td.free { background: var(--teal-soft); color: var(--teal-deep); font-weight: 700; }
+  .calendar td.booked { background: var(--surface); color: oklch(0.7 0.02 245); }
+  .calendar td.yours { background: var(--sun); color: oklch(0.35 0.06 70); font-weight: 700; }
+  .legend { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 1.25rem; font-size: var(--step--1); color: var(--ink-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .legend i {
+    width: 0.9rem; height: 0.9rem; border-radius: 3px; display: inline-block;
+    border: 1px solid var(--line);
+  }
+  .legend .l-free { background: var(--teal-soft); }
+  .legend .l-booked { background: var(--surface); }
+  .legend .l-yours { background: var(--sun); }
+
+  /* ---------- closing ---------- */
+  .closing { background: var(--teal-deep); color: oklch(0.97 0.01 190); text-align: center; }
+  .closing h2 { font-size: var(--step-3); margin-bottom: 1rem; }
+  .closing p { color: oklch(0.88 0.03 190); font-size: var(--step-1); margin: 0 auto 2rem; max-width: 36rem; }
+  .closing .btn { background: var(--sun); color: oklch(0.32 0.06 70); }
+  .closing .btn:hover { background: oklch(0.88 0.15 100); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; }
+  footer nav { display: flex; gap: 1.5rem; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--rust-deep); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    #coast-route { transition: none; }
+    #van.hop { animation: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Opal Coast home">
+      <svg viewBox="0 0 34 24" aria-hidden="true">
+        <path d="M3 17 h28 a2 2 0 0 0 2 -2 v-6 a3 3 0 0 0 -3 -3 h-14 l-3 -4 h-8 a2 2 0 0 0 -2 2 Z" fill="oklch(0.52 0.09 190)"/>
+        <rect x="6" y="8" width="7" height="5" rx="1" fill="oklch(1 0 0)"/>
+        <circle cx="10" cy="19" r="3.2" fill="oklch(0.27 0.03 245)"/>
+        <circle cx="25" cy="19" r="3.2" fill="oklch(0.27 0.03 245)"/>
+        <circle cx="10" cy="19" r="1.2" fill="oklch(0.85 0.14 100)"/>
+        <circle cx="25" cy="19" r="1.2" fill="oklch(0.85 0.14 100)"/>
+      </svg>
+      Opal Coast
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#vans">The vans</a>
+      <a href="#route">The 7 days</a>
+      <a href="#included">What's included</a>
+      <a href="#availability">Availability</a>
+      <a class="btn small" href="#availability">Check dates</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <h1 id="hero-title">Sydney to Eden, <span class="teal">the slow way.</span></h1>
+        <p class="lede">Seven days, 480 kilometres, one very good coastal road. Pick up a van
+        with a name and a few honest quirks, sleep where the ocean is loud, and hand the keys
+        back when you're sandy and happy.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#vans">Meet the vans</a>
+          <a class="btn ghost" href="#route">See the 7-day route</a>
+        </div>
+        <div class="hero-chips">
+          <span class="tag">From $95/day</span>
+          <span class="tag teal">300 km included daily</span>
+          <span class="tag">One-way friendly</span>
+        </div>
+      </div>
+      <figure class="map-figure">
+        <svg class="mapsvg" viewBox="0 0 700 460" role="img"
+             aria-label="Coastal map of the route from Sydney to Eden with waypoints at Kiama, Jervis Bay, Batemans Bay, Narooma and Merimbula">
+          <path class="ocean" d="M430 0 L700 0 L700 460 L470 460 C 500 380 460 340 480 280 C 500 220 450 170 470 110 C 480 60 440 40 430 0 Z"/>
+          <path class="coastline" d="M430 0 C 440 40 480 60 470 110 C 450 170 500 220 480 280 C 460 340 500 380 470 460"/>
+          <path id="coast-route" d="M395 30 C 430 60 450 80 445 115 C 438 160 465 200 455 245 C 445 295 465 330 448 375 C 438 405 440 420 435 440"/>
+          <circle class="waypoint" cx="395" cy="30" r="7"/>
+          <circle class="waypoint" cx="445" cy="115" r="6"/>
+          <circle class="waypoint" cx="455" cy="200" r="6"/>
+          <circle class="waypoint" cx="452" cy="290" r="6"/>
+          <circle class="waypoint" cx="448" cy="375" r="6"/>
+          <circle class="waypoint" cx="435" cy="440" r="7"/>
+          <g id="van" transform="translate(395 30)">
+            <g transform="translate(-13 -11)">
+              <path d="M0 12 h26 a2 2 0 0 0 2 -2 v-5 a3 3 0 0 0 -3 -3 h-13 l-2.5 -3 h-8 a1.5 1.5 0 0 0 -1.5 1.5 Z" fill="oklch(0.52 0.09 190)"/>
+              <circle cx="7" cy="14" r="2.6" fill="oklch(0.27 0.03 245)"/>
+              <circle cx="21" cy="14" r="2.6" fill="oklch(0.27 0.03 245)"/>
+            </g>
+          </g>
+          <text class="map-label" x="330" y="24">Sydney</text>
+          <text class="map-label" x="368" y="112">Kiama</text>
+          <text class="map-label" x="352" y="198">Jervis Bay</text>
+          <text class="map-label" x="330" y="288">Batemans Bay</text>
+          <text class="map-label" x="352" y="372">Narooma</text>
+          <text class="map-label" x="352" y="452">Eden</text>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <section id="vans" aria-labelledby="vans-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="vans-title">Three vans, <span class="rust">quirks included</span></h2>
+        <p class="measure">These are working holiday vans, not showroom queens. Each one is
+        serviced between trips and each one has a personality. We'd rather tell you about it now.</p>
+      </div>
+      <div class="vans">
+        <article class="van">
+          <div class="band">
+            <h3>Bindi</h3>
+            <p class="spec">2-berth hi-top · 2016 · manual</p>
+          </div>
+          <div class="body">
+            <p class="rate">$95<small>/day</small></p>
+            <p>The couples' favourite. Big bed, little kitchen, a fridge that hums you to sleep.
+            Best fuel economy of the fleet at 8.1 L/100km.</p>
+            <div class="quirk">
+              <strong>Honest quirk</strong>
+              The left window needs a firm word to close properly, and the radio picks up exactly
+              one station. It's a good station.
+            </div>
+          </div>
+        </article>
+        <article class="van">
+          <div class="band">
+            <h3>Matilda</h3>
+            <p class="spec">4-berth pop-top · 2019 · automatic</p>
+          </div>
+          <div class="body">
+            <p class="rate">$135<small>/day</small></p>
+            <p>The family one. Sleeps two adults downstairs and two kids up top, and the pop-top
+            means you can stand up to make the coffee.</p>
+            <div class="quirk">
+              <strong>Honest quirk</strong>
+              The reverse beeper is enthusiastic and the whole campground will know your plans.
+              The awning arm sticks on humid days — lift, don't yank.
+            </div>
+          </div>
+        </article>
+        <article class="van">
+          <div class="band">
+            <h3>Dusty</h3>
+            <p class="spec">2-berth off-grid · 2014 · manual</p>
+          </div>
+          <div class="body">
+            <p class="rate">$115<small>/day</small></p>
+            <p>Solar panel, second battery, outdoor shower. For the ones who want to free-camp
+            the national-park fringes and not see another van for two days.</p>
+            <div class="quirk">
+              <strong>Honest quirk</strong>
+              270,000 km on the clock and proud of every one. She rattles at 110. Drive 100 —
+              you're on holiday.
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="route-section" id="route" aria-labelledby="route-title">
+    <div class="wrap route-grid">
+      <div>
+        <div class="section-head" style="margin-bottom: 0;">
+          <h2 id="route-title">The seven days, <span class="teal">planned loosely</span></h2>
+          <p class="measure">Short hops on purpose — the longest drive is under two hours. The
+          plan is a suggestion; the ocean is the itinerary.</p>
+        </div>
+        <ol class="days">
+          <li><span class="d">Day 1</span><div><strong>Sydney → Kiama</strong> · 120 km <span>— pick up by 10am, blowhole by lunch, first swim at Bombo.</span></div></li>
+          <li><span class="d">Day 2</span><div><strong>Kiama → Jervis Bay</strong> · 85 km <span>— Hyams Beach for the white sand cliché. It's true though.</span></div></li>
+          <li><span class="d">Day 3</span><div><strong>Jervis Bay, parked</strong> · 0 km <span>— no driving. Kayak, read, repeat.</span></div></li>
+          <li><span class="d">Day 4</span><div><strong>Jervis Bay → Batemans Bay</strong> · 105 km <span>— pies in Ulladulla, oysters at the shed by 4pm.</span></div></li>
+          <li><span class="d">Day 5</span><div><strong>Batemans Bay → Narooma</strong> · 80 km <span>— Australia Rock at golden hour, seals optional but likely.</span></div></li>
+          <li><span class="d">Day 6</span><div><strong>Narooma → Merimbula</strong> · 110 km <span>— the prettiest leg. Stop at every lookout. All of them.</span></div></li>
+          <li><span class="d">Day 7</span><div><strong>Merimbula → Eden</strong> · 25 km <span>— killer-whale museum, last swim, keys back by 3pm.</span></div></li>
+        </ol>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/camper-1/800/600" width="800" height="600"
+             alt="A campervan parked on grass above a beach, side door open, towels already on the line">
+        <figcaption style="margin-top: 0.75rem; font-size: var(--step--1); color: var(--ink-soft);">Day 3 energy. Bindi at Jervis Bay, going nowhere.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="included" id="included" aria-labelledby="included-title">
+    <div class="wrap">
+      <div>
+        <div class="section-head" style="margin-bottom: 0;">
+          <h2 id="included-title">What's in the price, <span class="rust">and what isn't</span></h2>
+          <p class="measure">No asterisks. Here's the whole list, both columns.</p>
+        </div>
+      </div>
+      <div style="display: grid; gap: 2rem;">
+        <div class="col yes">
+          <h3>Included</h3>
+          <ul>
+            <li><div><strong>Bedding for two</strong> — real sheets, not sleeping bags (extra sets $12)</div></li>
+            <li><div><strong>Camp chairs, table, cooker &amp; full kitchen kit</strong></div></li>
+            <li><div><strong>300 km per day</strong> — the whole route is 480 km total, so relax</div></li>
+            <li><div><strong>Insurance with a $500 excess</strong> — drop it to $0 for $18/day</div></li>
+            <li><div><strong>24/7 phone-a-human breakdown line</strong></div></li>
+          </ul>
+        </div>
+        <div class="col no">
+          <h3>Not included</h3>
+          <ul>
+            <li><div><strong>Fuel</strong> — budget roughly $40/day at current prices</div></li>
+            <li><div><strong>National park entry &amp; campground fees</strong> — $12–$45/night depending how fancy</div></li>
+            <li><div><strong>The good coffee</strong> — we leave a list of the right cafés though</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="oneway">
+        <span class="badge">One-way<br>fees</span>
+        <div>
+          <h3>Explained, not buried</h3>
+          <p>Sydney → Eden along the route: <strong>$0</strong> — we need the vans down there anyway.
+          Eden → Sydney (against the flow): <strong>$150 flat</strong>, because someone has to drive it
+          back up and that someone is our mate Dave. Any other one-way combination: ask, and we'll
+          give you a straight number before you book. That's the whole policy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="availability" aria-labelledby="avail-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="avail-title">August, as it stands</h2>
+        <p class="measure">Live-ish availability straight off the booking board. If your dates
+        look taken, ask anyway — cancellations land most weeks.</p>
+      </div>
+      <div class="calendar-wrap">
+        <table class="calendar">
+          <caption>August 2026 — pick-up day grid</caption>
+          <thead>
+            <tr>
+              <th scope="col">Van</th>
+              <th scope="col">Sat 1</th><th scope="col">Sun 2</th><th scope="col">Mon 3</th><th scope="col">Tue 4</th>
+              <th scope="col">Wed 5</th><th scope="col">Thu 6</th><th scope="col">Fri 7</th><th scope="col">Sat 8</th>
+              <th scope="col">Sun 9</th><th scope="col">Mon 10</th><th scope="col">Tue 11</th><th scope="col">Wed 12</th>
+              <th scope="col">Thu 13</th><th scope="col">Fri 14</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Bindi</th>
+              <td class="booked">—</td><td class="booked">—</td><td class="booked">—</td><td class="free">free</td>
+              <td class="free">free</td><td class="free">free</td><td class="free">free</td><td class="booked">—</td>
+              <td class="booked">—</td><td class="free">free</td><td class="free">free</td><td class="free">free</td>
+              <td class="free">free</td><td class="yours">you?</td>
+            </tr>
+            <tr>
+              <th scope="row">Matilda</th>
+              <td class="free">free</td><td class="free">free</td><td class="free">free</td><td class="booked">—</td>
+              <td class="booked">—</td><td class="booked">—</td><td class="booked">—</td><td class="booked">—</td>
+              <td class="free">free</td><td class="free">free</td><td class="free">free</td><td class="free">free</td>
+              <td class="free">free</td><td class="free">free</td>
+            </tr>
+            <tr>
+              <th scope="row">Dusty</th>
+              <td class="booked">—</td><td class="free">free</td><td class="free">free</td><td class="free">free</td>
+              <td class="free">free</td><td class="booked">—</td><td class="booked">—</td><td class="free">free</td>
+              <td class="free">free</td><td class="free">free</td><td class="free">free</td><td class="booked">—</td>
+              <td class="booked">—</td><td class="free">free</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><i class="l-free"></i> Free to pick up</span>
+        <span><i class="l-booked"></i> On the road</span>
+        <span><i class="l-yours"></i> The Friday you should take</span>
+      </div>
+      <figure style="margin-top: 2.5rem;">
+        <img src="https://picsum.photos/seed/camper-2/1600/900" width="1600" height="900"
+             alt="The coastal road bending along the headland, guardrail on one side and the whole Pacific on the other" style="border-radius: 14px; width: 100%;">
+        <figcaption style="margin-top: 0.75rem; font-size: var(--step--1); color: var(--ink-soft);">Day 6, somewhere before Merimbula. This is the bit you came for.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title">The road's not going anywhere. But August is.</h2>
+      <p>Pick a van, pick a Friday, and go see the bit of the coast where the road runs out
+      and the whales start.</p>
+      <a class="btn" href="mailto:gday@opalcoast.example">gday@opalcoast.example</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Opal Coast Campers — depot in Marrickville, drop-off in Eden. Est. 2018, still only three vans, on purpose.</span>
+    <nav aria-label="Footer">
+      <a href="#vans">The vans</a>
+      <a href="#route">The 7 days</a>
+      <a href="#availability">Availability</a>
+      <a href="mailto:gday@opalcoast.example">Say g'day</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var route = document.getElementById("coast-route");
+    var van = document.getElementById("van");
+    if (!route || !van || reduce || !("IntersectionObserver" in window)) return;
+
+    var len = route.getTotalLength();
+    route.style.strokeDasharray = len;
+    route.style.strokeDashoffset = len;
+
+    // Waypoints as fractions of the route, matched to the labelled stops.
+    var stops = [0.22, 0.44, 0.62, 0.8, 1.0];
+    var stopIdx = 0;
+
+    function onIO(entries, obs) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        obs.unobserve(e.target);
+        // Draw the route.
+        requestAnimationFrame(function () {
+          route.style.strokeDashoffset = "0";
+        });
+        // Drive the van along the same path, hopping at each waypoint.
+        var start = null;
+        var dur = 3400;
+        function drive(t) {
+          if (!start) start = t;
+          var p = Math.min((t - start) / dur, 1);
+          var eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+          var pt = route.getPointAtLength(len * eased);
+          van.setAttribute("transform", "translate(" + pt.x + " " + pt.y + ")");
+          if (stopIdx < stops.length && eased >= stops[stopIdx]) {
+            stopIdx++;
+            van.classList.remove("hop");
+            void van.getBoundingClientRect(); // restart the hop
+            van.classList.add("hop");
+          }
+          if (p < 1) requestAnimationFrame(drive);
+        }
+        requestAnimationFrame(drive);
+      });
+    }
+    var io = new IntersectionObserver(onIO, { threshold: 0.4 });
+    io.observe(route.closest(".mapsvg"));
+  })();
+</script>
+</body>
+</html>

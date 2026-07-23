@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pollen — Raw honey from rooftop hives, jarred one neighborhood at a time</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.97 0.015 85);
+    --ink: oklch(0.28 0.015 60);
+    --muted: oklch(0.45 0.02 65);
+    --amber: oklch(0.78 0.15 80);
+    --amber-soft: oklch(0.92 0.06 88);
+    --amber-text: oklch(0.50 0.13 72);
+    --clover: oklch(0.44 0.11 145);
+    --clover-soft: oklch(0.93 0.03 145);
+    --line: oklch(0.9 0.02 80);
+    --display: "Shrikhand", serif;
+    --body: "Nunito", sans-serif;
+    --step--1: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+    --step-0: clamp(1.02rem, 0.98rem + 0.25vw, 1.16rem);
+    --step-1: clamp(1.28rem, 1.18rem + 0.5vw, 1.56rem);
+    --step-2: clamp(1.6rem, 1.4rem + 1vw, 2.08rem);
+    --step-3: clamp(2rem, 1.62rem + 1.9vw, 2.85rem);
+    --step-4: clamp(2.5rem, 1.8rem + 3.5vw, 4.2rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+    --z-bee: 5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 400;
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0;
+    text-wrap: balance;
+  }
+  p { max-width: 65ch; text-wrap: pretty; }
+  a { color: var(--clover); }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--clover);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1100px, 100% - 3rem); margin-inline: auto; }
+  .muted { color: var(--muted); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.95);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    color: var(--amber-text);
+    text-decoration: none;
+  }
+  .nav { display: flex; align-items: center; gap: clamp(1rem, 3vw, 2rem); }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: var(--step--1);
+    transition: color 0.3s var(--ease-out);
+  }
+  .nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--clover); }
+  .btn {
+    display: inline-block;
+    font-weight: 800;
+    font-size: var(--step--1);
+    text-decoration: none;
+    padding: 0.75em 1.7em;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 0;
+    transition: transform 0.4s var(--ease-out), background 0.3s var(--ease-out);
+  }
+  .btn-amber { background: var(--amber); color: oklch(0.25 0.03 60); white-space: nowrap; flex-shrink: 0; }
+  .btn-amber:hover { background: oklch(0.72 0.16 78); transform: translateY(-2px); }
+  .btn-clover { background: var(--clover); color: oklch(0.98 0.01 145); }
+  .btn-clover:hover { background: oklch(0.39 0.10 145); transform: translateY(-2px); }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(3rem, 7vw, 6rem) 0 clamp(3rem, 6vw, 5rem); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero h1 { font-size: var(--step-4); color: var(--amber-text); margin-bottom: 1.4rem; max-width: 14ch; }
+  .hero h1 em { font-style: normal; color: var(--clover); }
+  .hero .lede { font-size: var(--step-1); color: var(--muted); line-height: 1.55; margin-bottom: 2rem; max-width: 38ch; }
+  .hero-cta { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+
+  .jar-visual {
+    position: relative;
+    aspect-ratio: 4 / 4.4;
+  }
+  .jar-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+  }
+  .flight {
+    position: absolute;
+    inset: -6%;
+    width: 112%;
+    height: 112%;
+    z-index: var(--z-bee);
+    pointer-events: none;
+    overflow: visible;
+  }
+  .flight path.trail {
+    fill: none;
+    stroke: var(--clover);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 0.1 14;
+    opacity: 0.55;
+  }
+
+  /* ---------- flavors ---------- */
+  section { padding-block: clamp(3.5rem, 7vw, 6rem); }
+  .flavors { background: var(--surface); border-block: 1px solid var(--line); }
+  .flavors h2, .adopt h2 { font-size: var(--step-3); color: var(--amber-text); margin-bottom: 1rem; }
+  .flavors .lede, .adopt .lede { font-size: var(--step-1); color: var(--muted); line-height: 1.55; max-width: 46ch; margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .flavor-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .flavor-list { list-style: none; display: flex; flex-direction: column; gap: 0.9rem; }
+  .flavor-list button {
+    width: 100%;
+    text-align: left;
+    font-family: var(--body);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.2rem 1.4rem;
+    cursor: pointer;
+    transition: transform 0.45s var(--ease-out), border-color 0.3s var(--ease-out), background 0.3s var(--ease-out);
+  }
+  .flavor-list button:hover, .flavor-list button[aria-pressed="true"] {
+    border-color: var(--amber);
+    background: var(--amber-soft);
+    transform: translateX(6px);
+  }
+  .flavor-list h3 { font-size: var(--step-1); color: var(--ink); margin-bottom: 0.25rem; }
+  .flavor-list p { font-size: var(--step--1); color: var(--muted); }
+  .flavor-list .tag {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--clover);
+    background: var(--clover-soft);
+    border-radius: 999px;
+    padding: 0.2em 0.9em;
+    margin-bottom: 0.5rem;
+  }
+  .map-frame {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg);
+    overflow: hidden;
+    aspect-ratio: 4 / 3.2;
+  }
+  .map-frame svg { width: 100%; height: 100%; display: block; }
+  .map-zoom {
+    transition: transform 0.9s var(--ease-out);
+    transform-origin: 200px 170px;
+  }
+  .map-frame[data-focus="linden"] .map-zoom { transform: scale(1.9); transform-origin: 130px 120px; }
+  .map-frame[data-focus="canal"] .map-zoom { transform: scale(1.9); transform-origin: 280px 200px; }
+  .map-frame[data-focus="market"] .map-zoom { transform: scale(1.9); transform-origin: 210px 90px; }
+  .map-cap { font-size: var(--step--1); color: var(--muted); padding-top: 0.7rem; }
+
+  /* ---------- adopt ---------- */
+  .adopt-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .adopt img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+  }
+  .adopt ul { list-style: none; margin: 1.6rem 0 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+  .adopt li { padding-left: 1.8rem; position: relative; color: var(--muted); }
+  .adopt li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.42em;
+    width: 0.85em; height: 0.85em;
+    border-radius: 50%;
+    background: var(--amber);
+  }
+  .honesty {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    background: var(--clover-soft);
+    border-radius: 12px;
+    padding: 1.6rem 1.8rem;
+    font-weight: 600;
+    color: oklch(0.32 0.07 145);
+    max-width: 62ch;
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+
+  @media (max-width: 780px) {
+    .hero-grid, .flavor-grid, .adopt-grid { grid-template-columns: 1fr; }
+    .nav a:not(.btn) { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001s !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001s !important;
+    }
+    .map-zoom { transform: none !important; }
+    .flavor-list button:hover { transform: none; }
+    .btn:hover { transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Pollen</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#flavors">Flavors</a>
+      <a href="#adopt">Adopt a Hive</a>
+      <a href="#adopt" class="btn btn-amber">Get a Jar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>City honey, jarred <em>one rooftop</em> at a time.</h1>
+        <p class="lede">Our bees commute shorter than you do. Every jar comes from a single
+          rooftop hive, harvested within three miles of your breakfast table — and we
+          print the rooftop's address on the label.</p>
+        <div class="hero-cta">
+          <a class="btn btn-clover" href="#flavors">Meet the Neighborhoods</a>
+          <a class="btn btn-amber" href="#adopt">Adopt a Hive</a>
+        </div>
+      </div>
+      <div class="jar-visual">
+        <img src="https://picsum.photos/seed/honey-1/800/880" width="800" height="880"
+             alt="A jar of raw amber honey in front of a cut honeycomb, wax cells still glistening">
+        <svg class="flight" viewBox="0 0 400 440" aria-hidden="true">
+          <path class="trail" id="bee-path"
+                d="M 200 60 C 330 40, 380 130, 340 220 C 300 310, 120 330, 70 240
+                   C 30 160, 90 80, 200 60 Z"/>
+          <g id="bee">
+            <ellipse cx="-4" cy="-6" rx="5" ry="3.2" fill="oklch(0.95 0.02 90)" opacity="0.9"/>
+            <ellipse cx="4" cy="-6" rx="5" ry="3.2" fill="oklch(0.95 0.02 90)" opacity="0.9"/>
+            <ellipse cx="0" cy="0" rx="7" ry="5.5" fill="oklch(0.78 0.15 80)"/>
+            <rect x="-2" y="-5" width="2.4" height="10" rx="1.2" fill="oklch(0.28 0.015 60)"/>
+            <rect x="2.4" y="-4.6" width="2" height="9.2" rx="1" fill="oklch(0.28 0.015 60)"/>
+            <animateMotion dur="9s" repeatCount="indefinite" rotate="auto"
+              path="M 200 60 C 330 40, 380 130, 340 220 C 300 310, 120 330, 70 240 C 30 160, 90 80, 200 60 Z"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="flavors" id="flavors">
+    <div class="wrap">
+      <h2>Three neighborhoods, three honeys</h2>
+      <p class="lede">Bees forage in a three-mile circle, so each rooftop tastes like its own
+        streets. Pick a neighborhood to see where your jar grew up.</p>
+      <div class="flavor-grid">
+        <ul class="flavor-list">
+          <li>
+            <button type="button" aria-pressed="true" data-zone="linden">
+              <span class="tag">Linden Hill</span>
+              <h3>Rooftop 9 — Linden &amp; Rain</h3>
+              <p>Light and floral, from the linden trees along Halden Street. Harvested
+                June 14 — 212 jars, 31 left.</p>
+            </button>
+          </li>
+          <li>
+            <button type="button" aria-pressed="false" data-zone="canal">
+              <span class="tag">Old Canal</span>
+              <h3>Rooftop 3 — Clover &amp; Brass</h3>
+              <p>Deeper, almost buttery. The bees work the clover banks by the canal
+                locks. Harvested July 2 — 178 jars, 54 left.</p>
+            </button>
+          </li>
+          <li>
+            <button type="button" aria-pressed="false" data-zone="market">
+              <span class="tag">Market Quarter</span>
+              <h3>Rooftop 12 — Wildflower &amp; Smoke</h3>
+              <p>Bold and herbal, fed by the flower stalls on Mercer Row. Harvested
+                July 19 — 196 jars, 12 left.</p>
+            </button>
+          </li>
+        </ul>
+        <div>
+          <div class="map-frame" id="map" data-focus="linden">
+            <svg viewBox="0 0 400 320" role="img"
+                 aria-label="Stylized map of the three rooftop hive neighborhoods">
+              <g class="map-zoom">
+                <rect width="400" height="320" fill="oklch(0.97 0.015 85)"/>
+                <path d="M 0 210 C 90 190, 160 250, 260 235 C 330 225, 370 250, 400 240 L 400 320 L 0 320 Z"
+                      fill="oklch(0.93 0.03 145)"/>
+                <path d="M 0 205 C 90 185, 160 245, 260 230 C 330 220, 370 245, 400 235"
+                      fill="none" stroke="oklch(0.44 0.11 145)" stroke-width="2.5"/>
+                <g fill="oklch(0.88 0.02 80)">
+                  <rect x="60" y="70" width="46" height="120"/>
+                  <rect x="118" y="100" width="34" height="90"/>
+                  <rect x="180" y="50" width="52" height="140"/>
+                  <rect x="244" y="90" width="40" height="100"/>
+                  <rect x="300" y="60" width="48" height="130"/>
+                </g>
+                <g stroke="oklch(0.85 0.02 80)" stroke-width="6">
+                  <line x1="0" y1="150" x2="400" y2="150"/>
+                  <line x1="160" y1="0" x2="160" y2="320"/>
+                  <line x1="290" y1="0" x2="290" y2="320"/>
+                </g>
+                <g font-family="Nunito, sans-serif" font-size="13" font-weight="800">
+                  <g id="pin-linden">
+                    <circle cx="130" cy="120" r="12" fill="oklch(0.78 0.15 80)" stroke="oklch(0.28 0.015 60)" stroke-width="2"/>
+                    <text x="130" y="125" text-anchor="middle" fill="oklch(0.28 0.015 60)">9</text>
+                  </g>
+                  <g id="pin-canal">
+                    <circle cx="280" cy="200" r="12" fill="oklch(0.78 0.15 80)" stroke="oklch(0.28 0.015 60)" stroke-width="2"/>
+                    <text x="280" y="205" text-anchor="middle" fill="oklch(0.28 0.015 60)">3</text>
+                  </g>
+                  <g id="pin-market">
+                    <circle cx="210" cy="90" r="12" fill="oklch(0.78 0.15 80)" stroke="oklch(0.28 0.015 60)" stroke-width="2"/>
+                    <text x="210" y="95" text-anchor="middle" fill="oklch(0.28 0.015 60)">12</text>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <p class="map-cap" id="map-cap">Rooftop 9 sits above the linden rows of Halden Street — a nine-minute bee commute to your jar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="adopt" id="adopt">
+    <div class="wrap adopt-grid">
+      <figure>
+        <img src="https://picsum.photos/seed/rooftop-1/800/600" width="800" height="600"
+             alt="Wooden beehives lined up on a gravel rooftop, city skyline soft behind them">
+      </figure>
+      <div>
+        <h2>Adopt a hive, name a queen</h2>
+        <p class="muted">For €14 a month you sponsor one of our eighteen rooftop colonies.
+          You get the harvest from your hive first, a photo of your queen every season,
+          and an open invitation to Sunday inspections (veil provided, stings free).</p>
+        <ul>
+          <li>Two 340&nbsp;g jars from your hive every harvest, before anyone else</li>
+          <li>Your name on the hive's brass plate, next to the queen's</li>
+          <li>Winter report: how your colony ate, slept, and survived</li>
+        </ul>
+        <a class="btn btn-clover" href="#top">Adopt from €14/month</a>
+        <p class="honesty">The honest math: one jar holds the life's work of roughly 500 bees.
+          We never take more than a third of any hive's stores — the rest is theirs.
+          They earned it before you did.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><strong>Pollen</strong> — rooftop beekeeping cooperative</span>
+    <span>Jar room open Sat 9:00–13:00, Mercer Row 4 · hello@pollen.example</span>
+    <span>Next harvest: Linden Hill, late August, weather permitting the bees.</span>
+  </div>
+</footer>
+
+<script>
+  // Neighborhood map zoom: hovering/focusing a flavor zooms the map to its rooftop.
+  (function () {
+    var map = document.getElementById("map");
+    var cap = document.getElementById("map-cap");
+    var buttons = document.querySelectorAll(".flavor-list button");
+    var captions = {
+      linden: "Rooftop 9 sits above the linden rows of Halden Street — a nine-minute bee commute to your jar.",
+      canal: "Rooftop 3 overlooks the old canal locks, where the clover banks bloom into July.",
+      market: "Rooftop 12 rises over Mercer Row's flower stalls — the boldest forage in the city."
+    };
+    function select(btn) {
+      buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+      btn.setAttribute("aria-pressed", "true");
+      map.dataset.focus = btn.dataset.zone;
+      cap.textContent = captions[btn.dataset.zone];
+    }
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () { select(btn); });
+      btn.addEventListener("focus", function () { select(btn); });
+    });
+  })();
+
+  // Honor reduced motion for the SMIL bee flight.
+  (function () {
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var svg = document.querySelector(".flight");
+    if (svg && svg.pauseAnimations) svg.pauseAnimations();
+  })();
+</script>
+</body>
+</html>

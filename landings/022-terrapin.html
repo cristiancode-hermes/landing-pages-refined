@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terrapin — Kayak outfitter on the Conasauga. Guided trips, honest rentals, river smarts since 2009.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Gabarito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --river: oklch(0.36 0.075 165);
+    --river-deep: oklch(0.27 0.06 166);
+    --river-mist: oklch(0.94 0.02 165);
+    --paddle: oklch(0.86 0.15 100);
+    --paddle-deep: oklch(0.78 0.14 97);
+    --ink: oklch(0.28 0.03 220);
+    --ink-soft: oklch(0.42 0.03 215);
+    --on-river: oklch(0.96 0.015 165);
+    --on-river-soft: oklch(0.82 0.04 166);
+    --line: oklch(0.90 0.015 180);
+    --display: "Fjalla One", sans-serif;
+    --body: "Gabarito", sans-serif;
+    --step--1: clamp(0.84rem, 0.81rem + 0.14vw, 0.92rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.13rem);
+    --step-1: clamp(1.25rem, 1.17rem + 0.4vw, 1.5rem);
+    --step-2: clamp(1.56rem, 1.41rem + 0.75vw, 2.07rem);
+    --step-3: clamp(1.95rem, 1.66rem + 1.45vw, 2.99rem);
+    --step-4: clamp(2.44rem, 1.85rem + 2.95vw, 4.55rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-current: 2;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p { max-width: 66ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--paddle-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; position: relative; }
+  section { padding-block: clamp(4rem, 3rem + 5vw, 7rem); }
+
+  /* ---------- current line (scroll-tracked river) ---------- */
+  .current {
+    position: fixed;
+    top: 0;
+    left: clamp(8px, 2.5vw, 40px);
+    height: 100vh;
+    width: 64px;
+    z-index: var(--z-current);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  .current path {
+    fill: none;
+    stroke: var(--river);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.8rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-size: var(--step-1);
+    text-decoration: none;
+    color: var(--river-deep);
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .brand svg { flex: none; }
+  .site-nav { display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--river); }
+  .btn {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: var(--step--1);
+    text-decoration: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.45s var(--ease-out), background 0.3s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-paddle { background: var(--paddle); color: oklch(0.25 0.05 110); white-space: nowrap; flex-shrink: 0; }
+  .btn-paddle:hover { background: var(--paddle-deep); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--on-river);
+    box-shadow: inset 0 0 0 2px oklch(0.96 0.015 165 / 0.6);
+  }
+  .btn-ghost:hover { box-shadow: inset 0 0 0 2px var(--on-river); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    background: var(--river);
+    color: var(--on-river);
+    padding-block: clamp(4.5rem, 3rem + 7vw, 8.5rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    color: oklch(0.98 0.01 160);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 em { font-style: normal; color: var(--paddle); }
+  .hero p { color: var(--on-river-soft); font-size: var(--step-1); line-height: 1.55; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  .hero-photo {
+    border-radius: 14px;
+    overflow: hidden;
+    transform: rotate(1.4deg);
+    box-shadow: 0 18px 44px oklch(0.18 0.05 166 / 0.45);
+  }
+  .hero-photo img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .hero-meta {
+    margin-top: 1.1rem;
+    font-size: var(--step--1);
+    color: var(--on-river-soft);
+    display: flex;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+  }
+  .hero-meta strong { color: var(--paddle); font-weight: 700; }
+
+  /* ---------- section headers ---------- */
+  .sec-head { margin-bottom: clamp(2.2rem, 4vw, 3.4rem); max-width: 44ch; }
+  .sec-head h2 { font-size: var(--step-3); color: var(--river-deep); margin-bottom: 0.7rem; }
+  .sec-head p { color: var(--ink-soft); }
+  .on-dark .sec-head h2 { color: oklch(0.97 0.015 160); }
+  .on-dark .sec-head p { color: var(--on-river-soft); }
+
+  /* ---------- trips ---------- */
+  .trips { background: var(--bg); }
+  .trip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.6rem;
+  }
+  .trip {
+    background: var(--river-mist);
+    border-radius: 14px;
+    padding: 1.9rem 1.7rem 1.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    transition: transform 0.6s var(--ease-out);
+  }
+  .trip:nth-child(odd):hover { transform: rotate(-1.4deg) translateY(-5px); }
+  .trip:nth-child(even):hover { transform: rotate(1.2deg) translateY(-5px); }
+  .trip-class {
+    align-self: flex-start;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    background: var(--river);
+    color: var(--on-river);
+  }
+  .trip-class.mellow { background: var(--paddle); color: oklch(0.25 0.05 110); }
+  .trip-class.wild { background: var(--river-deep); color: var(--on-river); }
+  .trip h3 { font-size: var(--step-2); color: var(--river-deep); }
+  .trip p { color: var(--ink-soft); font-size: var(--step--1); flex: 1; }
+  .trip-facts {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink);
+    border-top: 1px solid oklch(0.85 0.03 165);
+    padding-top: 0.9rem;
+  }
+  .trip-facts .price { font-family: var(--display); font-size: var(--step-1); color: var(--river); }
+
+  /* ---------- conditions widget ---------- */
+  .conditions { background: var(--river-deep); color: var(--on-river); }
+  .gauge-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: oklch(0.42 0.06 166);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .gauge {
+    background: var(--river-deep);
+    padding: 1.6rem 1.5rem;
+  }
+  .gauge .label { font-size: var(--step--1); color: var(--on-river-soft); font-weight: 600; }
+  .gauge .value {
+    font-family: var(--display);
+    font-size: var(--step-3);
+    color: oklch(0.98 0.01 160);
+    line-height: 1.1;
+    margin-top: 0.35rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .gauge .value small { font-size: 0.45em; color: var(--on-river-soft); font-family: var(--body); font-weight: 600; }
+  .gauge .note { font-size: 0.82rem; color: var(--paddle); margin-top: 0.3rem; font-weight: 600; }
+  .gauge-foot {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--on-river-soft);
+  }
+  .gauge-foot .dot {
+    display: inline-block;
+    width: 0.55em; height: 0.55em;
+    border-radius: 50%;
+    background: var(--paddle);
+    margin-right: 0.5em;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+
+  /* ---------- fleet ---------- */
+  .fleet-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .fleet-photo { border-radius: 14px; overflow: hidden; transform: rotate(-1.2deg); }
+  .fleet-photo img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .fleet-list { list-style: none; }
+  .fleet-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.95rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .fleet-list li:first-child { border-top: 1px solid var(--line); }
+  .fleet-list .boat { font-weight: 700; }
+  .fleet-list .boat span { display: block; font-weight: 500; font-size: var(--step--1); color: var(--ink-soft); }
+  .fleet-list .rate { font-family: var(--display); color: var(--river); white-space: nowrap; }
+  .fleet-note { margin-top: 1.2rem; font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- safety credo ---------- */
+  .credo { background: var(--river); color: var(--on-river); }
+  .credo blockquote {
+    font-family: var(--display);
+    font-size: var(--step-2);
+    line-height: 1.25;
+    max-width: 30ch;
+    color: oklch(0.97 0.015 160);
+    margin-bottom: 2.2rem;
+    text-wrap: balance;
+  }
+  .credo-list { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.8rem; }
+  .credo-list h3 { font-size: var(--step-1); color: var(--paddle); margin-bottom: 0.4rem; }
+  .credo-list p { color: var(--on-river-soft); font-size: var(--step--1); }
+
+  /* ---------- footer ---------- */
+  .site-foot {
+    background: var(--river-deep);
+    color: var(--on-river-soft);
+    padding-block: 3rem;
+    font-size: var(--step--1);
+  }
+  .site-foot .wrap { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; align-items: center; }
+  .site-foot .brand { color: var(--on-river); }
+  .site-foot a { color: var(--paddle); text-decoration: none; font-weight: 600; }
+  .site-foot a:hover { text-decoration: underline; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .hero-grid, .fleet-grid { grid-template-columns: 1fr; }
+    .current { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .trip, .trip:hover, .btn, .btn:hover { transition: none; transform: none; }
+    .gauge-foot .dot { animation: none; }
+    .current path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    .site-nav a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg class="current" viewBox="0 0 64 1600" preserveAspectRatio="none" aria-hidden="true">
+  <path id="currentPath" d="M32 0 C 50 140, 12 260, 34 420 C 54 560, 14 700, 32 860 C 48 1000, 16 1140, 34 1300 C 46 1420, 24 1500, 32 1600" />
+</svg>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Terrapin home">
+      <svg width="26" height="20" viewBox="0 0 26 20" aria-hidden="true">
+        <path d="M2 12 Q7 4 13 10 T24 9" fill="none" stroke="oklch(0.36 0.075 165)" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M4 16 Q9 10 14 14 T23 13" fill="none" stroke="oklch(0.86 0.15 100)" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      Terrapin
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#trips">Guided trips</a>
+      <a href="#conditions">River today</a>
+      <a href="#fleet">Rentals</a>
+      <a href="#credo">Safety</a>
+      <a class="btn btn-paddle" href="#trips">Book a seat</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>The river sets the pace. <em>We know every bend.</em></h1>
+        <p>Terrapin is a family-run kayak outfitter on twenty-two miles of the Conasauga. Guided trips from lazy floats to honest Class III, a rental fleet we actually maintain, and guides who read water the way you read a map.</p>
+        <div class="hero-actions">
+          <a class="btn btn-paddle" href="#trips">See this season's trips</a>
+          <a class="btn btn-ghost" href="#conditions">Check today's river</a>
+        </div>
+        <div class="hero-meta">
+          <span>Put-in: <strong>Dock 3, Old Mill Rd</strong></span>
+          <span>Season: <strong>Apr 4 – Oct 26</strong></span>
+          <span>Guides on staff: <strong>9, all Swiftwater certified</strong></span>
+        </div>
+      </div>
+      <figure class="hero-photo">
+        <img src="https://picsum.photos/seed/kayak-1/1600/1000" width="1600" height="1000"
+             alt="A green river bend at morning light, the kind of flatwater where the Tuesday float drifts for six easy miles" loading="eager">
+      </figure>
+    </div>
+  </section>
+
+  <section class="trips" id="trips">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Trips by how wet you want to get</h2>
+        <p>Every trip includes boat, paddle, PFD, shuttle, and a guide who's run the section at least fifty times. We cancel for lightning, never for drizzle.</p>
+      </div>
+      <div class="trip-grid">
+        <article class="trip">
+          <span class="trip-class mellow">Class I · Mellow</span>
+          <h3>The Tuesday Float</h3>
+          <p>Six miles of flatwater through the heron rookery. Two and a half hours, one swimming break, zero adrenaline required. Kids eight and up paddle their own sit-on-tops; younger ones ride tandem with a guide.</p>
+          <div class="trip-facts"><span>2.5 hrs · 6 mi</span><span class="price">$48</span></div>
+        </article>
+        <article class="trip">
+          <span class="trip-class">Class II–III · Honest</span>
+          <h3>Horseshoe Run</h3>
+          <p>Nine miles with four named rapids, including the S-Turn that eats sunglasses. You'll get a real paddle talk on shore first, then surf your first wave by mile six. Previous paddle time required — one float with us counts.</p>
+          <div class="trip-facts"><span>4 hrs · 9 mi</span><span class="price">$86</span></div>
+        </article>
+        <article class="trip">
+          <span class="trip-class wild">Overnight · Committed</span>
+          <h3>Two Rivers, One Tent</h3>
+          <p>Twenty-four miles over two days, camping on a gravel bar we can only take you to when the gauge reads right. We carry the kitchen, you carry your dry bag. Catfish stew and a campfire included; snoring tolerated.</p>
+          <div class="trip-facts"><span>2 days · 24 mi</span><span class="price">$265</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="conditions on-dark" id="conditions">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>The river, right now</h2>
+        <p>Pulled from the USGS gauge at Beetler Bridge, a mile upstream of our dock. If it says don't go, we don't go — and your deposit comes back the same day.</p>
+      </div>
+      <div class="gauge-panel" role="group" aria-label="Current river conditions">
+        <div class="gauge">
+          <div class="label">Gauge height</div>
+          <div class="value"><span id="gaugeHeight">3.42</span> <small>ft</small></div>
+          <div class="note" id="heightNote">Ideal for Horseshoe Run</div>
+        </div>
+        <div class="gauge">
+          <div class="label">Flow</div>
+          <div class="value"><span id="gaugeFlow">812</span> <small>cfs</small></div>
+          <div class="note">Steady since 6 a.m.</div>
+        </div>
+        <div class="gauge">
+          <div class="label">Water temp</div>
+          <div class="value"><span id="gaugeTemp">68</span> <small>°F</small></div>
+          <div class="note">Wetsuits optional</div>
+        </div>
+        <div class="gauge">
+          <div class="label">Clarity</div>
+          <div class="value">4 <small>ft viz</small></div>
+          <div class="note">Green and glassy</div>
+        </div>
+      </div>
+      <p class="gauge-foot"><span class="dot" aria-hidden="true"></span>Updated <span id="gaugeAge">12</span> minutes ago · Go / no-go call made daily at 7:30 a.m. and posted to the dock board</p>
+    </div>
+  </section>
+
+  <section id="fleet">
+    <div class="wrap fleet-grid">
+      <figure class="fleet-photo">
+        <img src="https://picsum.photos/seed/kayak-2/800/600" width="800" height="600"
+             alt="Guides loading cedar-toned kayaks onto the trailer at Dock 3 before the first shuttle of the morning" loading="lazy">
+      </figure>
+      <div>
+        <div class="sec-head" style="margin-bottom: 1.6rem;">
+          <h2>The rental fleet</h2>
+          <p>Forty-one boats, washed and hull-checked after every outing. Rates include PFD, paddle, and one dry bag — shuttle upstream is $8 extra and worth every penny.</p>
+        </div>
+        <ul class="fleet-list">
+          <li>
+            <span class="boat">Perception Swifty 9.5<span>Stable rec boat · the one we hand first-timers</span></span>
+            <span class="rate">$32 / day</span>
+          </li>
+          <li>
+            <span class="boat">Dagger Stratos 12.5<span>Day tourer · tracks straight, eats miles</span></span>
+            <span class="rate">$44 / day</span>
+          </li>
+          <li>
+            <span class="boat">Pyranha Scorch M<span>Whitewater · Class III and up, cardholders only</span></span>
+            <span class="rate">$52 / day</span>
+          </li>
+          <li>
+            <span class="boat">Old Town Tandem<span>Two seats, one marriage test</span></span>
+            <span class="rate">$58 / day</span>
+          </li>
+        </ul>
+        <p class="fleet-note">Multi-day rentals knock 20% off from day three. We don't rent in thunderstorm warnings — check the river widget above before you drive out.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="credo" id="credo">
+    <div class="wrap">
+      <blockquote>"Nobody has ever had a good day on a river they didn't respect."</blockquote>
+      <ul class="credo-list">
+        <li>
+          <h3>PFDs stay buckled</h3>
+          <p>On the water, always, every trip, guides included. It's the one rule with zero exceptions and zero apologies.</p>
+        </li>
+        <li>
+          <h3>We turn around</h3>
+          <p>If a rapid reads wrong on the day, we portage or pull the trip. You'll be annoyed for an hour and paddling for decades.</p>
+        </li>
+        <li>
+          <h3>Say the thing</h3>
+          <p>Scared, cold, tired, blister forming — tell your guide early. Every rescue we've ever run started with someone staying quiet.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <a class="brand" href="#top">Terrapin</a>
+    <p>1402 Old Mill Rd, Conasauga Bend · Open 8–6 daily in season · <a href="tel:+15550194">(555) 019-4004</a></p>
+    <p>© <span id="year">2026</span> Terrapin Outfitters · Guides licensed TN #OWR-2210</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* --- current line: river traces down the margin as you scroll --- */
+  var path = document.getElementById("currentPath");
+  if (path && !reduced) {
+    var len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    var ticking = false;
+    function trace() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? window.scrollY / max : 0;
+      path.style.strokeDashoffset = String(len * (1 - Math.min(1, Math.max(0, p))));
+      ticking = false;
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(trace); }
+    }, { passive: true });
+    trace();
+  }
+
+  /* --- conditions widget: gentle live fluctuation --- */
+  var height = 3.42, flow = 812, temp = 68, age = 12;
+  var hEl = document.getElementById("gaugeHeight");
+  var fEl = document.getElementById("gaugeFlow");
+  var tEl = document.getElementById("gaugeTemp");
+  var aEl = document.getElementById("gaugeAge");
+  var noteEl = document.getElementById("heightNote");
+  function tick() {
+    height = Math.min(3.9, Math.max(2.9, height + (Math.random() - 0.5) * 0.04));
+    flow = Math.round(Math.min(980, Math.max(640, flow + (Math.random() - 0.5) * 26)));
+    temp = Math.round(Math.min(71, Math.max(66, temp + (Math.random() - 0.5) * 1)));
+    age = age >= 14 ? 1 : age + 1;
+    if (hEl) hEl.textContent = height.toFixed(2);
+    if (fEl) fEl.textContent = String(flow);
+    if (tEl) tEl.textContent = String(temp);
+    if (aEl) aEl.textContent = String(age);
+    if (noteEl) noteEl.textContent = height < 3.1 ? "Low — floats only" : height > 3.7 ? "Pushy — guided trips only" : "Ideal for Horseshoe Run";
+  }
+  if (!reduced) setInterval(tick, 5000);
+
+  var y = document.getElementById("year");
+  if (y) y.textContent = String(new Date().getFullYear());
+})();
+</script>
+</body>
+</html>

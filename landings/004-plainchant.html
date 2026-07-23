@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plainchant — Ale brewed under a vow of silence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.145 0.008 60);
+    --surface: oklch(0.185 0.01 62);
+    --ink: oklch(0.93 0.012 80);
+    --muted: oklch(0.74 0.022 75);
+    --gold: oklch(0.79 0.105 80);
+    --gold-dim: oklch(0.62 0.07 78);
+    --wax: oklch(0.55 0.15 25);
+    --wax-deep: oklch(0.42 0.12 25);
+    --line: oklch(0.32 0.02 65);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-nav: 10;
+    --z-flame: 2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Bitter", serif;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--gold); color: var(--bg); }
+
+  a { color: var(--gold); text-underline-offset: 0.22em; }
+  a:hover { color: var(--ink); }
+
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap {
+    max-width: 68rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 3rem);
+  }
+
+  h1, h2, h3 {
+    font-family: "Cinzel", serif;
+    font-weight: 600;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  /* ---------- nav ---------- */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    background: color-mix(in oklch, var(--bg) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.85rem;
+  }
+  .wordmark {
+    font-family: "Cinzel", serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.25rem);
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    text-align: center;
+    padding-block: clamp(3.5rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .seal-scene {
+    position: relative;
+    width: 11rem;
+    height: 12.5rem;
+    margin-inline: auto;
+    margin-bottom: 2.25rem;
+  }
+  .candle {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    z-index: var(--z-flame);
+  }
+  .flame {
+    transform-origin: 50% 100%;
+    animation: flicker 2.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 9px oklch(0.8 0.14 75 / 0.85));
+  }
+  .seal {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+  }
+  @keyframes flicker {
+    0%, 100% { transform: scaleY(1) scaleX(1) skewX(0deg); opacity: 1; }
+    18% { transform: scaleY(1.08) scaleX(0.96) skewX(1.4deg); opacity: 0.92; }
+    34% { transform: scaleY(0.94) scaleX(1.04) skewX(-1.8deg); opacity: 1; }
+    52% { transform: scaleY(1.1) scaleX(0.94) skewX(2.2deg); opacity: 0.88; }
+    70% { transform: scaleY(0.97) scaleX(1.02) skewX(-1deg); opacity: 0.97; }
+    86% { transform: scaleY(1.05) scaleX(0.97) skewX(1deg); opacity: 0.93; }
+  }
+
+  .hero h1 {
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.08;
+  }
+  .hero .tagline {
+    margin-top: 1.4rem;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+    color: var(--muted);
+    max-width: 34ch;
+    margin-inline: auto;
+  }
+  .rule-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 2.4rem;
+    color: var(--gold-dim);
+  }
+  .rule-ornament::before,
+  .rule-ornament::after {
+    content: "";
+    height: 1px;
+    width: min(9rem, 26vw);
+    background: var(--gold-dim);
+  }
+  .rule-ornament span {
+    width: 0.5rem;
+    height: 0.5rem;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  /* ---------- verses ---------- */
+  .verse {
+    text-align: center;
+    padding-block: clamp(3rem, 8vw, 5.5rem);
+  }
+  .verse blockquote {
+    font-style: italic;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 46ch;
+    margin-inline: auto;
+    text-wrap: pretty;
+  }
+  .verse cite {
+    display: block;
+    margin-top: 1.1rem;
+    font-style: normal;
+    font-size: 0.9rem;
+    color: var(--gold-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* ---------- reveal ---------- */
+  [data-reveal] {
+    transition: opacity 1.3s var(--ease-out), transform 1.3s var(--ease-out);
+  }
+  .pre-reveal { opacity: 0; transform: translateY(16px); }
+  .revealed { opacity: 1; transform: none; }
+
+  /* ---------- figures ---------- */
+  figure.full {
+    margin-block: 0;
+  }
+  figure.full img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-block: 1px solid var(--line);
+  }
+  figure.full figcaption {
+    text-align: center;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--muted);
+    padding-block: 0.9rem;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+  .section-head {
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+  .section-head h2 {
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+    letter-spacing: 0.04em;
+  }
+  .section-head p {
+    margin-top: 1rem;
+    color: var(--muted);
+    max-width: 52ch;
+    margin-inline: auto;
+    text-wrap: pretty;
+  }
+
+  /* ---------- ales ---------- */
+  .ale {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem 3rem;
+    padding-block: 2.2rem;
+    border-top: 1px solid var(--line);
+  }
+  .ale:last-of-type { border-bottom: 1px solid var(--line); }
+  .ale-name {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .ale-name h3 {
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+    color: var(--gold);
+  }
+  .ale-name .abv {
+    font-family: "Cinzel", serif;
+    font-size: 0.95rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  .ale-notes { max-width: 60ch; text-wrap: pretty; }
+  .ale-notes em { color: var(--muted); }
+  .ale-price {
+    font-family: "Cinzel", serif;
+    font-size: 1.05rem;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  @media (min-width: 52rem) {
+    .ale { grid-template-columns: 16rem 1fr auto; align-items: baseline; }
+    .ale:nth-of-type(2) { grid-template-columns: 1fr 16rem auto; }
+    .ale:nth-of-type(2) .ale-name { order: 2; }
+    .ale:nth-of-type(2) .ale-notes { order: 1; }
+    .ale:nth-of-type(2) .ale-price { order: 3; }
+  }
+
+  /* ---------- rules ---------- */
+  .rules-list {
+    max-width: 46rem;
+    margin-inline: auto;
+    counter-reset: rule;
+  }
+  .rule-item {
+    padding-block: 1.8rem;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.35rem 2rem;
+  }
+  .rule-item:last-child { border-bottom: 1px solid var(--line); }
+  .rule-item h3 {
+    font-size: 1.15rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .rule-item p { color: var(--ink); max-width: 58ch; text-wrap: pretty; }
+  @media (min-width: 44rem) {
+    .rule-item { grid-template-columns: 12rem 1fr; align-items: baseline; }
+  }
+
+  /* ---------- visit ---------- */
+  .visit-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 56rem) {
+    .visit-grid { grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  }
+  .visit-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+  }
+  .visit-copy h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.2rem;
+  }
+  .visit-copy p { max-width: 52ch; text-wrap: pretty; }
+  .visit-copy p + p { margin-top: 1rem; }
+  .cellar-hours {
+    margin-top: 1.8rem;
+    border: 1px solid var(--gold-dim);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    background: var(--surface);
+  }
+  .cellar-hours dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.3rem 1.4rem;
+    font-size: 0.98rem;
+  }
+  .cellar-hours dt { color: var(--gold); font-family: "Cinzel", serif; font-size: 0.9rem; letter-spacing: 0.06em; }
+  .cellar-hours dd { color: var(--ink); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  footer .motto {
+    font-family: "Cinzel", serif;
+    color: var(--gold-dim);
+    letter-spacing: 0.18em;
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .flame { animation: none; filter: drop-shadow(0 0 7px oklch(0.8 0.14 75 / 0.7)); }
+    [data-reveal] { transition: none; }
+    .pre-reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav" aria-label="Main">
+  <div class="wrap">
+    <a class="wordmark" href="#top">PLAINCHANT</a>
+    <ul class="nav-links">
+      <li><a href="#ales">The Ales</a></li>
+      <li><a href="#rule">The Rule</a></li>
+      <li><a href="#visit">Cellar Door</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="seal-scene" aria-hidden="true">
+      <svg class="candle" width="48" height="74" viewBox="0 0 48 74">
+        <rect x="18" y="34" width="12" height="40" rx="2" fill="oklch(0.9 0.03 85)"/>
+        <rect x="18" y="34" width="12" height="6" rx="2" fill="oklch(0.82 0.04 82)"/>
+        <line x1="24" y1="34" x2="24" y2="28" stroke="oklch(0.3 0.02 60)" stroke-width="2"/>
+        <path class="flame" d="M24 6 C28 13 30 17 30 21 A6 6 0 0 1 18 21 C18 17 20 13 24 6 Z" fill="oklch(0.85 0.15 80)"/>
+      </svg>
+      <svg class="seal" width="150" height="118" viewBox="0 0 150 118">
+        <path d="M75 8 C104 4 138 22 141 54 C144 86 118 112 78 113 C40 114 10 96 9 60 C8 28 44 12 75 8 Z" fill="oklch(0.42 0.12 25)"/>
+        <path d="M75 16 C100 12 130 28 132 55 C134 82 111 104 78 105 C46 106 18 90 17 60 C16 33 49 20 75 16 Z" fill="oklch(0.55 0.15 25)"/>
+        <text x="75" y="76" text-anchor="middle" font-family="Cinzel, serif" font-weight="700" font-size="52" fill="oklch(0.42 0.12 25)">P</text>
+      </svg>
+    </div>
+    <h1>Plainchant</h1>
+    <p class="tagline">Ale brewed under a vow of silence. The monks do the talking through the glass.</p>
+    <div class="rule-ornament" aria-hidden="true"><span></span></div>
+  </div>
+</header>
+
+<main>
+
+  <div class="verse" data-reveal>
+    <div class="wrap">
+      <blockquote>
+        &ldquo;We have kept the same recipe since 1187. We considered changing it once,
+        in 1493, and the brother who suggested it was asked to weed the turnips for a year.&rdquo;
+        <cite>— Brother Anselm, Cellarer</cite>
+      </blockquote>
+    </div>
+  </div>
+
+  <figure class="full">
+    <img src="https://picsum.photos/seed/plainchant-1/1600/900" width="1600" height="900"
+         alt="Oak barrels resting in the cool dark of the abbey cellar" loading="lazy">
+    <figcaption>The north cellar, where the ales are aged and the novices are hushed.</figcaption>
+  </figure>
+
+  <section id="ales" aria-labelledby="ales-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="ales-h">Three Ales, Brewed by the Hours</h2>
+        <p>Each ale is named for the office at which it is racked. We brew what the
+           barley allows and the abbot permits, in that order.</p>
+      </div>
+
+      <article class="ale" data-reveal>
+        <div class="ale-name">
+          <h3>Mattins</h3>
+          <span class="abv">TABLE ALE · 3.4%</span>
+        </div>
+        <p class="ale-notes">Brewed for the long workday. Crust of brown bread, a whisper of
+           honey, and a finish as brief as a good sermon. <em>Pairs with ploughman's
+           lunches, tailors' lunches, and lunches generally.</em></p>
+        <span class="ale-price">£5.20 / 750ml</span>
+      </article>
+
+      <article class="ale" data-reveal>
+        <div class="ale-name">
+          <h3>Vigils</h3>
+          <span class="abv">DARK MILD · 4.6%</span>
+        </div>
+        <p class="ale-notes">For the hour after midnight. Toasted hazelnut, dried fig, and the
+           particular quiet of a chapel with one candle lit. <em>Best taken slowly, in
+           wool, near a fire that someone else is tending.</em></p>
+        <span class="ale-price">£6.40 / 750ml</span>
+      </article>
+
+      <article class="ale" data-reveal>
+        <div class="ale-name">
+          <h3>Compline</h3>
+          <span class="abv">BARLEYWINE · 9.1%</span>
+        </div>
+        <p class="ale-notes">The last office of the day, and the last word of the evening.
+           Toffee, orange peel, old oak, and a warmth that lingers like incense.
+           <em>One bottle is an evening. Two is a confession.</em></p>
+        <span class="ale-price">£9.80 / 750ml</span>
+      </article>
+    </div>
+  </section>
+
+  <div class="verse" data-reveal>
+    <div class="wrap">
+      <blockquote>
+        &ldquo;Ora et labora. Pray and work. The brewing counts as both, which is why
+        the brothers are so cheerful and so tired.&rdquo;
+        <cite>— The Abbot, on being asked about output targets</cite>
+      </blockquote>
+    </div>
+  </div>
+
+  <section id="rule" aria-labelledby="rule-h">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <h2 id="rule-h">The Rule of the Brewery</h2>
+        <p>Chapter nine of the house rule concerns the brewhouse. It is read aloud
+           each Brewsday. Extracts follow.</p>
+      </div>
+
+      <div class="rules-list">
+        <div class="rule-item" data-reveal>
+          <h3>Rule the First</h3>
+          <p>The kettle shall be scraped, for residue is pride, and pride is off-flavours.</p>
+        </div>
+        <div class="rule-item" data-reveal>
+          <h3>Rule the Second</h3>
+          <p>Silence is kept from mashing-in until the wort is cooled. Humming is permitted.
+             Whistling is not, for it frightens the yeast.</p>
+        </div>
+        <div class="rule-item" data-reveal>
+          <h3>Rule the Third</h3>
+          <p>No brother shall taste from the conditioning cask before the appointed day,
+             however persuasive his thirst. Brother Martin.</p>
+        </div>
+        <div class="rule-item" data-reveal>
+          <h3>Rule the Fourth</h3>
+          <p>When the barley is poor, give thanks; when the barley is good, give more thanks
+             and write down what you did.</p>
+        </div>
+        <div class="rule-item" data-reveal>
+          <h3>Rule the Fifth</h3>
+          <p>The first bottle of every batch goes to the chapel roof fund. The roof has been
+             leaking since 1342 and will continue to do so, but the gesture is the thing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visit" aria-labelledby="visit-h">
+    <div class="wrap">
+      <div class="visit-grid">
+        <img src="https://picsum.photos/seed/plainchant-2/800/600" width="800" height="600"
+             alt="Weathered abbey stone above the low door of the cellar shop" loading="lazy" data-reveal>
+        <div class="visit-copy" data-reveal>
+          <h2 id="visit-h">The Cellar Door</h2>
+          <p>Our shop is the low door beneath the chapter house, down eleven worn steps.
+             Bring a stout bag and a soft voice; the door is low for a reason, and the
+             reason is humility.</p>
+          <p>We sell bottles, wooden tokens for the winter market, and a small pamphlet
+             of brewing psalms. We do not sell glasses, for drinking from the bottle
+             builds character.</p>
+          <div class="cellar-hours">
+            <dl>
+              <dt>Thu–Sat</dt><dd>14:00 – 19:00</dd>
+              <dt>Sunday</dt><dd>After None, until Vespers</dd>
+              <dt>Mon–Wed</dt><dd>Closed. The brothers are brewing.</dd>
+              <dt>Find us</dt><dd>St. Mildburh's Abbey, Hallow Lane, Much Wenlock</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="motto">IN SILENTIO, SAPIENTIA · EST. 1187</p>
+    <p>Plainchant Abbey Brewery. Brewed, bottled, and blessed on the premises.
+       Please drink contemplatively.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced || !('IntersectionObserver' in window)) return;
+
+  var els = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+  els.forEach(function (el) {
+    var r = el.getBoundingClientRect();
+    if (r.top > window.innerHeight * 0.92) el.classList.add('pre-reveal');
+  });
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        entry.target.classList.remove('pre-reveal');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  els.forEach(function (el) { io.observe(el); });
+
+  // Safety: never leave content hidden if the observer cannot fire.
+  setTimeout(function () {
+    els.forEach(function (el) {
+      el.classList.add('revealed');
+      el.classList.remove('pre-reveal');
+    });
+  }, 4000);
+})();
+</script>
+</body>
+</html>

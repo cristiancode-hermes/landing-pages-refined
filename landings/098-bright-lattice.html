@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bright Lattice — solar quotes built on math, not momentum</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='oklch(0.78 0.15 85)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --ink: oklch(0.24 0.02 250);
+    --ink-soft: oklch(0.37 0.025 250);
+    --amber: oklch(0.78 0.15 85);
+    --amber-soft: oklch(0.90 0.08 85);
+    --amber-wash: oklch(0.96 0.035 85);
+    --amber-text: oklch(0.47 0.12 85);
+    --navy: oklch(0.35 0.09 250);
+    --navy-deep: oklch(0.28 0.08 250);
+    --navy-wash: oklch(0.95 0.015 250);
+    --on-navy: oklch(0.96 0.01 250);
+    --on-navy-mute: oklch(0.82 0.025 250);
+    --line: oklch(0.24 0.02 250 / 0.16);
+    --z-sun: 1;
+    --z-header: 10;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--navy); }
+  :focus-visible { outline: 3px solid var(--amber-text); outline-offset: 3px; border-radius: 2px; }
+
+  h1, h2, h3 {
+    font-family: "Sora", sans-serif;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  h1 { font-size: clamp(2.5rem, 5.8vw, 4.4rem); }
+  h2 { font-size: clamp(2rem, 4.2vw, 3rem); }
+  h3 { font-size: clamp(1.25rem, 2.4vw, 1.65rem); }
+  p { max-width: 70ch; text-wrap: pretty; }
+  .lede { font-size: clamp(1.12rem, 2vw, 1.3rem); line-height: 1.55; color: var(--ink-soft); max-width: 60ch; }
+  .wrap { width: min(74rem, 100% - 3rem); margin-inline: auto; }
+  section { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+  .section-head { max-width: 62ch; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .section-head h2 + p { margin-top: 1rem; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: oklch(1 0 0 / 0.93);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-in { display: flex; align-items: center; justify-content: space-between; padding-block: 0.9rem; gap: 1rem; }
+  .wordmark {
+    font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.3rem;
+    letter-spacing: -0.02em; text-decoration: none; color: var(--ink);
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .wordmark svg { display: block; }
+  nav ul { display: flex; gap: 1.6rem; list-style: none; flex-wrap: wrap; }
+  nav a {
+    text-decoration: none; font-size: 0.95rem; font-weight: 600; color: var(--ink-soft);
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+  nav a:hover { color: var(--ink); border-color: var(--amber); }
+
+  .btn {
+    display: inline-block; text-decoration: none; font-weight: 700; font-size: 1rem;
+    padding: 0.85rem 1.9rem; border-radius: 999px;
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-solid { background: var(--navy); color: var(--on-navy); }
+  .btn-solid:hover { background: var(--navy-deep); }
+  .btn-ghost { border: 2px solid var(--navy); color: var(--navy); }
+  .btn-ghost:hover { background: var(--navy-wash); }
+  .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  /* ---------- hero with sun path ---------- */
+  .hero { padding: clamp(2.5rem, 6vw, 5rem) 0 clamp(3rem, 7vw, 5.5rem); }
+  .sunpath { width: 100%; height: auto; display: block; margin-bottom: clamp(1.5rem, 4vw, 3rem); }
+  .sunpath .arc { fill: none; stroke: oklch(0.35 0.09 250 / 0.35); stroke-width: 2; stroke-dasharray: 5 7; }
+  .sunpath .horizon { stroke: oklch(0.24 0.02 250 / 0.55); stroke-width: 2; }
+  .sunpath .glow { fill: var(--amber); opacity: 0.35; filter: blur(14px); }
+  .sunpath .sun { fill: var(--amber); stroke: oklch(0.55 0.14 85); stroke-width: 2; }
+  .sunpath .tick { stroke: oklch(0.35 0.09 250 / 0.5); stroke-width: 2; }
+  .sunpath .tick-label {
+    font-family: "Hanken Grotesk", sans-serif; font-size: 12px; font-weight: 600;
+    fill: var(--ink-soft); text-anchor: middle;
+  }
+  .sunpath .now-label {
+    font-family: "Sora", sans-serif; font-size: 14px; font-weight: 700; fill: var(--navy);
+    text-anchor: middle;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem); align-items: center;
+  }
+  .hero-copy > * + * { margin-top: 1.3rem; }
+  .hero-copy .tag { font-weight: 700; color: var(--amber-text); font-size: 1rem; }
+  .hero img { border-radius: 14px; }
+  .hero figcaption { margin-top: 0.7rem; font-size: 0.9rem; color: var(--ink-soft); font-style: italic; }
+
+  /* ---------- quote process ---------- */
+  .process { background: var(--amber-wash); }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; counter-reset: step; }
+  .step {
+    background: var(--bg); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.75rem; counter-increment: step;
+  }
+  .step::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: "Sora", sans-serif; font-weight: 800; font-size: 2rem;
+    color: var(--amber-text); display: block; line-height: 1; margin-bottom: 0.9rem;
+  }
+  .step h3 { margin-bottom: 0.6rem; }
+  .step p { font-size: 0.98rem; }
+
+  /* ---------- roof scan + counter ---------- */
+  .scan-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .roofscan {
+    background: var(--navy); border-radius: 14px; padding: clamp(1.25rem, 3vw, 2rem);
+    overflow: hidden; position: relative;
+  }
+  .roofscan svg { display: block; width: 100%; height: auto; }
+  .roofscan .roof { fill: none; stroke: oklch(0.96 0.01 250); stroke-width: 3; stroke-linejoin: round; }
+  .roofscan .panel {
+    fill: oklch(0.55 0.13 240); stroke: oklch(0.80 0.06 240); stroke-width: 1.5;
+    animation: panel-in 0.6s var(--ease-out) both;
+  }
+  .roofscan .panel:nth-of-type(1) { animation-delay: 0.35s; }
+  .roofscan .panel:nth-of-type(2) { animation-delay: 0.50s; }
+  .roofscan .panel:nth-of-type(3) { animation-delay: 0.65s; }
+  .roofscan .panel:nth-of-type(4) { animation-delay: 0.80s; }
+  .roofscan .panel:nth-of-type(5) { animation-delay: 0.95s; }
+  .roofscan .panel:nth-of-type(6) { animation-delay: 1.10s; }
+  .roofscan .panel:nth-of-type(7) { animation-delay: 1.25s; }
+  .roofscan .panel:nth-of-type(8) { animation-delay: 1.40s; }
+  .roofscan .panel:nth-of-type(9) { animation-delay: 1.55s; }
+  .roofscan .panel:nth-of-type(10) { animation-delay: 1.70s; }
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .roofscan .scanline {
+    fill: var(--amber); opacity: 0.85;
+    animation: scan-sweep 4.2s var(--ease-out) infinite alternate;
+  }
+  @keyframes scan-sweep {
+    from { transform: translateX(40px); }
+    to   { transform: translateX(430px); }
+  }
+  .roofscan .scan-label {
+    font-family: "Hanken Grotesk", sans-serif; font-size: 13px; font-weight: 600;
+    fill: oklch(0.82 0.025 250);
+  }
+  .roofscan .scan-count {
+    font-family: "Sora", sans-serif; font-size: 20px; font-weight: 800; fill: var(--amber);
+  }
+
+  .counter-block .big {
+    font-family: "Sora", sans-serif; font-weight: 800;
+    font-size: clamp(3.5rem, 8vw, 5.5rem); line-height: 1; letter-spacing: -0.03em;
+    color: var(--navy);
+  }
+  .counter-block .big sup { font-size: 0.45em; color: var(--amber-text); }
+  .counter-block p { margin-top: 1rem; }
+  .counter-block .fine { font-size: 0.9rem; color: var(--ink-soft); margin-top: 1.25rem; }
+
+  /* ---------- honesty ---------- */
+  .honesty { background: var(--navy); color: var(--on-navy); }
+  .honesty h2 { color: var(--on-navy); }
+  .honesty .lede { color: var(--on-navy-mute); }
+  .deg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); margin-top: 2rem; }
+  .deg-grid h3 { color: var(--amber); }
+  .deg-grid p { color: var(--on-navy-mute); margin-top: 0.7rem; }
+  .deg-table { margin-top: 1.25rem; width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .deg-table th, .deg-table td { text-align: left; padding: 0.55rem 0.25rem; border-bottom: 1px solid oklch(0.96 0.01 250 / 0.22); }
+  .deg-table th { color: var(--on-navy); font-weight: 700; }
+  .deg-table td { color: var(--on-navy-mute); }
+  .deg-table td:last-child, .deg-table th:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ---------- install day ---------- */
+  .day { background: var(--bg); }
+  .timeline { display: grid; gap: 0; max-width: 46rem; }
+  .beat { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1.25rem; padding: 1.1rem 0; border-top: 1px solid var(--line); }
+  .beat:last-child { border-bottom: 1px solid var(--line); }
+  .beat time {
+    font-family: "Sora", sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--amber-text);
+    font-variant-numeric: tabular-nums;
+  }
+  .beat strong { display: block; font-weight: 700; }
+  .beat p { font-size: 0.97rem; color: var(--ink-soft); margin-top: 0.2rem; }
+
+  /* ---------- financing ---------- */
+  .financing { background: var(--amber-soft); }
+  .fin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .fin-option { border-top: 2px solid var(--navy); padding-top: 1.25rem; }
+  .fin-option .amount {
+    font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.9rem;
+    letter-spacing: -0.02em; color: var(--navy); display: block; margin-top: 0.5rem;
+  }
+  .fin-option p { margin-top: 0.7rem; font-size: 0.98rem; }
+
+  footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.95rem; }
+  .footer-in { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+
+  @media (max-width: 56rem) {
+    .hero-grid, .scan-grid, .deg-grid, .fin-grid, .steps { grid-template-columns: 1fr; }
+    nav ul { gap: 1.1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .roofscan .panel { animation: none; }
+    .roofscan .scanline { animation: none; transform: translateX(430px); opacity: 0.4; }
+    .btn, nav a { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="wordmark" href="#top">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+        <rect x="1" y="1" width="9" height="9" fill="oklch(0.78 0.15 85)"/>
+        <rect x="12" y="1" width="9" height="9" fill="oklch(0.35 0.09 250)"/>
+        <rect x="1" y="12" width="9" height="9" fill="oklch(0.35 0.09 250)"/>
+        <rect x="12" y="12" width="9" height="9" fill="oklch(0.78 0.15 85)"/>
+      </svg>
+      Bright Lattice
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#quote">The quote</a></li>
+        <li><a href="#honesty">Degradation, honestly</a></li>
+        <li><a href="#install">Install day</a></li>
+        <li><a href="#financing">Financing</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <svg class="sunpath" viewBox="0 0 800 300" role="img"
+           aria-label="Diagram of the sun's arc across the sky today, with the sun at its current position">
+        <line class="horizon" x1="40" y1="260" x2="760" y2="260"/>
+        <path class="arc" id="arcPath" d="M 60 260 Q 400 -40 740 260" fill="none"/>
+        <g class="ticks">
+          <line class="tick" x1="60" y1="260" x2="60" y2="272"/><text class="tick-label" x="60" y="288">06:00</text>
+          <line class="tick" x1="230" y1="150" x2="230" y2="162"/><text class="tick-label" x="230" y="178">10:00</text>
+          <line class="tick" x1="400" y1="112" x2="400" y2="124"/><text class="tick-label" x="400" y="140">14:00</text>
+          <line class="tick" x1="570" y1="150" x2="570" y2="162"/><text class="tick-label" x="570" y="178">18:00</text>
+          <line class="tick" x1="740" y1="260" x2="740" y2="272"/><text class="tick-label" x="740" y="288">20:00</text>
+        </g>
+        <g id="sunGroup" style="z-index: var(--z-sun);">
+          <circle class="glow" id="sunGlow" cx="60" cy="260" r="26"/>
+          <circle class="sun" id="sunDot" cx="60" cy="260" r="13"/>
+          <text class="now-label" id="sunLabel" x="60" y="222">—</text>
+        </g>
+      </svg>
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="tag">Rooftop solar, engineered before it's sold</p>
+          <h1>Your roof, measured to the kilowatt-hour.</h1>
+          <p class="lede">Bright Lattice designs residential solar from satellite imagery, your
+            last twelve electricity bills, and the sun-path above your street — in that order.
+            The quote is a spreadsheet before it is ever a sales call.</p>
+          <div class="cta-row">
+            <a class="btn btn-solid" href="#quote">Get the math-first quote</a>
+            <a class="btn btn-ghost" href="#honesty">Read the honest numbers</a>
+          </div>
+        </div>
+        <figure>
+          <img src="https://picsum.photos/seed/solar-1/1600/900" width="1600" height="900"
+               alt="A residential rooftop mid-install — two rows of panels racked and wired, third row waiting">
+          <figcaption>A 10-panel array in Linden Heights, day one of one.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="quote">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The quote is math first, conversation second</h2>
+        <p class="lede">Most solar quotes start with a salesperson on your sofa. Ours starts
+          with three measurements — and if the numbers say your roof isn't worth it, we tell
+          you that instead. About one inquiry in six ends that way, and we consider it a good
+          outcome.</p>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <h3>We read your roof from orbit</h3>
+          <p>Satellite and aerial imagery give us pitch, azimuth, shading from trees and
+            chimneys, and usable square meters. No visit, no ladder, no obligation.</p>
+        </article>
+        <article class="step">
+          <h3>We read your last 12 bills</h3>
+          <p>Your actual kWh curve — winter heating, summer cooling, the EV you charge at
+            night — decides the array size. Not the biggest system your roof can hold.</p>
+        </article>
+        <article class="step">
+          <h3>You get the spreadsheet</h3>
+          <p>Panel count, expected yield by month, payback year, and our assumptions in plain
+            cells. Then — only then — an engineer calls to walk you through it.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap scan-grid">
+      <div class="roofscan" aria-label="Animated roof scan estimating ten panels on a south-facing roof">
+        <svg viewBox="0 0 480 300" role="img" aria-label="Roof scan animation: scan line sweeping a roof, estimating ten panels">
+          <path class="roof" d="M 60 210 L 240 90 L 420 210 Z"/>
+          <g>
+            <rect class="panel" x="150" y="168" width="42" height="30"/>
+            <rect class="panel" x="200" y="168" width="42" height="30"/>
+            <rect class="panel" x="250" y="168" width="42" height="30"/>
+            <rect class="panel" x="300" y="168" width="42" height="30"/>
+            <rect class="panel" x="175" y="130" width="42" height="30"/>
+            <rect class="panel" x="225" y="130" width="42" height="30"/>
+            <rect class="panel" x="275" y="130" width="42" height="30"/>
+            <rect class="panel" x="200" y="92" width="42" height="30"/>
+            <rect class="panel" x="250" y="92" width="42" height="30"/>
+            <rect class="panel" x="228" y="60" width="30" height="22" opacity="0.6"/>
+          </g>
+          <rect class="scanline" x="0" y="40" width="6" height="190"/>
+          <text class="scan-count" x="40" y="280">10 panels · 4.3 kWp</text>
+          <text class="scan-label" x="320" y="280">south-west · 34° pitch · no shading</text>
+        </svg>
+      </div>
+      <div class="counter-block">
+        <h2 style="margin-bottom: 1.5rem;">What a roof like that actually does</h2>
+        <span class="big"><span id="savingsCount">78</span><sup>%</sup></span>
+        <p>of its own electricity, covered across the year — the measured median of our 214
+          residential installs, not a projection. The best roof covers 104% and sells the rest
+          back; the shadiest one we finished covers 51%, and the owner knew that number before
+          signing anything.</p>
+        <p class="fine">Median payback across the same 214 systems: 7 years, 2 months. We publish
+          the full distribution, including the slow ones, in our annual open-data release.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="honesty" id="honesty">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Panels age. Here's the whole truth about it.</h2>
+        <p class="lede">Every panel loses a little output every year. Most brochures mention
+          this in a footnote; we put it in the quote, row by row.</p>
+      </div>
+      <div class="deg-grid">
+        <div>
+          <h3>The degradation rate</h3>
+          <p>Our panels lose 0.45% of rated output per year — measured across the fleet, not
+            taken from the datasheet. Year one runs slightly worse at about 1.5%, then settles
+            into the slow decline below.</p>
+          <p>We warrant 87.4% of day-one output at year 25. If your system dips below that,
+            the panel maker replaces the panel and we do the labor free. It's in the contract,
+            page two, in sentences a person can read.</p>
+        </div>
+        <div>
+          <h3>What that means for you</h3>
+          <table class="deg-table">
+            <thead>
+              <tr><th>Year</th><th>Output vs. day one</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>98.5%</td></tr>
+              <tr><td>5</td><td>96.7%</td></tr>
+              <tr><td>10</td><td>94.4%</td></tr>
+              <tr><td>15</td><td>92.2%</td></tr>
+              <tr><td>20</td><td>89.9%</td></tr>
+              <tr><td>25</td><td>87.6% (warranted 87.4%)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="day" id="install">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Install day, hour by hour</h2>
+        <p class="lede">A typical 10-panel residential install takes one working day. Here is
+          the whole day, including the parts other companies leave vague.</p>
+      </div>
+      <div class="timeline">
+        <div class="beat">
+          <time datetime="07:30">07:30</time>
+          <div><strong>Crew arrives, kettle goes on</strong>
+          <p>Two installers, one electrician. Walkthrough of the plan taped to your fridge; scaffold was erected the afternoon before.</p></div>
+        </div>
+        <div class="beat">
+          <time datetime="08:15">08:15</time>
+          <div><strong>Roof rails go down</strong>
+          <p>Rails are fixed to the rafters, not just the tiles. We photograph every fixing for your file — and for the 25-year warranty.</p></div>
+        </div>
+        <div class="beat">
+          <time datetime="11:00">11:00</time>
+          <div><strong>Panels racked and wired</strong>
+          <p>Power goes off for about 40 minutes around now. We tell you the exact window at breakfast, not after your router drops.</p></div>
+        </div>
+        <div class="beat">
+          <time datetime="14:30">14:30</time>
+          <div><strong>Inverter commissioned</strong>
+          <p>The electrician tests string voltages, pairs the monitoring app to your phone, and shows you the live generation dial.</p></div>
+        </div>
+        <div class="beat">
+          <time datetime="16:00">16:00</time>
+          <div><strong>We leave, roof stays</strong>
+          <p>Site swept, packaging taken away, paperwork — grid notification, warranty, that photo file — in your inbox by evening.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="financing" id="financing">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Paying for it, without the jargon</h2>
+        <p class="lede">Two honest ways. We make the same margin either way, so there is no
+          salesman steering you toward the one that pays him more.</p>
+      </div>
+      <div class="fin-grid">
+        <div class="fin-option">
+          <h3>Buy it outright</h3>
+          <span class="amount">€9,800 typical</span>
+          <p>For the 10-panel system above, installed and commissioned. You own every kWh from
+            day one; median payback 7 years 2 months, then roughly 18 more years of mostly-free
+            electricity. The green loan from the state bank currently covers this at 2.9% if
+            you'd rather keep your savings.</p>
+        </div>
+        <div class="fin-option">
+          <h3>Pay it monthly</h3>
+          <span class="amount">€112 / month, 10 years</span>
+          <p>Same system, same warranty, fixed payment, no balloon at the end. For most
+            households the monthly saving on the bill covers €70–€90 of the payment from the
+            first month — we show you your specific number in the spreadsheet before you sign.
+            Early repayment is free, always.</p>
+        </div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-solid" href="#quote">Start with the satellite reading</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <p>Bright Lattice · Unit 4, Foundry Yard · Quotes answered in two working days, by an engineer</p>
+    <p>214 roofs and counting. Every one of them measured first.</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* Sun arc tied to time-of-day: map 06:00–20:00 onto the arc path. */
+    var arc = document.getElementById("arcPath");
+    var dot = document.getElementById("sunDot");
+    var glow = document.getElementById("sunGlow");
+    var label = document.getElementById("sunLabel");
+    var len = arc.getTotalLength();
+    function placeSun() {
+      var now = new Date();
+      var h = now.getHours() + now.getMinutes() / 60;
+      var t = Math.min(1, Math.max(0, (h - 6) / 14));
+      var p = arc.getPointAtLength(t * len);
+      dot.setAttribute("cx", p.x); dot.setAttribute("cy", p.y);
+      glow.setAttribute("cx", p.x); glow.setAttribute("cy", p.y);
+      var hh = String(now.getHours()).padStart(2, "0");
+      var mm = String(now.getMinutes()).padStart(2, "0");
+      var state = (h < 6 || h > 20) ? "below the horizon"
+        : t < 0.45 ? "climbing toward peak"
+        : t < 0.6 ? "near peak production"
+        : "easing toward evening";
+      label.textContent = hh + ":" + mm + " · " + state;
+      label.setAttribute("x", Math.min(700, Math.max(100, p.x)));
+      label.setAttribute("y", p.y - 42);
+    }
+    placeSun();
+    setInterval(function () { if (!document.hidden) placeSun(); }, 60000);
+
+    /* Savings counter: final value is in the markup; animate up to it on view.
+       Reduced-motion users keep the static number. */
+    var el = document.getElementById("savingsCount");
+    var target = parseInt(el.textContent, 10);
+    if (!reduce && "IntersectionObserver" in window) {
+      var played = false;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting || played) return;
+          played = true;
+          io.disconnect();
+          var start = null;
+          var dur = 1600;
+          function frame(ts) {
+            if (document.hidden) { requestAnimationFrame(frame); return; }
+            if (start === null) start = ts;
+            var k = Math.min(1, (ts - start) / dur);
+            var eased = 1 - Math.pow(1 - k, 4); /* ease-out-quart */
+            el.textContent = Math.round(target * eased);
+            if (k < 1) requestAnimationFrame(frame);
+            else el.textContent = target;
+          }
+          requestAnimationFrame(frame);
+        });
+      }, { threshold: 0.6 });
+      io.observe(el);
+    }
+
+    /* Pause the CSS roof scan while the tab is hidden. */
+    document.addEventListener("visibilitychange", function () {
+      document.querySelectorAll(".roofscan .panel, .roofscan .scanline").forEach(function (n) {
+        n.style.animationPlayState = document.hidden ? "paused" : "running";
+      });
+    });
+  })();
+</script>
+</body>
+</html>

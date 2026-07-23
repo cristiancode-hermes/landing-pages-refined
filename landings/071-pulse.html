@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse Boxing Gym — Learn to hit. Learn to take it. First class free.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: oklch(0.19 0.035 250);
+    --navy-deep: oklch(0.15 0.03 250);
+    --navy-lift: oklch(0.24 0.04 250);
+    --canvas: oklch(0.965 0.008 95);
+    --ink-on-dark: oklch(0.95 0.012 95);
+    --ink-on-dark-soft: oklch(0.78 0.03 250);
+    --ink: oklch(0.24 0.02 260);
+    --ink-soft: oklch(0.40 0.03 260);
+    --red: oklch(0.52 0.19 25);
+    --red-deep: oklch(0.44 0.17 25);
+    --line-dark: oklch(0.32 0.04 250);
+    --line-light: oklch(0.88 0.012 260);
+    --display: "Alfa Slab One", serif;
+    --body: "Archivo", sans-serif;
+    --step--1: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    --step-1: clamp(1.25rem, 1.17rem + 0.4vw, 1.5rem);
+    --step-2: clamp(1.56rem, 1.4rem + 0.8vw, 2.1rem);
+    --step-3: clamp(1.95rem, 1.62rem + 1.65vw, 3rem);
+    --step-4: clamp(2.6rem, 1.85rem + 3.75vw, 5rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-pulse: 1;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--navy);
+    color: var(--ink-on-dark);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p { max-width: 66ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-canvas a:focus-visible, .on-canvas button:focus-visible {
+    outline: 3px solid var(--red-deep);
+  }
+  .wrap { width: min(1140px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 3rem + 5vw, 8rem); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.17 0.035 250 / 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .brand .dot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    background: var(--red);
+    flex: none;
+  }
+  .site-nav { display: flex; align-items: center; gap: 1.7rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-on-dark-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--ink-on-dark); }
+  @media (max-width: 700px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: oklch(0.97 0.01 90);
+    background: var(--red);
+    padding: 0.85rem 1.8rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+  .btn:hover { background: oklch(0.58 0.20 27); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.82rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink-on-dark);
+    box-shadow: inset 0 0 0 2px var(--ink-on-dark-soft);
+  }
+  .btn.ghost:hover { background: var(--navy-lift); color: var(--ink-on-dark); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding-block: clamp(4rem, 3rem + 7vw, 9rem);
+    overflow: hidden;
+  }
+  /* speed-bag 3-2 rhythm pulse */
+  .bag-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(46rem, 92vw);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    background: radial-gradient(circle,
+      oklch(0.52 0.19 25 / 0.28) 0%,
+      oklch(0.45 0.15 25 / 0.12) 42%,
+      transparent 68%);
+    z-index: var(--z-pulse);
+    pointer-events: none;
+    animation: combo 3.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  @keyframes combo {
+    0%    { transform: translate(-50%, -50%) scale(0.86); opacity: 0.45; }
+    4%    { transform: translate(-50%, -50%) scale(1.00); opacity: 0.9; }
+    8%    { transform: translate(-50%, -50%) scale(0.90); opacity: 0.5; }
+    12%   { transform: translate(-50%, -50%) scale(1.00); opacity: 0.9; }
+    16%   { transform: translate(-50%, -50%) scale(0.90); opacity: 0.5; }
+    20%   { transform: translate(-50%, -50%) scale(1.02); opacity: 0.95; }
+    26%   { transform: translate(-50%, -50%) scale(0.88); opacity: 0.4; }
+    56%   { transform: translate(-50%, -50%) scale(0.88); opacity: 0.4; }
+    62%   { transform: translate(-50%, -50%) scale(1.04); opacity: 1; }
+    68%   { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
+    74%   { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+    84%   { transform: translate(-50%, -50%) scale(0.9); opacity: 0.45; }
+    100%  { transform: translate(-50%, -50%) scale(0.86); opacity: 0.45; }
+  }
+  .hero .wrap { position: relative; z-index: calc(var(--z-pulse) + 1); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+    align-items: center;
+  }
+  @media (max-width: 880px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero h1 {
+    font-size: var(--step-4);
+    text-transform: uppercase;
+    margin-bottom: 1.4rem;
+  }
+  .hero h1 em { font-style: normal; color: var(--red); }
+  .hero .lede {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-on-dark-soft);
+    margin-bottom: 2rem;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+  .hero figure img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  .hero figcaption {
+    margin-top: 0.7rem;
+    font-size: var(--step--1);
+    color: var(--ink-on-dark-soft);
+  }
+
+  /* combo badges */
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2.2rem;
+  }
+  .badge {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-on-dark);
+    background: var(--navy-lift);
+    border: 1px solid var(--line-dark);
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    animation: badgeUp 0.8s var(--ease-out) both;
+    animation-delay: var(--d, 0s);
+  }
+  .badge.hot { background: var(--red-deep); border-color: var(--red-deep); }
+  @keyframes badgeUp {
+    from { opacity: 0; transform: translateY(14px) scale(0.9); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* round timer */
+  .timer {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-top: 2rem;
+    padding: 0.8rem 1.3rem;
+    background: var(--navy-deep);
+    border-radius: 12px;
+  }
+  .timer .round-label {
+    font-size: var(--step--1);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-on-dark-soft);
+  }
+  .timer .clock {
+    font-family: var(--display);
+    font-size: var(--step-2);
+    color: var(--ink-on-dark);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .timer.bell .clock { color: var(--red); }
+
+  /* ---------- canvas sections ---------- */
+  .on-canvas { background: var(--canvas); color: var(--ink); }
+  .on-canvas h2, .on-canvas h3 { color: var(--ink); }
+  .on-canvas .soft { color: var(--ink-soft); }
+
+  /* fundamentals */
+  .fund h2, .tracks h2, .coaches h2, .first h2 { font-size: var(--step-3); margin-bottom: 1.1rem; }
+  .fund .intro, .tracks .intro, .coaches .intro { color: var(--ink-soft); margin-bottom: 2.4rem; }
+  .fund ol {
+    list-style: none;
+    counter-reset: wk;
+    border-top: 2px solid var(--ink);
+  }
+  .fund li {
+    counter-increment: wk;
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1.5rem;
+    padding-block: 1.3rem;
+    border-bottom: 1px solid var(--line-light);
+    align-items: baseline;
+  }
+  @media (max-width: 560px) { .fund li { grid-template-columns: 1fr; gap: 0.2rem; } }
+  .fund li::before {
+    content: "Weeks " counter(wk, decimal-leading-zero);
+    font-weight: 800;
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--red-deep);
+    font-variant-numeric: tabular-nums;
+  }
+  .fund li p strong { font-size: var(--step-1); display: block; margin-bottom: 0.2rem; }
+  .fund li p { color: var(--ink-soft); }
+
+  /* tracks */
+  .tracks .pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+  }
+  @media (max-width: 800px) { .tracks .pair { grid-template-columns: 1fr; } }
+  .track { border-radius: 14px; padding: clamp(1.6rem, 1rem + 2vw, 2.6rem); }
+  .track h3 { font-size: var(--step-2); margin-bottom: 0.9rem; }
+  .track p + p { margin-top: 0.8rem; }
+  .track .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    margin-bottom: 1.1rem;
+  }
+  .track.fight {
+    background: var(--navy);
+    color: var(--ink-on-dark);
+  }
+  .track.fight .tag { background: var(--red); color: oklch(0.97 0.01 90); }
+  .track.fight p { color: var(--ink-on-dark-soft); }
+  .track.fight p strong { color: var(--ink-on-dark); }
+  .track.fit {
+    background: oklch(1 0 0);
+    box-shadow: inset 0 0 0 2px var(--ink);
+    color: var(--ink);
+  }
+  .track.fit .tag { background: var(--ink); color: var(--canvas); }
+  .track.fit p { color: var(--ink-soft); }
+  .track.fit p strong { color: var(--ink); }
+  .track .price {
+    margin-top: 1.4rem;
+    font-family: var(--display);
+    font-size: var(--step-1);
+  }
+  .track.fight .price { color: var(--red); }
+  .track.fit .price { color: var(--red-deep); }
+
+  /* coaches */
+  .coaches .crew {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.8rem, 1rem + 3vw, 3.5rem);
+  }
+  .coach h3 { font-size: var(--step-1); margin-bottom: 0.3rem; }
+  .coach .role {
+    font-weight: 800;
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--red-deep);
+    margin-bottom: 0.7rem;
+  }
+  .coach p { color: var(--ink-soft); }
+  .coaches figure { margin-top: 3rem; }
+  .coaches figure img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  .coaches figcaption {
+    margin-top: 0.7rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+
+  /* first class */
+  .first .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+  }
+  @media (max-width: 800px) { .first .grid { grid-template-columns: 1fr; } }
+  .first h2 { color: var(--ink-on-dark); }
+  .first .lede { color: var(--ink-on-dark-soft); margin-bottom: 1.6rem; }
+  .first h3 {
+    color: var(--ink-on-dark);
+    font-size: var(--step-1);
+    margin-bottom: 0.8rem;
+  }
+  .first ul { list-style: none; }
+  .first li {
+    padding-block: 0.7rem;
+    border-bottom: 1px solid var(--line-dark);
+    color: var(--ink-on-dark-soft);
+  }
+  .first li strong { color: var(--ink-on-dark); }
+  .first li:first-child { border-top: 1px solid var(--line-dark); }
+  .first .cta-row { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line-dark);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-on-dark-soft);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; justify-content: space-between; }
+  footer strong { color: var(--ink-on-dark); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .bag-pulse { animation: none; opacity: 0.5; transform: translate(-50%, -50%) scale(0.95); }
+    .badge { animation: none; }
+    .btn, .btn:hover { transition: none; transform: none; }
+    .timer.bell .clock { color: var(--ink-on-dark); }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="dot" aria-hidden="true"></span>Pulse</a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#fundamentals">Fundamentals</a>
+      <a href="#tracks">Two tracks</a>
+      <a href="#coaches">Coaches</a>
+      <a href="#first">First class free</a>
+      <a class="btn small" href="#first">Book your free class</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="bag-pulse" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div>
+        <h1>You don't have to be a fighter to <em>train like one.</em></h1>
+        <p class="lede">Wrap up. Gloves on. We'll hold the pads. Pulse is a boxing gym first and a fitness studio never — every class is taught the way fighters actually learn, scaled to wherever you're starting.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#first">First class is free</a>
+          <a class="btn ghost" href="#fundamentals">How we teach</a>
+        </div>
+        <div class="badges" aria-label="Combinations you'll learn in your first month">
+          <span class="badge" style="--d:0.5s">1 · jab</span>
+          <span class="badge" style="--d:0.65s">1-1 · double jab</span>
+          <span class="badge hot" style="--d:0.8s">1-2 · jab, cross</span>
+          <span class="badge" style="--d:0.95s">3-2 · hook, cross</span>
+          <span class="badge" style="--d:1.1s">2-3-2 · cross, hook, cross</span>
+        </div>
+        <div class="timer" id="timer" aria-live="off">
+          <span class="round-label" id="round-label">Round 1 of 12</span>
+          <span class="clock" id="clock">3:00</span>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/boxing-1/1600/900" width="1600" height="900"
+             alt="The heavy bags at Pulse hanging in a row under the back windows, taped and worn smooth by ten thousand rounds.">
+        <figcaption>The bag line, 5:40 a.m. First bell is at 5:15 — the early crew doesn't talk much.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="fund on-canvas" id="fundamentals">
+    <div class="wrap">
+      <h2>Four weeks before you throw a hard right hand.</h2>
+      <p class="intro">That's not a sales line — it's the program. Everybody starts at the same place, including the ex-college athletes who are sure they don't need to. The ones who listen get good fast.</p>
+      <ol>
+        <li><p><strong>Stance and balance.</strong> Feet under you, hands home, chin down. You'll stand in front of a mirror and feel silly. That's the work.</p></li>
+        <li><p><strong>Footwork.</strong> Step-drag, pivots, never crossing your feet. Most beginners lose every exchange before a punch is thrown — this is why.</p></li>
+        <li><p><strong>The jab.</strong> One whole week on the most important punch in boxing. Range, timing, the double. You'll dream about it.</p></li>
+        <li><p><strong>The cross, finally.</strong> Hip first, fist second. By the end of week four you'll hit the bag harder than the loud guy from your first night — correctly.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="tracks on-canvas" id="tracks" style="padding-top:0">
+    <div class="wrap">
+      <h2>Two tracks. Same gym, same respect.</h2>
+      <p class="intro">Pick the one that fits your life. You can switch any time — about a third of the fight team started in open gym swearing they'd never spar.</p>
+      <div class="pair">
+        <div class="track fight">
+          <span class="tag">Fight team</span>
+          <h3>For people who want to compete</h3>
+          <p><strong>Tryouts twice a year, January and September.</strong> Six months of fundamentals before your first sanctioned smoker. We register you with USA Boxing, we corner your fights, we tell you honestly when you're ready — and when you're not.</p>
+          <p>Sparring is supervised, technical, and hard. Current team: 14 active, 3 regional titles this year.</p>
+          <p class="price">$140 / month · includes all open-gym classes</p>
+        </div>
+        <div class="track fit">
+          <span class="tag">Open gym</span>
+          <h3>For everyone else, forever welcome here</h3>
+          <p><strong>No sparring, ever, unless you ask.</strong> Sixty minutes: fifteen of conditioning, thirty of technique on bags and pads, fifteen more of conditioning you'll complain about and then brag about.</p>
+          <p>Fourteen classes a week, first bell 5:15 a.m., last at 7:30 p.m. Gloves and wraps lent free for your first month.</p>
+          <p class="price">$95 / month · no contract, cancel by email</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="coaches on-canvas" id="coaches" style="padding-top:0">
+    <div class="wrap">
+      <h2>The corner</h2>
+      <p class="intro">Three coaches, one rule: nobody teaches a class they wouldn't take. You'll know all of them by name inside a week, because they'll know yours.</p>
+      <div class="crew">
+        <div class="coach">
+          <h3>Marcus "Reverend" Adeyemi</h3>
+          <p class="role">Head coach · fight team</p>
+          <p>Fourteen years pro, 22–4, never knocked down. Cornered two national Golden Gloves champions and one very stubborn accountant who went 3–0 at forty-one. Teaches the Tuesday and Thursday technique blocks.</p>
+        </div>
+        <div class="coach">
+          <h3>Dana Kowalski</h3>
+          <p class="role">Strength &amp; conditioning</p>
+          <p>Former Olympic weightlifting alternate, reformed punishment merchant. Writes the conditioning blocks so they build your engine instead of just hurting. Her 6 a.m. class has a waiting list and a group chat.</p>
+        </div>
+        <div class="coach">
+          <h3>Sal Ortiz</h3>
+          <p class="role">Fundamentals · licensed cutman</p>
+          <p>Thirty years in gyms on three continents. If your hands are wrapped wrong, Sal will appear silently and fix them. Runs the beginner program — the first four weeks above are his, and he's not sorry.</p>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/boxing-2/1600/900" width="1600" height="900"
+             alt="The ring corner at Pulse: red stool, spit bucket, and three pairs of worn mitts waiting for the evening class.">
+        <figcaption>The red corner. Someone's always early; someone's always wrapping hands.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="first" id="first">
+    <div class="wrap">
+      <div class="grid">
+        <div>
+          <h2>Your first class is free. The whole class, not a tour.</h2>
+          <p class="lede">No sales pitch at the end, no "trial membership," no card on file. You show up, you train, you go home tired. If you want to come back, the door's open.</p>
+          <div class="cta-row">
+            <a class="btn" href="tel:+13125550187">Call (312) 555-0187</a>
+            <a class="btn ghost" href="mailto:frontdesk@pulseboxing.example">frontdesk@pulseboxing.example</a>
+          </div>
+        </div>
+        <div>
+          <h3>What actually happens</h3>
+          <ul>
+            <li><strong>Bring:</strong> water, flat shoes you can pivot in. We lend gloves and wraps.</li>
+            <li><strong>First 15:</strong> jump rope and shadowboxing. Nobody watches; everybody's busy.</li>
+            <li><strong>Next 30:</strong> stance, the jab, bag rounds with a coach checking on you.</li>
+            <li><strong>Last 15:</strong> conditioning. Scaled to you — nobody keeps score.</li>
+            <li><strong>Never:</strong> nobody hits you. Sparring is opt-in, months down the road, if ever.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><strong>Pulse Boxing Gym</strong> — 2210 W Fulton St, Chicago. Open 5 a.m.–9 p.m., first bell 5:15.</span>
+    <span>Walk-ins always welcome. The coffee's bad and free.</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var clock = document.getElementById('clock');
+    var label = document.getElementById('round-label');
+    var timerBox = document.getElementById('timer');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var round = 1, total = 12, work = 180, rest = 60;
+    var left = work, resting = false;
+    function fmt(s) {
+      return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    }
+    function tick() {
+      left--;
+      if (left < 0) {
+        if (!resting) {
+          resting = true;
+          left = rest;
+          label.textContent = 'Rest — bell at 0:00';
+          if (!reduce) timerBox.classList.add('bell');
+        } else {
+          resting = false;
+          round = round >= total ? 1 : round + 1;
+          left = work;
+          label.textContent = 'Round ' + round + ' of ' + total;
+          timerBox.classList.remove('bell');
+        }
+      }
+      clock.textContent = fmt(Math.max(0, left));
+    }
+    setInterval(tick, 1000);
+  })();
+</script>
+</body>
+</html>

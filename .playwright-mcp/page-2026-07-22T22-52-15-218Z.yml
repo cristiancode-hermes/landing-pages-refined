@@ -1,0 +1,118 @@
+- generic [active] [ref=f21e1]:
+  - generic [ref=f21e3]:
+    - generic [ref=f21e4]:
+      - generic [ref=f21e5]: ON AIR THIS WEEK
+      - text: "The Long Minute — ep. 214: the 1998 heist that took eleven years Static & Soup — ep. 87: a storm chaser and a short-order cook Third Bell — ep. 152: why school assemblies sound like that 3 shows 4.1M monthly listens zero mid-roll surprise ads"
+    - generic [ref=f21e12]:
+      - generic [ref=f21e13]: ON AIR THIS WEEK
+      - text: "The Long Minute — ep. 214: the 1998 heist that took eleven years Static & Soup — ep. 87: a storm chaser and a short-order cook Third Bell — ep. 152: why school assemblies sound like that 3 shows 4.1M monthly listens zero mid-roll surprise ads"
+  - banner [ref=f21e20]:
+    - link [ref=f21e21] [cursor=pointer]:
+      - /url: "#"
+      - text: COLD
+      - emphasis [ref=f21e22]: —
+      - text: OPEN
+    - navigation "Main" [ref=f21e23]:
+      - list [ref=f21e24]:
+        - listitem [ref=f21e25]:
+          - link "Shows" [ref=f21e26] [cursor=pointer]:
+            - /url: "#shows"
+        - listitem [ref=f21e27]:
+          - link "Schedule" [ref=f21e28] [cursor=pointer]:
+            - /url: "#cadence"
+        - listitem [ref=f21e29]:
+          - link "Advertise" [ref=f21e30] [cursor=pointer]:
+            - /url: "#advertise"
+        - listitem [ref=f21e31]:
+          - link "Careers" [ref=f21e32] [cursor=pointer]:
+            - /url: "#careers"
+  - main [ref=f21e33]:
+    - generic [ref=f21e34]:
+      - generic [ref=f21e35]:
+        - heading "We start mid-sentence, on purpose." [level=1] [ref=f21e36]
+        - paragraph [ref=f21e40]: Cold Open is an independent podcast network of three shows. No theme-song warmup, no "hey guys welcome back." The story is already running when you press play.
+        - generic [ref=f21e41]:
+          - link "Meet the shows" [ref=f21e42] [cursor=pointer]:
+            - /url: "#shows"
+          - link "Advertise with us" [ref=f21e43] [cursor=pointer]:
+            - /url: "#advertise"
+      - figure "Studio B, Minneapolis. The mic flag color changes with the show." [ref=f21e44]:
+        - generic [ref=f21e45]: STUDIO B
+        - img "A broadcast microphone in Cold Open's Studio B, pop filter on, ready for the next take" [ref=f21e46]
+    - generic [ref=f21e48]:
+      - generic [ref=f21e49]:
+        - heading "Three shows. Three mic flags." [level=2] [ref=f21e50]
+        - paragraph [ref=f21e51]: Every show gets one color, one host, one obsession. That's the whole org chart.
+      - generic [ref=f21e52]:
+        - article [ref=f21e53]:
+          - heading "The Long Minute" [level=3] [ref=f21e55]
+          - paragraph [ref=f21e56]: True-crime stories where the crime is the boring part. Host Dana Okafor spends a whole season on the decade before and the decade after — the town, the ledger, the knock on the door.
+          - paragraph [ref=f21e78]: WEEKLY · TUESDAYS · ~52 MIN
+          - link "Listen to ep. 214" [ref=f21e79] [cursor=pointer]:
+            - /url: "#"
+        - article [ref=f21e80]:
+          - heading "Static & Soup" [level=3] [ref=f21e82]
+          - paragraph [ref=f21e83]: Two strangers who share one strange job, recorded over a meal. A storm chaser and a short-order cook. A lighthouse keeper and a neon-sign bender. Host Ilya Marsh brings the soup; they bring the static.
+          - paragraph [ref=f21e105]: WEEKLY · THURSDAYS · ~38 MIN
+          - link "Listen to ep. 87" [ref=f21e106] [cursor=pointer]:
+            - /url: "#"
+        - article [ref=f21e107]:
+          - heading "Third Bell" [level=3] [ref=f21e109]
+          - paragraph [ref=f21e110]: A sound-design show about noises you've heard ten thousand times and never once thought about. Elevator dings, school assemblies, the exact hum of a 24-hour laundromat at 3 a.m.
+          - paragraph [ref=f21e132]: TWICE MONTHLY · SUNDAYS · ~24 MIN
+          - link "Listen to ep. 152" [ref=f21e133] [cursor=pointer]:
+            - /url: "#"
+    - generic [ref=f21e135]:
+      - generic [ref=f21e136]:
+        - heading "Cadence honesty" [level=2] [ref=f21e137]
+        - paragraph [ref=f21e138]:
+          - text: Most networks promise weekly and ship "whenever." Here's the actual board. If a show slips, we say so in the feed —
+          - strong [ref=f21e139]: no filler episodes, no reruns dressed up as new.
+        - paragraph [ref=f21e140]: Between seasons, feeds go quiet on purpose. Silence is part of the format. You'll get one short tape when a season returns, never a countdown of countdowns.
+      - list [ref=f21e141]:
+        - listitem [ref=f21e142]:
+          - generic [ref=f21e143]: The Long Minute
+          - generic [ref=f21e145]: Every Tuesday, 5:00 a.m. CT — 214 in a row, zero missed
+        - listitem [ref=f21e146]:
+          - generic [ref=f21e147]: Static & Soup
+          - generic [ref=f21e149]: Every Thursday, 6:00 a.m. CT — missed twice in 87 (both disclosed)
+        - listitem [ref=f21e150]:
+          - generic [ref=f21e151]: Third Bell
+          - generic [ref=f21e153]: 1st & 3rd Sunday — currently between seasons, back Sept 14
+    - generic [ref=f21e154]:
+      - generic [ref=f21e155]:
+        - heading "The ad-rate card, in the open" [level=2] [ref=f21e156]
+        - paragraph [ref=f21e157]: One host-read slot per episode, read by the host who actually uses the thing. No programmatic inserts, ever. Rates are public because negotiating in the dark is boring.
+        - list [ref=f21e158]:
+          - listitem [ref=f21e159]:
+            - generic [ref=f21e160]: The Long Minute — 60s host read
+            - generic [ref=f21e161]: $4,800 / ep
+          - listitem [ref=f21e162]:
+            - generic [ref=f21e163]: Static & Soup — 60s host read
+            - generic [ref=f21e164]: $2,900 / ep
+          - listitem [ref=f21e165]:
+            - generic [ref=f21e166]: Third Bell — 45s host read
+            - generic [ref=f21e167]: $1,600 / ep
+          - listitem [ref=f21e168]:
+            - generic [ref=f21e169]: Full-network take-over week
+            - generic [ref=f21e170]: $8,100
+        - link "Book a slot" [ref=f21e171] [cursor=pointer]:
+          - /url: "#"
+      - generic [ref=f21e172]:
+        - heading "Work at Cold Open" [level=2] [ref=f21e173]
+        - paragraph [ref=f21e174]: We're eleven people in Minneapolis and fully remote within three time zones. Audio experience helps; opinions about soup are mandatory.
+        - link "Senior Producer — The Long Minute Full-time · Remote (US) · $88–104k · Closes Aug 30" [ref=f21e175] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f21e176]: Senior Producer — The Long Minute
+          - text: Full-time · Remote (US) · $88–104k · Closes Aug 30
+        - link "Sound Designer — Third Bell Contract · ~20 hrs/wk · $72/hr · Rolling" [ref=f21e177] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f21e178]: Sound Designer — Third Bell
+          - text: Contract · ~20 hrs/wk · $72/hr · Rolling
+        - link "Audience & Membership Lead Full-time · Remote (US/EU) · $78–92k · Closes Sept 12" [ref=f21e179] [cursor=pointer]:
+          - /url: "#"
+          - generic [ref=f21e180]: Audience & Membership Lead
+          - text: Full-time · Remote (US/EU) · $78–92k · Closes Sept 12
+  - contentinfo [ref=f21e181]:
+    - generic [ref=f21e182]: Cold Open Media Co-op — Minneapolis, MN. Independent since 2019.
+    - generic [ref=f21e187]: 3 shows · 4.1M monthly listens · 0 investors

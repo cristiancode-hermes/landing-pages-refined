@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paper Run — the weekly that still lands on your porch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ultra&family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(0.965 0.008 85);
+    --paper-dim: oklch(0.94 0.008 85);
+    --ink: oklch(0.16 0 0);
+    --gray: oklch(0.38 0.003 85);
+    --faint: oklch(0.55 0.005 85);
+    --red: oklch(0.52 0.19 25);
+    --rule: oklch(0.72 0.006 85);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Literata", Georgia, serif;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  p { max-width: 68ch; text-wrap: pretty; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
+  }
+  img { display: block; max-width: 100%; height: auto; filter: grayscale(1) contrast(1.06); }
+
+  /* ---------- press-roll marquee ---------- */
+  .press-roll {
+    background: var(--ink);
+    color: var(--paper);
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: "Ultra", serif;
+    font-size: 0.85rem;
+    padding: 0.5rem 0;
+  }
+  .press-track {
+    display: inline-flex;
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+    animation: press 45s linear infinite;
+    will-change: transform;
+  }
+  .press-track span { display: inline-flex; gap: 2.5rem; align-items: center; }
+  .press-track b { color: var(--red); font-family: "Literata", serif; font-weight: 700; }
+  @keyframes press { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    max-width: 74rem;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 2.75rem) clamp(1.25rem, 4vw, 3rem) 0;
+    text-align: center;
+  }
+  .dateline {
+    font-size: 0.85rem;
+    color: var(--gray);
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 0.4rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-style: italic;
+  }
+  .dateline .typed::after {
+    content: "";
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    background: var(--ink);
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    animation: caret 1s steps(1) infinite;
+  }
+  @keyframes caret { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+  .masthead h1 {
+    font-family: "Ultra", serif;
+    font-weight: 400;
+    font-size: clamp(3rem, 9vw, 6rem);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    padding: clamp(1.25rem, 3vw, 2.25rem) 0;
+  }
+  .masthead h1 .amp { color: var(--red); }
+  .masthead-nav {
+    border-top: 3px double var(--ink);
+    border-bottom: 3px double var(--ink);
+    padding: 0.5rem 0;
+    display: flex;
+    justify-content: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    flex-wrap: wrap;
+  }
+  .masthead-nav a {
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .masthead-nav a:hover { color: var(--red); }
+
+  /* ---------- front page ---------- */
+  .front {
+    max-width: 74rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3rem);
+  }
+  .cover-story { border-right: 1px solid var(--rule); padding-right: clamp(1.75rem, 4vw, 3rem); }
+  .kicker-stamp {
+    display: inline-block;
+    font-family: "Literata", serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--red);
+    border: 2px solid var(--red);
+    border-radius: 4px;
+    padding: 0.15rem 0.6rem;
+    transform: rotate(-1.5deg);
+    margin-bottom: 1rem;
+  }
+  .cover-story h2 {
+    font-family: "Ultra", serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.6vw, 3.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+  }
+  .byline { font-size: 0.9rem; color: var(--gray); font-style: italic; margin-bottom: 1.25rem; }
+  .cover-story .lede { font-size: clamp(1.1rem, 1.5vw, 1.3rem); line-height: 1.55; margin-bottom: 1rem; }
+  .cover-story .lede::first-letter {
+    font-family: "Ultra", serif;
+    font-size: 3.1em;
+    float: left;
+    line-height: 0.85;
+    padding-right: 0.12em;
+    padding-top: 0.05em;
+  }
+  .cover-story p + p { margin-top: 0.9rem; }
+  .jump { font-size: 0.85rem; color: var(--faint); font-style: italic; margin-top: 1rem; }
+  .front figure img { border: 1px solid var(--ink); }
+  .front figcaption { font-size: 0.82rem; color: var(--gray); padding-top: 0.5rem; font-style: italic; }
+  .side-stack { display: flex; flex-direction: column; gap: 1.75rem; }
+  .brief { border-bottom: 1px solid var(--rule); padding-bottom: 1.25rem; }
+  .brief:last-child { border-bottom: none; }
+  .brief h3 { font-family: "Ultra", serif; font-weight: 400; font-size: 1.35rem; line-height: 1.15; margin-bottom: 0.5rem; }
+  .brief p { font-size: 0.95rem; color: var(--gray); }
+  .brief .meta { font-size: 0.8rem; color: var(--faint); font-style: italic; margin-top: 0.5rem; }
+
+  /* ---------- route map ---------- */
+  .routes {
+    background: var(--paper-dim);
+    border-top: 3px double var(--ink);
+    border-bottom: 3px double var(--ink);
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
+  }
+  .routes-inner { max-width: 74rem; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  .routes h2 { font-family: "Ultra", serif; font-weight: 400; font-size: clamp(1.8rem, 3.6vw, 2.9rem); margin-bottom: 1rem; }
+  .routes p { color: var(--gray); margin-bottom: 0.9rem; }
+  .routes strong { color: var(--ink); }
+  .route-list { list-style: none; }
+  .route-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.95rem;
+  }
+  .route-list li:first-child { border-top: 1px solid var(--rule); }
+  .route-list .rname { font-weight: 700; }
+  .route-list .rtime { color: var(--gray); text-align: right; white-space: nowrap; }
+  .routes figure img { border: 1px solid var(--ink); }
+  .routes figcaption { font-size: 0.82rem; color: var(--gray); padding-top: 0.5rem; font-style: italic; }
+
+  /* ---------- subscribe ---------- */
+  .subscribe {
+    max-width: 74rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 3rem);
+  }
+  .subscribe h2 { font-family: "Ultra", serif; font-weight: 400; font-size: clamp(1.8rem, 3.6vw, 2.9rem); margin-bottom: 0.75rem; }
+  .subscribe > p { color: var(--gray); margin-bottom: 2.25rem; }
+  .sub-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .sub-card {
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    padding: 1.75rem;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .sub-card.featured { background: var(--ink); color: var(--paper); }
+  .sub-card.featured .price { color: var(--paper); }
+  .sub-card.featured p { color: oklch(0.82 0.006 85); }
+  .sub-card h3 { font-family: "Ultra", serif; font-weight: 400; font-size: 1.4rem; }
+  .sub-card .price { font-family: "Ultra", serif; font-size: 2.2rem; line-height: 1; }
+  .sub-card .price small { font-family: "Literata", serif; font-size: 0.9rem; font-style: italic; color: var(--faint); }
+  .sub-card.featured .price small { color: oklch(0.72 0.006 85); }
+  .sub-card p { font-size: 0.95rem; color: var(--gray); flex: 1; }
+  .sub-card .honesty { font-size: 0.85rem; font-style: italic; color: var(--faint); }
+  .sub-card.featured .honesty { color: oklch(0.72 0.006 85); }
+  .btn {
+    display: inline-block;
+    font-family: "Literata", serif;
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--ink);
+    border-radius: 4px;
+    color: var(--ink);
+    transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); background: var(--red); border-color: var(--red); color: oklch(0.98 0.01 25); }
+  .sub-card.featured .btn { border-color: var(--paper); color: var(--paper); }
+  .sub-card.featured .btn:hover { background: var(--red); border-color: var(--red); color: oklch(0.98 0.01 25); }
+
+  /* ---------- colophon ---------- */
+  footer {
+    border-top: 3px double var(--ink);
+    max-width: 74rem;
+    margin: 0 auto;
+    padding: 2rem clamp(1.25rem, 4vw, 3rem) 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.88rem;
+    color: var(--gray);
+    font-style: italic;
+  }
+
+  @media (max-width: 860px) {
+    .front, .routes-inner { grid-template-columns: 1fr; }
+    .cover-story { border-right: none; padding-right: 0; border-bottom: 1px solid var(--rule); padding-bottom: 2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .press-track { animation: none; }
+    .dateline .typed::after { animation: none; opacity: 1; }
+    .btn { transition: none; }
+    .btn:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="press-roll" aria-hidden="true">
+  <div class="press-track">
+    <span>
+      <b>LATE CITY EDITION —</b> Mill owners reject county's third offer <b>·</b> Larch Street bridge reopens Friday, four months early <b>·</b> Rams fall 21–17 in overtime <b>·</b> Public library extends Sunday hours <b>·</b> Rain Thursday, then a hard frost
+    </span>
+    <span>
+      <b>LATE CITY EDITION —</b> Mill owners reject county's third offer <b>·</b> Larch Street bridge reopens Friday, four months early <b>·</b> Rams fall 21–17 in overtime <b>·</b> Public library extends Sunday hours <b>·</b> Rain Thursday, then a hard frost
+    </span>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="dateline">
+    <span class="typed" id="dateline-typed">Hollow Creek, Thursday morning —</span>
+    <span>Vol. 41 · No. 2,117</span>
+    <span>Fifty cents, where sold</span>
+  </div>
+  <h1>The Paper <span class="amp">Run</span></h1>
+  <nav class="masthead-nav" aria-label="Sections">
+    <a href="#cover">Cover Story</a>
+    <a href="#routes">Delivery Routes</a>
+    <a href="#subscribe">Subscribe</a>
+  </nav>
+</header>
+
+<main>
+  <section class="front" id="cover">
+    <article class="cover-story">
+      <span class="kicker-stamp">THIS WEEK'S COVER</span>
+      <h2>The mill gets one more winter</h2>
+      <p class="byline">By June Okafor, staff writer · Reporting from the north gate, 6:40 a.m.</p>
+      <p class="lede">The Harrington paper mill will stay open through March, the county confirmed late Tuesday, after eleven hours of talks that ended with a handshake in a parking lot and nobody smiling.</p>
+      <p>Two hundred and forty-one people work the line at Harrington. Most of them heard the news the way everyone in Hollow Creek hears everything now — from Marla at the diner, who heard it from a foreman, who heard it from a lawyer who would not stop drumming his fingers on the counter.</p>
+      <p>The county's offer covers wages through winter and nothing beyond it. What happens in April depends on a buyer whose name no one will say out loud, though everyone in town seems to know it.</p>
+      <p class="jump">Continued in the full print edition — pensions, the river permit, and what the mill whistle means at 6 a.m. again.</p>
+    </article>
+    <div class="side-stack">
+      <figure>
+        <img src="https://picsum.photos/seed/newsroom-1/800/600" width="800" height="600" alt="The Paper Run newsroom at deadline — three desks, one coffee pot, page proofs pinned to the corkboard">
+        <figcaption>Deadline night, Tuesday. Proofs go to the press at 11 p.m.</figcaption>
+      </figure>
+      <div class="brief">
+        <h3>Larch Street bridge reopens Friday</h3>
+        <p>Four months early and $180,000 under budget, which the city engineer attributes to "an unreasonably dry October."</p>
+        <p class="meta">Briefs desk</p>
+      </div>
+      <div class="brief">
+        <h3>Library adds Sunday hours</h3>
+        <p>Starting this week, noon to five. The Sunday librarian is the same Tuesday librarian. She asked us to say the chess club is back.</p>
+        <p class="meta">Briefs desk</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="routes" id="routes">
+    <div class="routes-inner">
+      <div>
+        <h2>Where the truck goes</h2>
+        <p>The Paper Run is printed Tuesday night in the basement on Main Street and driven around the county before breakfast on Thursday. <strong>If you live on a route, the paper is on your porch by 6:30.</strong> If you don't, the post office has it by nine.</p>
+        <p>Route times slip in snow. We print that in the next issue, with an apology, because that's the deal.</p>
+        <ul class="route-list">
+          <li><span class="rname">Route 1 — Old Town &amp; the Flats</span><span class="rtime">porch by 5:45 a.m.</span></li>
+          <li><span class="rname">Route 2 — Mill Hill &amp; north gate</span><span class="rtime">porch by 6:10 a.m.</span></li>
+          <li><span class="rname">Route 3 — Larch Street &amp; the schools</span><span class="rtime">porch by 6:30 a.m.</span></li>
+          <li><span class="rname">Route 4 — County roads, both forks</span><span class="rtime">mailbox by 7:30 a.m.</span></li>
+          <li><span class="rname">Off-route — everywhere else</span><span class="rtime">Post office &amp; diners by 9:00 a.m.</span></li>
+        </ul>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/newsroom-2/800/600" width="800" height="600" alt="The Goss press in the basement on Main Street, inked rollers mid-run on a Thursday edition">
+        <figcaption>The Goss, running since 1983. It has outlived four computers.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="subscribe" id="subscribe">
+    <h2>Subscribe, or just buy the thing</h2>
+    <p>Two honest ways to read us. We'd rather you subscribe — it pays for June's mileage — but the single copy exists and always will.</p>
+    <div class="sub-options">
+      <div class="sub-card featured">
+        <h3>The Run, weekly</h3>
+        <p class="price">$38<small> / year</small></p>
+        <p>Every Thursday on your porch or in your mailbox, 50 issues a year. Includes the election guide and the harvest supplement, which alone is worth the price of two pumpkins.</p>
+        <p class="honesty">Honest bit: delivery is by one truck and one very reliable Corolla. Blizzards add a day.</p>
+        <a class="btn" href="#">Start a subscription</a>
+      </div>
+      <div class="sub-card">
+        <h3>Single copy</h3>
+        <p class="price">50¢<small> / issue</small></p>
+        <p>At the diner, the post office, both gas stations, and the honor box on Larch Street. Quarters only; the box is from 1974 and holds grudges.</p>
+        <p class="honesty">Honest bit: single-copy sales cover about 11% of our costs. Subscribers carry the rest, and we love them for it.</p>
+        <a class="btn" href="#">Where to find one</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>The Paper Run · 14 Main Street, Hollow Creek · Printed Tuesdays, read Thursdays.</span>
+  <span>Owned by nobody but the people on the masthead. Corrections run on page two, always.</span>
+</footer>
+
+<script>
+  // Dateline types itself on load (skipped for reduced-motion).
+  (function () {
+    var el = document.getElementById('dateline-typed');
+    if (!el) return;
+    var full = el.textContent;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    el.textContent = '';
+    var i = 0;
+    function tick() {
+      if (i <= full.length) {
+        el.textContent = full.slice(0, i);
+        i++;
+        setTimeout(tick, 34 + Math.random() * 40);
+      }
+    }
+    setTimeout(tick, 500);
+  })();
+
+  // Keep the press roll seamless across wide screens.
+  (function () {
+    var track = document.querySelector('.press-track');
+    if (!track) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var original = track.innerHTML;
+    var guard = 0;
+    while (track.scrollWidth < window.innerWidth * 2 && guard < 6) {
+      track.innerHTML += original;
+      guard++;
+    }
+  })();
+</script>
+</body>
+</html>

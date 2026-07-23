@@ -1,0 +1,105 @@
+- generic [active] [ref=f12e1]:
+  - banner [ref=f12e2]:
+    - generic [ref=f12e3]:
+      - link "Northmark home" [ref=f12e4] [cursor=pointer]:
+        - /url: "#top"
+        - text: Northmark
+      - navigation "Primary" [ref=f12e7]:
+        - link "Get the Meriden — $385" [ref=f12e8] [cursor=pointer]:
+          - /url: "#boot"
+  - main [ref=f12e9]:
+    - generic [ref=f12e11]:
+      - generic [ref=f12e12]:
+        - paragraph [ref=f12e13]: One model since 1989 · Bellingham, Washington
+        - heading [level=1] [ref=f12e14]:
+          - text: One boot. Built once.
+          - emphasis [ref=f12e15]: Rebuilt forever.
+        - paragraph [ref=f12e16]: The Meriden is the only boot we make. Full-grain steerhide, a sole you can replace, and a last we've been arguing about for thirty-seven years. When it's right, you stop thinking about your feet.
+        - generic [ref=f12e17]:
+          - link "See the boot" [ref=f12e18] [cursor=pointer]:
+            - /url: "#boot"
+          - link "The resole promise" [ref=f12e19] [cursor=pointer]:
+            - /url: "#resole"
+      - 'figure "Pair #0317, somewhere on the Ptarmigan Traverse, day four." [ref=f12e20]':
+        - img "A Meriden boot resting on granite above the tree line, laces still damp from the morning creek ford." [ref=f12e21]
+    - generic [ref=f12e24]:
+      - generic [ref=f12e25]:
+        - heading "The Meriden, six-inch. That's the whole catalog." [level=2] [ref=f12e26]
+        - paragraph [ref=f12e27]: We tried a second model in 1994. It distracted us for a season, so we killed it. Everything we know goes into one pattern, cut from one hide lot at a time, stitched in a shop where the radio is always slightly too loud.
+        - paragraph [ref=f12e28]: $385 — resoles $85, for life
+        - paragraph [ref=f12e29]: Free shipping both ways on resoles. No sales, ever; the price is the price.
+      - generic [ref=f12e30]:
+        - generic [ref=f12e31]:
+          - term [ref=f12e32]: Upper
+          - definition [ref=f12e33]: 2.4 mm full-grain steerhide, one piece per quarter, waxed in-house
+        - generic [ref=f12e34]:
+          - term [ref=f12e35]: Sole
+          - definition [ref=f12e36]: Vibram Montagna, stitched through the welt — not just glued
+        - generic [ref=f12e37]:
+          - term [ref=f12e38]: Weight
+          - definition [ref=f12e39]: 618 g per boot in men's 9 — heavy enough to trust, light enough to forget
+        - generic [ref=f12e40]:
+          - term [ref=f12e41]: Run
+          - definition [ref=f12e42]: 400 pairs a year, numbered on the tongue
+        - generic [ref=f12e43]:
+          - term [ref=f12e44]: Break-in
+          - definition [ref=f12e45]: About 30 honest miles. We won't pretend it's less.
+    - generic [ref=f12e47]:
+      - generic [ref=f12e48]:
+        - heading "Send them back tired. They come home ready." [level=2] [ref=f12e49]
+        - paragraph [ref=f12e50]: "A stitched sole is a promise: when the lugs wear smooth, you don't throw the boot away. Strip the outsole, inspect the welt, rebuild from the midsole down. Three weeks, door to door, and the upper — the part that's molded to your foot — never leaves the story."
+        - paragraph [ref=f12e51]: "Pair #0031 has been resoled nine times. Its owner walked it through three decades and two careers. The leather is darker now, softer at the ankle, and better than the day it shipped."
+        - paragraph [ref=f12e52]: $85 a resole, for as long as you own the boots. Drag the handle to see what nine resoles buys you.
+      - figure "Same bench, three weeks apart. The upper is the part worth keeping." [ref=f12e53]:
+        - generic [ref=f12e54]:
+          - img "A worn Meriden on the resole bench, sole smooth and leather scuffed from a hard season." [ref=f12e55]
+          - 'img "The same bench after the rebuild: fresh Vibram sole stitched on, upper conditioned and gleaming." [ref=f12e56]'
+          - generic: Worn
+          - generic: Resoled
+          - slider "Reveal the resoled boot" [ref=f12e57]: "50"
+    - generic [ref=f12e60]:
+      - heading "Our sizing is honest, which means it's a little strange." [level=2] [ref=f12e61]
+      - generic [ref=f12e62]:
+        - generic [ref=f12e63]:
+          - paragraph [ref=f12e64]: Between sizes? Size down.
+          - paragraph [ref=f12e65]: The Meriden runs long in the toe on purpose — your foot swells at mile twelve, and a boot that fits at 8 a.m. shouldn't cripple you at 4 p.m. The heel stays snug so you don't blister.
+        - generic [ref=f12e66]:
+          - paragraph [ref=f12e67]: Measure in centimeters. Trust the chart.
+          - paragraph [ref=f12e68]: "If vanity sizing has burned you before, skip the guesswork: stand on a piece of paper, trace, measure heel to longest toe, and match it to the chart. Two widths, every size, no upcharge."
+        - generic [ref=f12e69]:
+          - paragraph [ref=f12e70]: Wrong size? We swap it, free.
+          - paragraph [ref=f12e71]: Wear them around the house for a week. Carpet only. If they're wrong, send them back and the right pair ships before yours lands. About 6% of orders swap — we'd rather know.
+    - generic [ref=f12e73]:
+      - heading "The test ledger" [level=2] [ref=f12e74]
+      - paragraph [ref=f12e75]: Every production run gets beaten on by staff before it ships. These are the last entries, unedited — including the days we got cold and wet.
+      - generic [ref=f12e76]:
+        - generic [ref=f12e77]:
+          - generic [ref=f12e78]: 2026-05-02
+          - generic [ref=f12e79]:
+            - text: Enchantments thru-hike, WA
+            - paragraph [ref=f12e80]: Snow over scree above Aasgard Pass. No hot spots, no wet socks, one marmot incident.
+          - generic [ref=f12e81]: 19.4 mi
+        - generic [ref=f12e82]:
+          - generic [ref=f12e83]: 2026-04-18
+          - generic [ref=f12e84]:
+            - text: Dosewallips washout loop
+            - paragraph [ref=f12e85]: Two knee-deep creek fords. Dried overnight by the stove; leather took one coat of wax after.
+          - generic [ref=f12e86]: 14.2 mi
+        - generic [ref=f12e87]:
+          - generic [ref=f12e88]: 2026-03-30
+          - generic [ref=f12e89]:
+            - text: Mailbox Peak, in sleet
+            - paragraph [ref=f12e90]: Laces iced solid on the ridge. Eyelets fine, footing fine, tester grumpy. Type-two fun.
+          - generic [ref=f12e91]: 7.8 mi
+        - generic [ref=f12e92]:
+          - generic [ref=f12e93]: 2026-03-08
+          - generic [ref=f12e94]:
+            - text: Oyster Dome mud season opener
+            - paragraph [ref=f12e95]: Ankle-deep clay for two miles. Tread shed it by the descent; we did not shed our dignity.
+          - generic [ref=f12e96]: 11.6 mi
+  - contentinfo [ref=f12e97]:
+    - generic [ref=f12e98]:
+      - generic [ref=f12e99]:
+        - strong [ref=f12e100]: Northmark Boot Co.
+        - text: — 1214 Harris Ave, Bellingham, WA. Shop hours Mon–Sat, 9–5.
+      - generic [ref=f12e101]: "We answer the phone: (360) 555-0117"

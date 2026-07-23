@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Inkwell Society — Fountain Pens, Ink &amp; the Lost Art of the Letter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.99 0.002 260);
+    --paper: oklch(0.975 0.006 90);
+    --ink: oklch(0.32 0.03 260);
+    --ink-deep: oklch(0.26 0.05 260);
+    --muted: oklch(0.45 0.025 260);
+    --oxblood: oklch(0.42 0.11 18);
+    --line: oklch(0.90 0.008 260);
+    --display: "Libre Caslon Text", serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --z-base: 0;
+    --z-header: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--oxblood); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--oxblood);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--ink-deep);
+  }
+  .wrap { max-width: 68rem; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 3rem); }
+
+  /* ink-line that draws under headings */
+  .inkline {
+    display: block;
+    width: min(9rem, 40%);
+    height: 0.35rem;
+    margin-top: 0.7rem;
+  }
+  .inkline path {
+    stroke: var(--oxblood);
+    stroke-width: 3;
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    animation: draw 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: oklch(0.99 0.002 260 / 0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    max-width: 68rem; margin-inline: auto; padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
+  }
+  .brand {
+    font-family: var(--display); font-style: italic; font-size: 1.15rem;
+    color: var(--ink-deep); text-decoration: none;
+  }
+  nav ul { display: flex; gap: clamp(0.9rem, 2.5vw, 1.8rem); list-style: none; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.92rem; font-weight: 600; }
+  nav a:hover { color: var(--oxblood); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding-block: clamp(4rem, 12vh, 8rem) clamp(3rem, 8vh, 5rem);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 56rem) { .hero-grid { grid-template-columns: 1.1fr 0.9fr; } }
+  .hero .salutation { font-family: var(--display); font-style: italic; color: var(--oxblood); font-size: 1.15rem; margin-bottom: 1rem; }
+  .hero h1 { font-size: clamp(2.1rem, 1.5rem + 3vw, 3.8rem); font-style: italic; max-width: 18ch; }
+  .hero p.lede { margin-top: 1.4rem; max-width: 54ch; color: var(--muted); }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+  .btn {
+    display: inline-block; padding: 0.8rem 1.8rem; border-radius: 999px;
+    font-weight: 700; font-size: 0.95rem; text-decoration: none;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-ink { background: var(--ink-deep); color: oklch(0.97 0.005 260); }
+  .btn-quiet { color: var(--oxblood); border: 1px solid var(--oxblood); }
+  .hero figure { border-radius: 14px; overflow: hidden; }
+  .hero figcaption { font-size: 0.85rem; color: var(--muted); padding-top: 0.6rem; }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 9vh, 6rem); }
+  .section-head { margin-bottom: clamp(1.75rem, 4vh, 2.75rem); }
+  .section-head h2 { font-size: clamp(1.6rem, 1.3rem + 1.7vw, 2.5rem); font-style: italic; }
+  .section-head p { color: var(--muted); max-width: 58ch; margin-top: 1rem; }
+
+  /* beginner pens */
+  .pen-list { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+  .pen {
+    border: 1px solid var(--line); border-radius: 14px; padding: 1.6rem;
+    background: var(--bg);
+  }
+  .pen h3 { font-size: 1.25rem; font-style: italic; }
+  .pen .price { color: var(--oxblood); font-weight: 700; margin-top: 0.35rem; }
+  .pen p { color: var(--muted); font-size: 0.95rem; margin-top: 0.75rem; }
+  .pen .for { display: inline-block; margin-top: 0.9rem; font-size: 0.82rem; font-weight: 700; color: var(--ink-deep); background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 0.25rem 0.8rem; }
+
+  /* nib hover crossfade */
+  .nib-compare {
+    position: relative; border-radius: 14px; overflow: hidden; margin-top: 2.5rem;
+    border: 1px solid var(--line);
+  }
+  .nib-compare img { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; }
+  .nib-compare .sample {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    background: var(--paper);
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 2rem;
+  }
+  .nib-compare:hover .sample, .nib-compare:focus-within .sample { opacity: 1; }
+  .nib-compare .sample p {
+    font-family: var(--display); font-style: italic;
+    font-size: clamp(1.1rem, 0.9rem + 1.4vw, 1.8rem);
+    color: var(--ink-deep); max-width: 34ch; text-align: center; line-height: 1.5;
+  }
+  .nib-hint { font-size: 0.85rem; color: var(--muted); margin-top: 0.6rem; }
+
+  /* ink library */
+  .ink-library { background: var(--paper); border-block: 1px solid var(--line); }
+  .ink-rows { display: flex; flex-direction: column; gap: 1.1rem; }
+  .ink-row {
+    display: grid; grid-template-columns: 3rem 1fr; gap: 1.1rem; align-items: center;
+    padding: 1rem 1.25rem; background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+  }
+  .swatch { width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid oklch(0.85 0.01 260); }
+  .ink-row strong { color: var(--ink-deep); font-family: var(--display); font-style: italic; font-weight: 400; font-size: 1.1rem; }
+  .ink-row span { display: block; color: var(--muted); font-size: 0.92rem; }
+
+  /* repair */
+  .repair-grid { display: grid; gap: clamp(2rem, 5vw, 4rem); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 56rem) { .repair-grid { grid-template-columns: 0.95fr 1.05fr; } }
+  .repair-grid figure { border-radius: 14px; overflow: hidden; }
+  .repair-grid figcaption { font-size: 0.85rem; color: var(--muted); padding-top: 0.6rem; }
+  .repair-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+  .repair-list li { padding-left: 1.4rem; position: relative; color: var(--muted); }
+  .repair-list li::before { content: "✒"; position: absolute; left: 0; color: var(--oxblood); }
+  .repair-list strong { color: var(--ink-deep); }
+
+  /* sundays */
+  .sundays {
+    background: var(--ink-deep); color: oklch(0.90 0.015 260);
+    border-radius: 16px;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    text-align: left;
+  }
+  .sundays h2 { color: oklch(0.96 0.008 260); }
+  .sundays p { color: oklch(0.78 0.025 260); max-width: 56ch; margin-top: 1rem; }
+  .sundays .btn { margin-top: 1.75rem; background: oklch(0.96 0.008 260); color: var(--ink-deep); }
+  .sundays .inkline path { stroke: oklch(0.72 0.10 80); }
+
+  footer {
+    padding-block: 2.75rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 0.9rem;
+  }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+  footer .sig { font-family: var(--display); font-style: italic; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .inkline path { animation: none; stroke-dashoffset: 0; }
+    .nib-compare .sample, .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" href="#top">The Inkwell Society</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#first-pen">First Pens</a></li>
+        <li><a href="#inks">Ink Library</a></li>
+        <li><a href="#repair">Repairs</a></li>
+        <li><a href="#sundays">Letter Sundays</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="salutation">Dear friend of slow words,</p>
+        <h1>A good pen makes a letter worth keeping.</h1>
+        <svg class="inkline" viewBox="0 0 220 10" aria-hidden="true"><path d="M3 6 C 40 2, 90 9, 140 5 S 200 4, 217 6"/></svg>
+        <p class="lede">We are a small shop on Binder's Lane that sells fountain pens, bottles of ink, and the stubborn belief that handwriting is not dead — only out of practice. Whether you're buying your first pen or your grandfather's needs a new sac, you'll be taken seriously here.</p>
+        <div class="hero-cta">
+          <a class="btn btn-ink" href="#first-pen">Find your first pen</a>
+          <a class="btn btn-quiet" href="#sundays">Write with us on Sunday</a>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/pen-1/800/600" width="800" height="600" alt="Close view of a gold fountain pen nib resting on a half-written letter, ink still wet">
+        <figcaption>The shop's own testing nib — every pen leaves here having written its name.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <section id="first-pen">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Your first pen, without the lecture</h2>
+        <svg class="inkline" viewBox="0 0 220 10" aria-hidden="true"><path d="M3 6 C 40 2, 90 9, 140 5 S 200 4, 217 6"/></svg>
+        <p>No snobbery, no seventy-pen comparison chart. Three pens we hand to beginners every day, each honest about what it's for. Try all three in the shop — the right one is the one your hand stops arguing with.</p>
+      </div>
+      <div class="pen-list">
+        <article class="pen">
+          <h3>The Errand</h3>
+          <p class="price">$28</p>
+          <p>Steel nib, cartridge fill, survives being dropped in a bag with keys. The pen you lend people without flinching.</p>
+          <span class="for">For the curious</span>
+        </article>
+        <article class="pen">
+          <h3>The Correspondent</h3>
+          <p class="price">$74</p>
+          <p>Piston filler with a generous ink window, tuned medium nib. Writes a twelve-page letter without a refill or a cramp.</p>
+          <span class="for">For the committed</span>
+        </article>
+        <article class="pen">
+          <h3>The Heirloom</h3>
+          <p class="price">$210</p>
+          <p>Ebonite body, 14k nib adjusted by Marisol before it leaves the counter. Comes with its birth certificate and free tuning for life.</p>
+          <span class="for">For the occasion</span>
+        </article>
+      </div>
+
+      <div class="nib-compare" tabindex="0" aria-label="Writing sample — hover or focus to see what a tuned nib writes like">
+        <img src="https://picsum.photos/seed/pen-2/1600/700" width="1600" height="700" alt="A worn wooden desk with pens, an open ink bottle, and blotting paper arranged for an evening of writing" loading="lazy">
+        <div class="sample" aria-hidden="true">
+          <p>"The quick brown fox deserves better than this — and so, frankly, do you."</p>
+        </div>
+      </div>
+      <p class="nib-hint">Rest your cursor (or finger) on the desk to see a tuned medium nib at work.</p>
+    </div>
+  </section>
+
+  <section id="inks" class="ink-library">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The ink library, by color</h2>
+        <svg class="inkline" viewBox="0 0 220 10" aria-hidden="true"><path d="M3 6 C 40 2, 90 9, 140 5 S 200 4, 217 6"/></svg>
+        <p>One hundred and forty bottles on the wall, every one of them tested on three papers before it's shelved. Samples are $2 a vial — no one should commit to 50 milliliters on a first date. A few of this season's favorites:</p>
+      </div>
+      <div class="ink-rows">
+        <div class="ink-row">
+          <span class="swatch" style="background: oklch(0.30 0.06 260)"></span>
+          <div><strong>Midnight Ledger</strong><span>Blue-black iron gall. Dries near-permanent; the archivists' choice. $14</span></div>
+        </div>
+        <div class="ink-row">
+          <span class="swatch" style="background: oklch(0.42 0.11 18)"></span>
+          <div><strong>Oxblood Correspondence</strong><span>Our house red — dignified on cream paper, alarming on invoices. $12</span></div>
+        </div>
+        <div class="ink-row">
+          <span class="swatch" style="background: oklch(0.50 0.10 160)"></span>
+          <div><strong>Greenhouse Shading</strong><span>A moss green that shades three tones in one sentence. $13</span></div>
+        </div>
+        <div class="ink-row">
+          <span class="swatch" style="background: oklch(0.62 0.12 80)"></span>
+          <div><strong>Marigold Draft</strong><span>Bright, unserious, wonderful for margin notes. Not for officialdom. $11</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="repair">
+    <div class="wrap repair-grid">
+      <figure>
+        <img src="https://picsum.photos/seed/pen-1/800/600" width="800" height="600" alt="Workbench with a disassembled vintage pen laid out in careful order beside tiny tools" loading="lazy">
+        <figcaption>Marisol's bench, mid-restoration: a 1952 filler that arrived in a matchbox.</figcaption>
+      </figure>
+      <div>
+        <div class="section-head" style="margin-bottom: 0;">
+          <h2>The repair bench</h2>
+          <svg class="inkline" viewBox="0 0 220 10" aria-hidden="true"><path d="M3 6 C 40 2, 90 9, 140 5 S 200 4, 217 6"/></svg>
+          <p>Marisol has restored pens for twenty-two years and answers to "the nib whisperer" only on Saturdays. Bring the pen in, or post it with a letter — she appreciates the symmetry. Most jobs are quoted within a week.</p>
+        </div>
+        <ul class="repair-list">
+          <li><strong>Nib tuning &amp; smoothing — from $25.</strong> Scratchy, dry, or just not yours anymore.</li>
+          <li><strong>Sac &amp; seal replacement — from $40.</strong> Vintage levers and button fillers brought back from the drawer.</li>
+          <li><strong>Full restoration — quoted per pen.</strong> Cracked caps, missing clips, sentimental disasters. We have seen worse. Probably.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="sundays">
+    <div class="wrap">
+      <div class="sundays">
+        <h2>Letter-writing Sundays</h2>
+        <svg class="inkline" viewBox="0 0 220 10" aria-hidden="true"><path d="M3 6 C 40 2, 90 9, 140 5 S 200 4, 217 6"/></svg>
+        <p>First Sunday of the month, 10am to 1pm. We push the tables together, put out the good paper, the house inks, and a pot of tea, and everyone writes — thank-you notes, apologies, love letters, or just a page to someone who'd never expect one. Stamps are on us. First-timers especially welcome; nobody will read over your shoulder.</p>
+        <a class="btn" href="#sundays">Reserve a seat at the table</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>The Inkwell Society · 14 Binder's Lane · Tue–Sat 10–6 · <em>est. 2011</em></p>
+    <p class="sig">Yours in ink, — M. &amp; the shop cat, Blot</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    // Replay the ink-line draw each time a heading enters view (enhancement only;
+    // lines are fully drawn by default if animation never runs).
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    var paths = document.querySelectorAll('.inkline path');
+    paths.forEach(function (p) {
+      // Start undrawn only once JS has taken responsibility for redrawing.
+      p.style.animation = 'none';
+      p.style.strokeDashoffset = '220';
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var p = e.target;
+        p.style.animation = '';
+        p.style.strokeDashoffset = '';
+        io.unobserve(p);
+      });
+    }, { threshold: 0.6 });
+    paths.forEach(function (p) { io.observe(p); });
+  })();
+</script>
+
+</body>
+</html>

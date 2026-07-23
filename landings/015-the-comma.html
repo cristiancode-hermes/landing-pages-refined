@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Comma — a literary café on Exmouth Street. Pause here.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='oklch%280.47%200.18%2025%29'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500;1,8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(1 0 0);
+    --page: oklch(0.985 0.008 90);
+    --ink: oklch(0.20 0.01 50);
+    --muted: oklch(0.42 0.015 50);
+    --accent: oklch(0.47 0.18 25);
+    --accent-bright: oklch(0.52 0.20 25);
+    --rule: oklch(0.90 0.008 80);
+    --z-header: 10;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--accent); color: oklch(1 0 0); }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 2.5px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap {
+    width: min(66rem, calc(100% - 3rem));
+    margin-inline: auto;
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.1rem;
+  }
+  .wordmark {
+    font-weight: 700;
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+  .wordmark em { color: var(--accent); font-style: normal; }
+  .site-nav { display: flex; gap: 1.75rem; font-size: 0.95rem; }
+
+  /* underline draws on hover */
+  .u {
+    text-decoration: none;
+    position: relative;
+  }
+  .u::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1.5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  .u:hover::after, .u:focus-visible::after { transform: scaleX(1); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    padding-block: clamp(3.5rem, 9vw, 7rem);
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .cursor {
+    display: inline-block;
+    width: 0.13em;
+    height: 0.82em;
+    margin-left: 0.09em;
+    vertical-align: -0.06em;
+    background: var(--accent-bright);
+    animation: blink 1.15s steps(1) infinite;
+  }
+  @keyframes blink {
+    0%, 54% { opacity: 1; }
+    55%, 100% { opacity: 0; }
+  }
+  .lede {
+    margin-top: 1.4rem;
+    max-width: 34rem;
+    font-size: 1.18rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  .hero-actions {
+    margin-top: 2.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    background: var(--accent);
+    color: oklch(0.99 0 0);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: background 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo);
+  }
+  .btn:hover { background: var(--accent-bright); transform: translateY(-2px); }
+
+  /* ---------- manuscript ---------- */
+  .ms {
+    background: var(--page);
+    border: 1px solid var(--rule);
+    box-shadow: 0 6px 8px oklch(0.20 0.01 50 / 0.06);
+    border-radius: 4px;
+    padding: 2.4rem 2.2rem 2.2rem;
+    padding-right: 7.5rem;
+    position: relative;
+    transform: rotate(-1.1deg);
+    font-size: 0.98rem;
+  }
+  .ms-head {
+    font-size: 0.82rem;
+    color: var(--muted);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.7rem;
+    margin-bottom: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .ms-head em { font-style: italic; }
+  .ms p { text-align: justify; hyphens: auto; }
+  .ms p + p { margin-top: 0.9em; }
+  .add {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .add::before {
+    content: "‸";
+    font-style: normal;
+    margin-right: 0.1em;
+  }
+  .strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 1.5px;
+  }
+  .stet {
+    border-bottom: 2px dotted var(--accent);
+  }
+  .margin-note {
+    position: absolute;
+    right: 1.2rem;
+    top: 9.5rem;
+    width: 5.2rem;
+    color: var(--accent);
+    font-style: italic;
+    font-size: 0.85rem;
+    line-height: 1.35;
+  }
+  .margin-note svg { display: block; margin-bottom: 0.35rem; }
+
+  /* ---------- sections ---------- */
+  section.block { padding-block: clamp(3rem, 7vw, 5.5rem); }
+  .block + .block { border-top: 1px solid var(--rule); }
+  h2 {
+    font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    text-wrap: balance;
+    margin-bottom: 0.6rem;
+  }
+  h2 .q { color: var(--accent); }
+  .block > .wrap > p.intro {
+    color: var(--muted);
+    max-width: 38rem;
+    margin-bottom: 2.4rem;
+    text-wrap: pretty;
+  }
+
+  /* pairing menu */
+  .pairs { list-style: none; }
+  .pairs li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 1.15rem;
+  }
+  .pairs li + li { border-top: 1px solid var(--rule); }
+  .pairs .what { font-weight: 600; font-size: 1.12rem; white-space: nowrap; }
+  .pairs .dots {
+    flex: 1 1 auto;
+    min-width: 1.5rem;
+    border-bottom: 2px dotted var(--rule);
+    transform: translateY(-0.3em);
+  }
+  .pairs .story {
+    font-style: italic;
+    color: var(--muted);
+    text-align: right;
+    max-width: 22rem;
+    font-size: 0.97rem;
+  }
+  .pairs .price { font-weight: 600; color: var(--accent); white-space: nowrap; }
+
+  /* evenings */
+  .evenings { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); }
+  .event time {
+    display: block;
+    color: var(--accent);
+    font-style: italic;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  .event h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin-bottom: 0.5rem;
+  }
+  .event p { color: var(--muted); max-width: 30rem; text-wrap: pretty; }
+
+  /* visit */
+  .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); }
+  .hours { list-style: none; }
+  .hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.55rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hours .d { font-weight: 600; }
+  .hours .t { color: var(--muted); }
+  .address { font-size: 1.18rem; line-height: 1.55; }
+  .address em { display: block; color: var(--muted); font-size: 1rem; margin-top: 1rem; max-width: 26rem; }
+
+  /* footer */
+  .site-foot {
+    border-top: 1px solid var(--rule);
+    padding-block: 2rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .site-foot em { color: var(--accent); font-style: normal; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px) {
+    .hero { grid-template-columns: 1fr; }
+    .ms { transform: rotate(-0.6deg); }
+    .evenings, .visit-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 700px) {
+    .ms { padding-right: 2.2rem; }
+    .margin-note { display: none; }
+    .site-nav { gap: 1.1rem; font-size: 0.88rem; }
+  }
+  @media (max-width: 560px) {
+    .pairs li { flex-wrap: wrap; }
+    .pairs .dots { display: none; }
+    .pairs .story { text-align: left; max-width: none; width: 100%; order: 3; }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; }
+    .u::after, .btn { transition: none; }
+    .btn:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">The Comma<em>,</em></a>
+    <nav class="site-nav" aria-label="Café">
+      <a class="u" href="#pairing">The pairing</a>
+      <a class="u" href="#evenings">Evenings</a>
+      <a class="u" href="#visit">Find us</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div>
+      <h1 id="hero-title">Every sentence deserves a pause.<span class="cursor" aria-hidden="true"></span></h1>
+      <p class="lede">A café for readers on Exmouth Street. Espresso pulled slowly, fiction shelved short, and <strong>no Wi-Fi — on purpose.</strong> Bring the book you're stuck on. Leave further in.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#pairing">Today's pairing</a>
+        <a class="u" href="#evenings">What happens at night</a>
+      </div>
+    </div>
+
+    <figure class="ms" aria-label="A page from tonight's short story, with the editor's marks still on it">
+      <div class="ms-head">
+        <span>tonight's story — <em>The Locksmith of Trieste</em></span>
+        <span>900 words · 7 min</span>
+      </div>
+      <p>The shop on Via Cavana kept its own hours, which is to say it kept none at all. Aldo arrived when the fog did, and left when he had finished <span class="strike">pretending to</span> work.</p>
+      <p>What he actually did, behind the counter, was read the letters people never posted. He steamed them open, read them <span class="add">slowly</span> twice, and <span class="stet">filed</span> them under the name of the street they were meant for.</p>
+      <div class="margin-note" aria-hidden="true">
+        <svg width="34" height="22" viewBox="0 0 34 22" fill="none">
+          <path d="M33 2 C 20 2, 8 6, 2 20" stroke="oklch(0.47 0.18 25)" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M2 20 l 6 -1 M2 20 l 1 -6" stroke="oklch(0.47 0.18 25)" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        he was working. keep it. —E.
+      </div>
+    </figure>
+  </section>
+
+  <section class="block" id="pairing" aria-labelledby="pairing-title">
+    <div class="wrap">
+      <h2 id="pairing-title">Espresso, with a story on the side<span class="q">.</span></h2>
+      <p class="intro">Every drink comes with a short story, printed that morning and matched to the roast. Finishing one before your cup goes cold is considered good form.</p>
+      <ul class="pairs">
+        <li>
+          <span class="what">Ethiopia Guji, pour-over</span>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">£4.50</span>
+          <span class="story">paired with “The Locksmith of Trieste” — 900 words, seven minutes, one bad decision</span>
+        </li>
+        <li>
+          <span class="what">Flat white</span>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">£3.80</span>
+          <span class="story">paired with “Instructions for a Power Cut” — 400 words, best read by candlelight</span>
+        </li>
+        <li>
+          <span class="what">Batch filter, bottomless until ten</span>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">£3.00</span>
+          <span class="story">paired with the crossword — unsolved since Tuesday, clues disputed</span>
+        </li>
+        <li>
+          <span class="what">Hot chocolate, the thick kind</span>
+          <span class="dots" aria-hidden="true"></span>
+          <span class="price">£4.20</span>
+          <span class="story">paired with a poem. Always a poem. We don't make the rules — actually, we do</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="evenings" aria-labelledby="evenings-title">
+    <div class="wrap">
+      <h2 id="evenings-title">After the last chapter, we turn the chairs down<span class="q">.</span></h2>
+      <p class="intro">Two nights a month the café stays open late. Tickets are free; the rule is you have to stay for the whole thing.</p>
+      <div class="evenings">
+        <article class="event">
+          <time datetime="2026-08-20T19:30">Third Thursday of the month · 19:30</time>
+          <h3>Margins — an open mic for unfinished work</h3>
+          <p>Bring the draft you can't end. Read for five minutes, then strangers tell you what they think happens next. The ending with the most votes gets written on the wall.</p>
+        </article>
+        <article class="event">
+          <time datetime="2026-09-06T18:00">First Sunday of the month · 18:00–20:00</time>
+          <h3>The Silent Reading Party</h3>
+          <p>Phones in the basket by the door. Two hours of collective reading, one viola at seven, soup at eight. The quietest ticket in the city, and the hardest to get.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="visit" aria-labelledby="visit-title">
+    <div class="wrap">
+      <h2 id="visit-title">Find the comma<span class="q">.</span></h2>
+      <p class="intro">We're the shopfront with the red punctuation mark in the window and a queue that reads.</p>
+      <div class="visit-grid">
+        <ul class="hours">
+          <li><span class="d">Tuesday – Friday</span><span class="t">7:30 – 17:00</span></li>
+          <li><span class="d">Saturday – Sunday</span><span class="t">9:00 – 18:00</span></li>
+          <li><span class="d">Monday</span><span class="t">closed, for editing</span></li>
+        </ul>
+        <p class="address">
+          14 Exmouth Street,<br>
+          between the bookbinder and the barber.
+          <em>Nearest bus: the 41. Nearest excuse to stay all afternoon: the armchair by the window, first come, first served.</em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot wrap">
+  <span>The Comma — a literary café</span>
+  <span>Open until the chapter ends<em>.</em></span>
+</footer>
+
+<script>
+  // Nothing here needs JavaScript. The cursor blinks, the underlines draw,
+  // and the editor has already made her marks.
+</script>
+
+</body>
+</html>

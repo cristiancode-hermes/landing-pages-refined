@@ -1,0 +1,166 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e3]:
+    - generic [ref=f1e4]: DRIFTLAB / EXPEDITION D-7 · DAY 214 OF 402
+    - generic [ref=f1e5]: "ICE THICKNESS AT CAMP: 1.87 M · DRIFT 0.31 KM/DAY NE"
+    - generic [ref=f1e6]: RV ARCTIC TERN HOLDING LEAD OPEN · NEXT RESUPPLY 14 MAR
+    - generic [ref=f1e7]: "CAMP POPULATION: 9 CREW · 4 SCIENCE · 1 DOG (NUKA, OFF DUTY)"
+    - generic [ref=f1e8]: DRIFTLAB / EXPEDITION D-7 · DAY 214 OF 402
+    - generic [ref=f1e9]: "ICE THICKNESS AT CAMP: 1.87 M · DRIFT 0.31 KM/DAY NE"
+    - generic [ref=f1e10]: RV ARCTIC TERN HOLDING LEAD OPEN · NEXT RESUPPLY 14 MAR
+    - generic [ref=f1e11]: "CAMP POPULATION: 9 CREW · 4 SCIENCE · 1 DOG (NUKA, OFF DUTY)"
+  - banner [ref=f1e12]:
+    - generic [ref=f1e13]:
+      - link "DRIFTLAB" [ref=f1e14] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Primary" [ref=f1e18]:
+        - link "The legs" [ref=f1e19] [cursor=pointer]:
+          - /url: "#legs"
+        - link "Science" [ref=f1e20] [cursor=pointer]:
+          - /url: "#science"
+        - link "Crew" [ref=f1e21] [cursor=pointer]:
+          - /url: "#crew"
+        - link "Apply for D-8" [ref=f1e22] [cursor=pointer]:
+          - /url: "#crew"
+  - main [ref=f1e23]:
+    - generic [ref=f1e25]:
+      - generic [ref=f1e26]:
+        - paragraph [ref=f1e27]: EXPEDITION D-7 · CENTRAL ARCTIC BASIN · ON ICE
+        - heading "Four hundred days adrift on purpose." [level=1] [ref=f1e28]: Four hundred daysadrift on purpose.
+        - paragraph [ref=f1e29]: Driftlab is a research camp frozen into the pack ice, drifting with it, measuring everything the ocean and sky hand us. No engine noise. No fixed address. Just the floe, the instruments, and the log.
+        - generic [ref=f1e30]:
+          - link "Read the field plan" [ref=f1e31] [cursor=pointer]:
+            - /url: "#legs"
+          - link "Winter with us" [ref=f1e32] [cursor=pointer]:
+            - /url: "#crew"
+      - figure "FIG 01 — CAMP FROM THE EAST RIDGE 06:12 UTC" [ref=f1e33]:
+        - img "The Driftlab camp at first light — tents and instrument masts staked into a pressure ridge, sky the colour of cold steel." [ref=f1e34]
+        - generic [ref=f1e35]:
+          - generic [ref=f1e36]: FIG 01 — CAMP FROM THE EAST RIDGE
+          - generic [ref=f1e37]: 06:12 UTC
+    - region "Live camp telemetry" [ref=f1e38]:
+      - generic [ref=f1e39]:
+        - generic [ref=f1e40]:
+          - heading "Camp telemetry — relayed by buoy 4, updated hourly" [level=2] [ref=f1e41]
+          - generic [ref=f1e42]: LAST RELAY 22:53:19 UTC
+        - generic [ref=f1e43]:
+          - generic [ref=f1e44]:
+            - generic [ref=f1e45]: AIR TEMP
+            - generic [ref=f1e46]: −21.4 °C
+            - generic [ref=f1e47]: ▼ 0.6 / 3H
+          - generic [ref=f1e48]:
+            - generic [ref=f1e49]: WIND · 10 M
+            - generic [ref=f1e50]: 11.2 m/s
+            - generic [ref=f1e51]: GUSTS 17 · FROM 040°
+          - generic [ref=f1e52]:
+            - generic [ref=f1e53]: LATITUDE
+            - generic [ref=f1e54]: 84°12.7′ N
+            - generic [ref=f1e55]: DRIFTING +0.4′/DAY
+          - generic [ref=f1e56]:
+            - generic [ref=f1e57]: LONGITUDE
+            - generic [ref=f1e58]: 132°44.1′ E
+            - generic [ref=f1e59]: DRIFTING −0.9′/DAY
+          - generic [ref=f1e60]:
+            - generic [ref=f1e61]: PRESSURE
+            - generic [ref=f1e62]: 1002.6 hPa
+            - generic [ref=f1e63]: ▲ RISING SLOWLY
+          - generic [ref=f1e64]:
+            - generic [ref=f1e65]: ICE DRAFT
+            - generic [ref=f1e66]: 1.87 m
+            - generic [ref=f1e67]: RIDGE KEEL 6.2 M ASTERN
+    - generic [ref=f1e69]:
+      - heading "The legs" [level=2] [ref=f1e70]
+      - paragraph [ref=f1e71]: D-7 runs thirteen months in four legs. Crews rotate by icebreaker; the floe does not. Dates are plan-of-record — the ice edits the plan, and we log the edits.
+      - generic [ref=f1e72]:
+        - generic [ref=f1e73]:
+          - generic [ref=f1e74]: I
+          - generic [ref=f1e75]: SEP — DEC 2025
+          - generic [ref=f1e76]:
+            - strong [ref=f1e77]: Freeze-in & baseline
+            - text: Locate the floe, anchor the camp, drill the first core line. Polar night arrives mid-leg; instrument checkout by headlamp.
+          - generic [ref=f1e78]: RV ARCTIC TERN
+          - generic [ref=f1e79]: COMPLETE
+        - generic [ref=f1e80]:
+          - generic [ref=f1e81]: II
+          - generic [ref=f1e82]: JAN — APR 2026
+          - generic [ref=f1e83]:
+            - strong [ref=f1e84]: Deep winter transect
+            - text: "Ocean moorings serviced under 1.8 m of ice. Aurora optics run continuous. Coldest logged night so far: −38.9 °C, 11 February."
+          - generic [ref=f1e85]: NO ROTATION · ICEBOUND
+          - generic [ref=f1e86]: UNDERWAY
+        - generic [ref=f1e87]:
+          - generic [ref=f1e88]: III
+          - generic [ref=f1e89]: MAY — AUG 2026
+          - generic [ref=f1e90]:
+            - strong [ref=f1e91]: Melt season
+            - text: Melt-pond hydrology, under-ice light measurements, first open leads. The camp moves twice as the floe cracks. It always cracks.
+          - generic [ref=f1e92]: KV SVALBARD
+          - generic [ref=f1e93]: PLANNED
+        - generic [ref=f1e94]:
+          - generic [ref=f1e95]: IV
+          - generic [ref=f1e96]: SEP — OCT 2026
+          - generic [ref=f1e97]:
+            - strong [ref=f1e98]: Recovery
+            - text: Every sensor comes home or gets left running by design. Core archive flies south in −25 °C boxes. Camp struck; floe released.
+          - generic [ref=f1e99]: RV ARCTIC TERN
+          - generic [ref=f1e100]: PLANNED
+    - generic [ref=f1e102]:
+      - heading "The science program" [level=2] [ref=f1e103]
+      - paragraph [ref=f1e104]: Three work packages, one floe. Everything is cross-referenced to the drift track so a water sample and a snow pit can be placed on the same map, hour for hour.
+      - generic [ref=f1e105]:
+        - article [ref=f1e106]:
+          - paragraph [ref=f1e107]: WP-1 · GLACIOLOGY
+          - heading "Ice core archive" [level=3] [ref=f1e108]
+          - paragraph [ref=f1e109]: "A 200 m core line across the floe, read layer by layer back to the 1960s. Each core is split on site: half analyzed in the cold lab at −20 °C, half flown home untouched."
+          - paragraph [ref=f1e110]: "CORES LOGGED TO DATE: 312 · OLDEST LAYER: 1964"
+        - article [ref=f1e111]:
+          - paragraph [ref=f1e112]: WP-2 · OCEANOGRAPHY
+          - heading "Ocean moorings" [level=3] [ref=f1e113]
+          - paragraph [ref=f1e114]: Four moorings hang beneath the floe to 800 m, listening for warm Atlantic water sneaking north under the ice. Serviced by divers in dry suits, because robots hate the cold more than we do.
+          - paragraph [ref=f1e115]: "DEEPEST SENSOR: 812 M · WARMEST INTRUSION: +1.3 °C"
+        - article [ref=f1e116]:
+          - paragraph [ref=f1e117]: WP-3 · ATMOSPHERE
+          - heading "Aurora optics" [level=3] [ref=f1e118]
+          - paragraph [ref=f1e119]: Three all-sky cameras and a photometer run every dark hour of the polar night, pairing auroral displays with the camp's magnetometer. The sky talks; we transcribe.
+          - paragraph [ref=f1e120]: "NIGHTS IMAGED: 121 · STRONGEST STORM: KP 7, 9 FEB"
+    - generic [ref=f1e122]:
+      - figure "FIG 02 — CORE D7-118, SECTION 3 · COLD LAB BENCH" [ref=f1e123]:
+        - img "A meter-long ice core on the cold-lab bench, bands of trapped bubbles visible like tree rings under the inspection lamp." [ref=f1e124]
+      - generic [ref=f1e126]:
+        - heading "Read the ice, page by page." [level=2] [ref=f1e127]
+        - paragraph [ref=f1e128]: Every winter the pack freezes a new layer; every summer it signs the margin. A core from this floe is a diary the ocean kept without being asked — ash from a Siberian fire season, the salt of a bad storm, the first spring melt spelled out in bubbles.
+        - paragraph [ref=f1e129]: Driftlab exists because satellites see the ice from above and models guess at it from afar. Somebody has to stand on it and take its temperature. For thirteen months, that's us.
+        - paragraph [ref=f1e130]: LOG, 11 FEB · 04:50 — −38.9 °C. GENERATOR 2 COMPLAINED, THEN DIDN'T. AURORA KP 7 OVERHEAD UNTIL DAWN. WORTH IT.
+    - generic [ref=f1e132]:
+      - heading "Winter with us." [level=2] [ref=f1e133]
+      - paragraph [ref=f1e134]: Expedition D-8 embarks September 2027. We are hiring nine crew and four science staff for the full drift, plus two rotation-only positions on Legs I and III. Applications close 30 November 2026.
+      - generic [ref=f1e135]:
+        - generic [ref=f1e136]:
+          - heading "Open berths" [level=3] [ref=f1e137]
+          - list [ref=f1e138]:
+            - listitem [ref=f1e139]: Ice pilot / floe safety lead — you decide where the camp sleeps
+            - listitem [ref=f1e140]: Field engineer, power & comms — two generators, zero excuses
+            - listitem [ref=f1e141]: Marine technician, moorings — dry-suit certified
+            - listitem [ref=f1e142]: Cook & medic — one berth, two callings, non-negotiable
+        - generic [ref=f1e143]:
+          - heading "You should bring" [level=3] [ref=f1e144]
+          - list [ref=f1e145]:
+            - listitem [ref=f1e146]: One full polar season or equivalent cold remote work
+            - listitem [ref=f1e147]: Calm at 03:00 when the ice alarm sounds
+            - listitem [ref=f1e148]: Instrument discipline — the log is the product
+            - listitem [ref=f1e149]: A book you're willing to lend. The camp library runs on trust
+        - generic [ref=f1e150]:
+          - heading "What we promise" [level=3] [ref=f1e151]
+          - list [ref=f1e152]:
+            - listitem [ref=f1e153]: 13 months, paid, incl. 60 days pre-deployment training
+            - listitem [ref=f1e154]: Weekly sat uplink — 40 GB, voice prioritized
+            - listitem [ref=f1e155]: Full medevac cover via Longyearbyen, weather permitting
+            - listitem [ref=f1e156]: Your name on the data. Every dataset lists its collectors
+      - generic [ref=f1e157]:
+        - link "Apply for D-8" [ref=f1e158] [cursor=pointer]:
+          - /url: mailto:crew@driftlab.example?subject=D-8%20application
+        - paragraph [ref=f1e159]: Send a one-page field history and the harshest condition you've worked in, in °C. We read every application aloud at camp. Replies within 14 days, ice permitting.
+  - contentinfo [ref=f1e160]:
+    - generic [ref=f1e161]:
+      - generic [ref=f1e162]: DRIFTLAB · POLAR OCEANOGRAPHY UNIT · EST. 2019
+      - generic [ref=f1e163]: CURRENT POSITION RELAYED BY BUOY 4 · IRIDIUM SBD
+      - generic [ref=f1e164]: LOGGED FROM THE ICE, NOT FROM A DESK

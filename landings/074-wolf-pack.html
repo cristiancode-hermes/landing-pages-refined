@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wolf Pack 100 — a night race over the Kestrel Ridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Geologica:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: oklch(0.15 0.02 255);
+    --night-2: oklch(0.19 0.025 255);
+    --ridge: oklch(0.32 0.07 245);
+    --ridge-deep: oklch(0.25 0.05 248);
+    --beam: oklch(0.87 0.15 90);
+    --beam-deep: oklch(0.66 0.15 82);
+    --ink: oklch(0.93 0.01 250);
+    --ink-dim: oklch(0.76 0.015 250);
+    --line: oklch(0.30 0.03 252);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--night);
+    color: var(--ink);
+    font-family: "Geologica", system-ui, sans-serif;
+    font-weight: 400;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { font-family: "Archivo", sans-serif; text-wrap: balance; }
+  p { max-width: 68ch; text-wrap: pretty; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--beam);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.15 0.02 255 / 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1rem clamp(1.25rem, 4vw, 3.5rem);
+  }
+  .wordmark {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wordmark em { font-style: normal; color: var(--beam); }
+  nav ul { display: flex; gap: 1.6rem; list-style: none; flex-wrap: wrap; }
+  nav a { color: var(--ink-dim); text-decoration: none; font-weight: 500; font-size: 0.92rem; transition: color 0.25s var(--ease-out); }
+  nav a:hover { color: var(--beam); }
+  .countdown {
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--beam);
+    white-space: nowrap;
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    align-items: flex-end;
+    isolation: isolate;
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5) saturate(0.85); }
+  .hero-img::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--night) 4%, transparent 55%);
+  }
+  .hero-content {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3rem, 7vw, 5rem);
+  }
+  .race-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--night);
+    background: var(--beam);
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-weight: 900;
+    font-size: clamp(2.7rem, 7vw, 5.75rem);
+    line-height: 0.96;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+    max-width: 12ch;
+  }
+  .hero .lede { font-size: clamp(1.05rem, 1.5vw, 1.3rem); color: var(--ink-dim); max-width: 52ch; margin-bottom: 2rem; font-weight: 300; }
+  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.85rem 1.7rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.3s var(--ease-out), background 0.3s var(--ease-out), color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-beam { background: var(--beam); color: var(--night); }
+  .btn-ghost { border: 2px solid var(--ink-dim); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--beam); color: var(--beam); }
+
+  /* ---------- elevation profile ---------- */
+  .profile {
+    padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 4vw, 3.5rem);
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+  .profile h2 { font-weight: 900; font-size: clamp(1.9rem, 3.8vw, 3.1rem); letter-spacing: -0.025em; margin-bottom: 0.75rem; }
+  .profile > p { color: var(--ink-dim); margin-bottom: 2.5rem; max-width: 60ch; }
+  .profile-figure {
+    background: var(--night-2);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(1rem, 3vw, 2rem);
+  }
+  .profile-figure svg { width: 100%; height: auto; display: block; }
+  .profile-path { stroke: var(--beam); stroke-width: 3; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+  .profile-fill { fill: oklch(0.87 0.15 90 / 0.10); }
+  .runner-dot { fill: var(--beam); filter: drop-shadow(0 0 8px oklch(0.87 0.15 90 / 0.9)); }
+  .marker-label { font-family: "Archivo", sans-serif; font-size: 12px; fill: var(--ink-dim); font-weight: 700; }
+  .marker-lantern { fill: var(--beam-deep); opacity: 0; transition: opacity 0.9s var(--ease-out); }
+  .profile-figure.lit .marker-lantern { opacity: 1; }
+  .profile-stats { display: flex; gap: clamp(1.5rem, 4vw, 3.5rem); flex-wrap: wrap; margin-top: 1.5rem; }
+  .profile-stats div { font-size: 0.9rem; color: var(--ink-dim); }
+  .profile-stats b { display: block; font-family: "Archivo", sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--beam); letter-spacing: -0.01em; }
+
+  /* ---------- distances ---------- */
+  .distances {
+    background: var(--ridge);
+    padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 4vw, 3.5rem);
+  }
+  .distances-inner { max-width: 80rem; margin: 0 auto; }
+  .distances h2 { font-weight: 900; font-size: clamp(1.9rem, 3.8vw, 3.1rem); letter-spacing: -0.025em; margin-bottom: 0.75rem; }
+  .distances .sub { color: oklch(0.85 0.02 245); margin-bottom: 2.5rem; max-width: 60ch; }
+  .distance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.5rem; }
+  .distance-card {
+    background: var(--ridge-deep);
+    border: 1px solid oklch(0.40 0.06 245);
+    border-radius: 14px;
+    padding: 1.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    transition: transform 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+  }
+  .distance-card:hover { transform: translateY(-5px); border-color: var(--beam); }
+  .distance-card h3 { font-weight: 900; font-size: 2rem; letter-spacing: -0.02em; color: var(--beam); }
+  .distance-card .name { font-family: "Archivo", sans-serif; font-weight: 700; font-size: 1.05rem; }
+  .distance-card p { font-size: 0.95rem; color: var(--ink-dim); flex: 1; }
+  .dnf {
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-top: 1px solid oklch(0.40 0.06 245);
+    padding-top: 0.9rem;
+    color: var(--ink);
+  }
+  .dnf b { color: var(--beam); font-family: "Archivo", sans-serif; }
+
+  /* ---------- kit + aid ---------- */
+  .kit-aid {
+    padding: clamp(3.5rem, 8vw, 6.5rem) clamp(1.25rem, 4vw, 3.5rem);
+    max-width: 80rem;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .kit h2, .aid h2 { font-weight: 900; font-size: clamp(1.7rem, 3.2vw, 2.5rem); letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .kit > p, .aid > p { color: var(--ink-dim); margin-bottom: 1.75rem; font-size: 0.98rem; }
+  .kit-list { list-style: none; display: flex; flex-direction: column; }
+  .kit-list li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: baseline;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .kit-list li:first-child { border-top: 1px solid var(--line); }
+  .kit-list .check {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2px solid var(--beam);
+    border-radius: 4px;
+    transform: translateY(0.2rem);
+  }
+  .kit-list small { display: block; color: var(--ink-dim); font-size: 0.83rem; }
+  .aid-menu { list-style: none; display: flex; flex-direction: column; }
+  .aid-menu li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .aid-menu li:first-child { border-top: 1px solid var(--line); }
+  .aid-menu .station { font-family: "Archivo", sans-serif; font-weight: 700; color: var(--beam); display: block; margin-bottom: 0.2rem; }
+  .aid-menu .food { color: var(--ink-dim); }
+
+  /* ---------- soup story ---------- */
+  .soup {
+    position: relative;
+    isolation: isolate;
+    padding: clamp(4rem, 9vw, 7.5rem) clamp(1.25rem, 4vw, 3.5rem);
+    overflow: hidden;
+  }
+  .soup-img { position: absolute; inset: 0; z-index: -1; }
+  .soup-img img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.38) saturate(0.8); }
+  .soup-inner { max-width: 46rem; margin: 0 auto; text-align: center; }
+  .soup h2 { font-weight: 900; font-size: clamp(1.9rem, 3.8vw, 3.1rem); letter-spacing: -0.025em; margin-bottom: 1.25rem; }
+  .soup p { color: var(--ink-dim); margin: 0 auto 1rem; font-size: 1.05rem; }
+  .soup .sig { font-family: "Archivo", sans-serif; font-weight: 700; color: var(--beam); font-size: 0.95rem; margin-top: 1.5rem; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 2.25rem clamp(1.25rem, 4vw, 3.5rem);
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.88rem;
+    color: var(--ink-dim);
+    max-width: 80rem;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 860px) {
+    .kit-aid { grid-template-columns: 1fr; }
+    .countdown { display: none; }
+    nav ul { gap: 1.1rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .profile-path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+    .profile-fill { opacity: 1 !important; }
+    .marker-lantern { opacity: 1; transition: none; }
+    .runner-dot { display: none; }
+    .btn, .distance-card, nav a { transition: none; }
+    .btn:hover, .distance-card:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="#">WOLF<em>·</em>PACK</a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#course">Course</a></li>
+      <li><a href="#distances">Distances</a></li>
+      <li><a href="#kit">Kit &amp; Aid</a></li>
+    </ul>
+  </nav>
+  <span class="countdown" id="countdown" role="timer" aria-label="Time until race start">—</span>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-img" aria-hidden="true">
+      <img src="https://picsum.photos/seed/trailrun-1/1600/900" width="1600" height="900" alt="">
+    </div>
+    <div class="hero-content">
+      <span class="race-tag">START 23:00 · FRIDAY OCT 9 · KESTREL RIDGE</span>
+      <h1>Run all night. Finish to soup.</h1>
+      <p class="lede">The Wolf Pack 100 is a point-to-point footrace over Kestrel Ridge, run almost entirely in the dark, by headlamp, with the wolves for company. Three distances. One cutoff. No pacers, no crews, no excuses.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-beam" href="#distances">Register — $145</a>
+        <a class="btn btn-ghost" href="#course">See the course</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="profile" id="course">
+    <h2>The ridge, honest</h2>
+    <p>One hundred kilometers, 4,180 meters of climbing, and a high point of 2,214 m at The Howl — which you hit at roughly 3 a.m., sixty kilometers in, when the temperature drops to single digits. The profile below draws as you scroll. Lanterns mark the aid stations.</p>
+    <div class="profile-figure" id="profile-figure">
+      <svg viewBox="0 0 900 320" role="img" aria-label="Elevation profile of the Wolf Pack 100 course, climbing to 2,214 meters at kilometer 60">
+        <path class="profile-fill" id="profile-fill" d="M20,280 L120,240 L200,255 L300,190 L380,210 L470,140 L540,90 L600,60 L660,120 L740,170 L820,200 L880,240 L880,300 L20,300 Z" />
+        <path class="profile-path" id="profile-path" d="M20,280 L120,240 L200,255 L300,190 L380,210 L470,140 L540,90 L600,60 L660,120 L740,170 L820,200 L880,240" />
+        <circle class="runner-dot" id="runner-dot" r="7" cx="20" cy="280" />
+        <g class="markers">
+          <circle class="marker-lantern" cx="200" cy="255" r="5" />
+          <text class="marker-label" x="200" y="282" text-anchor="middle">km 22 · Pinchot</text>
+          <circle class="marker-lantern" cx="380" cy="210" r="5" />
+          <text class="marker-label" x="380" y="237" text-anchor="middle">km 41 · Saddle</text>
+          <circle class="marker-lantern" cx="600" cy="60" r="5" />
+          <text class="marker-label" x="600" y="40" text-anchor="middle">km 60 · The Howl</text>
+          <circle class="marker-lantern" cx="740" cy="170" r="5" />
+          <text class="marker-label" x="740" y="197" text-anchor="middle">km 82 · Low Creek</text>
+        </g>
+      </svg>
+      <div class="profile-stats">
+        <div><b>100 km</b>point to point</div>
+        <div><b>4,180 m</b>total climbing</div>
+        <div><b>2,214 m</b>high point, The Howl</div>
+        <div><b>28 h</b>cutoff, hard</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="distances" id="distances">
+    <div class="distances-inner">
+      <h2>Three distances, real numbers</h2>
+      <p class="sub">Every distance finishes at the same fire. DNF rates below are five-year averages, published because pretending everyone finishes helps no one train.</p>
+      <div class="distance-grid">
+        <article class="distance-card">
+          <h3>100K</h3>
+          <span class="name">The Full Pack</span>
+          <p>Start 23:00 Friday. The whole ridge, the whole night, and most of the next day. This is the race people mean when they say Wolf Pack.</p>
+          <p class="dnf">DNF rate <b>41%</b> · avg finish 21 h 12 m · $145</p>
+        </article>
+        <article class="distance-card">
+          <h3>50K</h3>
+          <span class="name">The Half Howl</span>
+          <p>Start 05:00 Saturday. Joins the 100K course at Pinchot and climbs The Howl in daylight — colder legs, warmer hands.</p>
+          <p class="dnf">DNF rate <b>23%</b> · avg finish 9 h 45 m · $95</p>
+        </article>
+        <article class="distance-card">
+          <h3>21K</h3>
+          <span class="name">The Pup Run</span>
+          <p>Start 09:00 Saturday. The last descent in reverse and back. Not easy — nothing up here is — but honest for a first mountain race.</p>
+          <p class="dnf">DNF rate <b>7%</b> · avg finish 3 h 20 m · $55</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="kit-aid" id="kit">
+    <div class="kit">
+      <h2>Mandatory kit — checked twice</h2>
+      <p>Checked at bib pickup and again at Low Creek (km 82). Missing item at the second check means your race ends there, warm, fed, and officially DNF.</p>
+      <ul class="kit-list">
+        <li><span class="check" aria-hidden="true"></span><span>Headlamp, 300+ lumens, plus spare batteries<small>Your backup lamp counts as your spare batteries' best friend. Bring it too.</small></span></li>
+        <li><span class="check" aria-hidden="true"></span><span>Waterproof jacket, taped seams<small>Not a windbreaker. We check the seams. We have opinions.</small></span></li>
+        <li><span class="check" aria-hidden="true"></span><span>Insulated layer, 200 g minimum fill or equivalent<small>The Howl at 3 a.m. has ended races for people in hoodies.</small></span></li>
+        <li><span class="check" aria-hidden="true"></span><span>1.5 L water capacity + 600 kcal of food<small>Aid stations are 19 km apart on average. That's a long way to bonk.</small></span></li>
+        <li><span class="check" aria-hidden="true"></span><span>Emergency blanket + whistle<small>Weighs 60 grams. Has saved three racers in nine years.</small></span></li>
+      </ul>
+    </div>
+    <div class="aid">
+      <h2>The aid-station menu</h2>
+      <p>Run by 60 volunteers from the valley, several of whom have been feeding racers since before you owned trail shoes. All stations have water, electrolyte, and someone who will tell you the truth about how you look.</p>
+      <ul class="aid-menu">
+        <li><span class="station">Pinchot · km 22 · 01:30-ish</span><span class="food">Salted potatoes, cola, banana halves, strong coffee, weaker advice</span></li>
+        <li><span class="station">Saddle · km 41 · 03:45-ish</span><span class="food">Cheese quesadillas, broth, gummy bears, a heater that mostly works</span></li>
+        <li><span class="station">The Howl · km 60 · dawn</span><span class="food">Hot chocolate, bacon, dry socks from the goodwill bin, the sunrise</span></li>
+        <li><span class="station">Low Creek · km 82 · morning</span><span class="food">Rice balls, pickle juice, watermelon, honest time-checks to the cutoff</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="soup">
+    <div class="soup-img" aria-hidden="true">
+      <img src="https://picsum.photos/seed/trailrun-2/1600/900" width="1600" height="900" alt="">
+    </div>
+    <div class="soup-inner">
+      <h2>The finish-line soup story</h2>
+      <p>In 2017, race director Marta Voss promised her grandmother's lentil soup to anyone who finished before the cutoff. Eleven people did. She made twelve liters and cried anyway.</p>
+      <p>Last year 214 finishers crossed the line and every one of them got a bowl — lentil, still her grandmother's recipe, still made by Marta, now with four helpers and a second stove. The soup has never run out. Marta says it never will. The wolves, presumably, are watching.</p>
+      <p class="sig">— Marta Voss, RD, finisher of all nine editions</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>Wolf Pack Endurance Society · Kestrel Ridge, permit #KR-2026-041 · Leave no trace, take only soup.</span>
+  <span>Registration closes Oct 2 or at 350 entrants, whichever howls first.</span>
+</footer>
+
+<script>
+  // --- Elevation profile: draw on scroll, runner dot climbs, lanterns light ---
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var path = document.getElementById('profile-path');
+    var fill = document.getElementById('profile-fill');
+    var dot = document.getElementById('runner-dot');
+    var figure = document.getElementById('profile-figure');
+    if (!path || !figure) return;
+
+    if (reduce) return; // CSS fallback shows the full profile, dot hidden
+
+    var len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    fill.style.opacity = '0';
+    fill.style.transition = 'opacity 0.8s cubic-bezier(0.16,1,0.3,1)';
+
+    function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+    function update() {
+      var rect = figure.getBoundingClientRect();
+      var vh = window.innerHeight;
+      // progress: 0 when figure enters viewport bottom, 1 when its top reaches 35% of viewport
+      var start = vh * 0.95;
+      var end = vh * 0.35;
+      var raw = (start - rect.top) / (start - end + rect.height * 0.4);
+      var p = Math.max(0, Math.min(1, raw));
+      var eased = easeOutQuart(p);
+      path.style.strokeDashoffset = len * (1 - eased);
+      var pt = path.getPointAtLength(len * eased);
+      dot.setAttribute('cx', pt.x);
+      dot.setAttribute('cy', pt.y);
+      fill.style.opacity = p > 0.85 ? '1' : '0';
+      figure.classList.toggle('lit', p > 0.55);
+    }
+
+    var ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(function () { update(); ticking = false; });
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  })();
+
+  // --- Cutoff countdown in header ---
+  (function () {
+    var el = document.getElementById('countdown');
+    if (!el) return;
+    // Next race start: Oct 9, 2026, 23:00 local
+    var start = new Date(2026, 9, 9, 23, 0, 0);
+    function tick() {
+      var diff = start - new Date();
+      if (diff <= 0) { el.textContent = 'THE PACK IS RUNNING'; return; }
+      var d = Math.floor(diff / 86400000);
+      var h = Math.floor(diff / 3600000) % 24;
+      var m = Math.floor(diff / 60000) % 60;
+      var s = Math.floor(diff / 1000) % 60;
+      el.textContent = 'START IN ' + d + 'd ' + String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
+</script>
+</body>
+</html>

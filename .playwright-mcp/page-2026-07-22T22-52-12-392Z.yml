@@ -1,0 +1,95 @@
+- generic [active] [ref=f20e1]:
+  - banner [ref=f20e2]:
+    - generic [ref=f20e3]:
+      - link "Tintype" [ref=f20e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=f20e5]:
+        - list [ref=f20e6]:
+          - listitem [ref=f20e7]:
+            - link "Philosophy" [ref=f20e8] [cursor=pointer]:
+              - /url: "#philosophy"
+          - listitem [ref=f20e9]:
+            - link "Collections" [ref=f20e10] [cursor=pointer]:
+              - /url: "#collections"
+          - listitem [ref=f20e11]:
+            - link "Availability" [ref=f20e12] [cursor=pointer]:
+              - /url: "#availability"
+  - main [ref=f20e13]:
+    - region "Introduction" [ref=f20e14]:
+      - generic [ref=f20e15]: Wedding photography · est. 2011
+      - heading "Photographs that outlive the day" [level=1] [ref=f20e16]
+      - paragraph [ref=f20e17]: Fifteen years, two cameras, and a stubborn belief that the best frame of your wedding is the one you never saw being taken.
+      - figure "Barn ceremony, Widbrook Grange, Wiltshire No. 214" [ref=f20e18]:
+        - img "A ceremony in a stone barn, guests standing, late light falling across the aisle" [ref=f20e19]
+        - generic [ref=f20e20]:
+          - generic [ref=f20e21]: Barn ceremony, Widbrook Grange, Wiltshire
+          - generic [ref=f20e22]: No. 214
+    - region [ref=f20e23]:
+      - generic [ref=f20e24]:
+        - heading "The unposed philosophy" [level=2] [ref=f20e25]
+        - paragraph [ref=f20e26]: I will not ask you to tilt your chin, laugh on cue, or walk toward me slowly while holding hands. You have waited years for this day; you should spend it with the people you invited, not performing for my lens.
+        - paragraph [ref=f20e27]: Instead I work like a quiet guest who happens to hold a camera — close enough for the tear your grandmother hides, far enough that you forget I am there. Couples tell me afterwards they can't remember being photographed at all. That is the review I want.
+        - paragraph [ref=f20e28]:
+          - text: Eleanor Whitfield
+          - generic [ref=f20e29]: Principal photographer — twenty weddings a year, never more
+      - figure [ref=f20e30]:
+        - img "A bride mid-laugh, veil caught by the wind, unaware of the camera" [ref=f20e31]
+    - region "Selected frames" [ref=f20e32]:
+      - figure "The details table No. 198" [ref=f20e33]:
+        - button [ref=f20e34]:
+          - img "Close detail of wedding rings resting on a linen tablecloth beside dried flowers" [ref=f20e35]
+        - generic [ref=f20e36]:
+          - generic [ref=f20e37]: The details table
+          - generic [ref=f20e38]: No. 198
+      - figure "Last dance, half past midnight No. 221" [ref=f20e39]:
+        - button [ref=f20e40]:
+          - img "A crowded dance floor at night, the couple at its centre, motion blur of raised glasses" [ref=f20e41]
+        - generic [ref=f20e42]:
+          - generic [ref=f20e43]: Last dance, half past midnight
+          - generic [ref=f20e44]: No. 221
+    - region [ref=f20e45]:
+      - heading "Three collections, priced plainly" [level=2] [ref=f20e46]
+      - paragraph [ref=f20e47]: No tiers designed to upsell you, no "investment" euphemisms. The price below is the price you pay, travel within England included.
+      - list [ref=f20e48]:
+        - listitem [ref=f20e49]:
+          - heading "The Morning" [level=3] [ref=f20e50]
+          - paragraph [ref=f20e51]: Four hours, ceremony to speeches. Suited to registry offices and small gatherings of under thirty guests. Around 350 finished photographs, delivered in three weeks.
+          - paragraph [ref=f20e52]:
+            - text: £1,950
+            - generic [ref=f20e53]: deposit £400
+          - paragraph [ref=f20e54]: Weekdays and winter Saturdays only — I keep summer weekends for full days.
+        - listitem [ref=f20e55]:
+          - heading "The Full Day" [level=3] [ref=f20e56]
+          - paragraph [ref=f20e57]: Ten hours, preparations to the last dance I'll stay upright for. Around 700 finished photographs, a linen proof box within a month, and an engagement hour in spring so we know each other before the day.
+          - paragraph [ref=f20e58]:
+            - text: £3,400
+            - generic [ref=f20e59]: deposit £600
+          - paragraph [ref=f20e60]: The collection nine of ten couples choose, which is why it sits in the middle.
+        - listitem [ref=f20e61]:
+          - heading "The Long Weekend" [level=3] [ref=f20e62]
+          - paragraph [ref=f20e63]: For weddings that span a welcome supper and a slow Sunday lunch. Two days of coverage, roughly 1,100 photographs, and a hand-bound album made in Somerset — the reason the studio is called Tintype.
+          - paragraph [ref=f20e64]:
+            - text: £6,800
+            - generic [ref=f20e65]: deposit £1,200
+          - paragraph [ref=f20e66]: Four weekends a year, booked on conversation rather than first-come.
+      - paragraph [ref=f20e67]: Every couple receives the full-resolution files and the right to print them anywhere, forever. Watermarks are for stock libraries, not for your marriage.
+    - region [ref=f20e68]:
+      - generic [ref=f20e69]:
+        - heading "Is your date still open?" [level=2] [ref=f20e70]
+        - paragraph [ref=f20e71]: I take twenty weddings a year and the diary for 2027 is already a third full. Tell me the date and the venue; I will answer personally within two days, honestly, even if the answer is no.
+        - generic [ref=f20e72]:
+          - textbox "Wedding date" [ref=f20e73]:
+            - /placeholder: Your date — e.g. 14 June 2027
+          - textbox "Venue" [ref=f20e74]:
+            - /placeholder: Venue or town
+          - textbox "Email address" [ref=f20e75]
+          - button "Check the diary" [ref=f20e76] [cursor=pointer]
+        - status
+  - contentinfo [ref=f20e77]:
+    - generic [ref=f20e78]:
+      - paragraph [ref=f20e79]: T
+      - paragraph [ref=f20e80]:
+        - text: Tintype · Eleanor Whitfield · Bradford-on-Avon, Wiltshire
+        - link "hello@tintype-weddings.example" [ref=f20e81] [cursor=pointer]:
+          - /url: mailto:hello@tintype-weddings.example
+        - text: · 01225 000 314

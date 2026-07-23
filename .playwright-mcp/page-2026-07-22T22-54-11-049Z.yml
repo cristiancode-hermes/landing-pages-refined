@@ -1,0 +1,171 @@
+- generic [active] [ref=f26e1]:
+  - banner [ref=f26e2]:
+    - generic [ref=f26e3]:
+      - link "Sonder home" [ref=f26e4] [cursor=pointer]:
+        - /url: "#top"
+        - text: Sonder
+      - navigation "Main" [ref=f26e9]:
+        - link "A real journal" [ref=f26e10] [cursor=pointer]:
+          - /url: "#journal"
+        - link "The route" [ref=f26e11] [cursor=pointer]:
+          - /url: "#route"
+        - link "Offline-first" [ref=f26e12] [cursor=pointer]:
+          - /url: "#offline"
+        - link "Pricing" [ref=f26e13] [cursor=pointer]:
+          - /url: "#pricing"
+        - link "Start your journal" [ref=f26e14] [cursor=pointer]:
+          - /url: "#pricing"
+  - main [ref=f26e15]:
+    - region [ref=f26e16]:
+      - generic [ref=f26e17]:
+        - generic [ref=f26e18]:
+          - heading [level=1] [ref=f26e19]:
+            - text: Everyone you pass is the
+            - emphasis [ref=f26e20]: main character
+            - text: .
+          - paragraph [ref=f26e21]: Sonder is a travel journal for the moments between the landmarks — the night trains, the wrong turns, the stranger who drew you a map on a napkin. Write it down while it's still warm. Your phone signal is optional.
+          - generic [ref=f26e22]:
+            - link "Start your journal — free" [ref=f26e23] [cursor=pointer]:
+              - /url: "#pricing"
+            - link "Read a real page" [ref=f26e24] [cursor=pointer]:
+              - /url: "#journal"
+          - paragraph [ref=f26e25]: Free for your first trip. No account needed until you sync.
+        - figure "Three trips, forty-one entries, one carry-on." [ref=f26e26]:
+          - img "A battered journal open on a café table somewhere far from home, pen resting on a half-written page" [ref=f26e27]
+          - img [ref=f26e28]:
+            - generic [ref=f26e31]: LISBOA · 14 MAR 2024 · LISBOA ·
+            - generic [ref=f26e32]: ENTRY
+          - img [ref=f26e33]:
+            - generic [ref=f26e36]: KYOTO · 02 NOV 2025 · KYOTO ·
+            - generic [ref=f26e37]: EXIT
+    - region [ref=f26e39]:
+      - generic [ref=f26e40]:
+        - generic [ref=f26e41]:
+          - generic [ref=f26e42]: From Marta's journal
+          - heading "What a page actually looks like" [level=2] [ref=f26e43]
+          - paragraph [ref=f26e44]: Not a highlight reel. A record. Entries stamp into your journal the moment you stop typing — no publishing, no likes, no audience unless you invite one.
+        - generic [ref=f26e45]:
+          - article [ref=f26e46]:
+            - generic [ref=f26e47]: 14 MAR 2024
+            - heading "Lisbon, the wrong tram" [level=3] [ref=f26e48]
+            - paragraph [ref=f26e49]: "Took the 28 in the wrong direction on purpose after the second stop. An old woman named Inês told me which bakery her sister swears by and then argued with the driver about it. Pastel de nata count: four. Regrets: none."
+            - generic [ref=f26e50]:
+              - generic [ref=f26e51]: Rua Augusta, 18:42
+              - generic [ref=f26e52]: 612 words
+          - article [ref=f26e53]:
+            - generic [ref=f26e54]: 22 JUN 2024
+            - heading "Night train to Kandy" [level=3] [ref=f26e55]
+            - paragraph [ref=f26e56]: No signal since Colombo and honestly? Good. The man across the aisle shared his roasted chickpeas and taught me the Sinhala word for rain. Wrote three pages by window light while the highlands went past black and enormous.
+            - generic [ref=f26e57]:
+              - generic [ref=f26e58]: Somewhere past Rambukkana
+              - generic [ref=f26e59]: Written offline
+          - article [ref=f26e60]:
+            - generic [ref=f26e61]: 02 NOV 2025
+            - heading "Kyoto, last morning" [level=3] [ref=f26e62]
+            - paragraph [ref=f26e63]: Got lost in Nishiki Market before it opened and watched the knife man sharpen for twenty minutes. Bought nothing. He bowed anyway. Some entries you write so the feeling has somewhere to live.
+            - generic [ref=f26e64]:
+              - generic [ref=f26e65]: Nishiki-dōri, 07:15
+              - generic [ref=f26e66]: 340 words
+    - region [ref=f26e67]:
+      - generic [ref=f26e68]:
+        - generic [ref=f26e69]:
+          - heading "Your trip draws itself" [level=2] [ref=f26e70]
+          - paragraph [ref=f26e71]: Pin a place from any entry and Sonder threads your route between them. Not for bragging rights — for the day you forget which order the ferries came in.
+          - list [ref=f26e72]:
+            - listitem [ref=f26e73]:
+              - generic [ref=f26e75]:
+                - strong [ref=f26e76]: Lisbon
+                - text: — where the journal started, 14 March
+            - listitem [ref=f26e77]:
+              - generic [ref=f26e79]:
+                - strong [ref=f26e80]: Marrakech
+                - text: — four days, one very persistent rug seller
+            - listitem [ref=f26e81]:
+              - generic [ref=f26e83]:
+                - strong [ref=f26e84]: Colombo → Kandy
+                - text: — the night train, offline for 19 hours
+            - listitem [ref=f26e85]:
+              - generic [ref=f26e87]:
+                - strong [ref=f26e88]: Kyoto
+                - text: — the last stamp, for now
+        - img "A hand-threaded route map connecting Lisbon, Marrakech, Kandy and Kyoto" [ref=f26e89]:
+          - generic [ref=f26e105]: Lisbon
+          - generic [ref=f26e106]: Marrakech
+          - generic [ref=f26e107]: Kandy
+          - generic [ref=f26e108]: Kyoto
+    - region [ref=f26e109]:
+      - generic [ref=f26e110]:
+        - generic [ref=f26e111]:
+          - heading "The best moments have no signal" [level=2] [ref=f26e112]
+          - paragraph [ref=f26e113]: "Sonder is built offline-first, because the entries that matter most happen on night buses, mountain passes and ferry decks. Here's the honest version of what that means:"
+          - list [ref=f26e114]:
+            - listitem [ref=f26e115]:
+              - generic [ref=f26e116]:
+                - strong [ref=f26e117]: Your journal lives on your device.
+                - text: Every word is written to local storage first. Airplane mode changes nothing.
+            - listitem [ref=f26e118]:
+              - generic [ref=f26e119]:
+                - strong [ref=f26e120]: Sync happens when you say so.
+                - text: When you're back on Wi-Fi, entries sync to your account. Conflicts keep both versions — we never silently overwrite.
+            - listitem [ref=f26e121]:
+              - generic [ref=f26e122]:
+                - strong [ref=f26e123]: Export is forever, in plain Markdown.
+                - text: Leave tomorrow and take every entry, photo caption and pinned place with you. No ransom, no lock-in.
+        - img "A train window at dusk, hills sliding past while someone writes by the last of the light" [ref=f26e124]
+    - region [ref=f26e125]:
+      - generic [ref=f26e126]:
+        - generic [ref=f26e127]:
+          - generic [ref=f26e128]: Pricing, plainly
+          - heading "Cheap enough to keep forever" [level=2] [ref=f26e129]
+          - paragraph [ref=f26e130]: One journal, three ways to pay. The free tier isn't a trial — it's a complete journal for one trip, and it never expires.
+        - generic [ref=f26e131]:
+          - generic [ref=f26e132]:
+            - heading "Day Tripper" [level=3] [ref=f26e133]
+            - paragraph [ref=f26e134]: $0
+            - paragraph [ref=f26e135]: For the first journey. Yours as long as you want it.
+            - list [ref=f26e136]:
+              - listitem [ref=f26e137]: One trip, unlimited entries
+              - listitem [ref=f26e138]: Route map with up to 12 pins
+              - listitem [ref=f26e139]: Offline writing, of course
+              - listitem [ref=f26e140]: Markdown export anytime
+            - link "Start free" [ref=f26e141] [cursor=pointer]:
+              - /url: "#top"
+          - generic [ref=f26e142]:
+            - heading "Wayfarer" [level=3] [ref=f26e143]
+            - paragraph [ref=f26e144]: $4/month, or $32/year
+            - paragraph [ref=f26e145]: For the person who is always planning the next one.
+            - list [ref=f26e146]:
+              - listitem [ref=f26e147]: Unlimited trips and entries
+              - listitem [ref=f26e148]: Unlimited pins, photos at full resolution
+              - listitem [ref=f26e149]: Printed annual book at cost (about $18)
+              - listitem [ref=f26e150]: Shared journals with up to 4 travel partners
+            - link "Go Wayfarer" [ref=f26e151] [cursor=pointer]:
+              - /url: "#top"
+          - generic [ref=f26e152]:
+            - heading "One Grand Tour" [level=3] [ref=f26e153]
+            - paragraph [ref=f26e154]: $89 once
+            - paragraph [ref=f26e155]: For the commitment-averse. Pay once, keep it for life.
+            - list [ref=f26e156]:
+              - listitem [ref=f26e157]: Everything in Wayfarer, forever
+              - listitem [ref=f26e158]: All future features included
+              - listitem [ref=f26e159]: Your name in the credits of the printed atlas
+            - link "Buy it once" [ref=f26e160] [cursor=pointer]:
+              - /url: "#top"
+    - region [ref=f26e161]:
+      - generic [ref=f26e162]:
+        - heading "The napkin map deserves to survive" [level=2] [ref=f26e163]
+        - paragraph [ref=f26e164]: Twenty years from now you won't remember the hotel. You'll remember Inês, the chickpeas, and the knife man who bowed. Write it down.
+        - link "Start your journal — free" [ref=f26e165] [cursor=pointer]:
+          - /url: "#pricing"
+  - contentinfo [ref=f26e166]:
+    - generic [ref=f26e167]:
+      - generic [ref=f26e168]: Sonder — a travel journal, not a social network. Est. 2023, Porto & Melbourne.
+      - navigation "Footer" [ref=f26e169]:
+        - link "A real journal" [ref=f26e170] [cursor=pointer]:
+          - /url: "#journal"
+        - link "Offline-first" [ref=f26e171] [cursor=pointer]:
+          - /url: "#offline"
+        - link "Pricing" [ref=f26e172] [cursor=pointer]:
+          - /url: "#pricing"
+        - link "Write to us" [ref=f26e173] [cursor=pointer]:
+          - /url: mailto:postcards@sonder.example

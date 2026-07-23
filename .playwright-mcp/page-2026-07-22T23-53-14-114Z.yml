@@ -1,0 +1,142 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Hearthstone." [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=e5]:
+        - link "Order for your café" [ref=e6] [cursor=pointer]:
+          - /url: "#wholesale"
+  - main [ref=e7]:
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: A sourdough bakery on Marlow Street
+        - heading "Bread takes thirty-six hours. We won’t rush it." [level=1] [ref=e12]
+        - paragraph [ref=e13]: Flour, water, salt, and a starter named Dot that is older than the bakery itself. Mixed Tuesday evening, baked before you wake, gone by early afternoon.
+        - generic [ref=e14]:
+          - generic [ref=e15]: Oven lit 5 a.m.
+          - generic [ref=e16]: Doors 8:00–14:00
+          - generic [ref=e17]: Tue · Thu · Sat
+      - figure "The country loaf, twenty minutes out of the oven." [ref=e22]:
+        - img "A crackled sourdough crust, close enough to count the blisters" [ref=e23]
+    - generic [ref=e26]:
+      - generic [ref=e27]:
+        - heading "What’s on the shelf" [level=2] [ref=e28]
+        - paragraph [ref=e29]: Five breads, no more. When the shelf is bare we close — usually around half past one, earlier on Saturdays.
+      - list [ref=e30]:
+        - listitem [ref=e31]:
+          - generic [ref=e32]: Country sourdough
+          - generic [ref=e33]: $9
+          - paragraph [ref=e34]: The 36-hour loaf. Stone-milled wheat, a crackled umber crust, and a crumb that stays open until Thursday.
+        - listitem [ref=e35]:
+          - generic [ref=e36]: Seeded rye
+          - generic [ref=e37]: $11
+          - paragraph [ref=e38]: Sixty percent rye with sunflower, flax, and a molasses-dark edge. Dense on purpose; slice it thin.
+        - listitem [ref=e39]:
+          - generic [ref=e40]: Oat porridge loaf
+          - generic [ref=e41]: $10
+          - paragraph [ref=e42]: Rolled oats folded through the dough overnight. The soft one — built for toast and salted butter.
+        - listitem [ref=e43]:
+          - generic [ref=e44]: Walnut & raisin
+          - generic [ref=e45]: $12
+          - paragraph [ref=e46]: Toasted walnuts, raisins plumped in black tea. Cheese’s best friend, and ours.
+        - listitem [ref=e47]:
+          - generic [ref=e48]:
+            - text: Fig & fennel
+            - generic [ref=e49]: Saturday only
+          - generic [ref=e50]: $13
+          - paragraph [ref=e51]: One batch, sixty loaves, out by nine. We have never once made it to noon with any left.
+    - generic [ref=e53]:
+      - heading "Three bake days. That’s the whole promise." [level=2] [ref=e54]
+      - paragraph [ref=e55]: We bake less than we could sell, on purpose. A small oven, two bakers, and bread that never sits overnight.
+      - generic [ref=e56]:
+        - article [ref=e57]:
+          - heading "Tuesday" [level=3] [ref=e58]
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - term [ref=e61]: Out of the oven
+              - definition [ref=e62]: 7:40
+            - generic [ref=e63]:
+              - term [ref=e64]: On the shelf
+              - definition [ref=e65]: 8:15
+            - generic [ref=e66]:
+              - term [ref=e67]: Bakes
+              - definition [ref=e68]: Country · rye
+        - article [ref=e69]:
+          - heading "Thursday" [level=3] [ref=e70]
+          - generic [ref=e71]:
+            - generic [ref=e72]:
+              - term [ref=e73]: Out of the oven
+              - definition [ref=e74]: 7:40
+            - generic [ref=e75]:
+              - term [ref=e76]: On the shelf
+              - definition [ref=e77]: 8:15
+            - generic [ref=e78]:
+              - term [ref=e79]: Bakes
+              - definition [ref=e80]: Country · oat
+        - article [ref=e81]:
+          - heading "Saturday" [level=3] [ref=e82]
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - term [ref=e85]: Out of the oven
+              - definition [ref=e86]: 7:10
+            - generic [ref=e87]:
+              - term [ref=e88]: On the shelf
+              - definition [ref=e89]: 8:00
+            - generic [ref=e90]:
+              - term [ref=e91]: Bakes
+              - definition [ref=e92]: All five · fig & fennel
+      - paragraph [ref=e93]: Sold out is sold out — we post the day’s count on the door chalkboard by 7 a.m., and we don’t take holds after 10.
+    - generic [ref=e95]:
+      - figure "Marta shapes every loaf by hand. The bench knows." [ref=e96]:
+        - img "A baker's floured hands turning dough on the bench" [ref=e97]
+      - generic [ref=e99]:
+        - heading "Two days in every loaf" [level=2] [ref=e100]
+        - paragraph [ref=e101]: Marta started Hearthstone in 2016 with a secondhand deck oven and a starter her grandmother kept alive through three apartments and one divorce.
+        - generic [ref=e102]:
+          - paragraph [ref=e103]: Nothing here is complicated, and nothing is quick. The schedule below hasn’t changed in nine years, because the bread hasn’t asked it to.
+          - list [ref=e104]:
+            - listitem [ref=e105]:
+              - time [ref=e106]: Tue 18:00
+              - generic [ref=e107]: Mix and first fold — the quiet hour.
+            - listitem [ref=e108]:
+              - time [ref=e109]: Wed 08:00
+              - generic [ref=e110]: Shape, then into the cold room for a slow proof.
+            - listitem [ref=e111]:
+              - time [ref=e112]: Thu 05:00
+              - generic [ref=e113]: Oven lit. Scored, steamed, baked dark.
+            - listitem [ref=e114]:
+              - time [ref=e115]: Thu 08:15
+              - generic [ref=e116]: On the shelf, still singing as it cools.
+    - generic [ref=e118]:
+      - generic [ref=e119]:
+        - heading "Bread for your café, six mornings a week" [level=2] [ref=e120]
+        - paragraph [ref=e121]: We supply eleven cafés and two restaurants within a twenty-minute drive. Same bread, same bake — just earlier, and in crates. New accounts start with a tasting at the bakery, on us.
+        - link "Write to Marta about an account" [ref=e122] [cursor=pointer]:
+          - /url: mailto:wholesale@hearthstone.example
+      - list [ref=e123]:
+        - listitem [ref=e124]:
+          - generic [ref=e125]: Delivery window
+          - generic [ref=e126]: 6:30–7:30 a.m.
+        - listitem [ref=e127]:
+          - generic [ref=e128]: Minimum order
+          - generic [ref=e129]: 12 loaves
+        - listitem [ref=e130]:
+          - generic [ref=e131]: Wholesale rate
+          - generic [ref=e132]: 30% off shelf
+        - listitem [ref=e133]:
+          - generic [ref=e134]: Current waitlist
+          - generic [ref=e135]: 2 accounts
+  - contentinfo [ref=e136]:
+    - generic [ref=e137]:
+      - generic [ref=e138]:
+        - strong [ref=e139]: Hearthstone
+        - text: 214 Marlow Street · open Tue/Thu/Sat, 8:00–14:00
+      - generic [ref=e140]:
+        - strong [ref=e141]: Talk to us
+        - link "hello@hearthstone.example" [ref=e142] [cursor=pointer]:
+          - /url: mailto:hello@hearthstone.example
+        - link "(555) 013-7214" [ref=e143] [cursor=pointer]:
+          - /url: tel:+15550137214
+      - generic [ref=e144]:
+        - strong [ref=e145]: The fine print
+        - text: Cash and card. No holds after 10 a.m.Dot the starter, est. 1987.

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helmsman — private yacht charters, crewed weeks in the Balearics from €21,400</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;1,6..96,400&family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: oklch(1 0 0);
+    --deck: oklch(0.975 0.006 255);
+    --navy: oklch(0.30 0.075 258);
+    --navy-deep: oklch(0.22 0.06 258);
+    --ink: oklch(0.18 0.02 258);
+    --muted: oklch(0.44 0.03 258);
+    --gold: oklch(0.70 0.095 85);
+    --gold-deep: oklch(0.58 0.09 85);
+    --z-header: 10;
+    --z-overlay: 20;
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--white);
+    color: var(--ink);
+    font-family: "Jost", system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--navy); color: var(--white); }
+
+  :focus-visible {
+    outline: 2.5px solid var(--gold-deep);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    width: min(72rem, calc(100% - 2.5rem));
+    margin-inline: auto;
+  }
+
+  h1, h2, h3 {
+    font-family: "Bodoni Moda", Didot, serif;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    color: var(--navy-deep);
+  }
+
+  p { text-wrap: pretty; }
+
+  .hairline {
+    width: 3.5rem;
+    height: 1px;
+    background: var(--gold);
+    border: none;
+    margin-block: 1.1rem 1.6rem;
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: oklch(1 0 0 / 0.97);
+    border-bottom: 1px solid oklch(0.92 0.01 258);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1rem;
+  }
+  .wordmark {
+    font-family: "Bodoni Moda", serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--navy-deep);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .site-nav { display: flex; gap: 1.8rem; font-size: 0.92rem; flex-wrap: wrap; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--muted);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s var(--ease-expo);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta)::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-expo);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--navy); }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover::after { transform: scaleX(1); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: min(86svh, 52rem);
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+  }
+  .hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      oklch(0.22 0.06 258 / 0.82) 0%,
+      oklch(0.22 0.06 258 / 0.35) 45%,
+      oklch(0.22 0.06 258 / 0.12) 100%
+    );
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(3rem, 9vh, 6rem);
+  }
+  .hero h1 {
+    color: var(--white);
+    font-size: clamp(2.6rem, 7vw, 5rem);
+    max-width: 16ch;
+    margin-bottom: 1.25rem;
+  }
+  .hero .lede {
+    color: oklch(0.94 0.015 258);
+    max-width: 52ch;
+    font-size: 1.12rem;
+    font-weight: 300;
+  }
+  .hero .hairline { background: var(--gold); }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 9vh, 6.5rem); }
+  section h2 { font-size: clamp(2rem, 5vw, 3.2rem); }
+  .sec-intro { max-width: 58ch; color: var(--muted); margin-bottom: 2.5rem; }
+
+  /* ---------- fleet: horizontal scroll with wakes ---------- */
+  .fleet-track {
+    display: flex;
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding: 0.5rem 0.25rem 1.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) var(--deck);
+  }
+  .yacht {
+    flex: 0 0 min(78vw, 24rem);
+    scroll-snap-align: start;
+  }
+  .yacht figure {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .yacht img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.8s var(--ease-expo);
+  }
+  .yacht:hover img { transform: scale(1.035); }
+  /* the wake draws itself behind the yacht name as you scroll the fleet */
+  .wake { display: block; width: 100%; height: 1.6rem; margin-top: 0.6rem; }
+  .wake path {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-dasharray: 320;
+    stroke-dashoffset: 320;
+    transition: stroke-dashoffset 1.4s var(--ease-expo);
+  }
+  .yacht.is-inview .wake path { stroke-dashoffset: 0; }
+  .yacht h3 {
+    font-size: 1.6rem;
+    margin-top: 0.4rem;
+  }
+  .yacht .spec {
+    font-size: 0.88rem;
+    color: var(--gold-deep);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+  }
+  .yacht p { font-size: 0.95rem; color: var(--muted); }
+  .yacht .rate {
+    display: block;
+    margin-top: 0.75rem;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  .fleet-hint {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 0.25rem;
+  }
+
+  /* ---------- itinerary map ---------- */
+  .itinerary { background: var(--navy-deep); }
+  .itinerary h2, .itinerary h3 { color: oklch(0.96 0.015 258); }
+  .itinerary .hairline { background: var(--gold); }
+  .itinerary .sec-intro { color: oklch(0.85 0.025 258); }
+  .map-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 820px) { .map-grid { grid-template-columns: 1fr; } }
+  .chart {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .chart .sea { fill: oklch(0.26 0.065 258); }
+  .chart .land { fill: oklch(0.34 0.055 255); }
+  .chart .route {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 2;
+    stroke-dasharray: 7 6;
+    animation: route-draw 26s linear infinite;
+  }
+  @keyframes route-draw {
+    from { stroke-dashoffset: 416; }
+    to { stroke-dashoffset: 0; }
+  }
+  .chart .port { fill: oklch(0.96 0.02 258); }
+  .chart .port-ring { fill: none; stroke: var(--gold); stroke-width: 1.5; }
+  .chart text {
+    font-family: "Jost", sans-serif;
+    font-size: 13px;
+    fill: oklch(0.9 0.02 258);
+  }
+  .chart .dot {
+    fill: var(--gold);
+    offset-path: path("M 96 236 C 150 190, 210 180, 258 206 S 330 268, 300 132 S 396 96, 448 84");
+    offset-rotate: 0deg;
+    animation: sail 26s linear infinite;
+  }
+  @keyframes sail {
+    from { offset-distance: 0%; }
+    to { offset-distance: 100%; }
+  }
+  .days { list-style: none; display: grid; gap: 1.35rem; }
+  .days li {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .days .day-no {
+    font-family: "Bodoni Moda", serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--gold);
+  }
+  .days strong { color: oklch(0.96 0.015 258); font-weight: 500; }
+  .days p { color: oklch(0.82 0.025 258); font-size: 0.95rem; margin-top: 0.15rem; }
+
+  /* ---------- crew ---------- */
+  .crew-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .crew-member { max-width: 34ch; }
+  .crew-member .monogram {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    display: grid;
+    place-items: center;
+    font-family: "Bodoni Moda", serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+  }
+  .crew-member h3 { font-size: 1.35rem; margin-bottom: 0.15rem; }
+  .crew-member .role {
+    font-size: 0.85rem;
+    color: var(--gold-deep);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .crew-member p { font-size: 0.95rem; color: var(--muted); }
+
+  /* ---------- provisioning ---------- */
+  .provisioning { background: var(--deck); }
+  .menu-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: clamp(1.75rem, 4vw, 3rem);
+  }
+  .menu-cols h3 {
+    font-size: 1.3rem;
+    font-style: italic;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .menu-cols ul { list-style: none; display: grid; gap: 0.55rem; }
+  .menu-cols li { font-size: 0.95rem; color: var(--ink); display: flex; justify-content: space-between; gap: 1rem; }
+  .menu-cols li span:last-child { color: var(--muted); white-space: nowrap; }
+
+  /* ---------- inquiry ---------- */
+  .inquiry h2 { margin-bottom: 0.5rem; }
+  .inquiry-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem 1.5rem;
+    max-width: 56rem;
+    margin-top: 2rem;
+  }
+  .field { display: grid; gap: 0.4rem; }
+  .field label {
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    font-weight: 500;
+  }
+  .field input, .field select, .field textarea {
+    font: inherit;
+    color: var(--ink);
+    background: var(--white);
+    border: 1px solid oklch(0.82 0.02 258);
+    border-radius: 8px;
+    padding: 0.65rem 0.8rem;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--navy);
+    outline: none;
+    box-shadow: 0 0 0 2px oklch(0.70 0.095 85 / 0.4);
+  }
+  .field.full { grid-column: 1 / -1; }
+  .inquiry-form button {
+    grid-column: 1 / -1;
+    justify-self: start;
+    font: inherit;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    background: var(--navy);
+    border: none;
+    border-radius: 999px;
+    padding: 0.9rem 2.4rem;
+    cursor: pointer;
+    transition: background 0.35s var(--ease-expo), transform 0.35s var(--ease-expo);
+  }
+  .inquiry-form button:hover { background: var(--navy-deep); transform: translateY(-2px); }
+  .form-note { grid-column: 1 / -1; font-size: 0.88rem; color: var(--muted); }
+  .form-confirm {
+    grid-column: 1 / -1;
+    font-weight: 500;
+    color: var(--navy);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: none;
+  }
+  .form-confirm.is-visible { display: block; }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--navy-deep);
+    color: oklch(0.82 0.025 258);
+    padding-block: 2.75rem;
+    font-size: 0.9rem;
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer .gold { color: var(--gold); }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .chart .route, .chart .dot { animation: none; }
+    .chart .route { stroke-dasharray: none; }
+    .wake path { transition: none; stroke-dashoffset: 0; }
+    .yacht img, .site-nav a:not(.btn):not(.nav-cta):not(.head-cta), .site-nav a:not(.btn):not(.nav-cta):not(.head-cta)::after, .inquiry-form button { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">Helmsman</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#fleet">The Fleet</a>
+      <a href="#itinerary">Itineraries</a>
+      <a href="#crew">Crew</a>
+      <a href="#provisioning">Provisioning</a>
+      <a href="#inquire">Inquire</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Welcome aboard">
+    <img src="https://picsum.photos/seed/yacht-1/1600/900" width="1600" height="900"
+         alt="Teak foredeck of a sailing yacht at first light, bow aimed at open water, sails still furled" fetchpriority="high">
+    <div class="wrap hero-inner">
+      <h1>The sea, privately.</h1>
+      <hr class="hairline">
+      <p class="lede">
+        Four yachts, full crews, and the whole of the Balearics at walking pace.
+        Helmsman plans the week around you — the anchorages, the table, the hour
+        the anchor comes up. You are simply aboard.
+      </p>
+    </div>
+  </section>
+
+  <section id="fleet" aria-labelledby="fleet-h">
+    <div class="wrap">
+      <h2 id="fleet-h">The fleet</h2>
+      <hr class="hairline">
+      <p class="sec-intro">
+        Every vessel is crewed, inspected, and provisioned by our own office in Palma.
+        Rates are per week, all-in except fuel and harbor fees — no surprise line items at disembarkation.
+      </p>
+    </div>
+    <div class="wrap">
+      <div class="fleet-track" id="fleetTrack" tabindex="0" role="region" aria-label="Yacht fleet, scroll horizontally">
+        <article class="yacht">
+          <figure>
+            <img src="https://picsum.photos/seed/yacht-2/800/600" width="800" height="600"
+                 alt="White hull of the S/Y Alba heeling gently under full sail, wake trailing behind her" loading="lazy">
+          </figure>
+          <svg class="wake" viewBox="0 0 320 24" aria-hidden="true" preserveAspectRatio="none">
+            <path d="M4 12 C 40 4, 70 20, 106 12 S 170 4, 206 12 S 280 20, 316 12"/>
+          </svg>
+          <h3>S/Y Alba</h3>
+          <p class="spec">52 ft sloop · 6 guests · crew of 2</p>
+          <p>Our sailors' favorite. She points high, heels honestly, and her cockpit seats the whole party for dinner at anchor.</p>
+          <span class="rate">From €21,400 / week</span>
+        </article>
+        <article class="yacht">
+          <figure>
+            <img src="https://picsum.photos/seed/yacht-3/800/600" width="800" height="600"
+                 alt="Flybridge of the M/Y Vencedora at anchor in a turquoise cove, dining table laid for eight" loading="lazy">
+          </figure>
+          <svg class="wake" viewBox="0 0 320 24" aria-hidden="true" preserveAspectRatio="none">
+            <path d="M4 12 C 40 4, 70 20, 106 12 S 170 4, 206 12 S 280 20, 316 12"/>
+          </svg>
+          <h3>M/Y Vencedora</h3>
+          <p class="spec">68 ft motor yacht · 8 guests · crew of 3</p>
+          <p>A flybridge for slow afternoons and a hull that makes Cabrera in ninety minutes. The chef's galley is bigger than most apartments.</p>
+          <span class="rate">From €38,900 / week</span>
+        </article>
+        <article class="yacht">
+          <figure>
+            <img src="https://picsum.photos/seed/yacht-4/800/600" width="800" height="600"
+                 alt="Classic wooden ketch Celestina moored stern-to in a small stone harbor at dusk" loading="lazy">
+          </figure>
+          <svg class="wake" viewBox="0 0 320 24" aria-hidden="true" preserveAspectRatio="none">
+            <path d="M4 12 C 40 4, 70 20, 106 12 S 170 4, 206 12 S 280 20, 316 12"/>
+          </svg>
+          <h3>Celestina</h3>
+          <p class="spec">74 ft classic ketch, 1931 · 8 guests · crew of 4</p>
+          <p>Varnished teak, bronze winches, and a main salon that smells faintly of linseed and coffee. She is slower. That is the point.</p>
+          <span class="rate">From €44,600 / week</span>
+        </article>
+        <article class="yacht">
+          <figure>
+            <img src="https://picsum.photos/seed/yacht-1/800/600" width="800" height="600"
+                 alt="Swim platform of the M/Y Faro steps from clear water, towels folded, ladder down" loading="lazy">
+          </figure>
+          <svg class="wake" viewBox="0 0 320 24" aria-hidden="true" preserveAspectRatio="none">
+            <path d="M4 12 C 40 4, 70 20, 106 12 S 170 4, 206 12 S 280 20, 316 12"/>
+          </svg>
+          <h3>M/Y Faro</h3>
+          <p class="spec">81 ft explorer · 10 guests · crew of 4</p>
+          <p>The one for families and long weeks. Stabilizers, a proper swim platform, two tenders, and a cabin layout that gives everyone a door to close.</p>
+          <span class="rate">From €57,200 / week</span>
+        </article>
+      </div>
+      <p class="fleet-hint">Scroll the fleet sideways — each yacht leaves her wake.</p>
+    </div>
+  </section>
+
+  <section id="itinerary" class="itinerary" aria-labelledby="itin-h">
+    <div class="wrap">
+      <h2 id="itin-h">A sample week, sailed slowly</h2>
+      <hr class="hairline">
+      <p class="sec-intro">
+        Seven days out of Palma, drawn the way we actually sail it — with the weather,
+        not against it. The route below is the chart we hand you on day one.
+      </p>
+      <div class="map-grid">
+        <svg class="chart" viewBox="0 0 560 320" role="img" aria-label="Chart of a seven-day sailing route from Palma to Cabrera, Sóller, Formentor, and Cala Ratjada, with a gold marker sailing the course">
+          <rect class="sea" x="0" y="0" width="560" height="320" rx="10"/>
+          <path class="land" d="M20 260 C 80 240, 130 250, 170 226 C 210 202, 250 220, 300 210 C 340 202, 380 214, 430 196 C 470 182, 520 190, 552 176 L 560 320 L 0 320 Z"/>
+          <path class="land" d="M250 60 C 280 40, 330 44, 350 70 C 330 86, 280 84, 250 60 Z"/>
+          <path class="route" d="M 96 236 C 150 190, 210 180, 258 206 S 330 268, 300 132 S 396 96, 448 84"/>
+          <circle class="dot" r="5"/>
+          <circle class="port" cx="96" cy="236" r="4"/><circle class="port-ring" cx="96" cy="236" r="8"/>
+          <circle class="port" cx="258" cy="206" r="4"/><circle class="port-ring" cx="258" cy="206" r="8"/>
+          <circle class="port" cx="300" cy="132" r="4"/><circle class="port-ring" cx="300" cy="132" r="8"/>
+          <circle class="port" cx="448" cy="84" r="4"/><circle class="port-ring" cx="448" cy="84" r="8"/>
+          <text x="66" y="262">Palma</text>
+          <text x="238" y="232">Cabrera</text>
+          <text x="262" y="118">Sóller</text>
+          <text x="420" y="70">Formentor</text>
+        </svg>
+        <ol class="days">
+          <li><span class="day-no">I.</span><div><strong>Palma — embark at 16:00</strong><p>Welcome aboard, safety walk, dinner under the cathedral lights from the bay.</p></div></li>
+          <li><span class="day-no">II.</span><div><strong>Palma → Cabrera, 22 nm</strong><p>The archipelago is a national park; we hold a mooring permit. Swim where the fish are unbothered.</p></div></li>
+          <li><span class="day-no">III.</span><div><strong>Cabrera, at anchor</strong><p>A whole day for the blue grotto, the castle walk, and lunch that lasts until four.</p></div></li>
+          <li><span class="day-no">IV.</span><div><strong>Cabrera → Sóller, 48 nm</strong><p>The long leg. Dolphins on the bow wave more often than not. Sóller's port for the night.</p></div></li>
+          <li><span class="day-no">V.</span><div><strong>Sóller → Formentor, 26 nm</strong><p>Under the Tramuntana cliffs, anchor off the pine beach by early afternoon.</p></div></li>
+          <li><span class="day-no">VI.</span><div><strong>Formentor → Cala Ratjada, 21 nm</strong><p>A lazy reach down the north coast, dinner ashore at the fishermen's cooperative.</p></div></li>
+          <li><span class="day-no">VII.</span><div><strong>Cala Ratjada → Palma, 52 nm</strong><p>Up with the sun, home by evening — or don't. The second week books at a returning-guest rate.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="crew" aria-labelledby="crew-h">
+    <div class="wrap">
+      <h2 id="crew-h">The people aboard</h2>
+      <hr class="hairline">
+      <p class="sec-intro">
+        You will know your crew by name before you fly. They stay with their boat
+        season after season, which is why the coffee is right by day two.
+      </p>
+      <div class="crew-grid">
+        <div class="crew-member">
+          <div class="monogram" aria-hidden="true">MR</div>
+          <h3>Marta Roig</h3>
+          <p class="role">Captain · Alba &amp; Celestina</p>
+          <p>Raced offshore for a decade before deciding slow was better. Reads the Tramuntana weather like a daily paper and never misses a mooring.</p>
+        </div>
+        <div class="crew-member">
+          <div class="monogram" aria-hidden="true">TA</div>
+          <h3>Tomas Åkerman</h3>
+          <p class="role">Captain · Vencedora &amp; Faro</p>
+          <p>Twelve seasons in the Balearics, ex-coastguard. His anchoring is so quiet guests sleep through it. Ask him about the wreck east of Dragonera.</p>
+        </div>
+        <div class="crew-member">
+          <div class="monogram" aria-hidden="true">LB</div>
+          <h3>Lucía Benítez</h3>
+          <p class="role">Chef · fleet-wide</p>
+          <p>Trained in San Sebastián, provisioned in Palma's Mercat de l'Olivar every morning she's aboard. Her suquet de peix has ended arguments about going ashore.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="provisioning" class="provisioning" aria-labelledby="prov-h">
+    <div class="wrap">
+      <h2 id="prov-h">The provisioning board</h2>
+      <hr class="hairline">
+      <p class="sec-intro">
+        A taste of what comes aboard with you. The full list runs to four pages and is
+        adjusted to your table — allergies, aversions, and one guest who only eats white food included.
+      </p>
+      <div class="menu-cols">
+        <div>
+          <h3>From the morning market</h3>
+          <ul>
+            <li><span>Sobrassada &amp; Mahón cheese board</span><span>day one</span></li>
+            <li><span>Ensaïmadas, still warm</span><span>daily</span></li>
+            <li><span>Red prawns of Sóller, plancha</span><span>when boats land</span></li>
+            <li><span>Tomàtiga de ramellet salad</span><span>every lunch</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>From the cellar</h3>
+          <ul>
+            <li><span>Binissalem reds, four estates</span><span>cellared aboard</span></li>
+            <li><span>Cava, brut nature</span><span>for anchor-up</span></li>
+            <li><span>Herbes de Mallorca, three strengths</span><span>after dinner</span></li>
+            <li><span>Verdejo for the fish days</span><span>chilled by noon</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>For the water</h3>
+          <ul>
+            <li><span>Two SUPs &amp; snorkel sets</span><span>every yacht</span></li>
+            <li><span>Seabob (Faro &amp; Vencedora)</span><span>charged nightly</span></li>
+            <li><span>Tender with water-skis</span><span>on request</span></li>
+            <li><span>Fishing handlines &amp; licenses</span><span>sorted by us</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="inquire" class="inquiry" aria-labelledby="inq-h">
+    <div class="wrap">
+      <h2 id="inq-h">Begin an inquiry</h2>
+      <hr class="hairline">
+      <p class="sec-intro" style="margin-bottom:0">
+        Tell us the shape of your week. A charter broker — a person, in Palma — replies
+        within one working day with honest availability, including the weeks we'd tell
+        our own family to avoid.
+      </p>
+      <form class="inquiry-form" id="inquiryForm" novalidate>
+        <div class="field">
+          <label for="f-name">Your name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="f-yacht">Yacht</label>
+          <select id="f-yacht" name="yacht">
+            <option>S/Y Alba — 6 guests</option>
+            <option>M/Y Vencedora — 8 guests</option>
+            <option>Celestina — 8 guests</option>
+            <option>M/Y Faro — 10 guests</option>
+            <option>Advise me — I know the party, not the boat</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-dates">Preferred dates</label>
+          <input id="f-dates" name="dates" type="text" placeholder="e.g. 14–21 September">
+        </div>
+        <div class="field full">
+          <label for="f-notes">The week you're imagining</label>
+          <textarea id="f-notes" name="notes" rows="4" placeholder="Who's coming, how you like your days, anything the chef should know"></textarea>
+        </div>
+        <button type="submit">Send inquiry</button>
+        <p class="form-note">No deposit is taken at inquiry. Rates above are the rates — we do not negotiate against ourselves later.</p>
+        <p class="form-confirm" id="formConfirm" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Helmsman Charter · Moll Vell 4, Palma de Mallorca · <span class="gold">+34 971 555 230</span></span>
+    <span>Licensed &amp; insured · Spanish charter registry B-0712</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    // Wake trails: each yacht's wake line draws in the first time it enters the view.
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var yachts = document.querySelectorAll(".yacht");
+    if (reduce || !("IntersectionObserver" in window)) {
+      yachts.forEach(function (y) { y.classList.add("is-inview"); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-inview");
+            io.unobserve(e.target);
+          }
+        });
+      }, { root: document.getElementById("fleetTrack"), threshold: 0.35 });
+      yachts.forEach(function (y) { io.observe(y); });
+    }
+
+    // Inquiry form: acknowledge, never fake-submit anywhere.
+    var form = document.getElementById("inquiryForm");
+    var confirmBox = document.getElementById("formConfirm");
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var name = form.name.value.trim();
+      var email = form.email.value.trim();
+      if (!name || !email || email.indexOf("@") < 1) {
+        confirmBox.textContent = "A name and a working email, and we'll take it from there.";
+        confirmBox.classList.add("is-visible");
+        return;
+      }
+      confirmBox.textContent = "Received, " + name + ". A broker in Palma will write to " + email +
+        " within one working day with honest availability for the " + form.yacht.value.split(" — ")[0] + ".";
+      confirmBox.classList.add("is-visible");
+      form.querySelector("button").disabled = true;
+    });
+  })();
+</script>
+</body>
+</html>

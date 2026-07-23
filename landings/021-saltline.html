@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saltline — Cold-water surf school at Skarvik Point. It's 9°C. You'll stand up anyway.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.16 0.025 200);
+    --bg-2: oklch(0.20 0.03 199);
+    --surface: oklch(0.23 0.035 198);
+    --ink: oklch(0.93 0.02 195);
+    --ink-soft: oklch(0.80 0.028 196);
+    --foam: oklch(0.97 0.008 190);
+    --kelp: oklch(0.75 0.14 160);
+    --kelp-deep: oklch(0.52 0.10 165);
+    --on-kelp: oklch(0.19 0.03 200);
+    --line: oklch(0.31 0.03 198);
+    --display: "Wix Madefor Display", sans-serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.13rem);
+    --step-1: clamp(1.25rem, 1.18rem + 0.38vw, 1.5rem);
+    --step-2: clamp(1.56rem, 1.43rem + 0.68vw, 2.05rem);
+    --step-3: clamp(1.95rem, 1.70rem + 1.28vw, 2.9rem);
+    --step-4: clamp(2.44rem, 1.92rem + 2.6vw, 4.4rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+    --z-drips: 4;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    color: var(--foam);
+  }
+  p { max-width: 68ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--kelp);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 3rem + 5vw, 7.5rem); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.16 0.025 200 / 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--foam);
+  }
+  .brand svg { width: 1.6rem; height: 1.6rem; flex: none; }
+  .site-nav { display: flex; align-items: center; gap: 1.6rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--kelp); }
+  @media (max-width: 640px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--on-kelp);
+    background: var(--kelp);
+    padding: 0.8rem 1.7rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: var(--foam); color: var(--on-kelp); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn.ghost:hover { border-color: var(--kelp); color: var(--kelp); background: transparent; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; padding-block: 0; min-height: 88vh; display: grid; }
+  .hero-media { position: absolute; inset: 0; overflow: hidden; }
+  .hero-media img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.5) saturate(0.85) hue-rotate(-8deg);
+  }
+  .hero-inner {
+    position: relative;
+    align-self: end;
+    padding-block: clamp(6rem, 12vh, 9rem) clamp(5rem, 10vh, 7rem);
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--kelp);
+    margin-bottom: 1.2rem;
+  }
+  .hero-tag .dot {
+    width: 0.55rem; height: 0.55rem; border-radius: 50%;
+    background: var(--kelp);
+    animation: pulse 2.6s var(--ease-out) infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.45); opacity: 0.55; }
+  }
+  .hero h1 { font-size: var(--step-4); max-width: 14ch; font-weight: 800; }
+  .hero h1 em { font-style: normal; color: var(--kelp); }
+  .hero-sub {
+    margin-top: 1.4rem;
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: 46ch;
+  }
+  .hero-cta { margin-top: 2.2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  /* ---------- wave dividers ---------- */
+  .wave { display: block; width: 100%; height: clamp(48px, 8vw, 110px); margin-bottom: -1px; }
+  .wave path { fill: var(--bg-2); }
+  .wave.flip { transform: scaleY(-1); margin-bottom: 0; margin-top: -1px; }
+
+  .alt { background: var(--bg-2); }
+
+  /* ---------- honesty strip ---------- */
+  .honesty .wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  @media (max-width: 820px) { .honesty .wrap { grid-template-columns: 1fr; } }
+  .honesty h2 { font-size: var(--step-3); }
+  .honesty p { margin-top: 1.2rem; color: var(--ink-soft); }
+  .temp-board {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .temp-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .temp-row:last-child { border-bottom: none; }
+  .temp-row dt { font-weight: 600; color: var(--ink-soft); font-size: var(--step--1); }
+  .temp-row dd { font-family: var(--display); font-weight: 700; font-size: var(--step-1); color: var(--foam); }
+  .temp-row dd .unit { font-size: var(--step--1); color: var(--ink-soft); font-weight: 500; }
+  .temp-note { margin-top: 1.1rem; font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- lineup (image + coaches) ---------- */
+  .lineup .wrap {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  @media (max-width: 820px) { .lineup .wrap { grid-template-columns: 1fr; } }
+  .lineup figure { border-radius: 16px; overflow: hidden; }
+  .lineup img { width: 100%; filter: saturate(0.85) brightness(0.92); }
+  .lineup figcaption {
+    padding: 0.8rem 0.2rem 0;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .lineup h2 { font-size: var(--step-3); }
+  .lineup .lede { margin-top: 1.1rem; color: var(--ink-soft); }
+  .coaches { margin-top: 2rem; display: grid; gap: 1.1rem; }
+  .coach {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4rem 1.1rem;
+    align-items: baseline;
+    padding-block: 1rem;
+    border-top: 1px solid var(--line);
+  }
+  .coach:last-child { border-bottom: 1px solid var(--line); }
+  .coach .name { font-family: var(--display); font-weight: 700; color: var(--foam); font-size: var(--step-1); }
+  .coach .years { font-size: var(--step--1); color: var(--kelp); font-weight: 600; }
+  .coach p { grid-column: 2; font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- pricing with drips ---------- */
+  .pricing { position: relative; }
+  .drip-rail {
+    position: relative;
+    height: 3.2rem;
+    margin-bottom: 0.5rem;
+    z-index: var(--z-drips);
+    pointer-events: none;
+  }
+  .drip-rail .rail-label {
+    position: absolute;
+    left: 0; top: 0;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .drip {
+    position: absolute;
+    top: 0.4rem;
+    width: 10px; height: 14px;
+    background: var(--kelp);
+    border-radius: 50% 50% 60% 60% / 40% 40% 70% 70%;
+    opacity: 0;
+    animation: drip-fall 4.2s var(--ease-out) infinite;
+  }
+  .drip:nth-child(2) { left: 18%; animation-delay: 0s; }
+  .drip:nth-child(3) { left: 41%; animation-delay: 1.4s; }
+  .drip:nth-child(4) { left: 63%; animation-delay: 2.6s; }
+  .drip:nth-child(5) { left: 84%; animation-delay: 3.4s; }
+  @keyframes drip-fall {
+    0% { transform: translateY(0) scale(0.4, 0.4); opacity: 0; }
+    12% { opacity: 0.9; transform: translateY(4px) scale(0.8, 1); }
+    70% { transform: translateY(38px) scale(0.9, 1.25); opacity: 0.9; }
+    100% { transform: translateY(56px) scale(1.4, 0.3); opacity: 0; }
+  }
+  .pricing h2 { font-size: var(--step-3); }
+  .pricing .lede { margin-top: 1rem; color: var(--ink-soft); max-width: 52ch; }
+  .tiers {
+    margin-top: 2.8rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.4rem;
+  }
+  .tier {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: clamp(1.6rem, 3vw, 2.2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .tier.featured { background: var(--kelp-deep); border-color: oklch(0.62 0.11 163); }
+  .tier h3 { font-size: var(--step-2); }
+  .tier .price { font-family: var(--display); font-weight: 800; font-size: var(--step-3); color: var(--foam); }
+  .tier .price .per { font-size: var(--step--1); font-weight: 500; color: var(--ink-soft); }
+  .tier.featured .price .per { color: oklch(0.87 0.04 175); }
+  .tier ul { list-style: none; display: grid; gap: 0.55rem; font-size: var(--step--1); color: var(--ink-soft); }
+  .tier.featured ul { color: oklch(0.88 0.035 175); }
+  .tier ul li { padding-left: 1.3rem; position: relative; }
+  .tier ul li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.42em;
+    width: 0.55rem; height: 0.3rem;
+    border-left: 2px solid var(--kelp);
+    border-bottom: 2px solid var(--kelp);
+    transform: rotate(-45deg);
+  }
+  .tier .btn { margin-top: auto; align-self: flex-start; }
+  .tier.featured .btn { background: var(--foam); }
+  .tier.featured .btn:hover { background: var(--kelp); }
+  .standup {
+    margin-top: 2.6rem;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font-size: var(--step-1);
+    font-family: var(--display);
+    font-weight: 600;
+    color: var(--foam);
+    max-width: 60ch;
+  }
+  .standup strong { color: var(--kelp); font-weight: 800; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 3rem;
+    background: var(--bg-2);
+  }
+  footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 3rem;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .brand { font-size: 1rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .drip, .hero-tag .dot { animation: none; opacity: 0.5; }
+    .drip { opacity: 0; }
+    .btn { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Saltline home">
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none">
+        <path d="M2 14c2.5 0 2.5-2.5 5-2.5S9.5 14 12 14s2.5-2.5 5-2.5 2.5 2.5 5 2.5" stroke="oklch(0.75 0.14 160)" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M2 19c2.5 0 2.5-2.5 5-2.5s2.5 2.5 5 2.5 2.5-2.5 5-2.5 2.5 2.5 5 2.5" stroke="oklch(0.93 0.02 195)" stroke-width="2.2" stroke-linecap="round" opacity="0.55"/>
+      </svg>
+      Saltline
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#water">The water</a>
+      <a href="#coaches">Coaches</a>
+      <a href="#lessons">Lessons</a>
+      <a class="btn small" href="#lessons">Book a session</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-media">
+      <img src="https://picsum.photos/seed/surf-1/1600/900" width="1600" height="900"
+           alt="A grey-dawn lineup at Skarvik Point — eight surfers in hooded 5/4mm wetsuits waiting beyond the break">
+    </div>
+    <div class="hero-inner wrap">
+      <p class="hero-tag"><span class="dot" aria-hidden="true"></span> Water today: 9.4°C — hoods on, spirits high</p>
+      <h1>Cold water. Warm welcome. <em>You will stand up.</em></h1>
+      <p class="hero-sub">Saltline is a surf school on the North Sea at Skarvik Point. We teach in 5/4mm suits we provide, in water we'll never lie to you about, with coaches who think February is the best month.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#lessons">See lesson tiers</a>
+        <a class="btn ghost" href="#water">How cold is cold?</a>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path class="wave-path" data-a="20,90,60,20,100,80" data-b="70,30,20,95,50,25"
+          d="M0,64 C240,20 480,90 720,60 C960,20 1200,100 1440,80 L1440,120 L0,120 Z"/>
+  </svg>
+
+  <section class="alt honesty" id="water">
+    <div class="wrap">
+      <div>
+        <h2>We publish the temperature. Then we get in.</h2>
+        <p>Most schools crop the thermometer out of the photo. We paint it on the door. The North Sea at Skarvik runs from 6°C in March to 15°C in a good September, and every one of those degrees is surfable with the right rubber and the right attitude.</p>
+        <p>Your fee includes a 5/4mm suit, 7mm boots, gloves, and a hood — rinsed, dried, and warm from the rack. Cold hands end lessons; ours don't end early.</p>
+      </div>
+      <dl class="temp-board" aria-label="This week at Skarvik Point">
+        <div class="temp-row"><dt>Water, this morning</dt><dd>9.4<span class="unit">°C</span></dd></div>
+        <div class="temp-row"><dt>Air at first light</dt><dd>7<span class="unit">°C</span></dd></div>
+        <div class="temp-row"><dt>Swell window</dt><dd>3–5<span class="unit">ft, clean</span></dd></div>
+        <div class="temp-row"><dt>Suit you'll wear</dt><dd>5/4<span class="unit">mm + hood</span></dd></div>
+        <div class="temp-row"><dt>Hot drinks after</dt><dd>Free<span class="unit">, always</span></dd></div>
+        <p class="temp-note">Read off the harbour gauge at 06:40 by whoever opens up. Posted as-is, never rounded up.</p>
+      </dl>
+    </div>
+  </section>
+
+  <svg class="wave flip" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path class="wave-path" data-a="80,25,95,55,30,70" data-b="30,80,45,20,90,40"
+          d="M0,64 C240,80 480,25 720,95 C960,55 1200,30 1440,70 L1440,120 L0,120 Z"/>
+  </svg>
+
+  <section class="lineup" id="coaches">
+    <div class="wrap">
+      <figure>
+        <img src="https://picsum.photos/seed/surf-2/800/600" width="800" height="600"
+             alt="Coach Mara in a hooded wetsuit carrying a 8-foot foam board down the slipway at first light">
+        <figcaption>Mara, 06:15, checking the sandbars before the first lesson of the day.</figcaption>
+      </figure>
+      <div>
+        <h2>Coached by people who surf here all winter</h2>
+        <p class="lede">No gap-year instructors reading from a laminated card. Our three coaches log over 200 cold-water sessions a year at this exact beach, and they teach the way they learned: small groups, honest feedback, and nobody left floating at the back.</p>
+        <div class="coaches">
+          <div class="coach">
+            <span class="name">Mara Ellingsen</span><span class="years">14 winters at Skarvik</span>
+            <p>Ex-competition longboarder. Specialises in getting total beginners upright inside one session — her record is eleven minutes.</p>
+          </div>
+          <div class="coach">
+            <span class="name">Deniz Kaya</span><span class="years">9 winters at Skarvik</span>
+            <p>Former RNLI lifeguard. Runs the winter progression group and the January dawn patrol that nobody believes exists until they try it.</p>
+          </div>
+          <div class="coach">
+            <span class="name">Cormac Byrne</span><span class="years">11 winters at Skarvik</span>
+            <p>Teaches the over-40s cohort and anyone convinced they've left it too late. He started at 46. He's now the one waiting for you out back.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path class="wave-path" data-a="50,95,25,60,85,30" data-b="90,40,70,15,35,75"
+          d="M0,64 C240,50 480,95 720,25 C960,60 1200,85 1440,30 L1440,120 L0,120 Z"/>
+  </svg>
+
+  <section class="alt pricing" id="lessons">
+    <div class="wrap">
+      <div class="drip-rail" aria-hidden="true">
+        <span class="rail-label">Fresh off the rack — still dripping from this morning's 07:00.</span>
+        <span class="drip"></span><span class="drip"></span><span class="drip"></span><span class="drip"></span>
+      </div>
+      <h2>Lesson tiers, wetsuit always included</h2>
+      <p class="lede">Every session comes with the full 5/4mm kit, hot showers, and a debrief over coffee in the hut. Bring a towel and a willingness to fall over in front of strangers — briefly.</p>
+      <div class="tiers">
+        <article class="tier">
+          <h3>First Wave</h3>
+          <p class="price">£65 <span class="per">/ 2.5-hour session</span></p>
+          <ul>
+            <li>Never surfed? Perfect. Max 6 per coach</li>
+            <li>Full winter kit: suit, boots, gloves, hood</li>
+            <li>Beach theory, then 90 minutes in the water</li>
+            <li>Free resit if you don't stand up</li>
+          </ul>
+          <a class="btn ghost" href="#book">Book First Wave</a>
+        </article>
+        <article class="tier featured">
+          <h3>Six Swell Pass</h3>
+          <p class="price">£330 <span class="per">/ 6 sessions, save £60</span></p>
+          <ul>
+            <li>The way people actually learn — weekly reps</li>
+            <li>Same coach throughout, progression tracked</li>
+            <li>Video review after sessions 3 and 6</li>
+            <li>Valid 12 months, transferable to a mate</li>
+          </ul>
+          <a class="btn" href="#book">Book the Pass</a>
+        </article>
+        <article class="tier">
+          <h3>Winter Grit</h3>
+          <p class="price">£110 <span class="per">/ private, Nov–Mar</span></p>
+          <ul>
+            <li>One-to-one in the quiet months</li>
+            <li>Dawn slots before work, 06:30 start</li>
+            <li>Green-wave progression, not just whitewater</li>
+            <li>Thermos of something hot included</li>
+          </ul>
+          <a class="btn ghost" href="#book">Book Winter Grit</a>
+        </article>
+      </div>
+      <p class="standup" id="book">Our promise: <strong>94% of first-timers stand in session one.</strong> The other 6% come back free — and so far, every one of them has stood on the second go.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top">Saltline</a>
+    <p>Skarvik Point, North Sea coast · Lessons Mar–Dec, diehards all year · hello@saltline.surf</p>
+    <p>© 2026 Saltline Surf School. The sea doesn't do refunds; we do.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var paths = Array.prototype.slice.call(document.querySelectorAll(".wave-path"));
+  if (reduce || !paths.length) return;
+
+  function build(d) {
+    // d = "a,b,c,d,e,f" → six control points interpolated into the wave path
+    return "M0,64 C240," + d[0] + " 480," + d[1] + " 720," + d[2] +
+           " C960," + d[3] + " 1200," + d[4] + " 1440," + d[5] +
+           " L1440,120 L0,120 Z";
+  }
+  var waves = paths.map(function (p) {
+    return {
+      el: p,
+      a: p.dataset.a.split(",").map(Number),
+      b: p.dataset.b.split(",").map(Number)
+    };
+  });
+
+  var ticking = false;
+  function morph() {
+    ticking = false;
+    var vh = window.innerHeight;
+    waves.forEach(function (w) {
+      var r = w.el.getBoundingClientRect();
+      // 0 when the divider enters the viewport bottom, 1 when it reaches the top
+      var t = 1 - Math.min(Math.max(r.top / vh, 0), 1);
+      var d = w.a.map(function (v, i) {
+        return Math.round(v + (w.b[i] - v) * t);
+      });
+      w.el.setAttribute("d", build(d));
+    });
+  }
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(morph);
+    }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  morph();
+})();
+</script>
+</body>
+</html>

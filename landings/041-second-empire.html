@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Second Empire — vintage furniture with a paper trail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(0.99 0 0);
+    --surface: oklch(0.965 0.004 80);
+    --ink: oklch(0.28 0.02 70);
+    --gray: oklch(0.44 0.012 70);
+    --brass: oklch(0.5 0.09 80);
+    --brass-line: oklch(0.66 0.1 80);
+    --rule: oklch(0.88 0.006 80);
+    --font-display: "Marcellus", serif;
+    --font-body: "Hanken Grotesk", sans-serif;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p { max-width: 65ch; text-wrap: pretty; }
+  :focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; border-radius: 2px; }
+
+  /* header */
+  header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.4rem clamp(1.25rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--ink);
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .wordmark span { color: var(--brass); }
+  nav ul { display: flex; gap: clamp(1rem, 3vw, 2.25rem); list-style: none; }
+  nav a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  nav a:hover { color: var(--ink); }
+
+  main > section { padding: clamp(3rem, 8vh, 5.5rem) clamp(1.25rem, 5vw, 4rem); }
+  .inner { max-width: 1000px; margin: 0 auto; }
+  h2 { font-size: clamp(1.8rem, 3.4vw, 2.6rem); margin-bottom: 1.4rem; }
+  h2 .lot-count { color: var(--brass); }
+  .lede { color: var(--gray); margin-bottom: 2.5rem; }
+
+  /* hero */
+  .hero { border-bottom: 1px solid var(--rule); }
+  .hero .inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  h1 { font-size: clamp(2.5rem, 5.5vw, 4.25rem); margin-bottom: 1.3rem; }
+  .hero p { color: var(--gray); font-size: 1.1rem; margin-bottom: 1rem; }
+  .hero .sig { font-family: var(--font-display); color: var(--ink); font-size: 1rem; }
+  .hero-figure img {
+    display: block; width: 100%; height: auto; border-radius: 12px;
+  }
+  .hero-figure figcaption {
+    margin-top: 0.6rem; font-size: 0.85rem; color: var(--gray);
+    display: flex; justify-content: space-between; gap: 1rem;
+  }
+  .hero-figure figcaption b { font-weight: 500; color: var(--brass); }
+
+  /* catalog lots */
+  .lots { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+  .lot { perspective: 1400px; }
+  .lot-flip {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 4.6;
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    transform-style: preserve-3d;
+    transition: transform 0.7s var(--ease-out);
+    border-radius: 12px;
+  }
+  .lot-flip.flipped { transform: rotateY(180deg); }
+  .lot-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+  }
+  .lot-back {
+    transform: rotateY(180deg);
+    background: var(--ink);
+    color: oklch(0.93 0.008 80);
+    padding: 1.6rem;
+    justify-content: center;
+    gap: 0.9rem;
+  }
+  .lot-back h3 { font-size: 1.25rem; color: oklch(0.93 0.008 80); }
+  .lot-back p { font-size: 0.95rem; color: oklch(0.8 0.012 80); line-height: 1.7; }
+  .lot-back .provenance-tag {
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--brass-line);
+  }
+  .lot-photo { position: relative; overflow: hidden; }
+  .lot-photo img { display: block; width: 100%; height: auto; }
+  /* measurement overlay */
+  .measure {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.45s var(--ease-out);
+    background: oklch(0.28 0.02 70 / 0.28);
+    pointer-events: none;
+  }
+  .lot:hover .measure, .lot-flip:focus-visible .measure { opacity: 1; }
+  .measure .m-h, .measure .m-v {
+    position: absolute;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: oklch(0.97 0.005 90);
+  }
+  .measure .m-h {
+    left: 8%; right: 8%; bottom: 7%;
+    border-top: 1px solid oklch(0.97 0.005 90 / 0.9);
+    text-align: center;
+    padding-top: 0.3rem;
+  }
+  .measure .m-h::before, .measure .m-h::after {
+    content: ""; position: absolute; top: -5px; width: 1px; height: 9px;
+    background: oklch(0.97 0.005 90 / 0.9);
+  }
+  .measure .m-h::before { left: 0; }
+  .measure .m-h::after { right: 0; }
+  .measure .m-v {
+    top: 8%; bottom: 8%; right: 5%;
+    border-right: 1px solid oklch(0.97 0.005 90 / 0.9);
+    writing-mode: vertical-rl;
+    display: flex; align-items: center;
+    padding-left: 0.3rem;
+  }
+  .measure .m-v::before, .measure .m-v::after {
+    content: ""; position: absolute; right: -5px; height: 1px; width: 9px;
+    background: oklch(0.97 0.005 90 / 0.9);
+  }
+  .measure .m-v::before { top: 0; }
+  .measure .m-v::after { bottom: 0; }
+  .lot-meta { padding: 1.1rem 1.25rem 1.25rem; display: grid; gap: 0.3rem; }
+  .lot-meta .lot-no {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--brass);
+  }
+  .lot-meta h3 { font-size: 1.3rem; }
+  .lot-meta .lot-detail { font-size: 0.9rem; color: var(--gray); }
+  .lot-meta .lot-price {
+    margin-top: 0.4rem; font-family: var(--font-display);
+    font-size: 1.15rem; color: var(--ink);
+  }
+  .flip-hint { font-size: 0.82rem; color: var(--gray); margin-top: 1.5rem; }
+
+  /* condition scale */
+  .condition { border-top: 1px solid var(--rule); }
+  .scale { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .grade {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1.5rem;
+    padding: 1.3rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .grade b {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.05rem;
+    color: var(--brass);
+  }
+  .grade p { font-size: 0.98rem; color: var(--ink); }
+  .grade p span { color: var(--gray); }
+  .scale-note { margin-top: 1.5rem; font-size: 0.92rem; color: var(--gray); }
+
+  /* delivery */
+  .delivery { border-top: 1px solid var(--rule); }
+  .delivery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+  }
+  .delivery-grid h3 { font-size: 1.3rem; margin-bottom: 0.7rem; }
+  .delivery-grid p, .delivery-grid li { font-size: 0.98rem; color: var(--gray); }
+  .delivery-grid ul { list-style: none; display: grid; gap: 0.55rem; margin-top: 0.5rem; }
+  .delivery-grid li { padding-left: 1.2rem; position: relative; }
+  .delivery-grid li::before {
+    content: ""; position: absolute; left: 0; top: 0.62em;
+    width: 6px; height: 6px; background: var(--brass-line); border-radius: 50%;
+  }
+  .delivery-grid strong { color: var(--ink); font-weight: 600; }
+
+  /* visit + footer */
+  .visit { border-top: 1px solid var(--ink); }
+  .visit .inner { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2.5rem; }
+  .visit h3 { font-size: 1.2rem; margin-bottom: 0.6rem; }
+  .visit p, .visit address { font-size: 0.98rem; color: var(--gray); font-style: normal; line-height: 1.75; }
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 1.8rem clamp(1.25rem, 5vw, 4rem);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    font-size: 0.85rem; color: var(--gray);
+  }
+
+  @media (max-width: 820px) {
+    .hero .inner { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    header { flex-direction: column; gap: 0.6rem; align-items: flex-start; }
+    nav ul { flex-wrap: wrap; }
+    .grade { grid-template-columns: 1fr; gap: 0.25rem; }
+    .lot-flip { aspect-ratio: 4 / 5; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .lot-flip { transition: none; }
+    .measure { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="#top">Second Empire<span>.</span></a>
+  <nav aria-label="Main">
+    <ul>
+      <li><a href="#acquisitions">Acquisitions</a></li>
+      <li><a href="#condition">Condition</a></li>
+      <li><a href="#delivery">Delivery</a></li>
+      <li><a href="#visit">Visit</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="inner">
+      <div>
+        <h1>Furniture with a paper trail.</h1>
+        <p>Second Empire buys mid-century and earlier pieces from estates, attics, and the occasional embassy sale, and sells them with everything we know written down — including the parts we'd rather not mention.</p>
+        <p>We are a two-person shop. Vera does the buying; Tomas does the repairs; both of us will talk you out of a piece if it's wrong for your room.</p>
+        <p class="sig">— Vera &amp; Tomas Lindqvist, est. 2009</p>
+      </div>
+      <figure class="hero-figure">
+        <img src="https://picsum.photos/seed/furniture-2/800/600" width="800" height="600"
+             alt="The walnut credenza from the Halvorsen estate, photographed before Saturday's conditioning">
+        <figcaption><span>Lot 44, this week</span><b>Viewing Thu–Sat, 11–6</b></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="acquisitions" aria-labelledby="acq-h">
+    <div class="inner">
+      <h2 id="acq-h">This week's acquisitions <span class="lot-count">— Lots 41 to 43</span></h2>
+      <p class="lede">Photographed as found. Hover to see the measurements; open a lot to read its provenance.</p>
+      <div class="lots">
+
+        <article class="lot">
+          <button class="lot-flip" type="button" aria-pressed="false"
+                  aria-label="Lot 41, pair of lounge chairs. Activate to read provenance.">
+            <span class="lot-face lot-front">
+              <span class="lot-photo">
+                <img src="https://picsum.photos/seed/furniture-1/800/600" width="800" height="600"
+                     alt="Pair of low lounge chairs in original wool, teak frames, c. 1958" loading="lazy">
+                <span class="measure" aria-hidden="true">
+                  <span class="m-h">W 74 cm</span>
+                  <span class="m-v">H 71 cm</span>
+                </span>
+              </span>
+              <span class="lot-meta">
+                <span class="lot-no">Lot 41</span>
+                <h3>Pair of lounge chairs</h3>
+                <span class="lot-detail">Denmark, c. 1958 · teak, original wool · Grade 3</span>
+                <span class="lot-price">$2,400 the pair</span>
+              </span>
+            </span>
+            <span class="lot-face lot-back">
+              <span class="provenance-tag">Provenance</span>
+              <h3>The Aarhus pair</h3>
+              <p>From the Aarhus estate of a shipping accountant who bought them new in 1959 and clearly preferred the left one — the right chair is close to showroom. Wool is original and tired at the arms; we've left it, because re-covering these is a decision the next owner should make themselves.</p>
+            </span>
+          </button>
+        </article>
+
+        <article class="lot">
+          <button class="lot-flip" type="button" aria-pressed="false"
+                  aria-label="Lot 42, walnut credenza. Activate to read provenance.">
+            <span class="lot-face lot-front">
+              <span class="lot-photo">
+                <img src="https://picsum.photos/seed/furniture-2/800/600" width="800" height="600"
+                     alt="Long walnut credenza with sliding doors, one visible ring mark on the top, c. 1962" loading="lazy">
+                <span class="measure" aria-hidden="true">
+                  <span class="m-h">W 210 cm</span>
+                  <span class="m-v">H 78 cm</span>
+                </span>
+              </span>
+              <span class="lot-meta">
+                <span class="lot-no">Lot 42</span>
+                <h3>Walnut credenza</h3>
+                <span class="lot-detail">c. 1962 · American walnut, brass pulls · Grade 3, priced accordingly</span>
+                <span class="lot-price">$3,150</span>
+              </span>
+            </span>
+            <span class="lot-face lot-back">
+              <span class="provenance-tag">Provenance</span>
+              <h3>The Halvorsen credenza</h3>
+              <p>One owner: the Halvorsen family, who kept it under a window for forty years — the fade line is honest and we won't pretend otherwise. Ring mark on the top, left of center, from a ficus we were told about twice. Slides like the day it left the workshop. We'd charge $800 more without the ring.</p>
+            </span>
+          </button>
+        </article>
+
+        <article class="lot">
+          <button class="lot-flip" type="button" aria-pressed="false"
+                  aria-label="Lot 43, brass pharmacy lamp. Activate to read provenance.">
+            <span class="lot-face lot-front">
+              <span class="lot-photo">
+                <img src="https://picsum.photos/seed/furniture-3/800/600" width="800" height="600"
+                     alt="Adjustable brass pharmacy floor lamp with green enamel shade, rewired this month" loading="lazy">
+                <span class="measure" aria-hidden="true">
+                  <span class="m-h">Arm 52 cm</span>
+                  <span class="m-v">H 134–160 cm</span>
+                </span>
+              </span>
+              <span class="lot-meta">
+                <span class="lot-no">Lot 43</span>
+                <h3>Pharmacy floor lamp</h3>
+                <span class="lot-detail">c. 1930s · brass, enamel shade, rewired · Grade 4</span>
+                <span class="lot-price">$780</span>
+              </span>
+            </span>
+            <span class="lot-face lot-back">
+              <span class="provenance-tag">Provenance</span>
+              <h3>The reading lamp</h3>
+              <p>From a doctor's house in the old town — this sat beside the same armchair for three decades of evening reading. Tomas rewired it this month (cloth cord, period-correct plug) and replaced one knurled knob; the replacement is brass but newer, and you can tell if you look. Shade is original, one dent, back side.</p>
+            </span>
+          </button>
+        </article>
+
+      </div>
+      <p class="flip-hint">Tap or focus a lot and press Enter to read its full history. Everything we know is on the back of the card.</p>
+    </div>
+  </section>
+
+  <section class="condition" id="condition" aria-labelledby="cond-h">
+    <div class="inner">
+      <h2 id="cond-h">The condition scale, in plain terms</h2>
+      <p class="lede">Every piece gets a grade before it gets a price. We grade harshly; most dealers' "excellent" is our 3.</p>
+      <div class="scale">
+        <div class="grade">
+          <b>Grade 5 — Museum</b>
+          <p>As close to the workshop door as an old object gets. We've graded eleven pieces a 5 in fifteen years. <span>You probably can't afford it; neither can we.</span></p>
+        </div>
+        <div class="grade">
+          <b>Grade 4 — Loved, carefully</b>
+          <p>Used by someone who owned coasters. Minor wear in the right places. <span>The pharmacy lamp this week is a 4.</span></p>
+        </div>
+        <div class="grade">
+          <b>Grade 3 — Honest</b>
+          <p>Visible history: fade, a ring, a dent with a story. Structurally perfect, cosmetically human. <span>Most of what we sell, and most of what you should buy.</span></p>
+        </div>
+        <div class="grade">
+          <b>Grade 2 — Project</b>
+          <p>Needs work we'll name precisely: a re-glue, a re-cane, a veneer patch. Priced so the work makes sense. <span>We tell you exactly what Tomas would charge to do it.</span></p>
+        </div>
+        <div class="grade">
+          <b>Grade 1 — As found</b>
+          <p>Straight from the estate, dust included. Sold fast and cheap to people who know what they're looking at. <span>We don't deliver Grade 1; you take it away yourself.</span></p>
+        </div>
+      </div>
+      <p class="scale-note">If a piece arrives and you think we graded it generously, bring it back within 14 days for a full refund. That has happened twice. Both times we changed the grade and thanked the customer.</p>
+    </div>
+  </section>
+
+  <section class="delivery" id="delivery" aria-labelledby="del-h">
+    <div class="inner">
+      <h2 id="del-h">Delivery, and the stairs policy</h2>
+      <p class="lede">We deliver ourselves, in the van, with blankets and Tomas. We don't use couriers for anything heavier than the lamp.</p>
+      <div class="delivery-grid">
+        <div>
+          <h3>What it costs</h3>
+          <ul>
+            <li><strong>$90</strong> — ground floor, within 40 km of the shop</li>
+            <li><strong>+$35 per flight</strong> — a flight is 12 stairs; we count together on the day</li>
+            <li><strong>No elevator credit</strong> — if it fits in the lift, the stairs are free; that's the deal</li>
+            <li><strong>$140</strong> — beyond 40 km, plus fuel at cost, quoted before you commit</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Before the van leaves</h3>
+          <p>We measure your doorframes, your hallway turn, and your staircase <strong>before</strong> we load anything — a free visit within the city, folded into the delivery fee beyond it. If the credenza doesn't fit your turn, you find out on Tuesday, not on Saturday with the van idling outside.</p>
+        </div>
+        <div>
+          <h3>On the day</h3>
+          <p>Two people, felt pads, and the piece placed where you want it — we'll move it three times without sighing. Packaging comes back with us. If we scratch your floor, we pay for the repair; we've budgeted for zero scratches and spent the budget once, in 2017.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit" aria-labelledby="visit-h">
+    <div class="inner">
+      <div>
+        <h3>The shop</h3>
+        <address>
+          Second Empire<br>
+          9 Bredgade Lane, old town<br>
+          Thursday–Saturday, 11–6<br>
+          Other days by appointment — coffee is on us
+        </address>
+      </div>
+      <div>
+        <h3>Selling to us</h3>
+        <p>Send photographs and what you know to the shop email. We answer within three days, and we'll tell you honestly if your piece isn't for us — usually with a suggestion of who it is for.</p>
+      </div>
+      <div>
+        <h3>Holds</h3>
+        <p>We hold a piece for 48 hours, free, no card details. After that it's back on the floor. We don't do waiting lists; first to visit, first to buy.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© Second Empire, est. 2009 — Vera &amp; Tomas Lindqvist</span>
+  <span>Everything we know is written on the back of the card.</span>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  document.querySelectorAll(".lot-flip").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var flipped = btn.classList.toggle("flipped");
+      btn.setAttribute("aria-pressed", flipped ? "true" : "false");
+    });
+  });
+})();
+</script>
+</body>
+</html>

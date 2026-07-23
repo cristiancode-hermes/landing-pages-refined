@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copper Kettle — 18 seats, one counter, a 14-hour broth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;500;600;700&family=Rozha+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.05 0.005 75);
+    --surface: oklch(0.13 0.012 70);
+    --surface-hi: oklch(0.18 0.016 70);
+    --ink: oklch(0.94 0.02 85);
+    --muted: oklch(0.74 0.03 80);
+    --broth: oklch(0.80 0.14 75);
+    --broth-deep: oklch(0.62 0.13 70);
+    --nori: oklch(0.72 0.11 150);
+    --line: oklch(0.26 0.02 70);
+    --display: "Rozha One", serif;
+    --body: "Gabarito", sans-serif;
+    --step--1: clamp(0.85rem, 0.82rem + 0.15vw, 0.94rem);
+    --step-0: clamp(1.02rem, 0.97rem + 0.25vw, 1.16rem);
+    --step-1: clamp(1.28rem, 1.16rem + 0.6vw, 1.62rem);
+    --step-2: clamp(1.6rem, 1.38rem + 1.1vw, 2.28rem);
+    --step-3: clamp(2rem, 1.62rem + 1.9vw, 3.2rem);
+    --step-4: clamp(2.5rem, 1.85rem + 3.2vw, 4.5rem);
+    --z-steam: 1;
+    --z-content: 2;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p { max-width: 65ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--nori);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1080px, 100% - 3rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.05 0.005 75 / 0.9);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    text-decoration: none;
+    letter-spacing: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .brand .dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--broth);
+    flex: none;
+    align-self: center;
+  }
+  .site-nav { display: flex; align-items: center; gap: 1.75rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--broth); }
+  .seat-note {
+    font-size: var(--step--1);
+    color: var(--nori);
+    font-weight: 600;
+    border: 1px solid var(--line);
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .seat-note { display: none; }
+    .site-nav { gap: 1.1rem; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  #steam {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-steam);
+    pointer-events: none;
+  }
+  .hero .wrap {
+    position: relative;
+    z-index: var(--z-content);
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    padding-block: clamp(3rem, 8vh, 6rem);
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    color: var(--ink);
+    margin-bottom: 1.4rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--broth);
+  }
+  .hero .lede {
+    color: var(--muted);
+    font-size: var(--step-1);
+    max-width: 34ch;
+    margin-bottom: 2.2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .btn {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: var(--step-0);
+    text-decoration: none;
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s;
+  }
+  .btn-solid { background: var(--broth); color: oklch(0.16 0.03 70); border: none; }
+  .btn-solid:hover { transform: translateY(-2px); background: oklch(0.84 0.14 78); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { border-color: var(--nori); color: var(--nori); }
+  .hero figure {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .hero figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+    filter: brightness(0.82) saturate(1.05);
+  }
+  .hero figcaption {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    font-size: var(--step--1);
+    color: var(--ink);
+    background: oklch(0.05 0.005 75 / 0.72);
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+  }
+  @media (max-width: 820px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .hero figure { order: -1; }
+    .hero figure img { aspect-ratio: 16 / 10; }
+    .hero { min-height: 0; }
+  }
+
+  /* ---------- broth ---------- */
+  .broth {
+    background: var(--surface);
+    padding-block: clamp(4rem, 10vh, 7rem);
+    border-block: 1px solid var(--line);
+  }
+  .broth .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .broth h2 { font-size: var(--step-3); margin-bottom: 1.2rem; }
+  .broth h2 span { color: var(--broth); }
+  .broth p + p { margin-top: 1rem; }
+  .broth .aside {
+    background: var(--surface-hi);
+    border-radius: 14px;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+  }
+  .broth .aside h3 {
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: var(--step-1);
+    margin-bottom: 1rem;
+    color: var(--nori);
+  }
+  .clock-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.7rem;
+    border-bottom: 1px dashed var(--line);
+    font-size: var(--step--1);
+  }
+  .clock-row:last-child { border-bottom: none; }
+  .clock-row b { color: var(--broth); font-weight: 600; }
+  @media (max-width: 760px) {
+    .broth .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- noodle divider ---------- */
+  .noodle-divider {
+    padding-block: clamp(2rem, 5vh, 3.5rem) 0;
+    overflow: hidden;
+  }
+  .noodle-divider svg { display: block; width: 100%; height: auto; }
+  .noodle-divider path {
+    fill: none;
+    stroke: var(--broth);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .noodle-divider.drawn path { stroke-dashoffset: 0; }
+
+  /* ---------- menu ---------- */
+  .menu { padding-block: clamp(3rem, 8vh, 6rem); }
+  .menu-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .menu-head h2 { font-size: var(--step-3); }
+  .menu-head p { color: var(--muted); font-size: var(--step--1); max-width: 32ch; }
+  .bowls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .bowl {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s;
+  }
+  .bowl:hover { transform: translateY(-4px); background: var(--surface-hi); }
+  .bowl .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .bowl h3 { font-size: var(--step-1); }
+  .bowl .price { color: var(--broth); font-weight: 700; font-size: var(--step-1); }
+  .bowl p { color: var(--muted); font-size: var(--step--1); flex: 1; }
+  .bowl .tag {
+    align-self: flex-start;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--nori);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.15rem 0.7rem;
+  }
+  .extras {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .extras b { color: var(--ink); }
+
+  /* ---------- counter ---------- */
+  .counter {
+    background: var(--surface);
+    border-block: 1px solid var(--line);
+    padding-block: clamp(4rem, 10vh, 7rem);
+  }
+  .counter .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .counter figure {
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .counter img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    filter: brightness(0.8) saturate(1.05);
+  }
+  .counter h2 { font-size: var(--step-3); margin-bottom: 1.2rem; }
+  .counter p + p { margin-top: 1rem; }
+  .counter .rule-list { list-style: none; margin-top: 1.6rem; }
+  .counter .rule-list li {
+    padding-block: 0.55rem;
+    border-bottom: 1px dashed var(--line);
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .counter .rule-list li b { color: var(--nori); font-weight: 600; }
+  @media (max-width: 760px) {
+    .counter .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- visit ---------- */
+  .visit { padding-block: clamp(4rem, 10vh, 7rem); }
+  .visit .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+  .visit h2 { font-size: var(--step-2); margin-bottom: 1.1rem; }
+  .visit dl { display: grid; gap: 0.35rem; }
+  .visit dt { font-weight: 700; color: var(--broth); font-size: var(--step--1); }
+  .visit dd { margin-bottom: 0.9rem; color: var(--ink); }
+  .visit .note { color: var(--muted); font-size: var(--step--1); margin-top: 1rem; }
+  @media (max-width: 680px) {
+    .visit .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .bowl { transition: none; }
+    .btn-solid:hover, .bowl:hover { transform: none; }
+    .noodle-divider path { transition: none; stroke-dashoffset: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="dot" aria-hidden="true"></span>Copper Kettle</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#broth">The Broth</a>
+      <a href="#menu">Menu</a>
+      <a href="#visit">Find Us</a>
+      <span class="seat-note">18 seats · no reservations</span>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <canvas id="steam" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div>
+        <h1>Fourteen hours in the pot. <em>Ninety seconds</em> in the bowl.</h1>
+        <p class="lede">A tiny tonkotsu counter on Mercer Lane. We make one broth, we make it properly, and when the pot is empty the lights go off.</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#menu">Tonight's menu</a>
+          <a class="btn btn-ghost" href="#visit">Hours &amp; last order</a>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/ramen-1/1600/900" width="1600" height="900"
+             alt="A bowl of tonkotsu ramen shot close — chashu, nori, and a soft egg half sinking into cloudy broth">
+        <figcaption>The classic, as of 9:40 tonight</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="broth" id="broth">
+    <div class="wrap">
+      <div>
+        <h2>The broth decides <span>when we close.</span></h2>
+        <p>Every morning at 5:00, Mariko starts the pot: pork femur, back fat, nothing else, at a rolling boil hard enough to emulsify the marrow into the water. Fourteen hours later it turns the color of light through a whiskey glass. That's the whole recipe. There is no backup batch.</p>
+        <p>Most nights the pot holds about ninety bowls. Fridays it can run to a hundred and ten. When the ladle scrapes bottom we hang the wooden sign, bow to whoever's still in line, and start again tomorrow. We'd rather disappoint you at the door than dilute a bowl.</p>
+      </div>
+      <aside class="aside" aria-label="Tonight's broth status">
+        <h3>How a day at the Kettle runs</h3>
+        <div class="clock-row"><span>5:00</span><b>Pot on, bones in</b></div>
+        <div class="clock-row"><span>11:30</span><b>Tare mixed, eggs steeped</b></div>
+        <div class="clock-row"><span>17:30</span><b>Doors open, counter fills</b></div>
+        <div class="clock-row"><span>22:15</span><b>Last order, no exceptions</b></div>
+        <div class="clock-row"><span>~23:00</span><b>Pot empty, sign hung</b></div>
+      </aside>
+    </div>
+  </section>
+
+  <div class="noodle-divider" id="noodle-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 90" preserveAspectRatio="none">
+      <path pathLength="1" d="M0,45 C60,10 120,80 180,45 C240,10 300,80 360,45 C420,10 480,80 540,45 C600,10 660,80 720,45 C780,10 840,80 900,45 C960,10 1020,80 1080,45 C1120,22 1160,60 1200,45"/>
+    </svg>
+  </div>
+
+  <section class="menu" id="menu">
+    <div class="wrap">
+      <div class="menu-head">
+        <h2>Four bowls. That's the menu.</h2>
+        <p>Everything is built on the same 14-hour tonkotsu. Noodles are pulled to order — never before you sit down.</p>
+      </div>
+      <div class="bowls">
+        <article class="bowl">
+          <div class="top"><h3>The Classic</h3><span class="price">$18</span></div>
+          <p>Tonkotsu, thin straight noodles, two slices of chashu, nori, scallion, black garlic oil. The bowl we opened with in 2016, unchanged since.</p>
+          <span class="tag">The one to start with</span>
+        </article>
+        <article class="bowl">
+          <div class="top"><h3>Shoyu Kettle</h3><span class="price">$17</span></div>
+          <p>The same broth cut with a three-year aged shoyu tare. Lighter on the palate, heavier on the aroma. Bamboo shoots, no egg.</p>
+          <span class="tag">Clearer, sharper</span>
+        </article>
+        <article class="bowl">
+          <div class="top"><h3>Red Miso</h3><span class="price">$18</span></div>
+          <p>Sendai red miso whisked into the bowl, chili-sesame crumble, sweet corn, a knob of butter that melts as you eat. Winter's answer to everything.</p>
+          <span class="tag">Rich, warming</span>
+        </article>
+        <article class="bowl">
+          <div class="top"><h3>Tsukemen</h3><span class="price">$19</span></div>
+          <p>Thick noodles served cold beside a concentrated dipping broth, reduced by half. Ask for the soup-wari at the end — we cut the dip with hot broth so nothing goes to waste.</p>
+          <span class="tag">Dip, don't slurp</span>
+        </article>
+      </div>
+      <p class="extras"><b>Kaedama</b> (extra noodle ball) $3 · ajitama egg $2 · chashu plate $6 · house chili oil to take home, $9 the jar.</p>
+    </div>
+  </section>
+
+  <section class="counter">
+    <div class="wrap">
+      <figure>
+        <img src="https://picsum.photos/seed/ramen-2/800/600" width="800" height="600"
+             alt="Eighteen wooden stools along a single cypress counter, steam rising from the open kitchen behind it">
+      </figure>
+      <div>
+        <h2>Eighteen stools, one counter, zero table service.</h2>
+        <p>You'll queue, you'll sit elbow to elbow with a stranger, and you'll probably leave with a new favorite person. The counter is cypress, the stools wobble slightly, and the ticket is cash or card but never an app.</p>
+        <ul class="rule-list">
+          <li><b>Line etiquette:</b> hold your spot in person — no placeholders, no holding six seats for friends who are "five minutes away."</li>
+          <li><b>Solo diners</b> almost always get in within twenty minutes. Parties of four or more should expect to split.</li>
+          <li><b>Eat, then go.</b> We love you, but someone behind you is cold. Lingering is for the bar two doors down.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap">
+      <div>
+        <h2>Hours</h2>
+        <dl>
+          <dt>Tuesday – Sunday</dt><dd>17:30 – 23:00, last order 22:15 sharp</dd>
+          <dt>Monday</dt><dd>Closed. The pot rests; so do we.</dd>
+          <dt>Sell-out nights</dt><dd>When the sign goes up, the night is over. Fridays often end by 22:45.</dd>
+        </dl>
+      </div>
+      <div>
+        <h2>Find the steam</h2>
+        <dl>
+          <dt>Address</dt><dd>47 Mercer Lane, down the stairs, under the copper pipe sign</dd>
+          <dt>Getting here</dt><dd>Broadway stop, two minutes on foot. No parking — don't try.</dd>
+          <dt>Contact</dt><dd>No phone. No email list. The line is the reservation.</dd>
+        </dl>
+        <p class="note">Allergies: our broth contains pork and sesame in everything. Vegetarians, sincerely — we are not your restaurant, and we'd rather say so here than at the door.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Copper Kettle · 47 Mercer Lane · est. 2016</span>
+    <span>One broth. Fourteen hours. Ninety bowls, give or take.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canvas = document.getElementById("steam");
+  var ctx = canvas.getContext("2d");
+  var hero = canvas.parentElement;
+  var particles = [];
+  var W, H, dpr;
+
+  function size() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = hero.clientWidth;
+    H = hero.clientHeight;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function spawn(p) {
+    p.x = Math.random() * W;
+    p.y = H * (0.55 + Math.random() * 0.5);
+    p.r = 22 + Math.random() * 60;
+    p.vy = 0.35 + Math.random() * 0.8;
+    p.sway = Math.random() * Math.PI * 2;
+    p.swaySpeed = 0.004 + Math.random() * 0.008;
+    p.life = 0;
+    p.maxLife = 260 + Math.random() * 260;
+    p.alpha = 0.04 + Math.random() * 0.06;
+    return p;
+  }
+
+  function drawFrame(step) {
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      if (step) {
+        p.life++;
+        p.y -= p.vy;
+        p.sway += p.swaySpeed;
+        p.r += 0.12;
+      }
+      var t = p.life / p.maxLife;
+      var fade = t < 0.2 ? t / 0.2 : 1 - (t - 0.2) / 0.8;
+      if (fade > 0) {
+        var g = ctx.createRadialGradient(
+          p.x + Math.sin(p.sway) * 34, p.y, 0,
+          p.x + Math.sin(p.sway) * 34, p.y, p.r
+        );
+        g.addColorStop(0, "oklch(0.94 0.02 85 / " + (p.alpha * fade) + ")");
+        g.addColorStop(1, "oklch(0.94 0.02 85 / 0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x + Math.sin(p.sway) * 34, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (step && (p.life >= p.maxLife || p.y + p.r < 0)) spawn(p);
+    }
+  }
+
+  size();
+  for (var i = 0; i < 26; i++) {
+    var p = spawn({});
+    p.life = Math.random() * p.maxLife;
+    particles.push(p);
+  }
+
+  var running = true;
+  function loop() {
+    if (running) {
+      drawFrame(true);
+      requestAnimationFrame(loop);
+    }
+  }
+
+  window.addEventListener("resize", size);
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      running = false;
+    } else if (!reduceMotion) {
+      running = true;
+      requestAnimationFrame(loop);
+    }
+  });
+
+  if (reduceMotion) {
+    drawFrame(false); // one static frame of steam, no motion
+  } else {
+    requestAnimationFrame(loop);
+  }
+
+  // Noodle-pull line draw on the menu divider
+  var divider = document.getElementById("noodle-divider");
+  if (reduceMotion) {
+    divider.classList.add("drawn");
+  } else if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          divider.classList.add("drawn");
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.6 });
+    io.observe(divider);
+  } else {
+    divider.classList.add("drawn");
+  }
+})();
+</script>
+</body>
+</html>

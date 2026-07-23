@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tintype — Wedding photography for people who hate posing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Jost:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: oklch(0.998 0 0);
+  --ink: oklch(0.30 0.008 60);
+  --ink-soft: oklch(0.45 0.006 60);
+  --gold: oklch(0.74 0.085 80);
+  --gold-deep: oklch(0.52 0.10 80);
+  --hairline: oklch(0.86 0.02 80);
+  --font-display: "Prata", serif;
+  --font-body: "Jost", sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --z-sticky: 10;
+  --z-dialog: 20;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: oklch(0.74 0.085 80 / 0.25); }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.12;
+  text-wrap: balance;
+  letter-spacing: -0.015em;
+}
+h1 { font-size: clamp(2.6rem, 5.4vw, 4.75rem); }
+h2 { font-size: clamp(1.9rem, 3.4vw, 2.9rem); }
+h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); }
+p { max-width: 62ch; text-wrap: pretty; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 3px;
+}
+
+.wrap { width: min(1120px, 100% - 3rem); margin-inline: auto; }
+
+/* ---------- header ---------- */
+header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: oklch(0.998 0 0 / 0.94);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--hairline);
+}
+.header-in {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-block: 1.1rem;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+.wordmark .foil { color: var(--gold-deep); }
+nav ul { display: flex; gap: 2rem; list-style: none; flex-wrap: wrap; }
+nav a {
+  text-decoration: none;
+  font-size: 0.92rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  transition: color 0.25s var(--ease-out);
+}
+nav a:hover { color: var(--gold-deep); }
+@media (max-width: 640px) {
+  .header-in { flex-direction: column; gap: 0.6rem; }
+  nav ul { gap: 1.1rem; }
+}
+
+/* ---------- hero ---------- */
+.hero { padding-top: clamp(3rem, 8vh, 6rem); }
+.hero .kicker-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+.kicker-line::before, .kicker-line::after {
+  content: "";
+  height: 1px;
+  background: var(--gold);
+  flex: 1;
+  max-width: 72px;
+}
+.kicker-line span {
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  color: var(--gold-deep);
+}
+.hero h1 { max-width: 15ch; margin-inline: auto; text-align: center; }
+.hero .standfirst {
+  margin: 1.4rem auto 0;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 1.15rem;
+  font-weight: 300;
+  max-width: 46ch;
+}
+.hero-figure { margin-top: clamp(2.5rem, 6vh, 4.5rem); }
+.hero-figure img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+figcaption {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  padding-top: 0.7rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+figcaption .no { font-style: italic; color: var(--gold-deep); }
+
+/* ---------- philosophy ---------- */
+.philosophy {
+  margin-top: clamp(4.5rem, 10vh, 8rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+.philosophy .text h2 { margin-bottom: 1.3rem; }
+.philosophy .text p + p { margin-top: 1rem; }
+.philosophy .text .sig {
+  margin-top: 1.6rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+.philosophy .text .sig small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  margin-top: 0.3rem;
+}
+.portrait {
+  overflow: hidden;
+  position: relative;
+}
+.portrait img {
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+.portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  pointer-events: none;
+}
+@media (max-width: 760px) {
+  .philosophy { grid-template-columns: 1fr; }
+}
+
+/* ---------- gallery strip ---------- */
+.gallery {
+  margin-top: clamp(4.5rem, 10vh, 8rem);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+.gallery figure { overflow: hidden; }
+.gallery button {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  padding: 0;
+  overflow: hidden;
+}
+.gallery img {
+  width: 100%;
+  height: auto;
+  transition: transform 1.2s var(--ease-out);
+}
+.gallery button:hover img,
+.gallery button:focus-visible img { transform: scale(1.035); }
+.gallery figcaption { font-size: 0.88rem; }
+@media (max-width: 640px) {
+  .gallery { grid-template-columns: 1fr; }
+}
+
+/* ---------- collections ---------- */
+.collections { margin-top: clamp(5rem, 12vh, 9rem); }
+.collections h2 { text-align: center; }
+.collections .intro {
+  text-align: center;
+  margin: 1rem auto 0;
+  color: var(--ink-soft);
+  max-width: 52ch;
+}
+.collection-list {
+  list-style: none;
+  margin-top: 3rem;
+  border-top: 1px solid var(--hairline);
+}
+.collection {
+  border-bottom: 1px solid var(--hairline);
+  padding: clamp(1.6rem, 3vw, 2.4rem) 0;
+  display: grid;
+  grid-template-columns: 1.4fr 2fr auto;
+  gap: clamp(1.2rem, 4vw, 3rem);
+  align-items: baseline;
+}
+.collection h3 { letter-spacing: 0; }
+.collection .desc { color: var(--ink-soft); font-size: 0.98rem; }
+.collection .price {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  white-space: nowrap;
+}
+.collection .price small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  text-align: right;
+}
+.collection .fine {
+  grid-column: 1 / -1;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+@media (max-width: 700px) {
+  .collection { grid-template-columns: 1fr; gap: 0.5rem; }
+  .collection .price small { text-align: left; }
+}
+.collections .honesty {
+  margin: 2.2rem auto 0;
+  max-width: 56ch;
+  text-align: center;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ---------- availability ---------- */
+.availability {
+  margin-top: clamp(5rem, 12vh, 9rem);
+  padding-block: clamp(3rem, 7vh, 5rem);
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
+  text-align: center;
+}
+.availability h2 { max-width: 22ch; margin-inline: auto; }
+.availability p { margin: 1rem auto 0; color: var(--ink-soft); }
+.availability form {
+  margin: 2.2rem auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  justify-content: center;
+}
+.availability input {
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--hairline);
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 0;
+  min-width: 12rem;
+}
+.availability input::placeholder { color: var(--ink-soft); }
+.availability button[type="submit"] {
+  font: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1.8rem;
+  border: 1px solid var(--gold-deep);
+  background: var(--gold-deep);
+  color: oklch(0.99 0 0);
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.availability button[type="submit"]:hover {
+  background: var(--bg);
+  color: var(--gold-deep);
+}
+.availability .reply {
+  margin-top: 1.4rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--gold-deep);
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-out);
+}
+.availability .reply.show { opacity: 1; }
+
+/* ---------- footer ---------- */
+footer {
+  padding-block: clamp(3rem, 7vh, 5rem);
+  text-align: center;
+}
+footer .mark {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  color: var(--gold);
+  line-height: 1;
+}
+footer p { margin: 1rem auto 0; font-size: 0.9rem; color: var(--ink-soft); }
+footer a { color: var(--gold-deep); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+/* ---------- lightbox ---------- */
+dialog.lightbox {
+  border: none;
+  padding: 0;
+  background: transparent;
+  max-width: min(92vw, 1200px);
+  z-index: var(--z-dialog);
+}
+dialog.lightbox::backdrop { background: oklch(0.15 0.01 60 / 0.85); }
+dialog.lightbox img {
+  max-height: 82vh;
+  width: auto;
+  max-width: 100%;
+  margin-inline: auto;
+  opacity: 1;
+  transition: opacity 0.45s var(--ease-out);
+}
+dialog.lightbox img.fading { opacity: 0; }
+dialog.lightbox .lb-caption {
+  color: oklch(0.85 0.02 80);
+  text-align: center;
+  font-size: 0.9rem;
+  padding-top: 0.9rem;
+}
+dialog.lightbox .lb-close {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.4rem;
+  font: inherit;
+  font-size: 1.6rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  color: oklch(0.85 0.02 80);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .gallery img, .availability button[type="submit"],
+  dialog.lightbox img, .availability .reply { transition: none; }
+  .portrait img { transform: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="wordmark" href="#top"><span class="foil">T</span>intype</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#collections">Collections</a></li>
+        <li><a href="#availability">Availability</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap" aria-label="Introduction">
+    <div class="kicker-line" role="presentation"><span>Wedding photography · est. 2011</span></div>
+    <h1>Photographs that outlive the day</h1>
+    <p class="standfirst">Fifteen years, two cameras, and a stubborn belief that the best
+    frame of your wedding is the one you never saw being taken.</p>
+    <figure class="hero-figure">
+      <img src="https://picsum.photos/seed/wed-1/1600/900" width="1600" height="900"
+           alt="A ceremony in a stone barn, guests standing, late light falling across the aisle">
+      <figcaption><span>Barn ceremony, Widbrook Grange, Wiltshire</span><span class="no">No. 214</span></figcaption>
+    </figure>
+  </section>
+
+  <section class="philosophy wrap" id="philosophy" aria-labelledby="phil-heading">
+    <div class="text">
+      <h2 id="phil-heading">The unposed philosophy</h2>
+      <p>I will not ask you to tilt your chin, laugh on cue, or walk toward me slowly while
+      holding hands. You have waited years for this day; you should spend it with the people
+      you invited, not performing for my lens.</p>
+      <p>Instead I work like a quiet guest who happens to hold a camera — close enough for the
+      tear your grandmother hides, far enough that you forget I am there. Couples tell me
+      afterwards they can't remember being photographed at all. That is the review I want.</p>
+      <p class="sig">Eleanor Whitfield
+        <small>Principal photographer — twenty weddings a year, never more</small>
+      </p>
+    </div>
+    <figure class="portrait">
+      <img data-parallax="0.08" src="https://picsum.photos/seed/wed-2/800/1000" width="800" height="1000"
+           alt="A bride mid-laugh, veil caught by the wind, unaware of the camera">
+    </figure>
+  </section>
+
+  <section class="gallery wrap" aria-label="Selected frames">
+    <figure>
+      <button type="button" data-full="https://picsum.photos/seed/wed-3/1600/1067"
+              data-caption="The details table — her grandmother's ring on the order of service">
+        <img data-parallax="0.05" src="https://picsum.photos/seed/wed-3/800/600" width="800" height="600"
+             alt="Close detail of wedding rings resting on a linen tablecloth beside dried flowers">
+      </button>
+      <figcaption><span>The details table</span><span class="no">No. 198</span></figcaption>
+    </figure>
+    <figure>
+      <button type="button" data-full="https://picsum.photos/seed/wed-4/1600/1067"
+              data-caption="Last dance, half past midnight — the registrar stayed for it">
+        <img data-parallax="0.05" src="https://picsum.photos/seed/wed-4/800/600" width="800" height="600"
+             alt="A crowded dance floor at night, the couple at its centre, motion blur of raised glasses">
+      </button>
+      <figcaption><span>Last dance, half past midnight</span><span class="no">No. 221</span></figcaption>
+    </figure>
+  </section>
+
+  <section class="collections wrap" id="collections" aria-labelledby="col-heading">
+    <h2 id="col-heading">Three collections, priced plainly</h2>
+    <p class="intro">No tiers designed to upsell you, no "investment" euphemisms. The price
+    below is the price you pay, travel within England included.</p>
+    <ul class="collection-list">
+      <li class="collection">
+        <h3>The Morning</h3>
+        <p class="desc">Four hours, ceremony to speeches. Suited to registry offices and small
+        gatherings of under thirty guests. Around 350 finished photographs, delivered in three weeks.</p>
+        <p class="price">£1,950 <small>deposit £400</small></p>
+        <p class="fine">Weekdays and winter Saturdays only — I keep summer weekends for full days.</p>
+      </li>
+      <li class="collection">
+        <h3>The Full Day</h3>
+        <p class="desc">Ten hours, preparations to the last dance I'll stay upright for. Around
+        700 finished photographs, a linen proof box within a month, and an engagement hour
+        in spring so we know each other before the day.</p>
+        <p class="price">£3,400 <small>deposit £600</small></p>
+        <p class="fine">The collection nine of ten couples choose, which is why it sits in the middle.</p>
+      </li>
+      <li class="collection">
+        <h3>The Long Weekend</h3>
+        <p class="desc">For weddings that span a welcome supper and a slow Sunday lunch. Two
+        days of coverage, roughly 1,100 photographs, and a hand-bound album made in
+        Somerset — the reason the studio is called Tintype.</p>
+        <p class="price">£6,800 <small>deposit £1,200</small></p>
+        <p class="fine">Four weekends a year, booked on conversation rather than first-come.</p>
+      </li>
+    </ul>
+    <p class="honesty">Every couple receives the full-resolution files and the right to print
+    them anywhere, forever. Watermarks are for stock libraries, not for your marriage.</p>
+  </section>
+
+  <section class="availability" id="availability" aria-labelledby="avail-heading">
+    <div class="wrap">
+      <h2 id="avail-heading">Is your date still open?</h2>
+      <p>I take twenty weddings a year and the diary for 2027 is already a third full.
+      Tell me the date and the venue; I will answer personally within two days, honestly,
+      even if the answer is no.</p>
+      <form id="avail-form" novalidate>
+        <input type="text" name="date" aria-label="Wedding date" placeholder="Your date — e.g. 14 June 2027" required>
+        <input type="text" name="venue" aria-label="Venue" placeholder="Venue or town" required>
+        <input type="email" name="email" aria-label="Email address" placeholder="Email address" required>
+        <button type="submit">Check the diary</button>
+      </form>
+      <p class="reply" id="avail-reply" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="mark" aria-hidden="true">T</p>
+    <p>Tintype · Eleanor Whitfield · Bradford-on-Avon, Wiltshire<br>
+    <a href="mailto:hello@tintype-weddings.example">hello@tintype-weddings.example</a> · 01225 000 314</p>
+  </div>
+</footer>
+
+<dialog class="lightbox" id="lightbox" aria-label="Photograph viewer">
+  <button class="lb-close" type="button" aria-label="Close viewer">&times;</button>
+  <img id="lb-img" src="" alt="">
+  <p class="lb-caption" id="lb-caption"></p>
+</dialog>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- gentle parallax on portraits ---- */
+  if (!reduce) {
+    var items = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var vh = window.innerHeight;
+      items.forEach(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        var speed = parseFloat(el.getAttribute("data-parallax")) || 0.06;
+        var center = r.top + r.height / 2 - vh / 2;
+        el.style.transform = "translateY(" + (-center * speed).toFixed(1) + "px) scale(1.12)";
+      });
+    }
+    window.addEventListener("scroll", function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  /* ---- lightbox with crossfade ---- */
+  var dialog = document.getElementById("lightbox");
+  var lbImg = document.getElementById("lb-img");
+  var lbCap = document.getElementById("lb-caption");
+  var lastTrigger = null;
+
+  document.querySelectorAll(".gallery button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      lastTrigger = btn;
+      lbImg.src = btn.getAttribute("data-full");
+      lbImg.alt = btn.querySelector("img").alt;
+      lbCap.textContent = btn.getAttribute("data-caption");
+      lbImg.classList.remove("fading");
+      dialog.showModal();
+    });
+  });
+
+  /* crossfade the image in once the full-size frame loads */
+  lbImg.addEventListener("load", function () {
+    if (dialog.open && !reduce) {
+      lbImg.classList.add("fading");
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { lbImg.classList.remove("fading"); });
+      });
+    }
+  });
+
+  dialog.querySelector(".lb-close").addEventListener("click", function () { dialog.close(); });
+  dialog.addEventListener("click", function (e) {
+    if (e.target === dialog) dialog.close();
+  });
+  dialog.addEventListener("close", function () {
+    if (lastTrigger) lastTrigger.focus();
+  });
+
+  /* ---- availability checker teaser ---- */
+  var form = document.getElementById("avail-form");
+  var reply = document.getElementById("avail-reply");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var date = form.elements.date.value.trim();
+    if (!date) {
+      reply.textContent = "Tell me the date first — even a rough month will do.";
+    } else {
+      reply.textContent = "Noted, " + date + ". I will write back within two days — Eleanor.";
+    }
+    reply.classList.remove("show");
+    void reply.offsetWidth; /* restart the fade */
+    reply.classList.add("show");
+  });
+})();
+</script>
+</body>
+</html>

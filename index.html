@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refined Landing Pages — 100 brands, zero templates</title>
+<meta name="description" content="A curated gallery of 100 distinct fictional brand landing pages. Browse, filter, and open live previews.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ── tokens ───────────────────────────────────────────
+     Reference: museum archive under track lighting —
+     deep indigo-black walls, amber label light, paper tickets.
+     Not cream. Not acid-green-on-black. Not SaaS purple. */
+  :root {
+    --bg: oklch(0.13 0.022 275);
+    --bg-lift: oklch(0.16 0.024 275);
+    --surface: oklch(0.19 0.028 275);
+    --surface-2: oklch(0.23 0.03 275);
+    --line: oklch(0.32 0.03 275);
+    --line-soft: oklch(0.26 0.025 275);
+    --ink: oklch(0.96 0.012 95);
+    --ink-soft: oklch(0.78 0.02 275);
+    --muted: oklch(0.62 0.025 275);
+    --amber: oklch(0.78 0.155 72);
+    --amber-deep: oklch(0.68 0.14 68);
+    --amber-ink: oklch(0.22 0.04 70);
+    --mint: oklch(0.78 0.1 175);
+    --rose: oklch(0.72 0.12 18);
+    --sky: oklch(0.76 0.1 230);
+    --danger: oklch(0.65 0.14 25);
+
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --body: "Source Sans 3", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+
+    --step--1: clamp(0.78rem, 0.74rem + 0.2vw, 0.88rem);
+    --step-0: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+    --step-1: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
+    --step-2: clamp(1.5rem, 1.25rem + 1.2vw, 2.1rem);
+    --step-3: clamp(2.1rem, 1.5rem + 2.8vw, 3.6rem);
+    --step-4: clamp(2.8rem, 1.8rem + 4.5vw, 5.2rem);
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --header-h: 3.25rem;
+    --z-header: 40;
+    --z-modal: 60;
+    --z-toast: 70;
+
+    --preview-w: 1280;
+    --preview-h: 800;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.55;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 10% -10%, oklch(0.35 0.08 72 / 0.18), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 0%, oklch(0.3 0.06 275 / 0.35), transparent 50%),
+      radial-gradient(ellipse 50% 30% at 50% 100%, oklch(0.25 0.05 230 / 0.12), transparent 55%);
+  }
+
+  /* fine grain */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  a { color: inherit; }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+  :focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .shell {
+    position: relative;
+    z-index: 2;
+    width: min(1400px, 100% - 2rem);
+    margin-inline: auto;
+  }
+
+  /* ── site header (scrolls with page) ────────────────── */
+  .topbar {
+    position: static;
+    z-index: auto;
+    background: transparent;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .topbar .shell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.5rem;
+    padding-block: 0.65rem;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    text-decoration: none;
+    min-width: 0;
+  }
+  .brand-mark {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.15rem;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+  .brand-mark span { color: var(--amber); }
+  .brand-sub {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .brand-sub { display: none; }
+  }
+
+  /* Only this row sticks: result count + grid/list */
+  .results-bar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .results-bar .shell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    min-height: 2.75rem;
+    padding-block: 0.45rem;
+  }
+  .results-count {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    margin: 0;
+  }
+  .results-count strong {
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  /* ── hero ───────────────────────────────────────────── */
+  .hero {
+    padding: clamp(2.5rem, 5vw, 4.5rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1.1rem;
+  }
+  .hero-kicker::before {
+    content: "";
+    width: 1.5rem;
+    height: 1px;
+    background: var(--amber);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-4);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    max-width: 14ch;
+    text-wrap: balance;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--amber);
+  }
+  .hero-lede {
+    max-width: 52ch;
+    color: var(--ink-soft);
+    font-size: var(--step-1);
+    line-height: 1.5;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .chip-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .chip-stat b {
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* ── toolbar: search + filter chips — scrolls away ──── */
+  .toolbar {
+    position: static;
+    z-index: auto;
+    padding: 0.85rem 0 1rem;
+    background: transparent;
+    backdrop-filter: none;
+  }
+  .toolbar-inner {
+    display: grid;
+    gap: 0.85rem;
+  }
+  .search-wrap {
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .search {
+    width: 100%;
+    appearance: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    padding: 0.85rem 1.15rem 0.85rem 2.75rem;
+    transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+  }
+  .search::placeholder { color: var(--muted); }
+  .search:hover { border-color: oklch(0.4 0.04 275); }
+  .search:focus {
+    outline: none;
+    border-color: var(--amber);
+    box-shadow: 0 0 0 3px oklch(0.78 0.155 72 / 0.18);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    align-items: center;
+  }
+  .filter-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 0.25rem;
+  }
+  .filter-btn {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--line-soft);
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-weight: 500;
+    transition: background 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease);
+    white-space: nowrap;
+  }
+  .filter-btn:hover {
+    border-color: var(--line);
+    color: var(--ink);
+    background: var(--surface);
+  }
+  .filter-btn[aria-pressed="true"] {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--amber-ink);
+  }
+
+  .view-toggle {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.2rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+  }
+  .view-toggle button {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 600;
+    font: inherit;
+  }
+  .view-toggle button[aria-pressed="true"] {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  /* ── grid ───────────────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 1.25rem;
+    padding-bottom: 4rem;
+  }
+  .grid.compact {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: 0.9rem;
+  }
+
+  .card {
+    --accent: var(--amber);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.45s var(--ease), border-color 0.35s var(--ease), box-shadow 0.45s var(--ease);
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: oklch(0.42 0.05 275);
+    box-shadow: 0 18px 40px oklch(0.05 0.02 275 / 0.45);
+  }
+  .card.is-missing {
+    opacity: 0.55;
+  }
+  .card.is-missing:hover { transform: none; box-shadow: none; }
+
+  .card-preview {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(145deg, oklch(0.2 0.03 275), oklch(0.15 0.02 275));
+    overflow: hidden;
+    border-bottom: 1px solid var(--line-soft);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .card-preview:not([href]) {
+    cursor: default;
+  }
+  .card-preview-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .card-preview-fallback .num {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+    letter-spacing: -0.04em;
+    color: color-mix(in oklch, var(--accent) 40%, transparent);
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+  .card-preview-fallback .seed-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+    filter: saturate(0.85) contrast(1.05);
+  }
+  .card-preview-fallback .veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--surface) 0%, transparent 45%);
+  }
+
+  .card-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+    transition: opacity 0.5s var(--ease);
+  }
+  .card-frame.is-loaded { opacity: 1; }
+  .card-preview.has-live .card-preview-fallback {
+    opacity: 0;
+    transition: opacity 0.4s var(--ease);
+  }
+  .card-preview.has-live .card-badge-row { z-index: 3; }
+  .card-frame iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(var(--preview-w) * 1px);
+    height: calc(var(--preview-h) * 1px);
+    border: 0;
+    transform-origin: top left;
+    pointer-events: none;
+    background: #fff;
+  }
+
+  .card-badge-row {
+    position: absolute;
+    top: 0.65rem;
+    left: 0.65rem;
+    right: 0.65rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 0.4rem;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .id-badge {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    background: oklch(0.12 0.02 275 / 0.72);
+    backdrop-filter: blur(8px);
+    color: var(--ink);
+    border: 1px solid oklch(1 0 0 / 0.08);
+  }
+  .status-badge {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    background: oklch(0.12 0.02 275 / 0.72);
+    backdrop-filter: blur(8px);
+    border: 1px solid oklch(1 0 0 / 0.08);
+    color: var(--muted);
+  }
+  .status-badge.live { color: var(--mint); }
+  .status-badge.soon { color: var(--rose); }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 1.05rem 1.15rem 1.15rem;
+    flex: 1;
+  }
+  .card-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+  .card-tagline {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    line-height: 1.4;
+  }
+  .card-mood {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.35rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.5rem;
+    border-radius: 999px;
+    background: var(--bg-lift);
+    color: var(--ink-soft);
+    border: 1px solid var(--line-soft);
+  }
+  .tag.tier-simple { color: var(--sky); }
+  .tag.tier-medium { color: var(--amber); }
+  .tag.tier-complex { color: var(--rose); }
+  .tag.strat-restrained { border-color: oklch(0.76 0.1 230 / 0.35); }
+  .tag.strat-committed { border-color: oklch(0.78 0.155 72 / 0.35); }
+  .tag.strat-full { border-color: oklch(0.78 0.1 175 / 0.35); }
+  .tag.strat-drenched { border-color: oklch(0.72 0.12 18 / 0.4); }
+
+  .card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary {
+    background: var(--amber);
+    color: var(--amber-ink);
+  }
+  .btn-primary:hover { background: var(--amber-deep); color: var(--amber-ink); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink-soft);
+    background: var(--surface-2);
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.4;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 1.5rem;
+    color: var(--muted);
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-lift);
+  }
+  .empty strong { display: block; color: var(--ink-soft); margin-bottom: 0.35rem; font-family: var(--display); font-size: 1.25rem; }
+
+  /* ── modal preview ──────────────────────────────────── */
+  .modal[hidden] { display: none; }
+  .modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+  }
+  .modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: oklch(0.08 0.02 275 / 0.78);
+    backdrop-filter: blur(8px);
+  }
+  .modal-panel {
+    position: relative;
+    width: min(1100px, 100%);
+    max-height: min(90dvh, 900px);
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px oklch(0.05 0.02 275 / 0.55);
+    animation: panel-in 0.4s var(--ease);
+  }
+  @keyframes panel-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+  }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem 1.1rem;
+    border-bottom: 1px solid var(--line-soft);
+    background: var(--bg-lift);
+  }
+  .modal-title {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    min-width: 0;
+  }
+  .modal-title span {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-top: 0.15rem;
+  }
+  .modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  .icon-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    transition: background 0.25s var(--ease), color 0.25s var(--ease);
+  }
+  .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .modal-frame-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 50vh;
+    background: var(--bg);
+  }
+  .modal-frame-wrap iframe {
+    width: 100%;
+    height: 100%;
+    min-height: min(62vh, 640px);
+    border: 0;
+    background: #fff;
+  }
+  .modal-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.1rem;
+    border-top: 1px solid var(--line-soft);
+    background: var(--bg-lift);
+  }
+  .modal-blurb {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    max-width: 55ch;
+  }
+
+  /* ── footer ─────────────────────────────────────────── */
+  .site-foot {
+    border-top: 1px solid var(--line-soft);
+    padding: 2rem 0 2.75rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  .site-foot .shell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .site-foot a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .site-foot a:hover { border-bottom-color: var(--amber); color: var(--amber); }
+
+  /* list view */
+  .grid.list {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+  .grid.list .card {
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .grid.list .card-preview {
+    width: min(280px, 38vw);
+    flex: none;
+    aspect-ratio: auto;
+    min-height: 140px;
+    border-bottom: 0;
+    border-right: 1px solid var(--line-soft);
+  }
+  .grid.list .card-body {
+    padding: 1rem 1.2rem;
+    justify-content: center;
+  }
+  .grid.list .card-actions {
+    max-width: 280px;
+  }
+  @media (max-width: 700px) {
+    .grid.list .card { flex-direction: column; }
+    .grid.list .card-preview {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      border-right: 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#gallery" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Skip to gallery</a>
+<style>.skip:focus{position:fixed;left:1rem;top:1rem;z-index:100;width:auto;height:auto;padding:0.6rem 1rem;background:var(--amber);color:var(--amber-ink);border-radius:999px;overflow:visible}</style>
+
+<header class="topbar">
+  <div class="shell">
+    <a class="brand" href="#">
+      <span class="brand-mark">Landing<span>.</span>Pages</span>
+      <span class="brand-sub">Refined · Archive</span>
+    </a>
+  </div>
+</header>
+
+<main>
+  <section class="hero shell">
+    <p class="hero-kicker">Design archive</p>
+    <h1>One hundred brands.<br><em>Zero templates.</em></h1>
+    <p class="hero-lede">
+      A curated collection of self-contained landing pages — each a distinct fictional brand with its own palette, type, motion, and voice. Browse, filter, preview, open.
+    </p>
+    <div class="hero-meta">
+      <span class="chip-stat"><b>HTML</b> single-file pages</span>
+      <span class="chip-stat"><b>OKLCH</b> committed palettes</span>
+      <span class="chip-stat"><b>360→1440</b> responsive</span>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <div class="shell toolbar-inner">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>
+        </svg>
+        <label class="visually-hidden" for="search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search pages</label>
+        <input class="search" id="search" type="search" placeholder="Search by name, tagline, mood, number…" autocomplete="off">
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter by tier">
+        <span class="filter-label">Tier</span>
+        <button type="button" class="filter-btn" data-filter-tier="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-btn" data-filter-tier="simple" aria-pressed="false">Simple</button>
+        <button type="button" class="filter-btn" data-filter-tier="medium" aria-pressed="false">Medium</button>
+        <button type="button" class="filter-btn" data-filter-tier="complex" aria-pressed="false">Complex</button>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter by color strategy">
+        <span class="filter-label">Strategy</span>
+        <button type="button" class="filter-btn" data-filter-strat="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-btn" data-filter-strat="restrained" aria-pressed="false">Restrained</button>
+        <button type="button" class="filter-btn" data-filter-strat="committed" aria-pressed="false">Committed</button>
+        <button type="button" class="filter-btn" data-filter-strat="full palette" aria-pressed="false">Full palette</button>
+        <button type="button" class="filter-btn" data-filter-strat="drenched" aria-pressed="false">Drenched</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-bar">
+    <div class="shell">
+      <p class="results-count" id="results-count" aria-live="polite"><strong>0</strong> pages</p>
+      <div class="view-toggle" role="group" aria-label="View mode">
+        <button type="button" data-view="grid" aria-pressed="true">Grid</button>
+        <button type="button" data-view="list" aria-pressed="false">List</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="shell" id="gallery" aria-label="Landing page gallery">
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="shell">
+    <p>Landing Pages Refined · fictional brands for craft study · each file is self-contained.</p>
+    <p><a href="landings/MANIFEST.md">Read the manifest</a></p>
+  </div>
+</footer>
+
+<!-- Preview modal -->
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h2 class="modal-title" id="modal-title">Preview<span id="modal-sub"></span></h2>
+      <div class="modal-actions">
+        <a class="btn btn-primary" id="modal-open" href="#" target="_blank" rel="noopener">Open page</a>
+        <button type="button" class="icon-btn" data-close aria-label="Close preview">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="modal-frame-wrap">
+      <iframe id="modal-frame" title="Page preview" loading="lazy"></iframe>
+    </div>
+    <div class="modal-foot">
+      <p class="modal-blurb" id="modal-blurb"></p>
+      <div class="card-tags" id="modal-tags"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PAGES = [{"id":"001","slug":"ember-oak","file":"001-ember-oak.html","exists":true,"name":"Ember & Oak","tagline":"wood-fired pizzeria","blurb":"wood-fired pizzeria","tier":"medium","strategy":"committed","bg":"pure-white","mood":"flour-dusted oak table beside a brick oven at 7pm","copy":"warm, direct, medium density","motion":"medium","type":"display Archivo 800 · body Literata","seed":"ember-hero","hue":40},{"id":"002","slug":"feral","file":"002-feral.html","exists":true,"name":"Feral","tagline":"natural wine bar","blurb":"natural wine bar","tier":"simple","strategy":"drenched","bg":"color (deep oxblood/grape, hue ~350, L ~0.30)","mood":"candlelit cellar, stained glass of gamay","copy":"sparse, cheeky","motion":"subtle","type":"display Marcellus · body Jost","seed":"feral-cellar","hue":74},{"id":"003","slug":"monsoon","file":"003-monsoon.html","exists":true,"name":"Monsoon","tagline":"specialty tea house","blurb":"specialty tea house","tier":"simple","strategy":"restrained","bg":"tinted (pale celadon-tinted white, hue ~170, chroma ≤0.02 — literal tea-room environment)","mood":"first flush darjeeling steaming in a porcelain gaiwan","copy":"sparse, contemplative","motion":"subtle","type":"display Tenor Sans · body Hanken Grotesk","seed":"monsoon-leaf","hue":111},{"id":"004","slug":"plainchant","file":"004-plainchant.html","exists":true,"name":"Plainchant","tagline":"monastery-brewed ale","blurb":"monastery-brewed ale","tier":"medium","strategy":"committed","bg":"pure-black (deep walnut-black, hue ~60, chroma ~0.005)","mood":"abbey cellar by candlelight — honey through dark glass","copy":"medium, reverent with dry humor","motion":"subtle","type":"display Cinzel · body Bitter","seed":"plainchant-1","hue":148},{"id":"005","slug":"vermouth-hours","file":"005-vermouth-hours.html","exists":true,"name":"Vermouth Hours","tagline":"aperitivo brand","blurb":"aperitivo brand","tier":"medium","strategy":"full palette","bg":"pure-white","mood":"Milan 6pm — orange slice against white tablecloth","copy":"medium, playful Italian cadence","motion":"medium","type":"display Unbounded · body Archivo","seed":"vermouth-1","hue":185},{"id":"006","slug":"bite","file":"006-bite.html","exists":true,"name":"BITE","tagline":"smash-burger food truck","blurb":"smash-burger food truck","tier":"simple","strategy":"drenched","bg":"color (ketchup red, hue ~25, L ~0.52, chroma ≤0.22)","mood":"diner napkin dispenser chrome + mustard squeeze bottle","copy":"loud and short","motion":"strong","type":"display Bungee · body Hanken Grotesk","seed":"bite-burger","hue":222},{"id":"007","slug":"copper-kettle","file":"007-copper-kettle.html","exists":true,"name":"Copper Kettle","tagline":"ramen shop","blurb":"ramen shop","tier":"medium","strategy":"committed","bg":"pure-black","mood":"midnight counter seat, steam off tonkotsu","copy":"intimate, medium density","motion":"medium","type":"display Rozha One · body Gabarito","seed":"ramen-1","hue":259},{"id":"008","slug":"neapolitan","file":"008-neapolitan.html","exists":true,"name":"Neapolitan","tagline":"gelato shop","blurb":"gelato shop","tier":"simple","strategy":"full palette","bg":"pure-white (pastels live in scoops/chips, not the surface)","mood":"three scoops on a marble slab","copy":"sweet and short","motion":"medium","type":"display Bagel Fat One · body Nunito","seed":"gelato-1","hue":296},{"id":"009","slug":"marigold","file":"009-marigold.html","exists":true,"name":"Marigold","tagline":"modern Indian restaurant","blurb":"modern Indian restaurant","tier":"complex","strategy":"drenched","bg":"color (marigold, hue ~75, L ~0.62, chroma ≤0.20) alternating with deep aubergine (~330, L ~0.25) sections","mood":"marigold garlands against aubergine silk","copy":"rich","motion":"strong","type":"display Yeseva One · body Hanken Grotesk","seed":"marigold-1","hue":333},{"id":"010","slug":"smoke-signal","file":"010-smoke-signal.html","exists":true,"name":"Smoke Signal","tagline":"Texas BBQ joint","blurb":"Texas BBQ joint","tier":"medium","strategy":"committed","bg":"pure-black (smoke-black) alternating with butcher-paper-white sections","mood":"post oak smoke at 4am, pink butcher paper","copy":"drawl, medium","motion":"medium","type":"display Alfa Slab One · body Bitter","seed":"bbq-1","hue":10},{"id":"011","slug":"ground-control","file":"011-ground-control.html","exists":true,"name":"Ground Control","tagline":"coffee subscription","blurb":"coffee subscription","tier":"simple","strategy":"restrained","bg":"pure-white","mood":"mission-control checklist clipped to a portafilter","copy":"crisp and short","motion":"subtle","type":"single family deliberate — Schibsted Grotesk in 3 weights","seed":"coffee-bag","hue":47},{"id":"012","slug":"gold-leaf","file":"012-gold-leaf.html","exists":true,"name":"Gold Leaf","tagline":"artisan chocolatier","blurb":"artisan chocolatier","tier":"medium","strategy":"committed","bg":"pure-black (cacao, hue ~40, L ~0.14, chroma ~0.02)","mood":"gold leaf pressed onto 85% dark","copy":"luxurious, medium","motion":"medium","type":"display Prata · body Jost","seed":"choc-1","hue":84},{"id":"013","slug":"hearthstone-bread","file":"013-hearthstone-bread.html","exists":true,"name":"Hearthstone","tagline":"sourdough bakery","blurb":"sourdough bakery","tier":"medium","strategy":"committed","bg":"pure-white (warmth carried by accents)","mood":"flour in morning light, crackled crust","copy":"homey, medium","motion":"subtle","type":"display Bitter 800 · body Hanken Grotesk","seed":"bread-1","hue":121},{"id":"014","slug":"night-market","file":"014-night-market.html","exists":true,"name":"Night Market","tagline":"street food festival","blurb":"street food festival","tier":"complex","strategy":"drenched","bg":"color (festival night black, hue ~280, L ~0.12)","mood":"lantern light on wet pavement","copy":"energetic, rich","motion":"strong","type":"display Zen Dots · body Sora","seed":"nightmarket-1","hue":158},{"id":"015","slug":"the-comma","file":"015-the-comma.html","exists":true,"name":"The Comma","tagline":"literary café","blurb":"literary café","tier":"simple","strategy":"restrained","bg":"pure-white","mood":"red pencil in the margin of a clean manuscript","copy":"sparse and witty","motion":"subtle","type":"single family deliberate — Source Serif 4 (roman + italic, 4 weights)","seed":"the-comma","hue":195},{"id":"016","slug":"copper-and-ash","file":"016-copper-and-ash.html","exists":true,"name":"Copper & Ash","tagline":"cocktail bar","blurb":"cocktail bar","tier":"medium","strategy":"committed","bg":"pure-black (charcoal, chroma ~0.005)","mood":"copper still catching bar light","copy":"suave, medium","motion":"medium","type":"display Bodoni Moda · body Hanken Grotesk","seed":"cocktail-1","hue":232},{"id":"017","slug":"lowlands","file":"017-lowlands.html","exists":true,"name":"Lowlands","tagline":"Scotch distillery","blurb":"Scotch distillery","tier":"complex","strategy":"full palette","bg":"pure-black (peat) with barley-gold and mist-gray alternating sections","mood":"warehouse No. 3 — cask ends disappearing into dark","copy":"rich storytelling","motion":"medium","type":"display Marcellus · body Literata","seed":"scotch-1","hue":269},{"id":"018","slug":"halcyon-house","file":"018-halcyon-house.html","exists":true,"name":"Halcyon House","tagline":"boutique coastal hotel","blurb":"boutique coastal hotel","tier":"complex","strategy":"committed","bg":"pure-white","mood":"Aegean noon — white plaster, one blue","copy":"serene editorial, medium","motion":"medium","type":"display Italiana · body Hanken Grotesk","seed":"hotel-1","hue":306},{"id":"019","slug":"moonshine-motor","file":"019-moonshine-motor.html","exists":true,"name":"Moonshine Motor Court","tagline":"roadhouse motel","blurb":"roadhouse motel","tier":"medium","strategy":"drenched","bg":"color (desert-night indigo, hue ~275, L ~0.18)","mood":"VACANCY neon over Route 66 asphalt","copy":"pulpy, medium","motion":"medium","type":"display Six Caps · body Cutive Mono (typewriter register — literal motel receipts)","seed":"motel-1","hue":343},{"id":"020","slug":"summit-oracle","file":"020-summit-oracle.html","exists":true,"name":"Summit Oracle","tagline":"ski resort","blurb":"ski resort","tier":"complex","strategy":"committed","bg":"pure-white (alpine snow)","mood":"patrol jacket orange against whiteout","copy":"crisp alpine, rich","motion":"strong","type":"display Archivo 900 · body Geologica","seed":"ski-1","hue":20},{"id":"021","slug":"saltline","file":"021-saltline.html","exists":true,"name":"Saltline","tagline":"cold-water surf school","blurb":"cold-water surf school","tier":"medium","strategy":"committed","bg":"pure-black (deep slate-teal, hue ~200, L ~0.16)","mood":"North Sea dawn — foam on dark water","copy":"salty encouragement, medium","motion":"medium","type":"display Wix Madefor Display · body Hanken Grotesk","seed":"surf-1","hue":57},{"id":"022","slug":"terrapin","file":"022-terrapin.html","exists":true,"name":"Terrapin","tagline":"kayak outfitter","blurb":"kayak outfitter","tier":"medium","strategy":"committed","bg":"pure-white with river-green (~165 deep) alternating sections","mood":"cedar-strip hull on a green river","copy":"outdoorsy, medium","motion":"medium","type":"display Fjalla One · body Gabarito","seed":"kayak-1","hue":94},{"id":"023","slug":"aurora-ice","file":"023-aurora-ice.html","exists":true,"name":"Aurora Ice","tagline":"Icelandic glacier tours","blurb":"Icelandic glacier tours","tier":"complex","strategy":"drenched","bg":"color (polar night, hue ~260, L ~0.10)","mood":"aurora over black sand","copy":"hushed awe, rich","motion":"strong","type":"display Unbounded · body Spline Sans","seed":"glacier-1","hue":131},{"id":"024","slug":"driftlab","file":"024-driftlab.html","exists":true,"name":"Driftlab","tagline":"arctic research expedition","blurb":"arctic research expedition","tier":"medium","strategy":"restrained","bg":"pure-white (ice)","mood":"telemetry printout pinned to an ice-core crate","copy":"precise field","motion":"medium","type":"display Chivo Mono (literal expedition telemetry) · body Archivo","seed":"arctic-1","hue":168},{"id":"025","slug":"northmark","file":"025-northmark.html","exists":true,"name":"Northmark","tagline":"hiking boots","blurb":"hiking boots","tier":"medium","strategy":"committed","bg":"pure-white","mood":"waxed leather against trail dust","copy":"rugged, medium","motion":"medium","type":"display Archivo 800 · body Hanken Grotesk","seed":"boots-1","hue":205},{"id":"026","slug":"velvet-circuit","file":"026-velvet-circuit.html","exists":true,"name":"Velvet Circuit","tagline":"synth-pop album launch","blurb":"synth-pop album launch","tier":"complex","strategy":"drenched","bg":"color (ultraviolet, hue ~290, L ~0.16)","mood":"chrome bumper under neon at 2am","copy":"fan","motion":"strong","type":"display Monoton · body Sora","seed":"synth-1","hue":242},{"id":"027","slug":"nocturne-fm","file":"027-nocturne-fm.html","exists":true,"name":"Nocturne FM","tagline":"late-night jazz radio","blurb":"late-night jazz radio","tier":"medium","strategy":"committed","bg":"pure-black (midnight blue-black, hue ~260, chroma ~0.01)","mood":"brass bell of a tenor sax in a dark room","copy":"velvet radio voice, medium","motion":"subtle","type":"display Bodoni Moda italic · body Literata","seed":"jazz-1","hue":279},{"id":"028","slug":"semitone","file":"028-semitone.html","exists":true,"name":"Semitone","tagline":"piano bar","blurb":"piano bar","tier":"simple","strategy":"committed","bg":"pure-black (lacquer)","mood":"one red lamp over 88 keys","copy":"intimate and sparse","motion":"subtle","type":"display Marcellus · body Jost","seed":"piano-1","hue":316},{"id":"029","slug":"small-hours","file":"029-small-hours.html","exists":true,"name":"Small Hours","tagline":"insomnia podcast","blurb":"insomnia podcast","tier":"simple","strategy":"drenched","bg":"color (3am indigo, hue ~270, L ~0.16)","mood":"ceiling at 3:47am, one streetlight through blinds","copy":"hushed, sparse","motion":"subtle","type":"display Literata italic · body Hanken Grotesk","seed":"small-hours","hue":353},{"id":"030","slug":"cold-open","file":"030-cold-open.html","exists":true,"name":"Cold Open","tagline":"podcast network","blurb":"podcast network","tier":"medium","strategy":"full palette","bg":"pure-white","mood":"three shows, three mic flags","copy":"punchy, medium","motion":"medium","type":"display Archivo 900 · body Hanken Grotesk","seed":"mic-1","hue":30},{"id":"031","slug":"vanishing-point","file":"031-vanishing-point.html","exists":true,"name":"Vanishing Point","tagline":"photography magazine","blurb":"photography magazine","tier":"complex","strategy":"restrained","bg":"pure-white","mood":"gallery wall, one red dot sold sticker","copy":"long","motion":"medium","type":"display Anton · body Source Serif 4 (literal magazine — editorial lane justified by brief)","seed":"vp-1","hue":67},{"id":"032","slug":"half-light","file":"032-half-light.html","exists":true,"name":"Half Light","tagline":"film photography lab","blurb":"film photography lab","tier":"simple","strategy":"committed","bg":"pure-black (darkroom) with one paper-white pricing section","mood":"safelight amber over developing trays","copy":"nerdy","motion":"subtle","type":"display Cutive Mono · body Hanken Grotesk","seed":"film-1","hue":104},{"id":"033","slug":"tintype","file":"033-tintype.html","exists":true,"name":"Tintype","tagline":"wedding photography","blurb":"wedding photography","tier":"medium","strategy":"restrained","bg":"pure-white","mood":"linen album, one gold foil initial","copy":"tender, medium","motion":"subtle","type":"display Prata · body Jost","seed":"wed-1","hue":141},{"id":"034","slug":"prism-break","file":"034-prism-break.html","exists":true,"name":"Prism Break","tagline":"indie animation studio","blurb":"indie animation studio","tier":"complex","strategy":"full palette","bg":"pure-black (ink navy, hue ~250, L ~0.14)","mood":"cel on a lightbox — pink registration marks","copy":"playful","motion":"strong","type":"display Unbounded · body Gabarito","seed":"anim-1","hue":178},{"id":"035","slug":"static-bloom","file":"035-static-bloom.html","exists":true,"name":"Static Bloom","tagline":"generative art collective","blurb":"generative art collective","tier":"complex","strategy":"drenched","bg":"pure-black","mood":"phosphor bloom on a dead channel","copy":"manifesto, medium","motion":"strong","type":"display Chivo Mono · body Spline Sans","seed":"static-bloom","hue":215},{"id":"036","slug":"typecase","file":"036-typecase.html","exists":true,"name":"Typecase","tagline":"indie type foundry","blurb":"indie type foundry","tier":"complex","strategy":"committed","bg":"pure-white (paper)","mood":"specimen sheet fresh off the proof press","copy":"specimen voice, rich","motion":"strong","type":"display Zilla Slab 700 · body Hanken Grotesk","seed":"typecase","hue":252},{"id":"037","slug":"tidal-press","file":"037-tidal-press.html","exists":true,"name":"Tidal Press","tagline":"letterpress studio","blurb":"letterpress studio","tier":"medium","strategy":"committed","bg":"pure-white","mood":"deep impression of blue ink in cotton paper","copy":"craft voice, medium","motion":"subtle","type":"display Libre Caslon Text · body Hanken Grotesk","seed":"letterpress-1","hue":289},{"id":"038","slug":"folkloric","file":"038-folkloric.html","exists":true,"name":"Folkloric","tagline":"weaving & textile studio","blurb":"weaving & textile studio","tier":"medium","strategy":"full palette","bg":"tinted (undyed wool white, chroma ≤0.015 — literal fiber environment)","mood":"madder, indigo and weld drying on a line","copy":"warm artisan, medium","motion":"medium","type":"display Zilla Slab · body Literata","seed":"weave-1","hue":326},{"id":"039","slug":"kiln-and-co","file":"039-kiln-and-co.html","exists":true,"name":"Kiln & Co","tagline":"ceramics studio","blurb":"ceramics studio","tier":"medium","strategy":"committed","bg":"tinted (clay-dust white, hue ~50, chroma ≤0.02 — literal studio)","mood":"terracotta bisque waiting for celadon","copy":"tactile, medium","motion":"subtle","type":"display Bitter · body Gabarito","seed":"ceramics-1","hue":3},{"id":"040","slug":"brass-and-bone","file":"040-brass-and-bone.html","exists":true,"name":"Brass & Bone","tagline":"antique restoration","blurb":"antique restoration","tier":"medium","strategy":"committed","bg":"color (lacquered cabinet green, hue ~160, L ~0.22 — literal workshop interior)","mood":"brass hardware on a green-lacquered cabinet","copy":"provenance voice, medium","motion":"subtle","type":"display Cinzel · body Bitter","seed":"antique-1","hue":40},{"id":"041","slug":"second-empire","file":"041-second-empire.html","exists":true,"name":"Second Empire","tagline":"vintage furniture","blurb":"vintage furniture","tier":"medium","strategy":"restrained","bg":"pure-white","mood":"auction-house catalog — walnut and brass","copy":"dealer voice, medium","motion":"subtle","type":"display Marcellus · body Hanken Grotesk","seed":"furniture-1","hue":77},{"id":"042","slug":"cardinal-press","file":"042-cardinal-press.html","exists":true,"name":"Cardinal Press","tagline":"poetry small-press","blurb":"poetry small-press","tier":"simple","strategy":"restrained","bg":"pure-white","mood":"one red bird on white paper","copy":"sparse lyrical","motion":"subtle","type":"single family deliberate — Source Serif 4","seed":"cardinal-press","hue":114},{"id":"043","slug":"the-marionette","file":"043-the-marionette.html","exists":true,"name":"The Marionette","tagline":"puppet theater","blurb":"puppet theater","tier":"complex","strategy":"drenched","bg":"color (stage velvet crimson, hue ~355, L ~0.24)","mood":"footlights on velvet, gold braid","copy":"whimsical","motion":"strong","type":"display Rozha One · body Literata","seed":"puppet-1","hue":151},{"id":"044","slug":"moss-and-mortar","file":"044-moss-and-mortar.html","exists":true,"name":"Moss & Mortar","tagline":"terrarium shop","blurb":"terrarium shop","tier":"simple","strategy":"committed","bg":"pure-white","mood":"moss under glass, morning condensation","copy":"gentle, sparse","motion":"subtle","type":"display Gabarito 700 · body Hanken Grotesk","seed":"terrarium-1","hue":188},{"id":"045","slug":"night-blooming","file":"045-night-blooming.html","exists":true,"name":"Night Blooming","tagline":"botanical garden night events","blurb":"botanical garden night events","tier":"medium","strategy":"drenched","bg":"color (midnight garden, hue ~230, L ~0.14)","mood":"moonflower opening under bioluminescence","copy":"enchanted, medium","motion":"strong","type":"display Bodoni Moda · body Jost","seed":"nightgarden-1","hue":225},{"id":"046","slug":"pollen","file":"046-pollen.html","exists":true,"name":"Pollen","tagline":"urban beekeeping honey","blurb":"urban beekeeping honey","tier":"simple","strategy":"full palette","bg":"pure-white","mood":"rooftop hive against a gray skyline","copy":"sunny, sparse","motion":"medium","type":"display Shrikhand · body Nunito","seed":"honey-1","hue":262},{"id":"047","slug":"inkwell-society","file":"047-inkwell-society.html","exists":true,"name":"Inkwell Society","tagline":"fountain pen shop","blurb":"fountain pen shop","tier":"medium","strategy":"committed","bg":"pure-white","mood":"iron-gall ink drying on cream-laid paper","copy":"epistolary, medium","motion":"subtle","type":"display Libre Caslon Text italic · body Hanken Grotesk","seed":"pen-1","hue":299},{"id":"048","slug":"paper-planes","file":"048-paper-planes.html","exists":true,"name":"Paper Planes","tagline":"stationery subscription","blurb":"stationery subscription","tier":"simple","strategy":"full palette","bg":"pure-white","mood":"three sheets of colored stock fanned out","copy":"cheerful, sparse","motion":"medium","type":"display Fredoka · body Gabarito","seed":"stationery-1","hue":336},{"id":"049","slug":"little-obelisk","file":"049-little-obelisk.html","exists":true,"name":"Little Obelisk","tagline":"children's bookstore","blurb":"children's bookstore","tier":"simple","strategy":"full palette","bg":"pure-white","mood":"storybook primaries on library paste","copy":"joyful, sparse","motion":"medium","type":"display Cherry Bomb One · body Nunito","seed":"kidsbooks-1","hue":13},{"id":"050","slug":"paper-run","file":"050-paper-run.html","exists":true,"name":"Paper Run","tagline":"independent newspaper","blurb":"independent newspaper","tier":"medium","strategy":"restrained","bg":"tinted (newsprint off-white, chroma ≤0.01 — literal paper)","mood":"above the fold, ink still tacky","copy":"front","motion":"subtle","type":"display Ultra · body Literata (literal newspaper — justified lane)","seed":"newsroom-1","hue":50},{"id":"051","slug":"brightstack","file":"051-brightstack.html","exists":true,"name":"Brightstack","tagline":"dev analytics SaaS","blurb":"dev analytics SaaS","tier":"complex","strategy":"committed","bg":"pure-black (ink navy, hue ~250, L ~0.13)","mood":"phosphor dashboard in a dark ops room","copy":"precise dev voice, rich","motion":"strong","type":"display Archivo 800 · body Chivo Mono accents + Archivo body","seed":"brightstack","hue":87},{"id":"052","slug":"gramercy-ai","file":"052-gramercy-ai.html","exists":false,"name":"Gramercy","tagline":"AI writing tool","blurb":"AI writing tool","tier":"complex","strategy":"restrained","bg":"pure-white","mood":"manuscript with one coral editor's mark","copy":"thoughtful, long","motion":"medium","type":"display Source Serif 4 · body Hanken Grotesk","seed":"gramercy-ai","hue":124},{"id":"053","slug":"circuit-breaker","file":"053-circuit-breaker.html","exists":true,"name":"Circuit Breaker","tagline":"cybersecurity firm","blurb":"cybersecurity firm","tier":"medium","strategy":"committed","bg":"pure-black","mood":"server-room LED in a dark rack aisle","copy":"serious, medium","motion":"strong","type":"display Chivo Mono · body Archivo","seed":"server-1","hue":161},{"id":"054","slug":"wayfind","file":"054-wayfind.html","exists":true,"name":"Wayfind","tagline":"offline maps app","blurb":"offline maps app","tier":"complex","strategy":"committed","bg":"tinted (topo-paper white, hue ~70, chroma ≤0.015 — literal map paper)","mood":"ordnance survey sheet — contour brown, trail orange","copy":"adventurous, rich","motion":"strong","type":"display Archivo 800 · body Gabarito","seed":"trail-1","hue":198},{"id":"055","slug":"hush","file":"055-hush.html","exists":false,"name":"Hush","tagline":"sleep app","blurb":"sleep app","tier":"simple","strategy":"drenched","bg":"color (dusk-to-night violet-blue, hue ~280, L ~0.20)","mood":"the sky 40 minutes after sunset","copy":"whisper register, sparse","motion":"subtle","type":"single family deliberate — Jost light through medium","seed":"hush","hue":235},{"id":"056","slug":"sonder","file":"056-sonder.html","exists":true,"name":"Sonder","tagline":"travel journal app","blurb":"travel journal app","tier":"medium","strategy":"full palette","bg":"pure-white","mood":"passport stamps from three trips","copy":"nostalgic, medium","motion":"medium","type":"display Sora · body Hanken Grotesk","seed":"travel-1","hue":272},{"id":"057","slug":"wild-type","file":"057-wild-type.html","exists":true,"name":"Wild Type","tagline":"biotech startup","blurb":"biotech startup","tier":"complex","strategy":"restrained","bg":"pure-white (lab)","mood":"agar plate under a hood light","copy":"rigorous, rich","motion":"strong","type":"display Sora · body Hanken Grotesk","seed":"lab-1","hue":309},{"id":"058","slug":"quorum","file":"058-quorum.html","exists":true,"name":"Quorum","tagline":"civic engagement platform","blurb":"civic engagement platform","tier":"medium","strategy":"restrained","bg":"pure-white","mood":"ballot box and a sharpened pencil","copy":"plain","motion":"subtle","type":"display Source Serif 4 · body Hanken Grotesk","seed":"townhall-1","hue":346},{"id":"059","slug":"bright-verb","file":"059-bright-verb.html","exists":true,"name":"Bright Verb","tagline":"language school","blurb":"language school","tier":"simple","strategy":"full palette","bg":"pure-white","mood":"flashcards fanned on a desk","copy":"encouraging, sparse","motion":"medium","type":"display Gabarito 800 · body Hanken Grotesk","seed":"classroom-1","hue":23},{"id":"060","slug":"the-forge","file":"060-the-forge.html","exists":true,"name":"The Forge","tagline":"coding bootcamp","blurb":"coding bootcamp","tier":"complex","strategy":"committed","bg":"pure-black (forge)","mood":"molten steel meeting the anvil","copy":"grit voice, rich","motion":"strong","type":"display Archivo 900 · body Spline Sans","seed":"coding-1","hue":60},{"id":"061","slug":"vaporware","file":"061-vaporware.html","exists":true,"name":"Vaporware","tagline":"retro-futurist game console","blurb":"retro-futurist game console","tier":"complex","strategy":"drenched","bg":"color (VHS black-purple, hue ~300, L ~0.10)","mood":"rental-store carpet under a CRT glow","copy":"deadpan hype, rich","motion":"strong","type":"display Zen Dots · body Sono","seed":"vaporware","hue":97},{"id":"062","slug":"kernel","file":"062-kernel.html","exists":true,"name":"Kernel","tagline":"indie game studio","blurb":"indie game studio","tier":"complex","strategy":"drenched","bg":"pure-black (void)","mood":"save-point glow in a dark level","copy":"devlog voice, rich","motion":"strong","type":"display Silkscreen · body Sono","seed":"kernel","hue":134},{"id":"063","slug":"voltage","file":"063-voltage.html","exists":true,"name":"Voltage","tagline":"esports team","blurb":"esports team","tier":"complex","strategy":"drenched","bg":"pure-black (blackout)","mood":"arena lights before the match starts","copy":"aggressive, rich","motion":"strong","type":"display Archivo 900 italic · body Sono","seed":"esports-1","hue":171},{"id":"064","slug":"cassette","file":"064-cassette.html","exists":true,"name":"Cassette","tagline":"80s arcade bar","blurb":"80s arcade bar","tier":"medium","strategy":"drenched","bg":"pure-black (arcade)","mood":"token gold and neon pink on sticky carpet","copy":"rad without irony, medium","motion":"strong","type":"display Monoton · body VT323 accents (literal CRT register)","seed":"arcade-1","hue":208},{"id":"065","slug":"raptor","file":"065-raptor.html","exists":true,"name":"Raptor","tagline":"drone cinematography","blurb":"drone cinematography","tier":"complex","strategy":"committed","bg":"pure-white (sky-pale) with carbon-black sections","mood":"carbon props against a pale sky","copy":"cinematic, rich","motion":"strong","type":"display Archivo 800 · body Gabarito","seed":"aerial-1","hue":245},{"id":"066","slug":"apex-dynamics","file":"066-apex-dynamics.html","exists":true,"name":"Apex Dynamics","tagline":"electric hyperbike","blurb":"electric hyperbike","tier":"complex","strategy":"committed","bg":"pure-black (stealth gray, hue ~240, L ~0.14)","mood":"volt lime stitching on carbon leather","copy":"engineering","motion":"strong","type":"display Archivo 900 · body Spline Sans","seed":"ebike-1","hue":282},{"id":"067","slug":"motor-pool","file":"067-motor-pool.html","exists":true,"name":"Motor Pool","tagline":"vintage motorcycle garage","blurb":"vintage motorcycle garage","tier":"medium","strategy":"committed","bg":"pure-black (asphalt) with off-white sections","mood":"signal orange on oily concrete","copy":"grease","motion":"medium","type":"display Staatliches · body Cutive Mono","seed":"moto-1","hue":319},{"id":"068","slug":"alloy","file":"068-alloy.html","exists":true,"name":"Alloy","tagline":"custom bicycle frames","blurb":"custom bicycle frames","tier":"medium","strategy":"restrained","bg":"pure-white","mood":"raw titanium with brass brazing","copy":"builder voice, medium","motion":"subtle","type":"display Geologica · body Hanken Grotesk","seed":"frame-1","hue":356},{"id":"069","slug":"sprocket","file":"069-sprocket.html","exists":false,"name":"Sprocket","tagline":"bike repair co-op","blurb":"bike repair co-op","tier":"simple","strategy":"committed","bg":"pure-white with chain-grease black sections","mood":"safety yellow tag on a repaired bike","copy":"community voice, sparse","motion":"subtle","type":"display Archivo 800 · body Gabarito","seed":"bikeshop-1","hue":33},{"id":"070","slug":"ironroot","file":"070-ironroot.html","exists":false,"name":"Ironroot","tagline":"powerlifting gym","blurb":"powerlifting gym","tier":"medium","strategy":"drenched","bg":"pure-black (iron)","mood":"chalk dust over a loaded bar","copy":"terse and intense, medium","motion":"strong","type":"display Anton · body Archivo","seed":"lift-1","hue":70},{"id":"071","slug":"pulse","file":"071-pulse.html","exists":true,"name":"Pulse","tagline":"boxing gym","blurb":"boxing gym","tier":"medium","strategy":"committed","bg":"pure-black (ring-navy, hue ~250, L ~0.16) with canvas-white sections","mood":"red gloves on navy canvas","copy":"corner","motion":"strong","type":"display Alfa Slab One · body Archivo","seed":"boxing-1","hue":107},{"id":"072","slug":"quickstep","file":"072-quickstep.html","exists":true,"name":"Quickstep","tagline":"swing dance school","blurb":"swing dance school","tier":"simple","strategy":"full palette","bg":"pure-white","mood":"brass section and teal taffeta","copy":"jaunty, sparse","motion":"medium","type":"display Shrikhand · body Jost","seed":"swing-1","hue":144},{"id":"073","slug":"field-dress","file":"073-field-dress.html","exists":true,"name":"Field Dress","tagline":"hunting & outdoor apparel","blurb":"hunting & outdoor apparel","tier":"medium","strategy":"committed","bg":"pure-white","mood":"blaze orange over olive drab","copy":"no","motion":"subtle","type":"display Staatliches · body Hanken Grotesk","seed":"hunting-1","hue":181},{"id":"074","slug":"wolf-pack","file":"074-wolf-pack.html","exists":true,"name":"Wolf Pack","tagline":"trail running race","blurb":"trail running race","tier":"medium","strategy":"committed","bg":"pure-black (night trail) with mountain-blue sections","mood":"headlamp beam cutting the dark","copy":"howling, medium","motion":"strong","type":"display Archivo 900 · body Geologica","seed":"trailrun-1","hue":218},{"id":"075","slug":"undercurrent","file":"075-undercurrent.html","exists":true,"name":"Undercurrent","tagline":"scuba diving center","blurb":"scuba diving center","tier":"complex","strategy":"drenched","bg":"color (deep ocean gradient, hue ~225, L ~0.12 → 0.25)","mood":"30 meters down — light going blue-green","copy":"immersive, rich","motion":"strong","type":"display Jost 300 · body Hanken Grotesk","seed":"reef-1","hue":255},{"id":"076","slug":"slow-orbit","file":"076-slow-orbit.html","exists":true,"name":"Slow Orbit","tagline":"space tourism","blurb":"space tourism","tier":"complex","strategy":"drenched","bg":"pure-black (void)","mood":"earthglow on a visor","copy":"transcendent, rich","motion":"strong","type":"display Unbounded · body Spline Sans","seed":"space-1","hue":292},{"id":"077","slug":"apogee","file":"077-apogee.html","exists":true,"name":"Apogee","tagline":"rocket launch startup","blurb":"rocket launch startup","tier":"complex","strategy":"committed","bg":"pure-white","mood":"graphite scorch on a white fairing","copy":"countdown voice, rich","motion":"strong","type":"display Archivo 900 · body Spline Sans","seed":"launch-1","hue":329},{"id":"078","slug":"the-observatory","file":"078-the-observatory.html","exists":true,"name":"The Observatory","tagline":"stargazing retreat","blurb":"stargazing retreat","tier":"complex","strategy":"drenched","bg":"pure-black (night sky, hue ~260, L ~0.08)","mood":"milky way over a cabin window","copy":"quiet cosmic, rich","motion":"strong","type":"display Marcellus · body Jost","seed":"cabin-1","hue":6},{"id":"079","slug":"orbit-anchor","file":"079-orbit-anchor.html","exists":true,"name":"Orbit & Anchor","tagline":"sailing school","blurb":"sailing school","tier":"medium","strategy":"committed","bg":"pure-white with regatta-navy sections","mood":"spinnaker red against deep water","copy":"salty, medium","motion":"medium","type":"display Italiana · body Hanken Grotesk","seed":"sailing-1","hue":43},{"id":"080","slug":"helmsman","file":"080-helmsman.html","exists":true,"name":"Helmsman","tagline":"yacht charter","blurb":"yacht charter","tier":"complex","strategy":"restrained","bg":"pure-white","mood":"navy blazer, gold buttons, white deck","copy":"concierge voice, rich","motion":"medium","type":"display Bodoni Moda · body Jost","seed":"yacht-1","hue":80},{"id":"081","slug":"chroma-drift","file":"081-chroma-drift.html","exists":true,"name":"Chroma Drift","tagline":"3D printing studio","blurb":"3D printing studio","tier":"complex","strategy":"full palette","bg":"pure-white with printer-gray sections","mood":"filament spools on a steel shelf","copy":"maker voice, rich","motion":"strong","type":"display Geologica · body Spline Sans","seed":"print-1","hue":117},{"id":"082","slug":"floodline","file":"082-floodline.html","exists":true,"name":"Floodline","tagline":"climate data nonprofit","blurb":"climate data nonprofit","tier":"complex","strategy":"committed","bg":"pure-white","mood":"flood gauge markings on a white wall","copy":"urgent and factual, rich","motion":"strong","type":"display Archivo 800 · body Hanken Grotesk","seed":"flood-1","hue":154},{"id":"083","slug":"little-mercies","file":"083-little-mercies.html","exists":true,"name":"Little Mercies","tagline":"animal shelter","blurb":"animal shelter","tier":"medium","strategy":"full palette","bg":"pure-white","mood":"collar tags on a corkboard","copy":"heartfelt, medium","motion":"medium","type":"display Fredoka · body Hanken Grotesk","seed":"shelter-1","hue":191},{"id":"084","slug":"field-notes-ag","file":"084-field-notes-ag.html","exists":true,"name":"Field Notes","tagline":"regenerative farm CSA","blurb":"regenerative farm CSA","tier":"medium","strategy":"committed","bg":"pure-white","mood":"soil profile cross-section","copy":"grounded, medium","motion":"subtle","type":"display Bitter · body Hanken Grotesk","seed":"farm-1","hue":228},{"id":"085","slug":"opaline","file":"085-opaline.html","exists":true,"name":"Opaline","tagline":"perfume house","blurb":"perfume house","tier":"medium","strategy":"drenched","bg":"color (opal pale-violet, hue ~300, L ~0.88, chroma ≤0.03)","mood":"opalescent glass catching window light","copy":"olfactory poetry, medium","motion":"subtle","type":"display Italiana · body Jost","seed":"perfume-1","hue":265},{"id":"086","slug":"petrichor","file":"086-petrichor.html","exists":true,"name":"Petrichor","tagline":"rain-scent candle brand","blurb":"rain-scent candle brand","tier":"simple","strategy":"drenched","bg":"color (storm gray-blue, hue ~235, L ~0.30)","mood":"wet asphalt under a streetlamp","copy":"sensory, sparse","motion":"subtle","type":"display Literata italic · body Hanken Grotesk","seed":"candle-1","hue":302},{"id":"087","slug":"ledger-black","file":"087-ledger-black.html","exists":false,"name":"Ledger & Black","tagline":"accounting firm","blurb":"accounting firm","tier":"medium","strategy":"restrained","bg":"pure-white","mood":"green ledger cloth, red pencil","copy":"dry and trustworthy, medium","motion":"subtle","type":"display Source Serif 4 · body Hanken Grotesk","seed":"office-1","hue":339},{"id":"088","slug":"blueprint-bellow","file":"088-blueprint-bellow.html","exists":true,"name":"Blueprint & Bellow","tagline":"blacksmith workshops","blurb":"blacksmith workshops","tier":"medium","strategy":"drenched","bg":"pure-black (forge coal)","mood":"steel at critical temperature","copy":"grizzled, medium","motion":"strong","type":"display Alfa Slab One · body Bitter","seed":"forge-1","hue":16},{"id":"089","slug":"fresco","file":"089-fresco.html","exists":true,"name":"Fresco","tagline":"lime paint & plaster maker","blurb":"lime paint & plaster maker","tier":"medium","strategy":"committed","bg":"tinted (fresh plaster white, hue ~60, chroma ≤0.015 — literal material)","mood":"wet lime plaster with ochre pigment stirred in","copy":"artisan","motion":"subtle","type":"display Libre Caslon Text · body Gabarito","seed":"plaster-1","hue":53},{"id":"090","slug":"studio-verte","file":"090-studio-verte.html","exists":true,"name":"Studio Verte","tagline":"landscape architecture","blurb":"landscape architecture","tier":"medium","strategy":"committed","bg":"pure-white","mood":"boxwood parterre on drafting paper","copy":"precise, medium","motion":"medium","type":"display Geologica · body Literata","seed":"garden-1","hue":90},{"id":"091","slug":"atlas-thread","file":"091-atlas-thread.html","exists":true,"name":"Atlas & Thread","tagline":"bespoke tailoring","blurb":"bespoke tailoring","tier":"complex","strategy":"committed","bg":"pure-black (midnight suiting navy, hue ~255, L ~0.16)","mood":"chalk marks on midnight wool","copy":"sartorial, rich","motion":"medium","type":"display Prata · body Jost","seed":"tailor-1","hue":127},{"id":"092","slug":"touchdown","file":"092-touchdown.html","exists":true,"name":"Touchdown","tagline":"vintage football shirts","blurb":"vintage football shirts","tier":"medium","strategy":"full palette","bg":"pure-white with pitch-green sections","mood":"1994 away kit under stadium floodlights","copy":"nostalgic terrace voice, medium","motion":"medium","type":"display Archivo 900 · body Gabarito","seed":"shirts-1","hue":164},{"id":"093","slug":"saturnalia","file":"093-saturnalia.html","exists":true,"name":"Saturnalia","tagline":"masquerade ball","blurb":"masquerade ball","tier":"simple","strategy":"drenched","bg":"color (midnight purple, hue ~285, L ~0.16)","mood":"candlelight on a gold filigree mask","copy":"decadent, sparse","motion":"strong","type":"display Cinzel Decorative · body Jost","seed":"masquerade-1","hue":201},{"id":"094","slug":"the-catacomb","file":"094-the-catacomb.html","exists":true,"name":"The Catacomb","tagline":"escape room","blurb":"escape room","tier":"medium","strategy":"drenched","bg":"pure-black (torch-black)","mood":"torchlight on carved stone","copy":"tense, medium","motion":"strong","type":"display Rozha One · body Cutive Mono","seed":"catacomb-1","hue":238},{"id":"095","slug":"bright-harbor","file":"095-bright-harbor.html","exists":true,"name":"Bright Harbor","tagline":"coworking space","blurb":"coworking space","tier":"medium","strategy":"committed","bg":"pure-white","mood":"harbor blue awning in morning sun","copy":"welcoming, medium","motion":"medium","type":"display Gabarito 800 · body Hanken Grotesk","seed":"cowork-1","hue":275},{"id":"096","slug":"the-greenskeeper","file":"096-the-greenskeeper.html","exists":true,"name":"The Greenskeeper","tagline":"historic golf club","blurb":"historic golf club","tier":"medium","strategy":"committed","bg":"pure-white with fairway-green sections","mood":"tartan and morning dew","copy":"clubby, medium","motion":"subtle","type":"display Marcellus · body Literata","seed":"golf-1","hue":312},{"id":"097","slug":"opal-coast","file":"097-opal-coast.html","exists":true,"name":"Opal Coast","tagline":"campervan road trips","blurb":"campervan road trips","tier":"medium","strategy":"full palette","bg":"pure-white","mood":"outback dust on a teal van door","copy":"laid","motion":"medium","type":"display Tilt Warp · body Hanken Grotesk","seed":"camper-1","hue":349},{"id":"098","slug":"bright-lattice","file":"098-bright-lattice.html","exists":true,"name":"Bright Lattice","tagline":"solar energy startup","blurb":"solar energy startup","tier":"medium","strategy":"committed","bg":"pure-white","mood":"sun-path diagram on an engineer's print","copy":"optimistic engineering, medium","motion":"medium","type":"display Sora · body Hanken Grotesk","seed":"solar-1","hue":26},{"id":"099","slug":"golden-hour","file":"099-golden-hour.html","exists":true,"name":"Golden Hour","tagline":"hot air balloon rides","blurb":"hot air balloon rides","tier":"simple","strategy":"drenched","bg":"color (dawn gradient — peach ~55 into lavender ~300, L ~0.75)","mood":"the sky ten minutes before sunrise","copy":"dreamy, sparse","motion":"subtle","type":"display Jost 300 · body Hanken Grotesk","seed":"balloon-1","hue":63},{"id":"100","slug":"grand-terminal","file":"100-grand-terminal.html","exists":true,"name":"Grand Terminal","tagline":"historic train station hotel","blurb":"historic train station hotel","tier":"complex","strategy":"full palette","bg":"pure-white with locomotive-black sections","mood":"brass and steam under a vaulted glass roof","copy":"golden","motion":"strong","type":"display Marcellus · body Cutive Mono (literal departure-board register)","seed":"station-1","hue":100}];
+
+  const state = {
+    q: '',
+    tier: 'all',
+    strategy: 'all',
+    view: 'grid',
+  };
+
+  const grid = document.getElementById('grid');
+  const search = document.getElementById('search');
+  const resultsCount = document.getElementById('results-count');
+  const modal = document.getElementById('modal');
+  const modalFrame = document.getElementById('modal-frame');
+  const modalTitle = document.getElementById('modal-title');
+  const modalSub = document.getElementById('modal-sub');
+  const modalOpen = document.getElementById('modal-open');
+  const modalBlurb = document.getElementById('modal-blurb');
+  const modalTags = document.getElementById('modal-tags');
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function stratClass(s) {
+    if (s === 'full palette') return 'strat-full';
+    return 'strat-' + s.replace(/\s+/g, '-');
+  }
+
+  function matches(p) {
+    if (state.tier !== 'all' && p.tier !== state.tier) return false;
+    if (state.strategy !== 'all' && p.strategy !== state.strategy) return false;
+    if (!state.q) return true;
+    const hay = [
+      p.id, p.slug, p.name, p.tagline, p.blurb, p.mood, p.copy, p.tier, p.strategy, p.type, p.motion
+    ].join(' ').toLowerCase();
+    return hay.includes(state.q);
+  }
+
+  function cardHtml(p) {
+    const href = 'landings/' + p.file;
+    const accent = `oklch(0.72 0.12 ${p.hue})`;
+    const img = `https://picsum.photos/seed/${encodeURIComponent(p.seed)}/640/400`;
+    const stratLabel = p.strategy === 'full palette' ? 'full palette' : p.strategy;
+    const desc = p.mood || p.blurb || p.tagline || '';
+    const liveBadge = p.exists
+      ? '<span class="status-badge live">Live</span>'
+      : '<span class="status-badge soon">Planned</span>';
+
+    const actions = p.exists
+      ? `<div class="card-actions">
+          <a class="btn btn-primary" href="${href}" target="_blank" rel="noopener">Open</a>
+          <button type="button" class="btn btn-ghost" data-preview="${escapeHtml(p.id)}">Preview</button>
+        </div>`
+      : `<div class="card-actions">
+          <span class="btn btn-ghost" aria-disabled="true">Coming soon</span>
+        </div>`;
+
+    const previewOpen = p.exists
+      ? `href="${href}" target="_blank" rel="noopener" aria-label="Open ${escapeHtml(p.name)}"`
+      : `aria-disabled="true"`;
+    const previewTag = p.exists ? 'a' : 'div';
+
+    return `
+      <article class="card${p.exists ? '' : ' is-missing'}" style="--accent: ${accent}" data-id="${p.id}" data-exists="${p.exists}">
+        <${previewTag} class="card-preview" data-preview-host data-src="${p.exists ? href : ''}" ${previewOpen}>
+          <div class="card-badge-row">
+            <span class="id-badge">${escapeHtml(p.id)}</span>
+            ${liveBadge}
+          </div>
+          <div class="card-preview-fallback" aria-hidden="true">
+            <img class="seed-img" src="${img}" alt="" loading="lazy" decoding="async" width="640" height="400">
+            <div class="veil"></div>
+            <span class="num">${escapeHtml(p.id)}</span>
+          </div>
+          <div class="card-frame" data-frame></div>
+        </${previewTag}>
+        <div class="card-body">
+          <h2 class="card-title">${escapeHtml(p.name)}</h2>
+          <p class="card-tagline">${escapeHtml(p.tagline || p.blurb)}</p>
+          ${desc ? `<p class="card-mood">“${escapeHtml(desc)}”</p>` : ''}
+          <div class="card-tags">
+            <span class="tag tier-${escapeHtml(p.tier)}">${escapeHtml(p.tier)}</span>
+            <span class="tag ${stratClass(p.strategy)}">${escapeHtml(stratLabel)}</span>
+            <span class="tag">${escapeHtml(p.motion)} motion</span>
+          </div>
+          ${actions}
+        </div>
+      </article>
+    `;
+  }
+
+  let io;
+  function setupObserver() {
+    if (io) io.disconnect();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Live iframe previews are heavy; only mount a few on-screen at a time
+    io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const host = entry.target;
+        if (!entry.isIntersecting) {
+          // Unload off-screen iframes to save memory
+          const frame = host.querySelector('[data-frame]');
+          if (frame && frame.dataset.loaded === '1') {
+            frame.innerHTML = '';
+            frame.classList.remove('is-loaded');
+            frame.dataset.loaded = '0';
+            host.classList.remove('has-live');
+          }
+          continue;
+        }
+        const src = host.dataset.src;
+        if (!src) continue;
+        const frame = host.querySelector('[data-frame]');
+        if (!frame || frame.dataset.loaded === '1') continue;
+        mountThumb(host, frame, src);
+      }
+    }, { rootMargin: '200px 0px', threshold: 0.05 });
+
+    grid.querySelectorAll('[data-preview-host][data-src]:not([data-src=""])').forEach((el) => io.observe(el));
+  }
+
+  function mountThumb(host, frame, src) {
+    const iframe = document.createElement('iframe');
+    iframe.title = 'Thumbnail preview';
+    iframe.loading = 'lazy';
+    iframe.setAttribute('tabindex', '-1');
+    iframe.src = src;
+    frame.appendChild(iframe);
+    frame.dataset.loaded = '1';
+
+    const scale = () => {
+      const w = host.clientWidth;
+      const h = host.clientHeight;
+      const sx = w / 1280;
+      const sy = h / 800;
+      const s = Math.max(sx, sy);
+      iframe.style.transform = `scale(${s})`;
+    };
+    scale();
+    iframe.addEventListener('load', () => {
+      frame.classList.add('is-loaded');
+      host.classList.add('has-live');
+      scale();
+    }, { once: true });
+    // ResizeObserver per card is fine; few concurrent
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver(scale);
+      ro.observe(host);
+    }
+  }
+
+  function render() {
+    const filtered = PAGES.filter(matches);
+    if (resultsCount) {
+      resultsCount.innerHTML = `<strong>${filtered.length}</strong> page${filtered.length === 1 ? '' : 's'}`;
+    }
+
+    grid.classList.toggle('list', state.view === 'list');
+    grid.classList.toggle('compact', state.view === 'grid' && filtered.length > 40);
+
+    if (!filtered.length) {
+      grid.innerHTML = `<div class="empty"><strong>No matches</strong>Try another search or clear a filter.</div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(cardHtml).join('');
+    setupObserver();
+  }
+
+  // Filters
+  document.querySelectorAll('[data-filter-tier]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.tier = btn.dataset.filterTier;
+      document.querySelectorAll('[data-filter-tier]').forEach((b) => {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      render();
+    });
+  });
+  document.querySelectorAll('[data-filter-strat]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.strategy = btn.dataset.filterStrat;
+      document.querySelectorAll('[data-filter-strat]').forEach((b) => {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      render();
+    });
+  });
+  document.querySelectorAll('[data-view]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      state.view = btn.dataset.view;
+      document.querySelectorAll('[data-view]').forEach((b) => {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      render();
+    });
+  });
+
+  let searchTimer;
+  function applySearch() {
+    state.q = search.value.trim().toLowerCase();
+    render();
+  }
+  search.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(applySearch, 120);
+  });
+  search.addEventListener('search', applySearch); // clear (x) on type=search
+
+  // Preview modal
+  let lastFocus = null;
+  function openPreview(id) {
+    const p = PAGES.find((x) => x.id === id);
+    if (!p || !p.exists) return;
+    lastFocus = document.activeElement;
+    const href = 'landings/' + p.file;
+    modalTitle.childNodes[0].textContent = p.name + ' ';
+    modalSub.textContent = p.id + ' · ' + (p.tagline || p.slug);
+    modalOpen.href = href;
+    modalBlurb.textContent = p.mood
+      ? '“' + p.mood + '” · ' + (p.copy || '')
+      : (p.blurb || '');
+    modalTags.innerHTML = `
+      <span class="tag tier-${escapeHtml(p.tier)}">${escapeHtml(p.tier)}</span>
+      <span class="tag">${escapeHtml(p.strategy)}</span>
+      <span class="tag">${escapeHtml(p.motion)} motion</span>
+    `;
+    modalFrame.src = href;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('[data-close]').focus();
+  }
+  function closePreview() {
+    modal.hidden = true;
+    modalFrame.src = 'about:blank';
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  grid.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-preview]');
+    if (!btn) return;
+    openPreview(btn.dataset.preview);
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target.closest('[data-close]')) closePreview();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) closePreview();
+  });
+
+  render();
+</script>
+</body>
+</html>

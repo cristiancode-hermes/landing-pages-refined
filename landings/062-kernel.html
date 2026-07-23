@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kernel — three people, two shipped games, one spare bedroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Sono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.15 0.012 150);
+    --surface: oklch(0.2 0.02 150);
+    --surface-2: oklch(0.24 0.025 150);
+    --ink: oklch(0.94 0.02 150);
+    --muted: oklch(0.74 0.045 150);
+    --green: oklch(0.82 0.19 150);
+    --green-dim: oklch(0.58 0.12 150);
+    --red: oklch(0.62 0.2 25);
+    --font-display: "Silkscreen", monospace;
+    --font-body: "Sono", monospace;
+    --z-header: 10;
+    --z-diorama: 1;
+    --z-hero-copy: 2;
+    --z-dissolve: 5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--green);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: clamp(1.9rem, 5.5vw, 3.8rem); }
+  h2 { font-size: clamp(1.5rem, 3.6vw, 2.4rem); }
+  h3 { font-size: clamp(1.05rem, 1.8vw, 1.3rem); letter-spacing: -0.01em; }
+
+  p { max-width: 68ch; text-wrap: pretty; }
+  a { color: var(--green); text-underline-offset: 3px; }
+  a:hover { color: var(--ink); }
+
+  .wrap { width: min(1100px, 100% - 2.5rem); margin-inline: auto; }
+
+  ::selection { background: var(--green); color: oklch(0.18 0.04 150); }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: oklch(0.15 0.012 150 / 0.92);
+    border-bottom: 1px solid var(--surface-2);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.85rem;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .brand em { font-style: normal; color: var(--green); }
+
+  nav ul { display: flex; gap: 1.4rem; list-style: none; }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  nav a:hover { color: var(--green); }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    padding: 0.75rem 1.3rem;
+    border-radius: 4px;
+    background: var(--green);
+    color: oklch(0.18 0.04 150);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; flex-shrink: 0; }
+
+  .btn:hover { background: oklch(0.88 0.18 150); color: oklch(0.18 0.04 150); transform: translateY(-2px); }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--green);
+    box-shadow: inset 0 0 0 1px var(--green-dim);
+  }
+
+  .btn--ghost:hover { background: var(--surface); color: var(--ink); }
+
+  @media (max-width: 700px) { nav ul { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: min(92vh, 800px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  #diorama {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-diorama);
+    display: block;
+  }
+
+  .hero-fallback {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-diorama);
+    background: radial-gradient(ellipse 60% 45% at 50% 42%, oklch(0.82 0.19 150 / 0.16), transparent 70%);
+    display: none;
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: var(--z-hero-copy);
+    padding: clamp(3rem, 8vw, 5rem) 0 clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .hero-kicker {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--green);
+    background: oklch(0.82 0.19 150 / 0.1);
+    padding: 0.4rem 0.9rem;
+    border-radius: 4px;
+    margin-bottom: 1.3rem;
+  }
+
+  .hero-copy .lede {
+    color: var(--muted);
+    margin-top: 1.2rem;
+    max-width: 56ch;
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+  }
+
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.8rem; }
+
+  /* ---------- sections ---------- */
+  section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+
+  .section-head { margin-bottom: clamp(2rem, 5vw, 3rem); }
+  .section-head p { color: var(--muted); margin-top: 0.8rem; }
+
+  /* games viewer */
+  .game-viewer { position: relative; }
+
+  .game-tabs {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+  }
+
+  .game-tab {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.65rem 1.1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--muted);
+    transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .game-tab[aria-selected="true"] { background: var(--green); color: oklch(0.18 0.04 150); }
+  .game-tab:not([aria-selected="true"]):hover { background: var(--surface-2); color: var(--ink); }
+
+  .game-stage {
+    position: relative;
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .game-panel {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    align-items: center;
+  }
+
+  .game-panel[hidden] { display: none; }
+
+  .pixel-shot {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    image-rendering: pixelated;
+    background: oklch(0.12 0.02 150);
+  }
+
+  .game-info .platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.9rem 0 1.1rem;
+    list-style: none;
+  }
+
+  .game-info .platforms li {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--muted);
+  }
+
+  .game-info p { color: var(--muted); font-size: 0.95rem; }
+  .game-info p + p { margin-top: 0.8rem; }
+
+  .game-info .stat-line {
+    margin-top: 1.3rem;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--green);
+  }
+
+  .game-info .stat-line .hit { color: var(--red); }
+
+  /* pixel dissolve overlay */
+  .dissolve {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-dissolve);
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    grid-template-rows: repeat(9, 1fr);
+    pointer-events: none;
+  }
+
+  .dissolve i {
+    background: oklch(0.12 0.02 150);
+    opacity: 0;
+    transition: opacity 0.18s steps(2, end);
+  }
+
+  .dissolve.on i { opacity: 1; }
+  .dissolve i:nth-child(odd) { background: oklch(0.82 0.19 150 / 0.85); }
+
+  @media (max-width: 760px) {
+    .game-panel { grid-template-columns: 1fr; }
+  }
+
+  /* devlog */
+  .devlog { background: var(--surface); }
+
+  .log-list { list-style: none; display: grid; gap: 0; }
+
+  .log-entry {
+    display: grid;
+    grid-template-columns: minmax(110px, 150px) 1fr;
+    gap: 1.4rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--surface-2);
+  }
+
+  .log-entry:last-child { border-bottom: none; }
+
+  .log-entry time {
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    color: var(--green-dim);
+    padding-top: 0.2rem;
+  }
+
+  .log-entry h3 { margin-bottom: 0.6rem; }
+  .log-entry h3 .crit { color: var(--red); }
+  .log-entry p { color: var(--muted); font-size: 0.95rem; }
+  .log-entry a { font-weight: 700; }
+
+  @media (max-width: 620px) {
+    .log-entry { grid-template-columns: 1fr; gap: 0.4rem; }
+  }
+
+  /* team */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .member {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 1.6rem;
+  }
+
+  .member .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    image-rendering: pixelated;
+    margin-bottom: 1rem;
+    background: var(--surface-2);
+  }
+
+  .member h3 { margin-bottom: 0.3rem; }
+  .member .role { color: var(--green); font-size: 0.85rem; font-weight: 700; display: block; margin-bottom: 0.8rem; }
+  .member p { color: var(--muted); font-size: 0.92rem; }
+
+  /* playtest */
+  .playtest { background: var(--green); color: oklch(0.18 0.04 150); }
+  .playtest h2 { color: oklch(0.18 0.04 150); }
+  .playtest .section-head p { color: oklch(0.28 0.07 150); }
+
+  .signup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    max-width: 560px;
+  }
+
+  .signup label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+  .signup input {
+    flex: 1 1 260px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.85rem 1rem;
+    border-radius: 4px;
+    border: none;
+    background: oklch(0.94 0.02 150);
+    color: oklch(0.18 0.04 150);
+  }
+
+  .signup input::placeholder { color: oklch(0.42 0.06 150); }
+
+  .signup .btn {
+    background: oklch(0.18 0.04 150);
+    color: var(--green);
+  }
+
+  .signup .btn:hover { background: oklch(0.24 0.05 150); }
+
+  .signup-note {
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    color: oklch(0.28 0.07 150);
+  }
+
+  #signupMsg { margin-top: 1rem; font-family: var(--font-display); font-size: 0.85rem; }
+
+  /* press kit */
+  .press-list {
+    list-style: none;
+    display: grid;
+    gap: 0;
+  }
+
+  .press-list li {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--surface-2);
+  }
+
+  .press-list li:last-child { border-bottom: none; }
+  .press-list .item { font-weight: 700; }
+  .press-list a { font-size: 0.92rem; }
+
+  /* footer */
+  footer { padding: 2.6rem 0; border-top: 1px solid var(--surface-2); }
+  footer .foot-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+  footer small { color: var(--muted); font-size: 0.82rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .game-tab { transition: none; }
+    .dissolve { display: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    header nav a { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">KER<em>NEL</em></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#devlog">Devlog</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#press">Press kit</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#playtest">Join a playtest</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-fallback" id="heroFallback" aria-hidden="true"></div>
+    <canvas id="diorama" aria-label="Slowly orbiting low-poly floating island with a glowing green save crystal" role="img"></canvas>
+    <div class="wrap hero-copy">
+      <span class="hero-kicker">EST. 2023 · 3 PEOPLE · 0 PUBLISHERS</span>
+      <h1 id="hero-title">Small team. Strange games. Shipped anyway.</h1>
+      <p class="lede">Kernel is a three-person studio in a spare bedroom in Graz. We make small, odd games about dirt, gravity, and ghosts — and we write down everything that went wrong, in public.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#games">See the games</a>
+        <a class="btn btn--ghost" href="#devlog">Read the postmortems</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="games" aria-labelledby="games-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="games-title">Two shipped, one in the oven</h2>
+        <p>Switch between games — the screen does the thing. Screenshots are captured straight from our internal pixel renderer.</p>
+      </div>
+
+      <div class="game-viewer">
+        <div class="game-tabs" role="tablist" aria-label="Games">
+          <button class="game-tab" role="tab" id="tab-loam" aria-selected="true" aria-controls="panel-loam">LOAM &amp; LANTERN</button>
+          <button class="game-tab" role="tab" id="tab-apsis" aria-selected="false" aria-controls="panel-apsis">APSIS</button>
+        </div>
+
+        <div class="game-stage" id="gameStage">
+          <div class="dissolve" id="dissolve" aria-hidden="true"></div>
+
+          <div class="game-panel" role="tabpanel" id="panel-loam" aria-labelledby="tab-loam">
+            <canvas class="pixel-shot" id="shotLoam" width="320" height="200" role="img" aria-label="Pixel art scene: a farmer with a lantern stands in dark furrowed soil under a green moon"></canvas>
+            <div class="game-info">
+              <h3>Loam &amp; Lantern</h3>
+              <ul class="platforms"><li>Steam</li><li>itch.io</li><li>Deck verified</li></ul>
+              <p>A cozy farming game where the soil remembers what you buried. Plant by day, and decide after dark which of the field's whispers are worth following.</p>
+              <p>Our first game. Built in 14 months, shipped at 2 a.m. on a Thursday because nobody told us launches happen in the morning.</p>
+              <p class="stat-line">4,312 COPIES · 94% POSITIVE <span class="hit">· 1 DAY-ONE CRASH</span></p>
+            </div>
+          </div>
+
+          <div class="game-panel" role="tabpanel" id="panel-apsis" aria-labelledby="tab-apsis" hidden>
+            <canvas class="pixel-shot" id="shotApsis" width="320" height="200" role="img" aria-label="Pixel art scene: an astronaut flips gravity between two orbiting platforms, stars behind"></canvas>
+            <div class="game-info">
+              <h3>Apsis</h3>
+              <ul class="platforms"><li>Steam</li><li>Switch</li><li>itch.io</li></ul>
+              <p>A gravity-flip platformer set on a dying space station. Every room is a small argument between you and orbital mechanics, and the station always argues back.</p>
+              <p>Our second game. 61 levels, 9 of which we still can't beat without the debug menu. The speedrunners found three skips in the first weekend and we kept all of them.</p>
+              <p class="stat-line">11,907 COPIES · ANY% WR 23:41 <span class="hit">· 9 DEV-UNBEATABLE LEVELS</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="devlog" id="devlog" aria-labelledby="devlog-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="devlog-title">Devlog &amp; postmortems</h2>
+        <p>Public since day one. The wins, the losses, and the exact commit that broke the build.</p>
+      </div>
+      <ul class="log-list">
+        <li class="log-entry">
+          <time datetime="2026-06-30">2026-06-30</time>
+          <div>
+            <h3>Postmortem: Apsis, six months later</h3>
+            <p>Sold 11,907 copies against a break-even of 3,400. The Switch port ate four months and one of Rudi's wisdom teeth (stress-related, allegedly). Full numbers, wishlist math, and why we'll never day-and-date two platforms again. <a href="#devlog">Read the numbers →</a></p>
+          </div>
+        </li>
+        <li class="log-entry">
+          <time datetime="2026-05-11">2026-05-11</time>
+          <div>
+            <h3><span class="crit">CRITICAL:</span> the save file that ate itself</h3>
+            <p>Patch 1.04 corrupted saves if you quit during the eclipse event. 212 players affected, 212 save files hand-repaired by Mara over one very long weekend. How it happened, and the checksum that now stands guard. <a href="#devlog">Read the incident report →</a></p>
+          </div>
+        </li>
+        <li class="log-entry">
+          <time datetime="2026-03-02">2026-03-02</time>
+          <div>
+            <h3>Game three has a name and a prototype</h3>
+            <p>It's about a lighthouse keeper who is definitely not a ghost. Six weeks of prototype footage, the good parts and the parts where the boat flies into the sky. Playtesters wanted — details below. <a href="#devlog">Watch the prototype →</a></p>
+          </div>
+        </li>
+        <li class="log-entry">
+          <time datetime="2025-10-19">2025-10-19</time>
+          <div>
+            <h3>Postmortem: Loam &amp; Lantern, one year on</h3>
+            <p>The honest one. 4,312 copies, one hit podcast mention, and a lesson about launching at 2 a.m. with no press build. Includes the spreadsheet we're still slightly afraid of. <a href="#devlog">Read the postmortem →</a></p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="team" aria-labelledby="team-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="team-title">The whole company</h2>
+        <p>Three desks, one kettle, no org chart. Avatars rendered by the same pixel pipeline as the games.</p>
+      </div>
+      <div class="team-grid">
+        <div class="member">
+          <canvas class="avatar" width="32" height="32" data-face="0" role="img" aria-label="Pixel avatar of Mara"></canvas>
+          <h3>Mara Voss</h3>
+          <span class="role">Code · save systems · apologies</span>
+          <p>Writes the engine and the incident reports. Once shipped a fix from a night train. Maintains the checksum that stands guard.</p>
+        </div>
+        <div class="member">
+          <canvas class="avatar" width="32" height="32" data-face="1" role="img" aria-label="Pixel avatar of Rudi"></canvas>
+          <h3>Rudi Almeida</h3>
+          <span class="role">Art · pixels · the kettle</span>
+          <p>Every sprite you've seen passed through Rudi's 16-color palette and strong opinions about dithering. Draws the patch-notes comics.</p>
+        </div>
+        <div class="member">
+          <canvas class="avatar" width="32" height="32" data-face="2" role="img" aria-label="Pixel avatar of June"></canvas>
+          <h3>June Okafor</h3>
+          <span class="role">Design · audio · spreadsheets</span>
+          <p>Designs the levels the speedrunners break, then records the sound of them breaking it. Owns the spreadsheet everyone fears.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="playtest" id="playtest" aria-labelledby="playtest-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="playtest-title">Playtest the lighthouse game</h2>
+        <p>Monthly builds, honest bugs, direct line to the devs. You break it, we write a devlog about it.</p>
+      </div>
+      <form class="signup" id="signupForm" novalidate>
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+        <button class="btn" type="submit">Sign me up</button>
+      </form>
+      <p class="signup-note">Builds go out the first Friday of the month. Windows for now, Deck soon. Unsubscribe whenever, no hard feelings.</p>
+      <p id="signupMsg" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="press" aria-labelledby="press-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="press-title">Press kit</h2>
+        <p>Everything a busy editor needs, nothing they don't. No embargo, no NDAs, no 40-page brand deck.</p>
+      </div>
+      <ul class="press-list">
+        <li><span class="item">Logo pack (SVG + PNG, dark &amp; light)</span><a href="#press">Download · 1.2 MB</a></li>
+        <li><span class="item">Loam &amp; Lantern — screenshots, trailer, fact sheet</span><a href="#press">Download · 84 MB</a></li>
+        <li><span class="item">Apsis — screenshots, trailer, fact sheet</span><a href="#press">Download · 112 MB</a></li>
+        <li><span class="item">Studio photos (the spare bedroom, the kettle)</span><a href="#press">Download · 18 MB</a></li>
+        <li><span class="item">Talk to a human</span><a href="mailto:press@kernelgames.example">press@kernelgames.example</a></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top">KER<em>NEL</em></a>
+    <small>© 2026 Kernel Games OG, Graz. Made with an engine held together by checksums.</small>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* all source colors are oklch() — convert through a 1px canvas for three.js,
+     which needs numeric sRGB */
+  function cssToHex(css) {
+    var c = document.createElement("canvas");
+    c.width = c.height = 1;
+    var x = c.getContext("2d");
+    x.fillStyle = css;
+    x.fillRect(0, 0, 1, 1);
+    var d = x.getImageData(0, 0, 1, 1).data;
+    return (d[0] << 16) | (d[1] << 8) | d[2];
+  }
+
+  /* ---------- three.js fallback loader ---------- */
+  function loadThreeFallback(cb) {
+    if (window.THREE) { cb(true); return; }
+    var s = document.createElement("script");
+    s.src = "https://unpkg.com/three@0.160.0/build/three.min.js";
+    s.onload = function () { cb(!!window.THREE); };
+    s.onerror = function () { cb(false); };
+    document.head.appendChild(s);
+  }
+
+  /* ---------- low-poly floating island diorama ---------- */
+  function initDiorama() {
+    var canvas = document.getElementById("diorama");
+    if (!canvas || !window.THREE) {
+      document.getElementById("heroFallback").style.display = "block";
+      if (canvas) canvas.style.display = "none";
+      return;
+    }
+
+    var scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(cssToHex("oklch(0.15 0.015 150)"), 0.055);
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setClearColor(cssToHex("oklch(0 0 0)"), 0);
+
+    var camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.set(0, 2.2, 11);
+
+    /* lights */
+    scene.add(new THREE.AmbientLight(cssToHex("oklch(0.33 0.045 150)"), 1.4));
+    var key = new THREE.DirectionalLight(cssToHex("oklch(0.92 0.02 150)"), 1.1);
+    key.position.set(5, 8, 4);
+    scene.add(key);
+    var saveGlow = new THREE.PointLight(cssToHex("oklch(0.85 0.22 155)"), 3.2, 14);
+    saveGlow.position.set(0.6, 2.4, 0.4);
+    scene.add(saveGlow);
+
+    /* island group */
+    var island = new THREE.Group();
+
+    var matGrass = new THREE.MeshStandardMaterial({ color: cssToHex("oklch(0.65 0.16 155)"), flatShading: true, roughness: 0.9 });
+    var matRock = new THREE.MeshStandardMaterial({ color: cssToHex("oklch(0.4 0.015 150)"), flatShading: true, roughness: 1 });
+    var matTrunk = new THREE.MeshStandardMaterial({ color: cssToHex("oklch(0.38 0.05 65)"), flatShading: true, roughness: 1 });
+    var matLeaf = new THREE.MeshStandardMaterial({ color: cssToHex("oklch(0.55 0.13 155)"), flatShading: true, roughness: 0.9 });
+    var matCrystal = new THREE.MeshStandardMaterial({ color: cssToHex("oklch(0.85 0.22 155)"), emissive: cssToHex("oklch(0.75 0.19 155)"), emissiveIntensity: 1.6, flatShading: true });
+
+    /* grassy top */
+    var top = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 2.6, 0.9, 7), matGrass);
+    top.position.y = 0;
+    island.add(top);
+
+    /* rocky underside */
+    var under = new THREE.Mesh(new THREE.ConeGeometry(2.6, 3.4, 7), matRock);
+    under.rotation.x = Math.PI;
+    under.position.y = -2.1;
+    island.add(under);
+
+    /* trees */
+    function tree(x, z, s) {
+      var g = new THREE.Group();
+      var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.09 * s, 0.13 * s, 0.6 * s, 5), matTrunk);
+      trunk.position.y = 0.3 * s;
+      var leaves = new THREE.Mesh(new THREE.ConeGeometry(0.55 * s, 1.3 * s, 6), matLeaf);
+      leaves.position.y = 1.1 * s;
+      g.add(trunk, leaves);
+      g.position.set(x, 0.45, z);
+      return g;
+    }
+    island.add(tree(-1.6, 0.8, 1));
+    island.add(tree(-2.1, -0.9, 0.8));
+    island.add(tree(1.8, -1.3, 1.15));
+    island.add(tree(2.3, 0.6, 0.7));
+
+    /* save-point crystal */
+    var crystal = new THREE.Mesh(new THREE.OctahedronGeometry(0.55), matCrystal);
+    crystal.position.set(0.6, 1.5, 0.4);
+    island.add(crystal);
+
+    /* small drifting satellite rocks */
+    var rocks = [];
+    for (var i = 0; i < 5; i++) {
+      var r = new THREE.Mesh(new THREE.DodecahedronGeometry(0.22 + Math.random() * 0.25), matRock);
+      var a = (i / 5) * Math.PI * 2;
+      r.position.set(Math.cos(a) * (4.4 + Math.random()), -0.6 + Math.random() * 1.6, Math.sin(a) * (4.4 + Math.random()));
+      r.userData = { angle: a, radius: Math.hypot(r.position.x, r.position.z), speed: 0.05 + Math.random() * 0.06, bob: Math.random() * Math.PI * 2 };
+      rocks.push(r);
+      scene.add(r);
+    }
+
+    scene.add(island);
+
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = canvas.clientWidth || canvas.parentElement.clientWidth;
+      var h = canvas.clientHeight || canvas.parentElement.clientHeight;
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+
+    var raf = null;
+    var running = false;
+    var t0 = performance.now();
+
+    function frame(now) {
+      if (!running) return;
+      var t = (now - t0) / 1000;
+      /* slow orbit */
+      island.rotation.y = t * 0.12;
+      island.position.y = Math.sin(t * 0.5) * 0.18;
+      crystal.rotation.y = t * 0.9;
+      crystal.position.y = 1.5 + Math.sin(t * 1.4) * 0.12;
+      saveGlow.intensity = 3.2 + Math.sin(t * 2.2) * 0.7;
+      for (var i = 0; i < rocks.length; i++) {
+        var r = rocks[i];
+        r.userData.angle += r.userData.speed * 0.016;
+        r.position.x = Math.cos(r.userData.angle) * r.userData.radius;
+        r.position.z = Math.sin(r.userData.angle) * r.userData.radius;
+        r.position.y += Math.sin(t + r.userData.bob) * 0.0016;
+        r.rotation.x += 0.003;
+        r.rotation.y += 0.004;
+      }
+      renderer.render(scene, camera);
+      raf = window.requestAnimationFrame(frame);
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      raf = window.requestAnimationFrame(frame);
+    }
+    function stop() {
+      running = false;
+      if (raf) window.cancelAnimationFrame(raf);
+    }
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+
+    if (reduceMotion) {
+      /* static frame for reduced-motion users */
+      island.rotation.y = 0.7;
+      renderer.render(scene, camera);
+    } else {
+      start();
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) stop(); else start();
+      });
+    }
+  }
+
+  loadThreeFallback(initDiorama);
+
+  /* ---------- generative pixel art ---------- */
+  function px(ctx, x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+  }
+
+  function drawLoam(canvas) {
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width, H = canvas.height;
+    /* night sky bands */
+    var sky = ["oklch(0.18 0.03 155)", "oklch(0.21 0.035 155)", "oklch(0.24 0.04 155)", "oklch(0.27 0.045 155)"];
+    for (var i = 0; i < 4; i++) px(ctx, 0, i * 22, W, 22, sky[i]);
+    /* stars */
+    var s = 7;
+    for (var st = 0; st < 46; st++) {
+      s = (s * 16807) % 2147483647;
+      px(ctx, s % W, (s >> 5) % 80, 2, 2, st % 5 === 0 ? "oklch(0.92 0.1 155)" : "oklch(0.58 0.06 155)");
+    }
+    /* green moon */
+    px(ctx, 236, 18, 26, 26, "oklch(0.85 0.22 155)");
+    px(ctx, 232, 24, 34, 14, "oklch(0.85 0.22 155)");
+    px(ctx, 242, 24, 8, 8, "oklch(0.18 0.03 155)");
+    /* ground */
+    px(ctx, 0, 96, W, H - 96, "oklch(0.22 0.03 60)");
+    /* furrows */
+    for (var f = 0; f < 9; f++) px(ctx, 0, 104 + f * 11, W, 4, f % 2 ? "oklch(0.25 0.035 60)" : "oklch(0.18 0.025 60)");
+    /* crops — glowing rows */
+    for (var c = 0; c < 16; c++) {
+      var cx = 16 + c * 19;
+      px(ctx, cx, 118, 6, 8, "oklch(0.55 0.13 155)");
+      px(ctx, cx + 1, 116, 4, 3, "oklch(0.85 0.22 155)");
+    }
+    for (var c2 = 0; c2 < 14; c2++) {
+      var dx = 26 + c2 * 21;
+      px(ctx, dx, 150, 6, 8, "oklch(0.55 0.13 155)");
+      px(ctx, dx + 1, 148, 4, 3, "oklch(0.9 0.16 155)");
+    }
+    /* farmer with lantern */
+    px(ctx, 120, 132, 14, 26, "oklch(0.2 0.02 150)");       /* coat */
+    px(ctx, 122, 120, 10, 12, "oklch(0.78 0.08 75)");       /* head */
+    px(ctx, 120, 118, 14, 5, "oklch(0.28 0.04 65)");        /* hat brim */
+    px(ctx, 124, 112, 6, 7, "oklch(0.28 0.04 65)");         /* hat top */
+    px(ctx, 136, 136, 10, 3, "oklch(0.38 0.05 65)");        /* arm */
+    px(ctx, 146, 130, 8, 10, "oklch(0.79 0.14 85)");        /* lantern */
+    px(ctx, 148, 132, 4, 6, "oklch(0.96 0.05 95)");         /* lantern glow core */
+    /* lantern light pool */
+    px(ctx, 140, 160, 40, 8, "oklch(0.79 0.14 85 / 0.25)");
+    px(ctx, 148, 168, 26, 6, "oklch(0.79 0.14 85 / 0.15)");
+    /* whisper wisps */
+    px(ctx, 60, 70, 4, 10, "oklch(0.85 0.22 155 / 0.5)");
+    px(ctx, 64, 62, 4, 8, "oklch(0.85 0.22 155 / 0.35)");
+    px(ctx, 290, 66, 4, 10, "oklch(0.85 0.22 155 / 0.5)");
+  }
+
+  function drawApsis(canvas) {
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width, H = canvas.height;
+    /* void */
+    px(ctx, 0, 0, W, H, "oklch(0.13 0.015 250)");
+    /* stars */
+    var s = 13;
+    for (var st = 0; st < 70; st++) {
+      s = (s * 16807) % 2147483647;
+      px(ctx, s % W, (s >> 4) % H, 2, 2, st % 7 === 0 ? "oklch(0.85 0.07 235)" : "oklch(0.38 0.04 250)");
+    }
+    /* dying station ring */
+    ctx.strokeStyle = "oklch(0.3 0.03 250)";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.arc(258, 42, 30, 0, Math.PI * 2);
+    ctx.stroke();
+    px(ctx, 252, 36, 12, 12, "oklch(0.6 0.19 30)");        /* reactor hit */
+    px(ctx, 255, 39, 6, 6, "oklch(0.82 0.08 30)");
+    /* two platforms */
+    px(ctx, 40, 150, 110, 12, "oklch(0.3 0.03 250)");
+    px(ctx, 40, 148, 110, 3, "oklch(0.44 0.045 250)");
+    px(ctx, 170, 60, 110, 12, "oklch(0.3 0.03 250)");
+    px(ctx, 170, 58, 110, 3, "oklch(0.44 0.045 250)");
+    /* gravity field between them */
+    for (var g = 0; g < 8; g++) px(ctx, 96 + g * 12, 92 + (g % 2) * 14, 5, 5, "oklch(0.85 0.22 155 / 0.55)");
+    /* astronaut mid-flip */
+    px(ctx, 130, 96, 10, 14, "oklch(0.94 0.01 250)");      /* suit */
+    px(ctx, 132, 90, 8, 7, "oklch(0.94 0.01 250)");        /* helmet */
+    px(ctx, 133, 92, 5, 3, "oklch(0.85 0.22 155)");        /* visor */
+    px(ctx, 126, 100, 4, 8, "oklch(0.84 0.01 250)");       /* arm */
+    px(ctx, 140, 102, 4, 8, "oklch(0.84 0.01 250)");
+    /* tether */
+    ctx.strokeStyle = "oklch(0.94 0.01 250 / 0.4)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(135, 110);
+    ctx.quadraticCurveTo(110, 130, 96, 148);
+    ctx.stroke();
+    /* hazard stripes on platform edge */
+    for (var hz = 0; hz < 5; hz++) px(ctx, 40 + hz * 10, 158, 5, 4, hz % 2 ? "oklch(0.6 0.19 30)" : "oklch(0.17 0.01 250)");
+    /* HUD hint */
+    px(ctx, 10, 10, 44, 10, "oklch(0.2 0.02 250)");
+    px(ctx, 13, 13, 30, 4, "oklch(0.85 0.22 155)");
+    px(ctx, 46, 13, 5, 4, "oklch(0.6 0.19 30)");
+  }
+
+  function drawFace(canvas, seed) {
+    var ctx = canvas.getContext("2d");
+    var palettes = [
+      { bg: "oklch(0.24 0.03 155)", skin: "oklch(0.73 0.09 60)", hair: "oklch(0.22 0.03 55)", eye: "oklch(0.2 0.02 150)", shirt: "oklch(0.85 0.22 155)" },
+      { bg: "oklch(0.22 0.02 60)", skin: "oklch(0.53 0.09 55)", hair: "oklch(0.17 0.01 250)", eye: "oklch(0.15 0.01 250)", shirt: "oklch(0.79 0.14 85)" },
+      { bg: "oklch(0.22 0.025 240)", skin: "oklch(0.38 0.07 50)", hair: "oklch(0.15 0.01 250)", eye: "oklch(0.15 0.01 250)", shirt: "oklch(0.6 0.19 30)" }
+    ];
+    var p = palettes[seed % palettes.length];
+    px(ctx, 0, 0, 32, 32, p.bg);
+    px(ctx, 8, 6, 16, 14, p.skin);             /* head */
+    px(ctx, 8, 6, 16, 5 + (seed % 3), p.hair); /* hair */
+    if (seed === 2) { px(ctx, 6, 8, 3, 10, p.hair); px(ctx, 23, 8, 3, 10, p.hair); }
+    px(ctx, 11, 13, 3, 3, p.eye);              /* eyes */
+    px(ctx, 18, 13, 3, 3, p.eye);
+    px(ctx, 13, 18, 6, 2, "oklch(0.5 0.08 50)"); /* mouth */
+    px(ctx, 6, 22, 20, 10, p.shirt);           /* torso */
+  }
+
+  drawLoam(document.getElementById("shotLoam"));
+  drawApsis(document.getElementById("shotApsis"));
+  document.querySelectorAll(".avatar").forEach(function (c) {
+    drawFace(c, parseInt(c.getAttribute("data-face"), 10));
+  });
+
+  /* ---------- pixel-dissolve game switcher ---------- */
+  (function switcher() {
+    var stage = document.getElementById("gameStage");
+    var dissolve = document.getElementById("dissolve");
+    var tabs = Array.prototype.slice.call(document.querySelectorAll(".game-tab"));
+    var panels = {
+      "tab-loam": document.getElementById("panel-loam"),
+      "tab-apsis": document.getElementById("panel-apsis")
+    };
+    var busy = false;
+
+    /* build the pixel grid */
+    var squares = [];
+    for (var i = 0; i < 16 * 9; i++) {
+      var sq = document.createElement("i");
+      dissolve.appendChild(sq);
+      squares.push(sq);
+    }
+
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+      }
+      return a;
+    }
+
+    function showPanel(tabId) {
+      Object.keys(panels).forEach(function (id) {
+        panels[id].hidden = id !== tabId;
+      });
+      tabs.forEach(function (t) {
+        t.setAttribute("aria-selected", t.id === tabId ? "true" : "false");
+      });
+    }
+
+    function switchTo(tabId) {
+      if (busy || panels[tabId].hidden === false) return;
+      if (reduceMotion) { showPanel(tabId); return; }
+      busy = true;
+      var order = shuffle(squares.map(function (_, idx) { return idx; }));
+      /* dissolve in */
+      order.forEach(function (idx, n) {
+        window.setTimeout(function () { squares[idx].style.opacity = "1"; }, n * 4);
+      });
+      var mid = order.length * 4 + 120;
+      window.setTimeout(function () { showPanel(tabId); }, mid);
+      /* dissolve out */
+      var order2 = shuffle(order);
+      order2.forEach(function (idx, n) {
+        window.setTimeout(function () { squares[idx].style.opacity = "0"; }, mid + n * 4);
+      });
+      window.setTimeout(function () { busy = false; }, mid + order2.length * 4 + 100);
+    }
+
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () { switchTo(tab.id); });
+      tab.addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        e.preventDefault();
+        var idx = tabs.indexOf(tab);
+        var next = e.key === "ArrowRight" ? (idx + 1) % tabs.length : (idx - 1 + tabs.length) % tabs.length;
+        tabs[next].focus();
+        switchTo(tabs[next].id);
+      });
+    });
+  })();
+
+  /* ---------- playtest signup (front-end demo) ---------- */
+  (function signup() {
+    var form = document.getElementById("signupForm");
+    var msg = document.getElementById("signupMsg");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = document.getElementById("email").value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msg.style.color = "oklch(0.35 0.15 25)";
+        msg.textContent = "ERR: that email doesn't parse. One more try.";
+        return;
+      }
+      msg.style.color = "oklch(0.18 0.04 150)";
+      msg.textContent = "SAVED. First build lands the first Friday of next month.";
+      form.reset();
+    });
+  })();
+})();
+</script>
+
+</body>
+</html>

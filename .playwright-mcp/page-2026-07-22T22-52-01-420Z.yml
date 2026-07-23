@@ -1,0 +1,60 @@
+- generic [active] [ref=f15e1]:
+  - banner [ref=f15e2]:
+    - generic [ref=f15e3]:
+      - link "Monsoon" [ref=f15e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Main" [ref=f15e5]:
+        - link "Teas" [ref=f15e6] [cursor=pointer]:
+          - /url: "#teas"
+        - link "Visit" [ref=f15e7] [cursor=pointer]:
+          - /url: "#visit"
+        - link "Reserve" [ref=f15e8] [cursor=pointer]:
+          - /url: "#reserve"
+  - main [ref=f15e9]:
+    - region [ref=f15e10]:
+      - generic [ref=f15e11]:
+        - heading "Tea, while the rain does its work." [level=1] [ref=f15e12]
+        - paragraph [ref=f15e13]: A small tea house on North Mississippi Avenue. We steep three teas at a time, chosen with the season, poured without hurry.
+        - link "Reserve a table for the afternoon" [ref=f15e14] [cursor=pointer]:
+          - /url: mailto:table@monsoon-tea.example?subject=A%20table%20for%20two
+      - img "A celadon porcelain gaiwan with an oxidized copper rim, steam rising" [ref=f15e16]
+    - region [ref=f15e26]:
+      - generic [ref=f15e27]:
+        - heading "This month's three" [level=2] [ref=f15e28]
+        - paragraph [ref=f15e29]: Each pot is weighed, timed, and poured at the table. Water is filtered and held at temperature — never reboiled.
+        - generic [ref=f15e30]:
+          - heading "First Flush Darjeeling" [level=3] [ref=f15e31]
+          - paragraph [ref=f15e32]: 2 min 30 · 85°C · $9
+          - paragraph [ref=f15e33]: Gopaldhara estate, picked the second week of March. Muscatel and green almond; a cup that tastes like the altitude it grew at.
+        - generic [ref=f15e34]:
+          - heading "Alishan High Mountain Oolong" [level=3] [ref=f15e35]
+          - paragraph [ref=f15e36]: 3 min · 92°C · $11
+          - paragraph [ref=f15e37]: Rolled by hand at 1,400 metres in Chiayi County. Lilac, warm milk, a long mineral finish. Good for three infusions, better for four.
+        - generic [ref=f15e38]:
+          - heading "Smoked Lapsang, Unsmoked Heart" [level=3] [ref=f15e39]
+          - paragraph [ref=f15e40]: 2 min · 90°C · $8
+          - paragraph [ref=f15e41]: A Wuyi lapsang dried over fruitwood instead of pine — longan and dried plum first, the smoke arriving quietly at the end.
+    - img "Rows of tea bushes climbing a misted hillside, the first-flush field where March picking begins" [ref=f15e42]
+    - region [ref=f15e43]:
+      - heading "Come in out of the rain" [level=2] [ref=f15e44]
+      - generic [ref=f15e45]:
+        - generic [ref=f15e46]:
+          - heading "Hours" [level=3] [ref=f15e47]
+          - list [ref=f15e48]:
+            - listitem [ref=f15e49]: Wednesday – Friday 11:00 – 18:00
+            - listitem [ref=f15e50]: Saturday – Sunday 10:00 – 19:00
+            - listitem [ref=f15e51]: Monday – Tuesday closed, for resting the water
+        - generic [ref=f15e52]:
+          - heading "Find us" [level=3] [ref=f15e53]
+          - paragraph [ref=f15e54]: 3914 N Mississippi Ave, Portland, Oregon. Twelve seats, one long cedar counter, a window that fogs by noon.
+        - generic [ref=f15e55]:
+          - heading "Reservations" [level=3] [ref=f15e56]
+          - paragraph [ref=f15e57]:
+            - text: We hold six of the twelve seats. Write to
+            - link "table@monsoon-tea.example" [ref=f15e58] [cursor=pointer]:
+              - /url: mailto:table@monsoon-tea.example
+            - text: with an afternoon in mind; we answer within the day.
+  - contentinfo [ref=f15e59]:
+    - generic [ref=f15e60]:
+      - generic [ref=f15e61]: Monsoon Tea House — Portland, est. 2019
+      - generic [ref=f15e62]: Steeped slowly. Poured without hurry.

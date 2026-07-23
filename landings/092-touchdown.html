@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Touchdown — Vintage football shirts, graded honestly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Gabarito:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: oklch(0.99 0 0);
+  --ink: oklch(0.24 0.01 250);
+  --muted: oklch(0.45 0.012 250);
+  --pitch: oklch(0.38 0.10 150);
+  --pitch-deep: oklch(0.30 0.08 150);
+  --gold: oklch(0.76 0.13 90);
+  --gold-deep: oklch(0.55 0.11 90);
+  --line: oklch(0.88 0.01 250);
+  --font-display: "Archivo", sans-serif;
+  --font-body: "Gabarito", sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --z-sticky: 10;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  text-wrap: balance;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+h1 { font-size: clamp(2.6rem, 7vw, 5.5rem); text-transform: uppercase; }
+h2 { font-size: clamp(1.9rem, 4vw, 3rem); text-transform: uppercase; }
+h3 { font-size: clamp(1.1rem, 2vw, 1.35rem); letter-spacing: -0.015em; }
+p { max-width: 64ch; text-wrap: pretty; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.wrap { width: min(1180px, 100% - 3rem); margin-inline: auto; }
+.muted { color: var(--muted); }
+
+/* ---------- header ---------- */
+header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: var(--pitch-deep);
+  border-bottom: 3px solid var(--gold);
+}
+.header-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 0.9rem;
+  color: oklch(0.97 0.01 130);
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.35rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.wordmark .ball {
+  width: 1.1rem; height: 1.1rem;
+  border-radius: 50%;
+  background: var(--gold);
+  flex: none;
+}
+nav ul { display: flex; gap: 1.7rem; list-style: none; flex-wrap: wrap; }
+nav a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: oklch(0.85 0.03 140);
+  transition: color 0.25s var(--ease-out);
+}
+nav a:hover { color: var(--gold); }
+@media (max-width: 620px) {
+  .header-in { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  nav ul { gap: 1rem; }
+}
+
+/* ---------- hero ---------- */
+.hero {
+  background: var(--pitch);
+  color: oklch(0.97 0.01 130);
+  padding-block: clamp(3.5rem, 9vh, 6.5rem);
+  border-bottom: 3px solid var(--gold);
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+.hero h1 { color: oklch(0.99 0 0); }
+.hero h1 .gold { color: var(--gold); }
+.hero .lead {
+  margin-top: 1.3rem;
+  color: oklch(0.88 0.03 140);
+  font-size: 1.12rem;
+  max-width: 46ch;
+}
+.hero .cta-row { margin-top: 2rem; display: flex; gap: 0.9rem; flex-wrap: wrap; }
+.btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 0.85rem 1.7rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.btn-gold { background: var(--gold); color: var(--ink); border: none; }
+.btn-gold:hover { background: oklch(0.83 0.14 90); }
+.btn-ghost {
+  border: 1px solid oklch(0.85 0.03 140 / 0.5);
+  color: oklch(0.97 0.01 130);
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.hero figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 3px solid var(--gold);
+}
+.hero figcaption {
+  font-size: 0.88rem;
+  color: oklch(0.82 0.03 140);
+  padding-top: 0.7rem;
+}
+@media (max-width: 820px) {
+  .hero-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- era tabs (substitution board) ---------- */
+.wall { padding-block: clamp(4rem, 9vh, 6.5rem); }
+.wall .wall-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.wall .wall-head p { color: var(--muted); margin-top: 0.8rem; }
+.board {
+  display: inline-flex;
+  gap: 0.4rem;
+  margin-top: 2.2rem;
+  background: var(--pitch-deep);
+  padding: 0.45rem;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+.board button {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: oklch(0.85 0.03 140);
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 0.55rem 1.3rem;
+  cursor: pointer;
+  transform: translateY(0);
+  transition: transform 0.5s var(--ease-out), background 0.3s var(--ease-out),
+              color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+.board button:hover { color: var(--gold); }
+.board button[aria-pressed="true"] {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: oklch(0.99 0 0);
+  transform: translateY(-4px); /* board raised like a fourth official's */
+}
+.shirt-grid {
+  margin-top: 2.4rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1.2rem, 3vw, 2rem);
+}
+.shirt {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--line);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.shirt.hidden-era {
+  display: none;
+}
+.shirt img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.8s var(--ease-out);
+}
+.shirt:hover img, .shirt:focus-within img { transform: scale(1.07); }
+.shirt .tag {
+  position: absolute;
+  top: 0.8rem;
+  left: 0.8rem;
+  background: var(--pitch-deep);
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+}
+.shirt .info {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 2.2rem 1rem 0.9rem;
+  background: linear-gradient(to top, oklch(0.20 0.02 250 / 0.92), transparent);
+  color: oklch(0.97 0.01 130);
+  transform: translateY(30%);
+  opacity: 0;
+  transition: transform 0.5s var(--ease-out), opacity 0.5s var(--ease-out);
+}
+.shirt:hover .info, .shirt:focus-within .info {
+  transform: translateY(0);
+  opacity: 1;
+}
+.shirt .info .name { font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+.shirt .info .meta { font-size: 0.85rem; color: oklch(0.85 0.03 140); margin-top: 0.2rem; }
+@media (prefers-reduced-motion: reduce) {
+  .shirt .info { transform: none; opacity: 1; position: static; background: var(--pitch-deep); }
+  .shirt img, .board button { transition: none; }
+  .shirt:hover img { transform: none; }
+}
+
+/* ---------- drop of the week ---------- */
+.drop {
+  background: var(--pitch);
+  color: oklch(0.97 0.01 130);
+  padding-block: clamp(4rem, 9vh, 6.5rem);
+  border-block: 3px solid var(--gold);
+}
+.drop-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+.drop figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 3px solid var(--gold);
+}
+.drop .kicker {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+.drop h2 { color: oklch(0.99 0 0); margin-top: 0.8rem; }
+.drop .copy { margin-top: 1.2rem; color: oklch(0.88 0.03 140); }
+.drop .copy + .copy { margin-top: 0.8rem; }
+.drop .facts {
+  margin-top: 1.8rem;
+  display: flex;
+  gap: 2.4rem;
+  flex-wrap: wrap;
+}
+.drop .facts div { font-size: 0.9rem; color: oklch(0.82 0.03 140); }
+.drop .facts strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+.drop .btn-gold { margin-top: 2rem; display: inline-block; }
+@media (max-width: 780px) {
+  .drop-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- grading ---------- */
+.grading { padding-block: clamp(4rem, 9vh, 6.5rem); }
+.grading h2 { max-width: 22ch; }
+.grading .lead { margin-top: 1rem; color: var(--muted); max-width: 56ch; }
+.grade-table { margin-top: 2.4rem; border-top: 2px solid var(--ink); }
+.grade-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 10rem) 1fr auto;
+  gap: clamp(1rem, 4vw, 3rem);
+  align-items: baseline;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.grade-row .g {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+.grade-row:nth-child(1) .g { color: var(--pitch); }
+.grade-row:nth-child(2) .g { color: var(--pitch); }
+.grade-row:nth-child(3) .g { color: var(--gold-deep); }
+.grade-row:nth-child(4) .g { color: var(--muted); }
+.grade-row .d { color: var(--muted); font-size: 0.98rem; }
+.grade-row .expect {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pitch);
+  white-space: nowrap;
+}
+@media (max-width: 680px) {
+  .grade-row { grid-template-columns: 1fr; gap: 0.3rem; }
+}
+
+/* ---------- fake spotting ---------- */
+.fakes {
+  background: oklch(0.96 0.015 130);
+  padding-block: clamp(4rem, 9vh, 6.5rem);
+}
+.fakes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+.fakes h2 { max-width: 18ch; }
+.fakes .lead { margin-top: 1rem; color: var(--muted); }
+.fakes figure img {
+  width: 100%; height: auto;
+  border-radius: 12px;
+  border: 3px solid var(--pitch);
+}
+.fakes figcaption { font-size: 0.88rem; color: var(--muted); padding-top: 0.7rem; }
+.tells { list-style: none; margin-top: 2rem; }
+.tells li {
+  padding: 1rem 0 1rem 2.2rem;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+.tells li::before {
+  content: "✕";
+  position: absolute;
+  left: 0;
+  top: 1rem;
+  font-weight: 700;
+  color: oklch(0.55 0.15 25);
+}
+.tells li strong { color: var(--pitch-deep); }
+@media (max-width: 780px) {
+  .fakes-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- sell to us ---------- */
+.sell { padding-block: clamp(4rem, 9vh, 6.5rem); }
+.sell h2 { max-width: 24ch; }
+.sell .lead { margin-top: 1rem; color: var(--muted); max-width: 56ch; }
+.steps {
+  margin-top: 2.6rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  counter-reset: step;
+}
+.step { border-top: 3px solid var(--gold); padding-top: 1.2rem; counter-increment: step; }
+.step::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 2rem;
+  color: var(--gold-deep);
+}
+.step h3 { margin-top: 0.6rem; }
+.step p { margin-top: 0.5rem; color: var(--muted); font-size: 0.97rem; }
+
+/* ---------- wishlist ---------- */
+.wish {
+  background: var(--pitch-deep);
+  color: oklch(0.97 0.01 130);
+  padding-block: clamp(3.5rem, 8vh, 5.5rem);
+  text-align: center;
+}
+.wish h2 { color: oklch(0.99 0 0); max-width: 24ch; margin-inline: auto; }
+.wish p { margin: 1rem auto 0; color: oklch(0.85 0.03 140); max-width: 52ch; }
+.wish form {
+  margin: 2rem auto 0;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.wish input, .wish select {
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.8rem 1.1rem;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: oklch(0.99 0 0);
+  color: var(--ink);
+  min-width: 13rem;
+}
+.wish .btn-gold { border-radius: 8px; }
+.wish .reply {
+  margin-top: 1.2rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
+}
+.wish .reply.show { opacity: 1; }
+
+/* ---------- footer ---------- */
+footer { background: var(--pitch-deep); border-top: 3px solid var(--gold); }
+.footer-in {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-block: 2.2rem;
+  color: oklch(0.85 0.03 140);
+  font-size: 0.9rem;
+}
+footer a { color: var(--gold); text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .btn, nav a, .wish .reply { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="wordmark" href="#top"><span class="ball" aria-hidden="true"></span>Touchdown</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#wall">The shirt wall</a></li>
+        <li><a href="#drop">This week's drop</a></li>
+        <li><a href="#grading">Grading</a></li>
+        <li><a href="#fakes">Spot a fake</a></li>
+        <li><a href="#sell">Sell to us</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Introduction">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Proper shirts.<br><span class="gold">Proper eras.</span></h1>
+        <p class="lead">Touchdown is a one-room shop in Salford selling original football
+        shirts from 1978 to 2005 — every one sourced, authenticated, and graded by people
+        who remember watching them being worn.</p>
+        <div class="cta-row">
+          <a class="btn btn-gold" href="#wall">Browse the wall</a>
+          <a class="btn btn-ghost" href="#sell">Got shirts in the loft?</a>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/shirts-1/800/600" width="800" height="600"
+             alt="A flat-lay of folded vintage football shirts in faded red, gold and green, sponsor logos cracking with age">
+        <figcaption>Thursday's intake, mid-sort — the good, the great, and the "needs a soak".</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="wall wrap" id="wall" aria-labelledby="wall-heading">
+    <div class="wall-head">
+      <div>
+        <h2 id="wall-heading">The shirt wall</h2>
+        <p>Everything below is in the shop and on the rail right now. Pick your era —
+        the board goes up like a substitution.</p>
+      </div>
+    </div>
+    <div class="board" role="group" aria-label="Filter shirts by era">
+      <button type="button" aria-pressed="true" data-era="all">ALL</button>
+      <button type="button" aria-pressed="false" data-era="80s">'80s</button>
+      <button type="button" aria-pressed="false" data-era="90s">'90s</button>
+      <button type="button" aria-pressed="false" data-era="00s">'00s</button>
+    </div>
+    <div class="shirt-grid" id="shirt-grid">
+      <article class="shirt" data-era="90s" tabindex="0">
+        <img src="https://picsum.photos/seed/shirts-2/800/800" width="800" height="800"
+             alt="A mid-nineties away shirt in gold with a green collar, laid flat, light bobbling on the chest">
+        <span class="tag">'94 AWAY</span>
+        <div class="info">
+          <p class="name">Rovers away, 1994–95</p>
+          <p class="meta">Excellent · £145 · one in stock, size M</p>
+        </div>
+      </article>
+      <article class="shirt" data-era="80s" tabindex="0">
+        <img src="https://picsum.photos/seed/shirts-3/800/800" width="800" height="800"
+             alt="An eighties home shirt with thin pinstripes and a felt crest, collar slightly greyed at the fold">
+        <span class="tag">'86 HOME</span>
+        <div class="info">
+          <p class="name">City home, 1986–87</p>
+          <p class="meta">Very good · £110 · felt crest intact</p>
+        </div>
+      </article>
+      <article class="shirt" data-era="90s" tabindex="0">
+        <img src="https://picsum.photos/seed/shirts-1/800/800" width="800" height="800"
+             alt="A stack of folded nineties shirts, the top one showing a cracked sponsor logo in white on red">
+        <span class="tag">'97 THIRD</span>
+        <div class="info">
+          <p class="name">United third, 1997–98</p>
+          <p class="meta">Good · £68 · sponsor cracking, priced for it</p>
+        </div>
+      </article>
+      <article class="shirt" data-era="00s" tabindex="0">
+        <img src="https://picsum.photos/seed/shirts-2/800/600" width="800" height="600"
+             alt="An early-two-thousands shirt in deep green with gold trim hanging on a wooden hanger">
+        <span class="tag">'02 HOME</span>
+        <div class="info">
+          <p class="name">Athletic home, 2002–03</p>
+          <p class="meta">Mint · £95 · still has the tag</p>
+        </div>
+      </article>
+      <article class="shirt" data-era="80s" tabindex="0">
+        <img src="https://picsum.photos/seed/shirts-3/800/600" width="800" height="600"
+             alt="Close detail of an eighties shirt's v-neck collar and embroidered badge, colours softened by decades of washes">
+        <span class="tag">'83 AWAY</span>
+        <div class="info">
+          <p class="name">County away, 1983–84</p>
+          <p class="meta">Very good · £88 · rare long-sleeve</p>
+        </div>
+      </article>
+      <article class="shirt" data-era="00s" tabindex="0">
+        <img src="https://picsum.photos/seed/shirts-1/800/600" width="800" height="600"
+             alt="Three early-two-thousands shirts fanned out on a wooden bench under a floodlit evening sky">
+        <span class="tag">'05 AWAY</span>
+        <div class="info">
+          <p class="name">Wanderers away, 2005–06</p>
+          <p class="meta">Excellent · £74 · nameset removed cleanly</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="drop" id="drop" aria-labelledby="drop-heading">
+    <div class="wrap drop-grid">
+      <figure>
+        <img src="https://picsum.photos/seed/shirts-3/1600/900" width="1600" height="900"
+             alt="The drop of the week — a gold and green 1994 away shirt photographed flat under floodlight-style lighting">
+      </figure>
+      <div>
+        <p class="kicker">Drop of the week · Friday 9 a.m.</p>
+        <h2 id="drop-heading">The '94 away</h2>
+        <p class="copy">The one your mate's older brother had. Gold body, green collar,
+        that impossible zig-zag under the arms — worn for exactly one season, mostly in
+        defeats everyone somehow remembers fondly.</p>
+        <p class="copy">We found six at a house clearance in Blackburn. Four are already
+        spoken for on the wishlist; two hit the site Friday at 9 a.m. When they're gone,
+        they're gone — we don't do restocks of history.</p>
+        <div class="facts">
+          <div><strong>2</strong>left in stock</div>
+          <div><strong>£145</strong>graded Excellent</div>
+          <div><strong>M &amp; L</strong>sizes available</div>
+        </div>
+        <a class="btn btn-gold" href="#wishlist">Join the wishlist instead</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="grading wrap" id="grading" aria-labelledby="grade-heading">
+    <h2 id="grade-heading">Grading, without the flannel</h2>
+    <p class="lead">Every shirt is graded under the same lamp by the same two people.
+    If we say Mint, we mean it — and if it's Good, we'll tell you exactly what's wrong
+    and price it like we know.</p>
+    <div class="grade-table">
+      <div class="grade-row">
+        <p class="g">Mint</p>
+        <p class="d">Unworn or indistinguishable from it. Tags on or storage-fresh. We have
+        graded eleven shirts Mint in three years.</p>
+        <p class="expect">Top of market</p>
+      </div>
+      <div class="grade-row">
+        <p class="g">Excellent</p>
+        <p class="d">Worn and washed with care. No pulls, no stains, sponsor and crest fully
+        intact. The grade most of our stock earns.</p>
+        <p class="expect">Full price</p>
+      </div>
+      <div class="grade-row">
+        <p class="g">Very good</p>
+        <p class="d">Light bobbling, a greying collar fold, or one honest pull — photographed
+        and named in the listing, never hidden.</p>
+        <p class="expect">15–25% off</p>
+      </div>
+      <div class="grade-row">
+        <p class="g">Good</p>
+        <p class="d">Cracking sponsor, fading, or a repair. Still a real shirt with years left
+        in it — priced so a nineteen-year-old can own one too.</p>
+        <p class="expect">Half price or less</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="fakes" id="fakes" aria-labelledby="fakes-heading">
+    <div class="wrap fakes-grid">
+      <div>
+        <h2 id="fakes-heading">Spot a fake before you fund one</h2>
+        <p class="lead">Half the "1994" shirts on the big resale sites were sewn last year in
+        a different country. The free checks we run on every shirt that comes through our
+        door:</p>
+        <ul class="tells">
+          <li><strong>Wash-label country.</strong> A '94 shirt made somewhere the brand didn't
+          use until 2003 is a remake, whatever the seller's story.</li>
+          <li><strong>Sponsor texture.</strong> Original felt and flock sponsors crack with
+          age in straight stress lines. Printed-on fakes crack in a spiderweb — or not at all.</li>
+          <li><strong>Stitch count.</strong> Overlock seams on originals run tight and even.
+          Wobbly, wide-spaced stitching is the loudest tell there is.</li>
+          <li><strong>The smell test.</strong> Genuinely thirty-year-old cotton smells of
+          loft, not factory. New "vintage" smells of dye and plasticiser.</li>
+        </ul>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/shirts-2/800/600" width="800" height="600"
+             alt="Two shirts side by side on the shop counter, one being checked against a magnifying lamp">
+        <figcaption>Every intake gets the lamp. Around one shirt in eight goes back to the seller.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sell wrap" id="sell" aria-labelledby="sell-heading">
+    <h2 id="sell-heading">Sell us the shirts in your loft</h2>
+    <p class="lead">We buy outright — no consignment, no waiting for a buyer. The whole thing
+    usually takes a week, and we pay the same day we authenticate.</p>
+    <div class="steps">
+      <div class="step">
+        <h3>Send photos</h3>
+        <p>Front, back, wash label, and the sponsor up close. Email them over — a phone
+        camera by a window is plenty. We'll tell you within two days if it's our sort of stock.</p>
+      </div>
+      <div class="step">
+        <h3>Get an offer</h3>
+        <p>A straight cash number based on the last twelve months of real sales, not
+        "whatever eBay says this week". You're free to say no; about a fifth of people do.</p>
+      </div>
+      <div class="step">
+        <h3>Post or drop in</h3>
+        <p>We cover insured postage, or bring it to the shop and watch it go under the lamp
+        yourself. Payment lands the same day it passes — bank transfer, cash if you're local.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wish" id="wishlist" aria-labelledby="wish-heading">
+    <div class="wrap">
+      <h2 id="wish-heading">Hunting one specific shirt?</h2>
+      <p>Tell us the club and the season. Wishlist members get first refusal on every
+      matching shirt before it reaches the wall — that's how four of the six '94 aways
+      went this week.</p>
+      <form id="wish-form" novalidate>
+        <input type="email" name="email" aria-label="Email address" placeholder="Email address" required>
+        <input type="text" name="shirt" aria-label="Shirt you're hunting" placeholder="Club + season, e.g. Rovers '94 away" required>
+        <button class="btn btn-gold" type="submit">Join the wishlist</button>
+      </form>
+      <p class="reply" id="wish-reply" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <p>Touchdown Vintage Shirts · 14 Bexley Parade, Salford<br>
+    Open Thu–Sat, 10–6 · first and last train recommended</p>
+    <p><a href="mailto:wall@touchdown-shirts.example">wall@touchdown-shirts.example</a> ·
+    0161 000 0594</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- era tabs: substitution-board filter ---------- */
+  var buttons = document.querySelectorAll(".board button");
+  var shirts = document.querySelectorAll(".shirt");
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+      btn.setAttribute("aria-pressed", "true");
+      var era = btn.getAttribute("data-era");
+      shirts.forEach(function (shirt) {
+        var show = era === "all" || shirt.getAttribute("data-era") === era;
+        shirt.classList.toggle("hidden-era", !show);
+      });
+    });
+  });
+
+  /* ---------- wishlist ---------- */
+  var form = document.getElementById("wish-form");
+  var reply = document.getElementById("wish-reply");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var shirt = form.elements.shirt.value.trim();
+    if (!shirt) {
+      reply.textContent = "Tell us which shirt first — club and season will do.";
+    } else {
+      reply.textContent = "Noted — " + shirt + ". You get first refusal before it hits the wall.";
+    }
+    reply.classList.remove("show");
+    void reply.offsetWidth;
+    reply.classList.add("show");
+  });
+})();
+</script>
+</body>
+</html>

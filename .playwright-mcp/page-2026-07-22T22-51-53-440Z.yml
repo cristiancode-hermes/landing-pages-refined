@@ -1,0 +1,126 @@
+- generic [active] [ref=f13e1]:
+  - banner [ref=f13e2]:
+    - generic [ref=f13e3]:
+      - link "Gold Leaf" [ref=f13e4] [cursor=pointer]:
+        - /url: "#top"
+      - navigation "Primary" [ref=f13e5]:
+        - link "Build a Gift Box" [ref=f13e6] [cursor=pointer]:
+          - /url: "#gift"
+  - main [ref=f13e7]:
+    - generic [ref=f13e9]:
+      - paragraph [ref=f13e10]: Bean-to-bar atelier · Est. 2014 · Lyon
+      - heading "Chocolate patient enough to wear gold." [level=1] [ref=f13e11]
+      - paragraph [ref=f13e12]: One valley, one harvest, one weekly batch of six hundred bars. We roast slow, conche for seventy-two hours, and lay edible 24-karat leaf on every truffle by hand — because haste is the one ingredient we refuse.
+      - generic [ref=f13e13]:
+        - link "Taste the Collection" [ref=f13e14] [cursor=pointer]:
+          - /url: "#collection"
+        - link "How We Gild" [ref=f13e15] [cursor=pointer]:
+          - /url: "#process"
+      - figure "Truffles resting after gilding, Atelier Rue des Orfèvres Batch № 412 — Ucayali Valley 85%" [ref=f13e16]:
+        - img "A tray of hand-gilded dark chocolate truffles, gold leaf catching the light over an 85% cacao shell" [ref=f13e17]
+        - generic [ref=f13e18]:
+          - generic [ref=f13e19]: Truffles resting after gilding, Atelier Rue des Orfèvres
+          - emphasis [ref=f13e20]: Batch № 412 — Ucayali Valley 85%
+    - generic [ref=f13e22]:
+      - generic [ref=f13e23]:
+        - heading "One valley. One harvest. Nothing else in the bar." [level=2] [ref=f13e24]
+        - paragraph [ref=f13e25]: Our cacao comes from a single cooperative of fourteen families along the Ucayali River in Peru. The beans travel once, by boat and then by rail, and arrive in Lyon still smelling of the fermentation boxes — banana, black plum, wet earth.
+        - paragraph [ref=f13e26]: We pay 2.4× the commodity price, fixed for five harvests, so the cooperative can plan grafting cycles instead of chasing spot markets. You taste the difference as a long, quiet finish instead of a bitter shout.
+        - list [ref=f13e27]:
+          - listitem [ref=f13e28]:
+            - strong [ref=f13e29]: 85%
+            - text: cacao, Ucayali Valley single origin
+          - listitem [ref=f13e30]:
+            - strong [ref=f13e31]: 72 h
+            - text: in the conche, never rushed
+          - listitem [ref=f13e32]:
+            - strong [ref=f13e33]: "600"
+            - text: bars per weekly batch, numbered by hand
+          - listitem [ref=f13e34]:
+            - strong [ref=f13e35]: "14"
+            - text: farming families, one contract
+      - figure "Fresh pods at the cooperative, first week of the October harvest" [ref=f13e36]:
+        - img "Cacao pods split open on a wooden table, pale pulp around the beans, at the Ucayali cooperative" [ref=f13e37]
+    - generic [ref=f13e40]:
+      - generic [ref=f13e41]:
+        - heading "The gilding, in four unhurried movements" [level=2] [ref=f13e42]
+        - paragraph [ref=f13e43]: Every truffle passes through the same four hands. The gold is edible 24-karat leaf, applied sheet by sheet with squirrel-hair brushes — no sprays, no shortcuts.
+      - list [ref=f13e44]:
+        - listitem [ref=f13e45]:
+          - heading "Temper" [level=3] [ref=f13e46]
+          - paragraph [ref=f13e47]: The couverture is brought to 31.2°C by marble and patience. A degree higher and the snap dulls; a degree lower and the shine never sets.
+        - listitem [ref=f13e48]:
+          - heading "Shell" [level=3] [ref=f13e49]
+          - paragraph [ref=f13e50]: Each shell is cast at exactly 1.4 mm — thin enough to crack under a tooth, thick enough to hold a ganache at full humidity.
+        - listitem [ref=f13e51]:
+          - heading "Fill" [level=3] [ref=f13e52]
+          - paragraph [ref=f13e53]: Ganache is piped at 27°C and rested sixteen hours. The crimson-heart batches get a single drop of raspberry distillate at the center.
+        - listitem [ref=f13e54]:
+          - heading "Gild" [level=3] [ref=f13e55]
+          - paragraph [ref=f13e56]: One sheet of gold leaf per truffle, laid by hand. About one in twenty tears — those become the chocolatiers' lunch, never your box.
+    - generic [ref=f13e58]:
+      - generic [ref=f13e59]:
+        - heading "This week's collection" [level=2] [ref=f13e60]
+        - paragraph [ref=f13e61]: Six truffles, gilded Thursday morning, gone by Sunday.
+      - generic [ref=f13e62]:
+        - article [ref=f13e63]:
+          - heading "Ucayali Noir" [level=3] [ref=f13e64]
+          - paragraph [ref=f13e65]: 85% single origin · black plum, tobacco leaf, long finish
+          - paragraph [ref=f13e66]: €4.50 / piece
+        - article [ref=f13e67]:
+          - heading "Cœur Cramoisi" [level=3] [ref=f13e68]
+          - paragraph [ref=f13e69]: raspberry distillate heart · crimson cocoa-butter blush
+          - paragraph [ref=f13e70]: €4.80 / piece
+        - article [ref=f13e71]:
+          - heading "Fleur de Sel d'Or" [level=3] [ref=f13e72]
+          - paragraph [ref=f13e73]: salted caramel, Guérande grey salt, double gilded
+          - paragraph [ref=f13e74]: €5.20 / piece
+        - article [ref=f13e75]:
+          - heading "Café de Minuit" [level=3] [ref=f13e76]
+          - paragraph [ref=f13e77]: cold-brew ganache, Ethiopian Yirgacheffe, bitter edge
+          - paragraph [ref=f13e78]: €4.60 / piece
+        - article [ref=f13e79]:
+          - heading "Miel Sauvage" [level=3] [ref=f13e80]
+          - paragraph [ref=f13e81]: wild chestnut honey, toasted buckwheat praliné
+          - paragraph [ref=f13e82]: €4.90 / piece
+        - article [ref=f13e83]:
+          - heading "Piment Doux" [level=3] [ref=f13e84]
+          - paragraph [ref=f13e85]: Espelette pepper warmth, arrives slowly, leaves slowly
+          - paragraph [ref=f13e86]: €4.70 / piece
+    - generic [ref=f13e88]:
+      - generic [ref=f13e89]:
+        - heading "The gift box, built to the person" [level=2] [ref=f13e90]
+        - paragraph [ref=f13e91]: Choose a size now; compose the exact assortment at the atelier or over the phone. Every box is lined in crimson silk paper and tied with a waxed cord — the gold does the talking, the packaging keeps quiet.
+        - group "Box size" [ref=f13e92]:
+          - button "9 pieces" [pressed] [ref=f13e93] [cursor=pointer]
+          - button "16 pieces" [ref=f13e94] [cursor=pointer]
+          - button "25 pieces" [ref=f13e95] [cursor=pointer]
+        - paragraph [ref=f13e96]:
+          - text: €38
+          - generic [ref=f13e97]: 9 pieces — a quiet thank-you, ribbon in crimson
+      - complementary "What every box includes" [ref=f13e98]:
+        - list [ref=f13e99]:
+          - listitem [ref=f13e100]:
+            - generic [ref=f13e101]: Hand-numbered batch card
+            - generic [ref=f13e102]: always
+          - listitem [ref=f13e103]:
+            - generic [ref=f13e104]: Crimson silk-paper lining
+            - generic [ref=f13e105]: always
+          - listitem [ref=f13e106]:
+            - generic [ref=f13e107]: Tasting notes, handwritten
+            - generic [ref=f13e108]: 16 pieces and up
+          - listitem [ref=f13e109]:
+            - generic [ref=f13e110]: Chocolatier's letter, signed
+            - generic [ref=f13e111]: 25 pieces only
+          - listitem [ref=f13e112]:
+            - generic [ref=f13e113]: Delivery in Lyon, same day
+            - generic [ref=f13e114]: before 14:00
+          - listitem [ref=f13e115]:
+            - generic [ref=f13e116]: Shipping across the EU, chilled
+            - generic [ref=f13e117]: 48 h, €9
+  - contentinfo [ref=f13e118]:
+    - generic [ref=f13e119]:
+      - link "Gold Leaf" [ref=f13e120] [cursor=pointer]:
+        - /url: "#top"
+      - paragraph [ref=f13e121]: Atelier Rue des Orfèvres 12, Lyon · Thu–Sun, 10:00–19:00 · +33 4 78 00 41 12
+      - paragraph [ref=f13e122]: Batch № 412 closes Sunday at dusk.

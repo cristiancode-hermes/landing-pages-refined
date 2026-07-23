@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vermouth Hours — bitter orange aperitivo, bottled in Milan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Archivo:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.97 0.012 70);
+    --ink: oklch(0.27 0.02 60);
+    --muted: oklch(0.44 0.025 60);
+    --orange: oklch(0.66 0.19 50);
+    --orange-deep: oklch(0.52 0.16 45);
+    --green: oklch(0.42 0.09 155);
+    --green-deep: oklch(0.32 0.07 155);
+    --rose: oklch(0.72 0.13 15);
+    --font-display: "Unbounded", sans-serif;
+    --font-body: "Archivo", sans-serif;
+    --z-header: 10;
+    --z-sun: 1;
+    --z-hero-content: 2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--green);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: clamp(2.4rem, 6.5vw, 4.6rem); }
+  h2 { font-size: clamp(1.9rem, 4.4vw, 3.1rem); }
+  h3 { font-size: clamp(1.25rem, 2.2vw, 1.6rem); letter-spacing: -0.01em; }
+
+  p { max-width: 68ch; text-wrap: pretty; }
+
+  img { display: block; max-width: 100%; height: auto; }
+
+  a { color: var(--orange-deep); text-underline-offset: 3px; }
+  a:hover { color: var(--green-deep); }
+
+  .wrap {
+    width: min(1120px, 100% - 2.5rem);
+    margin-inline: auto;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--bg);
+    border-bottom: 1px solid oklch(0.9 0.02 70);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.9rem;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .brand em {
+    font-style: normal;
+    color: var(--orange-deep);
+  }
+
+  nav ul {
+    display: flex;
+    gap: 1.6rem;
+    list-style: none;
+  }
+
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+
+  nav a:hover { color: var(--orange-deep); }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    background: var(--green);
+    color: oklch(0.99 0.01 150);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; flex-shrink: 0; }
+
+  .btn:hover {
+    background: var(--green-deep);
+    color: oklch(0.99 0.01 150);
+    transform: translateY(-2px);
+  }
+
+  .btn--orange { background: var(--orange-deep); }
+  .btn--orange:hover { background: var(--ink); }
+
+  @media (max-width: 720px) {
+    nav ul { display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(3rem, 7vw, 5.5rem);
+  }
+
+  /* the sundial: an orange sun with one long shadow that sweeps on scroll */
+  .sundial {
+    position: absolute;
+    top: clamp(1.5rem, 6vw, 4rem);
+    right: clamp(-3rem, 2vw, 6rem);
+    width: clamp(120px, 18vw, 220px);
+    aspect-ratio: 1;
+    z-index: var(--z-sun);
+    pointer-events: none;
+  }
+
+  .sundial-sun {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  .sundial-shadow {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    width: 150vw;
+    height: clamp(48px, 7vw, 84px);
+    transform-origin: 100% 50%;
+    transform: rotate(var(--sun-angle, 18deg));
+    background: oklch(0.42 0.09 155 / 0.14);
+    filter: blur(14px);
+    border-radius: 999px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: var(--z-hero-content);
+    max-width: 700px;
+  }
+
+  .hero-kicker {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--green-deep);
+    background: oklch(0.42 0.09 155 / 0.1);
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    margin-bottom: 1.4rem;
+  }
+
+  .hero p.lede {
+    font-size: clamp(1.15rem, 2vw, 1.35rem);
+    line-height: 1.55;
+    color: var(--muted);
+    margin-top: 1.4rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 2rem;
+  }
+
+  .hero-figure {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 1.2rem;
+    align-items: stretch;
+  }
+
+  .hero-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+  .hero-figure figcaption {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 0.6rem;
+  }
+
+  /* the bottle */
+  .bottle-card {
+    background: var(--green);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    padding: 2rem 1.2rem;
+    color: oklch(0.99 0.01 150);
+    text-align: center;
+  }
+
+  .bottle {
+    width: 84px;
+    height: 230px;
+    position: relative;
+  }
+
+  .bottle-neck {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 26px;
+    height: 56px;
+    background: var(--green-deep);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .bottle-cap {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 16px;
+    background: var(--orange);
+    border-radius: 6px 6px 2px 2px;
+  }
+
+  .bottle-body {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--green-deep);
+    border-radius: 16px 16px 12px 12px;
+  }
+
+  .bottle-label {
+    position: absolute;
+    top: 42%;
+    left: 8px;
+    right: 8px;
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 0.55rem 0.2rem;
+    font-family: var(--font-display);
+    font-size: 0.6rem;
+    font-weight: 600;
+    line-height: 1.4;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .bottle-label span {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: var(--orange-deep);
+    font-size: 0.55rem;
+  }
+
+  .bottle-card:hover .bottle-label,
+  .bottle-card:focus-within .bottle-label {
+    transform: rotate(-8deg);
+  }
+
+  .bottle-card p { font-size: 0.95rem; max-width: 26ch; }
+
+  @media (max-width: 720px) {
+    .hero-figure { grid-template-columns: 1fr; }
+    .bottle-card { flex-direction: row; text-align: left; padding: 1.4rem; }
+    .bottle-card p { max-width: none; }
+  }
+
+  /* ---------- sections ---------- */
+  section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+
+  .section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: clamp(2rem, 5vw, 3.2rem);
+  }
+
+  .section-head p { color: var(--muted); max-width: 46ch; }
+
+  /* the ritual */
+  .ritual { background: var(--surface); }
+
+  .ritual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .ritual-grid img { border-radius: 16px; width: 100%; }
+
+  .ritual-hours {
+    list-style: none;
+    margin-top: 1.8rem;
+    display: grid;
+    gap: 0;
+  }
+
+  .ritual-hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid oklch(0.88 0.02 70);
+    font-size: 1rem;
+  }
+
+  .ritual-hours li:last-child { border-bottom: none; }
+
+  .ritual-hours .hour {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--orange-deep);
+  }
+
+  .ritual-hours .what { color: var(--muted); text-align: right; }
+
+  @media (max-width: 720px) {
+    .ritual-grid { grid-template-columns: 1fr; }
+  }
+
+  /* serves */
+  .serves-list {
+    list-style: none;
+    display: grid;
+    gap: 0;
+  }
+
+  .serve {
+    display: grid;
+    grid-template-columns: minmax(140px, 220px) 1fr auto;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid oklch(0.9 0.02 70);
+  }
+
+  .serve:last-child { border-bottom: none; }
+
+  .serve-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    color: var(--ink);
+  }
+
+  .serve-name .dot { color: var(--rose); }
+
+  .serve-desc { color: var(--muted); max-width: 52ch; }
+
+  .serve-desc strong { color: var(--ink); font-weight: 700; }
+
+  .serve-price {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--green-deep);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    .serve { grid-template-columns: 1fr; gap: 0.4rem; }
+  }
+
+  /* stockists */
+  .stockists { background: var(--green); color: oklch(0.99 0.01 150); }
+  .stockists h2 { color: oklch(0.99 0.01 150); }
+  .stockists .section-head p { color: oklch(0.9 0.03 150); }
+
+  .stockist-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+
+  .stockist-table th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: oklch(0.85 0.05 150);
+    padding: 0.6rem 0.8rem 0.6rem 0;
+    border-bottom: 1px solid oklch(0.99 0.01 150 / 0.3);
+  }
+
+  .stockist-table td {
+    padding: 1rem 0.8rem 1rem 0;
+    border-bottom: 1px solid oklch(0.99 0.01 150 / 0.18);
+    vertical-align: top;
+  }
+
+  .stockist-table .shop {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .stockist-table .city { color: oklch(0.9 0.03 150); }
+
+  .stockist-note {
+    margin-top: 1.6rem;
+    font-size: 0.95rem;
+    color: oklch(0.9 0.03 150);
+  }
+
+  .stockist-note a { color: oklch(0.99 0.01 150); font-weight: 700; }
+
+  /* footer */
+  footer {
+    padding: 3rem 0;
+    background: var(--ink);
+    color: oklch(0.85 0.02 60);
+  }
+
+  footer .foot-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  footer .brand { color: oklch(0.99 0.01 60); }
+  footer .brand em { color: var(--orange); }
+
+  footer small { font-size: 0.85rem; }
+
+  /* ---------- motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .sundial-shadow { transform: rotate(18deg) !important; }
+    .btn, .bottle-label { transition: none; }
+    .bottle-card:hover .bottle-label,
+    .bottle-card:focus-within .bottle-label { transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    header nav a { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">Vermouth <em>Hours</em></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#ritual">The ritual</a></li>
+        <li><a href="#serves">Serves</a></li>
+        <li><a href="#stockists">Stockists</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#stockists">Find a bottle</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="sundial" aria-hidden="true">
+      <div class="sundial-shadow" id="sundialShadow"></div>
+      <div class="sundial-sun"></div>
+    </div>
+    <div class="wrap">
+      <div class="hero-content">
+        <span class="hero-kicker">Bottled in Milan, poured everywhere</span>
+        <h1 id="hero-title">Six o'clock is a place. We bottle it.</h1>
+        <p class="lede">Vermouth Hours is a bitter-orange aperitivo made for the best sixty minutes of the day — the ones where work is done, the table is set outside, and nobody is in a hurry. Twenty-one botanicals, one orange slice, zero emails.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#serves">How to pour it</a>
+          <a class="btn btn--orange" href="#stockists">Where to buy it</a>
+        </div>
+      </div>
+
+      <div class="hero-figure">
+        <figure>
+          <img src="https://picsum.photos/seed/vermouth-1/1600/900" width="1600" height="900" alt="Two spritz glasses glowing bitter orange on a white tablecloth, late-afternoon light">
+          <figcaption>The house pour: Vermouth Hours, prosecco, soda, one thick orange slice.</figcaption>
+        </figure>
+        <div class="bottle-card" tabindex="0" aria-label="Vermouth Hours bottle, 750 millilitres, 18 percent alcohol">
+          <div class="bottle" aria-hidden="true">
+            <div class="bottle-cap"></div>
+            <div class="bottle-neck"></div>
+            <div class="bottle-body">
+              <div class="bottle-label">VERMOUTH<br>HOURS<span>Bitter Orange · 18%</span></div>
+            </div>
+          </div>
+          <p>750&nbsp;ml, 18% vol. €24 at the shop, less by the case.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ritual" id="ritual" aria-labelledby="ritual-title">
+    <div class="wrap">
+      <div class="ritual-grid">
+        <div>
+          <h2 id="ritual-title">The ritual of the hour</h2>
+          <p style="margin-top: 1.2rem; color: var(--muted);">In Milan the aperitivo is not a drink, it's an appointment. The piazza fills, the light goes long and orange, and the first spritz arrives with a little plate of something salty. We made Vermouth Hours for that exact window — and wrote its schedule on the label, because rituals deserve timetables.</p>
+          <ul class="ritual-hours">
+            <li><span class="hour">17:45</span><span class="what">Glasses out of the freezer. Yes, the freezer.</span></li>
+            <li><span class="hour">18:00</span><span class="what">First pour. Phones face-down.</span></li>
+            <li><span class="hour">18:20</span><span class="what">Olives, crisps, a small argument about football.</span></li>
+            <li><span class="hour">19:00</span><span class="what">Second pour, or dinner. Both correct.</span></li>
+          </ul>
+        </div>
+        <figure>
+          <img src="https://picsum.photos/seed/vermouth-2/800/600" width="800" height="600" alt="A piazza table at golden hour with spritz glasses and a small plate of green olives">
+          <figcaption style="font-size: 0.9rem; color: var(--muted); margin-top: 0.6rem;">Piazza hours, as observed from table twelve.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="serves" aria-labelledby="serves-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="serves-title">Three ways to keep the hour</h2>
+        <p>All three start the same way: a cold glass and no distractions.</p>
+      </div>
+      <ul class="serves-list">
+        <li class="serve">
+          <span class="serve-name">The Piazza<span class="dot">.</span></span>
+          <p class="serve-desc"><strong>60 ml Vermouth Hours, 90 ml prosecco, 30 ml soda.</strong> Built over ice in a big wine glass, orange slice dropped in last so it floats like a little sun. The one in the photograph, the one on the label.</p>
+          <span class="serve-price">€7 at the bar</span>
+        </li>
+        <li class="serve">
+          <span class="serve-name">The Balcony<span class="dot">.</span></span>
+          <p class="serve-desc"><strong>75 ml Vermouth Hours over one large cube, nothing else.</strong> For when the bottle just came home and the freezer glass is still foggy. Bitter first, then orange peel, then a slow vanilla finish.</p>
+          <span class="serve-price">€5 at the bar</span>
+        </li>
+        <li class="serve">
+          <span class="serve-name">The Long Evening<span class="dot">.</span></span>
+          <p class="serve-desc"><strong>50 ml Vermouth Hours, 150 ml tonic, a rosemary sprig slapped awake.</strong> Lower, longer, built for the second hour when dinner keeps not happening and nobody minds.</p>
+          <span class="serve-price">€6.50 at the bar</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="stockists" id="stockists" aria-labelledby="stockists-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="stockists-title">Where the hour is kept</h2>
+        <p>Bottles on shelves, spritzes on terraces. Hours are local, naturally.</p>
+      </div>
+      <table class="stockist-table">
+        <thead>
+          <tr>
+            <th scope="col">Stockist</th>
+            <th scope="col">City</th>
+            <th scope="col">Keeps the hour</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="shop">Enoteca Lunetta</td>
+            <td class="city">Milano, Brera</td>
+            <td>Mon–Sat, 17:30–20:00 on the terrace</td>
+          </tr>
+          <tr>
+            <td class="shop">Bar Fondamenta</td>
+            <td class="city">Torino, Vanchiglia</td>
+            <td>Daily, 18:00 sharp, with farinata</td>
+          </tr>
+          <tr>
+            <td class="shop">Alimentari Rossi &amp; Figli</td>
+            <td class="city">Bologna, Santo Stefano</td>
+            <td>Bottles only, Thu–Sat till 19:30</td>
+          </tr>
+          <tr>
+            <td class="shop">The Orange Counter</td>
+            <td class="city">London, Peckham</td>
+            <td>Wed–Sun, spritz hours 17:00–19:00</td>
+          </tr>
+          <tr>
+            <td class="shop">Café Zeezicht</td>
+            <td class="city">Amsterdam, De Pijp</td>
+            <td>Daily from 16:30, canal-side</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="stockist-note">Run a bar or a bottle shop? Write to <a href="mailto:ciao@vermouthhours.example">ciao@vermouthhours.example</a> — we ship cases of six across Europe.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top">Vermouth <em>Hours</em></a>
+    <small>Drink the hour responsibly. 18% vol, serve cold, never rush. © 2026 Vermouth Hours S.r.l.</small>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var shadow = document.getElementById("sundialShadow");
+  if (!shadow || reduceMotion) return;
+
+  var hero = document.querySelector(".hero");
+  var ticking = false;
+
+  function updateShadow() {
+    ticking = false;
+    var rect = hero.getBoundingClientRect();
+    var total = rect.height + window.innerHeight;
+    var progress = Math.min(1, Math.max(0, (window.innerHeight - rect.top) / total));
+    // sweep the long shadow from -12deg to 42deg as the page scrolls
+    var angle = -12 + progress * 54;
+    shadow.style.setProperty("--sun-angle", angle.toFixed(2) + "deg");
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateShadow);
+    }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  updateShadow();
+})();
+</script>
+
+</body>
+</html>

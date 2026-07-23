@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moonshine Motor Court — 14 rooms, free ice, red neon on Route 66</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Six+Caps&family=Cutive+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: oklch(0.19 0.055 278);
+    --night-2: oklch(0.235 0.06 278);
+    --night-3: oklch(0.29 0.065 278);
+    --ink: oklch(0.94 0.015 280);
+    --muted: oklch(0.79 0.028 280);
+    --neon: oklch(0.70 0.22 15);
+    --neon-hot: oklch(0.82 0.16 15);
+    --teal: oklch(0.66 0.085 190);
+    --teal-deep: oklch(0.36 0.07 192);
+    --paper: oklch(0.95 0.025 95);
+    --paper-ink: oklch(0.24 0.02 95);
+    --z-header: 10;
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--night);
+    color: var(--ink);
+    font-family: "Cutive Mono", "Courier New", monospace;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--neon); color: var(--night); }
+
+  :focus-visible {
+    outline: 2.5px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    width: min(68rem, calc(100% - 2.5rem));
+    margin-inline: auto;
+  }
+
+  h1, h2, h3 {
+    font-family: "Six Caps", "Arial Narrow", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--night);
+    border-bottom: 1px solid var(--night-3);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .wordmark {
+    font-family: "Six Caps", sans-serif;
+    font-size: 1.9rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .wordmark span { color: var(--neon); }
+  .site-nav {
+    display: flex;
+    gap: 1.6rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--muted);
+    text-decoration: none;
+    border-bottom: 1px dashed transparent;
+    transition: color 0.35s var(--ease-expo), border-color 0.35s var(--ease-expo);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--teal); border-color: var(--teal); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: min(88svh, 56rem);
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+  }
+  .hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.8) brightness(0.85);
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      var(--night) 6%,
+      oklch(0.19 0.055 278 / 0.55) 45%,
+      oklch(0.19 0.055 278 / 0.25) 100%
+    );
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(3rem, 8vh, 6rem);
+    display: grid;
+    gap: clamp(1.5rem, 4vh, 3rem);
+  }
+  .hero h1 {
+    font-size: clamp(3.2rem, 11vw, 6rem);
+    max-width: 14ch;
+    color: var(--ink);
+    text-shadow: 0 2px 24px oklch(0.1 0.03 278 / 0.9);
+  }
+  .hero-lede {
+    max-width: 52ch;
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+
+  /* ---------- the neon sign ---------- */
+  .sign {
+    justify-self: start;
+    background: oklch(0.13 0.045 278);
+    border: 1px solid var(--night-3);
+    border-radius: 8px;
+    padding: clamp(1rem, 3vw, 1.75rem) clamp(1.5rem, 4vw, 2.75rem);
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    box-shadow: 0 0 44px oklch(0.70 0.22 15 / 0.22);
+  }
+  .sign .tube {
+    font-family: "Six Caps", sans-serif;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    color: var(--neon-hot);
+    text-shadow:
+      0 0 6px oklch(0.70 0.22 15 / 0.95),
+      0 0 18px oklch(0.70 0.22 15 / 0.7),
+      0 0 42px oklch(0.70 0.22 15 / 0.45);
+    animation: neon-hum 4.7s linear infinite;
+  }
+  /* the NO tube is half-dead: it stutters at its own rhythm */
+  .sign .no {
+    color: oklch(0.55 0.18 15);
+    text-shadow:
+      0 0 5px oklch(0.65 0.2 15 / 0.5),
+      0 0 14px oklch(0.65 0.2 15 / 0.3);
+    animation: neon-dying 6.3s linear infinite;
+  }
+  @keyframes neon-hum {
+    0%, 100% { opacity: 1; }
+    3% { opacity: 0.55; } 4% { opacity: 1; }
+    41% { opacity: 1; } 42% { opacity: 0.35; } 43.5% { opacity: 1; }
+    70% { opacity: 0.9; } 71% { opacity: 1; }
+    86% { opacity: 1; } 87% { opacity: 0.5; } 88% { opacity: 0.97; }
+  }
+  @keyframes neon-dying {
+    0%, 22% { opacity: 0.25; }
+    23% { opacity: 0.9; } 26% { opacity: 0.2; }
+    47% { opacity: 0.15; } 48% { opacity: 0.75; } 50% { opacity: 0.2; }
+    74% { opacity: 0.1; } 90% { opacity: 0.35; } 100% { opacity: 0.25; }
+  }
+  .sign small {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 9vh, 6.5rem); }
+  section h2 {
+    font-size: clamp(2.6rem, 7vw, 4.2rem);
+    color: var(--ink);
+    margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
+  }
+  section h2 em {
+    font-style: normal;
+    color: var(--teal);
+  }
+
+  /* ---------- rooms ---------- */
+  .rooms-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .rooms-grid { grid-template-columns: 1fr; }
+  }
+  .room-list {
+    list-style: none;
+    display: grid;
+    gap: 1.6rem;
+  }
+  .room-list li { max-width: 58ch; }
+  .room-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .room-name { font-weight: 700; color: var(--ink); }
+  .room-line .dots {
+    flex: 1;
+    border-bottom: 1px dotted var(--muted);
+    transform: translateY(-0.3em);
+  }
+  .room-price { color: var(--neon-hot); font-weight: 700; white-space: nowrap; }
+  .room-note { color: var(--muted); font-size: 0.92rem; margin-top: 0.3rem; }
+  figure {
+    border: 1px solid var(--night-3);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--night-2);
+  }
+  figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: saturate(0.85);
+  }
+  figcaption {
+    padding: 0.8rem 1rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  /* ---------- rates receipt ---------- */
+  .rates-sec { background: var(--night-2); }
+  .receipt {
+    background: var(--paper);
+    color: var(--paper-ink);
+    max-width: 30rem;
+    padding: 2rem 1.75rem 2.4rem;
+    border-radius: 6px;
+    transform: rotate(-1.2deg);
+    box-shadow: 0 14px 40px oklch(0.08 0.03 278 / 0.55);
+  }
+  .receipt h3 {
+    font-family: "Cutive Mono", monospace;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .receipt hr {
+    border: none;
+    border-top: 1px dashed oklch(0.55 0.03 95);
+    margin: 1rem 0;
+  }
+  .receipt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.92rem;
+    padding-block: 0.22rem;
+  }
+  .receipt-row b { font-weight: 700; }
+  .receipt .fine {
+    font-size: 0.78rem;
+    text-align: center;
+    margin-top: 1rem;
+    color: oklch(0.4 0.02 95);
+  }
+  .rates-copy { max-width: 56ch; color: var(--muted); margin-bottom: 2rem; }
+  .rates-copy strong { color: var(--ink); }
+
+  /* ---------- pool (drenched teal strip) ---------- */
+  .pool {
+    position: relative;
+    background: var(--teal-deep);
+    overflow: hidden;
+  }
+  .pool .wrap { position: relative; z-index: 1; }
+  .pool h2 { color: oklch(0.96 0.02 190); }
+  .pool p { max-width: 54ch; color: oklch(0.90 0.03 190); }
+  .pool .shimmer {
+    position: absolute;
+    inset: -20% -40%;
+    pointer-events: none;
+    background:
+      linear-gradient(105deg, transparent 42%, oklch(0.85 0.08 190 / 0.16) 50%, transparent 58%),
+      linear-gradient(75deg, transparent 55%, oklch(0.9 0.06 190 / 0.12) 62%, transparent 70%);
+    filter: blur(6px);
+    animation: pool-shimmer 7.5s var(--ease-expo) infinite alternate;
+  }
+  @keyframes pool-shimmer {
+    from { transform: translate3d(-14%, 4%, 0) scale(1.05); }
+    to { transform: translate3d(14%, -4%, 0) scale(1.12); }
+  }
+
+  /* ---------- ice machine ---------- */
+  .ice { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  @media (max-width: 760px) { .ice { grid-template-columns: 1fr; } }
+  .ice-copy p + p { margin-top: 1rem; }
+  .ice-copy p { max-width: 56ch; color: var(--muted); }
+  .ice-copy p strong { color: var(--ink); }
+
+  /* ---------- find us ---------- */
+  .find { background: var(--night-2); }
+  .find dl {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.5rem;
+    max-width: 44rem;
+  }
+  .find dt { color: var(--teal); font-weight: 700; }
+  .find dd { color: var(--ink); }
+  .find dd span { color: var(--muted); }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--night-3);
+    padding-block: 2.5rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer .phone { color: var(--neon-hot); text-decoration: none; }
+  footer .phone:hover { text-decoration: underline; }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .sign .tube, .sign .no { animation: none; }
+    .sign .no { opacity: 0.35; }
+    .pool .shimmer { animation: none; opacity: 0.6; }
+    .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">Moonshine <span>Motor</span> Court</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#rooms">Rooms</a>
+      <a href="#rates">Rates</a>
+      <a href="#pool">The Pool</a>
+      <a href="#ice">Ice</a>
+      <a href="#find">Find Us</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Welcome">
+    <img src="https://picsum.photos/seed/motel-1/1600/900" width="1600" height="900"
+         alt="Two-lane desert highway at dusk, the sky gone indigo, a red neon glow somewhere off the shoulder" fetchpriority="high">
+    <div class="wrap hero-inner">
+      <h1>Fourteen rooms under a red neon promise</h1>
+      <p class="hero-lede">
+        Mile marker 214, east side of Route 66. The beds are firm, the water is hot by
+        the second minute, and the sign has not missed a night since 1958. Pull in.
+        Dolores leaves the porch light on.
+      </p>
+      <div class="sign" role="img" aria-label="Flickering neon sign reading: no vacancy, with the NO tube half burnt out">
+        <span class="tube no">No</span>
+        <span class="tube">Vacancy</span>
+        <small>(the NO tube died in '09 — there's almost always a room)</small>
+      </div>
+    </div>
+  </section>
+
+  <section id="rooms" aria-labelledby="rooms-h">
+    <div class="wrap rooms-grid">
+      <div>
+        <h2 id="rooms-h">The rooms, <em>honestly</em></h2>
+        <ul class="room-list">
+          <li>
+            <div class="room-line"><span class="room-name">Single Queen</span><span class="dots" aria-hidden="true"></span><span class="room-price">$68</span></div>
+            <p class="room-note">One bed, one chair, one lamp that buzzes a little. Rooms 1–8 face the road; 9–14 face the arroyo and are quieter.</p>
+          </li>
+          <li>
+            <div class="room-line"><span class="room-name">Double Queen</span><span class="dots" aria-hidden="true"></span><span class="room-price">$84</span></div>
+            <p class="room-note">Two beds, a table for cards, and a window unit that could chill a meat locker. Bring socks.</p>
+          </li>
+          <li>
+            <div class="room-line"><span class="room-name">The Honeymoon Suite</span><span class="dots" aria-hidden="true"></span><span class="room-price">$110</span></div>
+            <p class="room-note">Room 7. Heart-shaped tub, red lamp, mirrored headboard we did not install and will not discuss. Book it with a straight face.</p>
+          </li>
+        </ul>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/motel-2/800/600" width="800" height="600"
+             alt="Row of motel doors under a covered walkway at night, one porch lamp burning over room number seven" loading="lazy">
+        <figcaption>Rooms 5 through 9, around midnight. The walkway bulbs get changed every spring whether they need it or not.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="rates" class="rates-sec" aria-labelledby="rates-h">
+    <div class="wrap">
+      <h2 id="rates-h">The rate card</h2>
+      <p class="rates-copy">
+        Typed on the Olympia in the office, photocopied every few years when the old one
+        fades. <strong>Cash knocks five dollars off any room.</strong> We have a card
+        reader. It has opinions, but it works most nights.
+      </p>
+      <div class="receipt" role="img" aria-label="Typewritten rate card: single queen 68 dollars, double queen 84, honeymoon suite 110, rollaway cot 12, dog under thirty pounds 8, cash discount minus 5. No refunds after ten minutes.">
+        <h3>Moonshine Motor Court<br>Rate Card — Est. 1958</h3>
+        <hr>
+        <div class="receipt-row"><span>Single Queen</span><b>$68.00</b></div>
+        <div class="receipt-row"><span>Double Queen</span><b>$84.00</b></div>
+        <div class="receipt-row"><span>Honeymoon Suite (Rm 7)</span><b>$110.00</b></div>
+        <div class="receipt-row"><span>Rollaway cot</span><b>$12.00</b></div>
+        <div class="receipt-row"><span>Dog under 30 lbs</span><b>$8.00</b></div>
+        <div class="receipt-row"><span>Weekly rate (any room)</span><b>6th night free</b></div>
+        <div class="receipt-row"><span>Cash discount</span><b>–$5.00</b></div>
+        <hr>
+        <div class="receipt-row"><span>Check-out</span><b>11:00 AM sharp</b></div>
+        <div class="receipt-row"><span>Late check-out</span><b>Ask nice</b></div>
+        <p class="fine">NO REFUNDS AFTER 10 MINUTES · QUIET AFTER MIDNIGHT · THANK YOU STAY AGAIN</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pool" class="pool" aria-labelledby="pool-h">
+    <div class="shimmer" aria-hidden="true"></div>
+    <div class="wrap">
+      <h2 id="pool-h">The pool is 82 degrees and lit from below</h2>
+      <p>
+        It is not big. It is not heated by anything but the day it just sat through.
+        But at eleven at night, with the light glowing up through the water and the
+        highway gone quiet, it is the best seat in the county. Open till the last
+        porch light goes off — usually room 9, usually around one.
+      </p>
+    </div>
+  </section>
+
+  <section id="ice" aria-labelledby="ice-h">
+    <div class="wrap ice">
+      <h2 id="ice-h">About the ice machine</h2>
+      <div class="ice-copy">
+        <p>
+          People ask about the ice machine. It is the loudest thing on the property —
+          louder than the trains, louder than Earl's truck. It kicks on at 6:40 every
+          morning like a small engine refusing to die, and it has done this since 1974.
+        </p>
+        <p>
+          <strong>The ice is free and it is endless.</strong> Bring your cooler, bring
+          your bucket, bring the good plastic tub from your mother-in-law's. The machine
+          does not judge. It only roars, and fills, and roars again. If it ever stops,
+          we will know the world has truly ended — and room 3 gets it free.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="find" class="find" aria-labelledby="find-h">
+    <div class="wrap">
+      <h2 id="find-h">Finding us after dark</h2>
+      <dl>
+        <dt>Where</dt><dd>Mile marker 214, Route 66 east side, San Ysidro County <span>(look for the red sign — you can see it two miles out)</span></dd>
+        <dt>If you pass</dt><dd>The Arroyo Seco bridge <span>(you've gone 2 miles too far — turn around at the gas station)</span></dd>
+        <dt>Office hours</dt><dd>7 AM – midnight <span>(after that, ring the bell; Dolores hears everything)</span></dd>
+        <dt>Phone</dt><dd><a class="phone" href="tel:+15055550187">(505) 555-0187</a> <span>(the landline — it rings in the office and the laundry room)</span></dd>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Moonshine Motor Court · Est. 1958 · Fourteen rooms and a pool</span>
+    <span>Cash discount honored since before you were born.</span>
+  </div>
+</footer>
+
+<script>
+  // Nothing here needs JavaScript to exist — the neon flickers in CSS,
+  // the pool shimmers in CSS, and the phone is a landline anyway.
+  // Reserved for the day Dolores gets a computer.
+</script>
+</body>
+</html>

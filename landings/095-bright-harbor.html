@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bright Harbor — coworking on the old ferry pier, desks from €18 a day</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='oklch(0.42 0.12 240)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;700;800;900&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --ink: oklch(0.25 0.025 250);
+    --ink-soft: oklch(0.38 0.03 250);
+    --blue: oklch(0.42 0.12 240);
+    --blue-deep: oklch(0.34 0.10 240);
+    --blue-wash: oklch(0.95 0.02 240);
+    --coral: oklch(0.66 0.18 35);
+    --coral-deep: oklch(0.45 0.14 35);
+    --line: oklch(0.25 0.025 250 / 0.16);
+    --on-color: oklch(0.98 0.01 240);
+    --z-plan-tip: 1;
+    --z-header: 10;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--blue); }
+  :focus-visible { outline: 3px solid var(--coral-deep); outline-offset: 3px; border-radius: 2px; }
+
+  h1, h2, h3 {
+    font-family: "Gabarito", sans-serif;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  h1 { font-size: clamp(2.6rem, 6vw, 4.5rem); }
+  h2 { font-size: clamp(2rem, 4.2vw, 3.1rem); }
+  h3 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); }
+  p { max-width: 70ch; text-wrap: pretty; }
+  .lede { font-size: clamp(1.12rem, 2vw, 1.3rem); line-height: 1.55; color: var(--ink-soft); max-width: 58ch; }
+  .wrap { width: min(74rem, 100% - 3rem); margin-inline: auto; }
+  section { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+  .section-head { max-width: 62ch; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .section-head h2 + p { margin-top: 1rem; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: oklch(1 0 0 / 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .header-in { display: flex; align-items: center; justify-content: space-between; padding-block: 0.9rem; gap: 1rem; }
+  .wordmark {
+    font-family: "Gabarito", sans-serif; font-weight: 900; font-size: 1.35rem;
+    letter-spacing: -0.01em; text-decoration: none; color: var(--ink);
+  }
+  .wordmark .dot { color: var(--coral-deep); }
+  nav ul { display: flex; gap: 1.6rem; list-style: none; flex-wrap: wrap; }
+  nav a {
+    text-decoration: none; font-size: 0.95rem; font-weight: 600; color: var(--ink-soft);
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+  nav a:hover { color: var(--ink); border-color: var(--coral); }
+
+  .btn {
+    display: inline-block; text-decoration: none; font-weight: 700; font-size: 1rem;
+    padding: 0.85rem 1.9rem; border-radius: 999px; border: 0; cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-solid { background: var(--blue); color: var(--on-color); }
+  .btn-solid:hover { background: var(--blue-deep); }
+  .btn-ghost { border: 2px solid var(--ink); color: var(--ink); background: transparent; }
+  .btn-ghost:hover { background: var(--blue-wash); }
+  .cta-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(3rem, 7vw, 6rem) 0 clamp(3rem, 7vw, 5.5rem); }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem); align-items: center;
+  }
+  .hero-copy > * + * { margin-top: 1.3rem; }
+  .hero-copy .place { font-weight: 700; color: var(--coral-deep); font-size: 1rem; }
+  .hero figure { position: relative; }
+  .hero img { border-radius: 14px; }
+  .hero figcaption {
+    margin-top: 0.7rem; font-size: 0.9rem; color: var(--ink-soft); font-style: italic;
+  }
+  .hero .hours {
+    position: absolute; left: 1rem; bottom: 2.2rem;
+    background: var(--ink); color: var(--on-color);
+    font-size: 0.9rem; font-weight: 600;
+    padding: 0.55rem 1rem; border-radius: 999px;
+  }
+
+  /* ---------- floor plan ---------- */
+  .plan-section { background: var(--blue-wash); }
+  .plan-layout {
+    display: grid; grid-template-columns: 1.35fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem); align-items: start;
+  }
+  .plan-svg {
+    width: 100%; height: auto;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+  .plan-svg .room { fill: oklch(0.95 0.02 240); stroke: oklch(0.42 0.12 240 / 0.55); stroke-width: 2; }
+  .plan-svg .room-label {
+    font-family: "Hanken Grotesk", sans-serif; font-size: 13px; font-weight: 600;
+    fill: var(--ink-soft);
+  }
+  .plan-svg .desk { cursor: pointer; }
+  .plan-svg .desk rect {
+    fill: oklch(0.87 0.045 240); stroke: oklch(0.42 0.12 240 / 0.6); stroke-width: 1.5;
+    transition: fill 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+    transform-box: fill-box; transform-origin: center;
+  }
+  .plan-svg .desk:hover rect,
+  .plan-svg .desk:focus-visible rect { fill: var(--coral); transform: scale(1.12); }
+  .plan-svg .desk text {
+    font-family: "Hanken Grotesk", sans-serif; font-size: 11px; font-weight: 700;
+    fill: var(--blue-deep); opacity: 0; transition: opacity 0.25s var(--ease-out);
+    pointer-events: none;
+  }
+  .plan-svg .desk:hover text, .plan-svg .desk:focus-visible text { opacity: 1; }
+  .plan-svg .desk:focus-visible { outline: none; }
+  .plan-svg .desk:focus-visible rect { stroke: var(--coral-deep); stroke-width: 3; }
+  .plan-svg .booth rect { fill: oklch(0.90 0.06 35); stroke: oklch(0.45 0.14 35 / 0.7); stroke-width: 1.5; }
+  .legend { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1rem; font-size: 0.92rem; color: var(--ink-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .legend i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+  .legend .sw-desk { background: oklch(0.87 0.045 240); border: 1px solid oklch(0.42 0.12 240 / 0.6); }
+  .legend .sw-hot { background: var(--coral); }
+  .legend .sw-booth { background: oklch(0.90 0.06 35); border: 1px solid oklch(0.45 0.14 35 / 0.7); }
+
+  /* live meeting-room availability */
+  .rooms { list-style: none; display: grid; gap: 0.75rem; margin-top: 1.5rem; }
+  .rooms li {
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 12px;
+    padding: 0.9rem 1.15rem;
+  }
+  .rooms .name { font-weight: 700; }
+  .rooms .name small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 0.85rem; }
+  .rooms .status {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.9rem; font-weight: 600; white-space: nowrap;
+  }
+  .rooms .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .rooms .dot.free { background: oklch(0.62 0.15 150); }
+  .rooms .dot.busy { background: var(--coral); }
+  .rooms .dot.soon { background: oklch(0.72 0.13 85); }
+  .live-note { margin-top: 0.9rem; font-size: 0.88rem; color: var(--ink-soft); }
+
+  /* ---------- memberships ---------- */
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .tier-card {
+    border: 1px solid var(--line); border-radius: 14px; padding: 1.75rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .tier-card.featured { background: var(--blue); border-color: var(--blue); color: var(--on-color); }
+  .tier-card.featured h3, .tier-card.featured .price, .tier-card.featured li { color: var(--on-color); }
+  .tier-card.featured li { border-color: oklch(0.98 0.01 240 / 0.3); }
+  .tier-card .price { font-family: "Gabarito", sans-serif; font-weight: 800; font-size: 2.1rem; letter-spacing: -0.02em; }
+  .tier-card .price small { font-size: 1rem; font-weight: 600; }
+  .tier-card ul { list-style: none; display: grid; gap: 0.55rem; font-size: 0.97rem; }
+  .tier-card li { padding-bottom: 0.55rem; border-bottom: 1px solid var(--line); }
+  .tier-card li:last-child { border-bottom: 0; padding-bottom: 0; }
+  .tier-card .pick { margin-top: auto; }
+
+  /* ---------- rules & board ---------- */
+  .house-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .rule {
+    background: var(--ink); color: var(--on-color);
+    border-radius: 14px; padding: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  .rule h3 { color: var(--on-color); }
+  .rule p { color: oklch(0.86 0.02 240); margin-top: 1rem; }
+  .rule .time {
+    font-family: "Gabarito", sans-serif; font-weight: 800; font-size: clamp(3rem, 6vw, 4.5rem);
+    line-height: 1; letter-spacing: -0.02em; color: var(--coral);
+    display: block; margin-bottom: 0.5rem;
+  }
+  .board { list-style: none; display: grid; gap: 0.9rem; }
+  .board li { border: 1px solid var(--line); border-radius: 12px; padding: 1.1rem 1.25rem; }
+  .board .meta { font-size: 0.85rem; font-weight: 600; color: var(--coral-deep); }
+  .board p { font-size: 0.97rem; margin-top: 0.3rem; }
+
+  /* ---------- day pass & tour ---------- */
+  .visit { background: var(--blue-wash); }
+  .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+  .visit img { border-radius: 14px; }
+  .visit figure figcaption { margin-top: 0.7rem; font-size: 0.9rem; color: var(--ink-soft); font-style: italic; }
+  .honesty { margin-top: 1.5rem; display: grid; gap: 0.75rem; }
+  .honesty p { padding-left: 1.4rem; position: relative; font-size: 0.98rem; }
+  .honesty p::before {
+    content: ""; position: absolute; left: 0; top: 0.55em;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--coral);
+  }
+  form.tour { display: grid; gap: 0.9rem; margin-top: 1.5rem; }
+  form.tour label { font-weight: 600; font-size: 0.92rem; }
+  form.tour input, form.tour select {
+    font: inherit; padding: 0.7rem 0.9rem; border: 1px solid var(--line);
+    border-radius: 10px; width: 100%; background: var(--bg); color: var(--ink);
+  }
+  form.tour input:focus, form.tour select:focus { border-color: var(--blue); outline: 2px solid var(--blue); outline-offset: 1px; }
+  form.tour .row { display: grid; gap: 0.35rem; }
+  .tour-done { font-weight: 600; color: var(--blue-deep); margin-top: 0.5rem; }
+
+  footer { padding: 2.5rem 0 3rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.95rem; }
+  .footer-in { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+
+  @media (max-width: 56rem) {
+    .hero-grid, .plan-layout, .house-grid, .visit-grid { grid-template-columns: 1fr; }
+    .tiers { grid-template-columns: 1fr; }
+    nav ul { gap: 1.1rem; }
+    .hero .hours { position: static; display: inline-block; margin-top: 0.9rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, nav a, .plan-svg .desk rect, .plan-svg .desk text { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="wordmark" href="#top">Bright Harbor<span class="dot">.</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#plan">The floor</a></li>
+        <li><a href="#memberships">Memberships</a></li>
+        <li><a href="#house">House rules</a></li>
+        <li><a href="#visit">Day pass &amp; tours</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="place">Coworking on the old ferry pier · Berth 3, East Dock</p>
+        <h1>Work where the morning comes off the water.</h1>
+        <p class="lede">Bright Harbor is 240 desks, six phone booths, a coffee bar that pulls its
+          first shot at 7:30, and a harbor view that makes Monday slightly less Monday. Come for
+          a day, stay for years — most people do.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="#visit">Book a free tour</a>
+          <a class="btn btn-ghost" href="#memberships">See memberships</a>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/cowork-1/1600/900" width="1600" height="900"
+             alt="The main floor at Bright Harbor — long shared tables, harbor light through pier windows">
+        <span class="hours">Open today until 22:00</span>
+        <figcaption>The main floor at 8:15, before the standups start.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="plan-section" id="plan">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The floor, desk by desk</h2>
+        <p class="lede">Hover or tab across the plan — every desk lights up with what makes it
+          worth fighting over. Window desks go first on Mondays; the radiator row goes first in
+          February.</p>
+      </div>
+      <div class="plan-layout">
+        <div>
+          <svg class="plan-svg" viewBox="0 0 720 460" role="group" aria-label="Interactive floor plan of Bright Harbor">
+            <!-- outer shell -->
+            <rect x="8" y="8" width="704" height="444" rx="10" fill="none" stroke="oklch(0.42 0.12 240 / 0.55)" stroke-width="3"/>
+            <!-- coffee bar -->
+            <rect class="room" x="24" y="24" width="180" height="110" rx="6"/>
+            <text class="room-label" x="44" y="84">Coffee bar</text>
+            <!-- meeting rooms -->
+            <rect class="room" x="516" y="24" width="180" height="84" rx="6"/>
+            <text class="room-label" x="540" y="72">Room “Foghorn”</text>
+            <rect class="room" x="516" y="124" width="180" height="84" rx="6"/>
+            <text class="room-label" x="540" y="172">Room “Slipway”</text>
+            <!-- phone booths -->
+            <g class="booth">
+              <rect x="24" y="160" width="64" height="52" rx="6"/>
+              <rect x="96" y="160" width="64" height="52" rx="6"/>
+              <rect x="168" y="160" width="64" height="52" rx="6"/>
+            </g>
+            <text class="room-label" x="30" y="236">Phone booths ×6 (two more upstairs)</text>
+            <!-- kitchen -->
+            <rect class="room" x="24" y="330" width="180" height="106" rx="6"/>
+            <text class="room-label" x="48" y="388">Kitchen &amp; lunch tables</text>
+            <!-- open desks: two bays of six -->
+            <g class="desk" tabindex="0" aria-label="Desk A1 — harbor window, two monitors, taken most days by Priya">
+              <rect x="268" y="40" width="84" height="44" rx="6"/><text x="282" y="66">A1 · window</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk A2 — harbor window, near the plants">
+              <rect x="368" y="40" width="84" height="44" rx="6"/><text x="382" y="66">A2 · window</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk A3 — harbor window, afternoon sun">
+              <rect x="268" y="100" width="84" height="44" rx="6"/><text x="282" y="126">A3 · window</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk A4 — harbor window, closest to the coffee">
+              <rect x="368" y="100" width="84" height="44" rx="6"/><text x="382" y="126">A4 · window</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk B1 — quiet bay, under the skylight">
+              <rect x="268" y="196" width="84" height="44" rx="6"/><text x="284" y="222">B1 · skylight</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk B2 — quiet bay, standing desk">
+              <rect x="368" y="196" width="84" height="44" rx="6"/><text x="384" y="222">B2 · standing</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk B3 — quiet bay, extra-wide for dual screens">
+              <rect x="268" y="256" width="84" height="44" rx="6"/><text x="284" y="282">B3 · wide</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk B4 — quiet bay, next to the library shelf">
+              <rect x="368" y="256" width="84" height="44" rx="6"/><text x="384" y="282">B4 · library</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk C1 — radiator row, warmest seat in the building">
+              <rect x="516" y="256" width="84" height="44" rx="6"/><text x="530" y="282">C1 · radiator</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk C2 — radiator row, good for calls, near Foghorn">
+              <rect x="612" y="256" width="84" height="44" rx="6"/><text x="622" y="282">C2 · radiator</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk C3 — corner desk, two walls, deep focus">
+              <rect x="516" y="330" width="84" height="44" rx="6"/><text x="532" y="356">C3 · corner</text>
+            </g>
+            <g class="desk" tabindex="0" aria-label="Desk C4 — beside the terrace door, first to smell the sea">
+              <rect x="612" y="330" width="84" height="44" rx="6"/><text x="624" y="356">C4 · terrace</text>
+            </g>
+            <text class="room-label" x="268" y="420">240 desks across two piers — this is the east bay, desks A1–C4 shown</text>
+          </svg>
+          <div class="legend" aria-hidden="true">
+            <span><i class="sw-desk"></i> Open desk</span>
+            <span><i class="sw-hot"></i> Hover / focus to inspect</span>
+            <span><i class="sw-booth"></i> Phone booth</span>
+          </div>
+        </div>
+        <div>
+          <h3>Meeting rooms, right now</h3>
+          <ul class="rooms" id="roomList" aria-label="Meeting room availability">
+            <li>
+              <span class="name">Foghorn <small>8 seats · screen · whiteboard wall</small></span>
+              <span class="status"><i class="dot free"></i><span data-status>Free now</span></span>
+            </li>
+            <li>
+              <span class="name">Slipway <small>6 seats · screen · harbor side</small></span>
+              <span class="status"><i class="dot busy"></i><span data-status>Booked until 14:00</span></span>
+            </li>
+            <li>
+              <span class="name">The Chart Room <small>12 seats · the big table</small></span>
+              <span class="status"><i class="dot soon"></i><span data-status>Free in 20 min</span></span>
+            </li>
+            <li>
+              <span class="name">Crow's Nest <small>4 seats · upstairs, very quiet</small></span>
+              <span class="status"><i class="dot free"></i><span data-status>Free now</span></span>
+            </li>
+          </ul>
+          <p class="live-note">Board refreshes as bookings change — members book in 15-minute
+            blocks, capped at three hours a day so no one camps the good rooms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="memberships">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Three ways to belong</h2>
+        <p class="lede">Every tier includes the coffee bar's filter coffee (free until noon),
+          1 Gbps fiber, locker use, and the terrace. No setup fees, no annual lock-in — monthly
+          means monthly.</p>
+      </div>
+      <div class="tiers">
+        <article class="tier-card">
+          <h3>Day Pass</h3>
+          <p class="price">€18 <small>/ day</small></p>
+          <ul>
+            <li>Any open desk, 7:30–22:00</li>
+            <li>Phone booths included</li>
+            <li>Meeting rooms at €12 / hour</li>
+            <li>No tour, no signup — walk in</li>
+          </ul>
+          <a class="btn btn-ghost pick" href="#visit">Just come by</a>
+        </article>
+        <article class="tier-card featured">
+          <h3>Flex</h3>
+          <p class="price">€120 <small>/ month</small></p>
+          <ul>
+            <li>10 days a month, any desk</li>
+            <li>2 meeting-room hours included</li>
+            <li>Guest passes: 2 per month</li>
+            <li>Pause anytime, keep your rate</li>
+          </ul>
+          <a class="btn btn-solid pick" href="#visit" style="background: var(--on-color); color: var(--blue-deep);">Start with a tour</a>
+        </article>
+        <article class="tier-card">
+          <h3>Resident</h3>
+          <p class="price">€340 <small>/ month</small></p>
+          <ul>
+            <li>Your own desk — it stays yours</li>
+            <li>24/7 access, both piers</li>
+            <li>6 meeting-room hours included</li>
+            <li>Mail handling &amp; registered address</li>
+          </ul>
+          <a class="btn btn-ghost pick" href="#visit">Join the waitlist</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="house">
+    <div class="wrap house-grid">
+      <div class="rule">
+        <span class="time">18:00</span>
+        <h3>No Zoom booths after six.</h3>
+        <p>Calls are fine all day — that is what the booths are for. But at 18:00 the floor
+          switches to evening mode: no calls in the open, music stays low, and the long tables
+          become what they were built for. People eat together, play chess, finish side
+          projects. The rule is the reason residents stay an average of 3.2 years.</p>
+      </div>
+      <div>
+        <h3>The community board</h3>
+        <ul class="board">
+          <li>
+            <span class="meta">Tomas · Tue 14 May</span>
+            <p>Sailing crew needs a fourth for Wednesday evenings. Beginners welcome, boat is
+              forgiving, skipper less so.</p>
+          </li>
+          <li>
+            <span class="meta">Aisha · Mon 13 May</span>
+            <p>Found: one mechanical keyboard, very loud, desk B3. Claim it at the bar and
+              apologize to your neighbors.</p>
+          </li>
+          <li>
+            <span class="meta">The bar · Fri 10 May</span>
+            <p>New roaster from week 21 — a washed Ethiopian. Filter is free until noon as
+              always; espresso drinks €2.50.</p>
+          </li>
+          <li>
+            <span class="meta">Renata · Thu 9 May</span>
+            <p>Portuguese conversation table, Thursdays 12:30 in the kitchen. All levels.
+              Bring lunch and opinions.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit" id="visit">
+    <div class="wrap visit-grid">
+      <div>
+        <h2>Try a day. No strings, honestly.</h2>
+        <div class="honesty">
+          <p>The day pass really is €18, all day, coffee included. There is no “discounted first
+            day” because there is nothing to upsell you into.</p>
+          <p>You can leave at lunch and we will not email you about it. We do not have your
+            email unless you book a tour below.</p>
+          <p>If you join within a week of a day pass, the €18 comes off your first invoice.</p>
+        </div>
+        <figure style="margin-top: 2rem;">
+          <img src="https://picsum.photos/seed/cowork-2/800/600" width="800" height="600"
+               alt="The coffee bar at Bright Harbor — espresso machine, harbor visible through the window behind">
+          <figcaption>The bar. Filter is free until noon; the harbor is free all day.</figcaption>
+        </figure>
+      </div>
+      <div>
+        <h3>Book a free tour</h3>
+        <p style="margin-top: 0.6rem;">Twenty minutes, no sales script. We show you the floor,
+          the booths, and the thermostat settings, then leave you alone with a coffee.</p>
+        <form class="tour" id="tourForm">
+          <div class="row">
+            <label for="tourName">Your name</label>
+            <input id="tourName" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="row">
+            <label for="tourEmail">Email</label>
+            <input id="tourEmail" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="row">
+            <label for="tourDay">Preferred day</label>
+            <select id="tourDay" name="day">
+              <option>Tuesday morning</option>
+              <option>Tuesday afternoon</option>
+              <option>Thursday morning</option>
+              <option>Thursday afternoon</option>
+              <option>Saturday, 10:00</option>
+            </select>
+          </div>
+          <button class="btn btn-solid" type="submit">Request the tour</button>
+          <p class="tour-done" id="tourDone" role="status" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <p>Bright Harbor · Berth 3, East Dock · Mon–Fri 7:30–22:00, Sat 9:00–18:00</p>
+    <p>240 desks, six booths, one harbor.</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* Live-feel meeting room availability: statuses tick over while the tab is
+       visible. Reduced-motion users get the static board. */
+    var rooms = document.querySelectorAll("#roomList li");
+    var states = [
+      { dot: "free", text: "Free now" },
+      { dot: "soon", text: "Free in 20 min" },
+      { dot: "busy", text: "Booked until 14:00" },
+      { dot: "busy", text: "Booked until 15:30" },
+      { dot: "soon", text: "Free in 5 min" }
+    ];
+    var timer = null;
+    function tick() {
+      var li = rooms[Math.floor(Math.random() * rooms.length)];
+      var s = states[Math.floor(Math.random() * states.length)];
+      li.querySelector(".dot").className = "dot " + s.dot;
+      li.querySelector("[data-status]").textContent = s.text;
+    }
+    function start() { if (!timer && !reduce) timer = setInterval(tick, 4500); }
+    function stop() { clearInterval(timer); timer = null; }
+    document.addEventListener("visibilitychange", function () {
+      document.hidden ? stop() : start();
+    });
+    start();
+
+    /* Tour booking: confirm locally, no backend in this showcase. */
+    var form = document.getElementById("tourForm");
+    var done = document.getElementById("tourDone");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var name = form.elements.name.value.trim().split(" ")[0] || "there";
+      var day = form.elements.day.value;
+      done.textContent = "Thanks, " + name + " — we’ll confirm your " + day.toLowerCase() +
+        " tour by email within one working day. The coffee is on us.";
+      done.hidden = false;
+      form.querySelector("button").disabled = true;
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halcyon House — twelve rooms above Dryopida Bay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: oklch(0.998 0.001 250);
+  --ink: oklch(0.22 0.015 255);
+  --muted: oklch(0.44 0.02 255);
+  --aegean: oklch(0.40 0.095 250);
+  --aegean-deep: oklch(0.30 0.08 252);
+  --coral: oklch(0.74 0.13 42);
+  --coral-deep: oklch(0.60 0.13 40);
+  --line: oklch(0.91 0.008 250);
+  --on-blue: oklch(0.97 0.005 250);
+  --z-base: 0;
+  --z-raised: 1;
+  --z-sticky: 10;
+  --font-display: "Italiana", serif;
+  --font-body: "Hanken Grotesk", sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+*,*::before,*::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+img{ display: block; max-width: 100%; height: auto; }
+h1,h2,h3{
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  margin: 0;
+}
+h1{ font-size: clamp(3rem, 2rem + 5.5vw, 5.8rem); }
+h2{ font-size: clamp(2.3rem, 1.6rem + 3.4vw, 3.8rem); }
+h3{ font-size: clamp(1.5rem, 1.3rem + 1vw, 1.95rem); }
+p{ margin: 0; max-width: 65ch; text-wrap: pretty; }
+a{ color: inherit; }
+a:focus-visible, button:focus-visible{
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.wrap{ width: min(1160px, 100% - 2.5rem); margin-inline: auto; }
+
+/* ---------- header ---------- */
+.site-header{
+  position: sticky; top: 0; z-index: var(--z-sticky);
+  background: oklch(0.998 0.001 250 / 0.94);
+  border-bottom: 1px solid var(--line);
+}
+.site-header .wrap{
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; padding-block: 0.95rem;
+}
+.wordmark{
+  font-family: var(--font-display);
+  font-size: 1.6rem; letter-spacing: 0.02em; text-decoration: none;
+}
+.main-nav{ display: flex; gap: 1.5rem; align-items: baseline; flex-wrap: wrap; }
+.main-nav a:not(.nav-cta):not(.btn):not(.head-cta){ text-decoration: none; font-weight: 600; font-size: 0.95rem; color: var(--muted); }
+.main-nav a:not(.nav-cta):not(.btn):not(.head-cta):hover{ color: var(--aegean); }
+.main-nav .nav-cta{
+  color: var(--aegean-deep);
+  background: var(--coral);
+  padding: 0.35rem 1rem; border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+.main-nav .nav-cta:hover{ background: oklch(0.79 0.12 44); color: var(--aegean-deep); }
+
+/* ---------- hero ---------- */
+.hero{
+  position: relative; height: min(88vh, 820px); min-height: 480px;
+  overflow: hidden;
+  display: grid; align-items: end;
+  color: var(--on-blue);
+}
+.hero-media{ position: absolute; inset: 0; z-index: var(--z-base); }
+.hero-media img{
+  width: 100%; height: 118%; object-fit: cover;
+  will-change: transform;
+}
+.hero-scrim{
+  position: absolute; inset: 0; z-index: var(--z-raised);
+  background: linear-gradient(to top, oklch(0.18 0.05 255 / 0.62), oklch(0.18 0.05 255 / 0.08) 55%);
+}
+.hero-inner{
+  position: relative; z-index: var(--z-raised);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+.hero-eyebrow{ font-size: 1.05rem; font-weight: 600; color: var(--coral); margin-bottom: 0.8rem; }
+.hero-sub{ margin-top: 1.2rem; font-size: 1.15em; max-width: 46ch; color: oklch(0.93 0.01 250); }
+.hero-meta{
+  margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: 0.6rem;
+}
+.hero-meta span{
+  border: 1px solid oklch(0.97 0.005 250 / 0.5);
+  padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600;
+}
+
+/* ---------- intro ---------- */
+.intro{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+.intro-grid{
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 6vw, 5rem);
+}
+.intro h2{ max-width: 15ch; }
+.intro-copy p + p{ margin-top: 1.1rem; }
+.intro-copy .lede{ font-size: 1.2em; color: var(--aegean-deep); }
+.intro-facts{
+  margin-top: 1.8rem; padding: 0; list-style: none;
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+}
+.intro-facts li{
+  background: oklch(0.95 0.02 250); color: var(--aegean-deep);
+  font-weight: 600; font-size: 0.92rem;
+  padding: 0.35rem 0.9rem; border-radius: 999px;
+}
+
+/* ---------- rooms ---------- */
+.rooms{ padding: clamp(3rem, 7vw, 5.5rem) 0; border-top: 1px solid var(--line); }
+.rooms-head{ margin-bottom: 2.4rem; display: grid; gap: 1rem; max-width: 60ch; }
+.rooms-head p{ color: var(--muted); }
+.room-grid{
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem;
+}
+.room{ margin: 0; }
+.room-photo{ overflow: hidden; border-radius: 14px; }
+.room-photo img{
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+}
+.zoom.in-view .room-photo img{ animation: slow-zoom 1.6s var(--ease-out) both; }
+@keyframes slow-zoom{
+  from{ transform: scale(1.16); }
+  to{ transform: scale(1); }
+}
+.room figcaption{ padding-top: 1rem; }
+.room-name{
+  font-family: var(--font-display); font-size: 1.5rem; letter-spacing: -0.01em;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+}
+.room-rate{ font-family: var(--font-body); font-size: 1rem; font-weight: 700; color: var(--aegean); white-space: nowrap; }
+.room-desc{ margin-top: 0.4rem; color: var(--muted); font-size: 0.97rem; }
+.room-index{
+  margin: 2.4rem 0 0; padding: 0; list-style: none;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0 2.5rem;
+}
+.room-index li{
+  display: flex; justify-content: space-between; gap: 1.5rem; align-items: baseline;
+  padding: 0.7rem 0; border-top: 1px solid var(--line);
+  font-size: 0.98rem;
+}
+.room-index .n{ font-weight: 600; }
+.room-index .r{ color: var(--muted); white-space: nowrap; }
+.rooms-note{
+  margin-top: 2.2rem; color: var(--muted); font-size: 0.97rem;
+}
+.rooms-note a{ color: var(--aegean); font-weight: 600; }
+
+/* ---------- the table ---------- */
+.table-section{
+  background: var(--aegean); color: var(--on-blue);
+  padding: clamp(3.5rem, 8vw, 6rem) 0;
+}
+.table-grid{
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start;
+}
+.table-section .lede{ font-size: 1.2em; color: oklch(0.90 0.02 250); margin-top: 1.4rem; }
+.table-section p{ color: oklch(0.88 0.015 250); }
+.menu{
+  margin: 0; padding: 0; list-style: none;
+  border-top: 1px solid oklch(0.97 0.005 250 / 0.3);
+}
+.menu li{
+  padding: 1rem 0.2rem; border-bottom: 1px solid oklch(0.97 0.005 250 / 0.3);
+  display: flex; justify-content: space-between; gap: 1.5rem; align-items: baseline;
+}
+.menu .dish{ font-weight: 600; }
+.menu .dish small{
+  display: block; font-weight: 400; font-size: 0.88rem; color: oklch(0.85 0.02 250);
+}
+.menu .price{ font-weight: 700; color: var(--coral); white-space: nowrap; }
+.menu-note{ margin-top: 1.2rem; font-size: 0.93rem; color: oklch(0.85 0.02 250); }
+
+/* ---------- the island ---------- */
+.island{ padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+.island-grid{
+  display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 5vw, 4rem); align-items: center;
+}
+.island figure{ margin: 0; }
+.island img{ width: 100%; border-radius: 14px; }
+.island figcaption{ margin-top: 0.7rem; font-size: 0.9rem; color: var(--muted); }
+.island-copy p + p{ margin-top: 1.1rem; }
+.island-copy .lede{ font-size: 1.2em; color: var(--aegean-deep); }
+
+/* ---------- booking band ---------- */
+.booking{
+  background: var(--aegean-deep); color: var(--on-blue);
+  padding: clamp(3rem, 7vw, 5rem) 0; text-align: center;
+}
+.booking h2{ max-width: 18ch; margin-inline: auto; }
+.booking p{ margin: 1.2rem auto 0; max-width: 50ch; color: oklch(0.88 0.015 250); }
+.btn{
+  display: inline-block; margin-top: 1.8rem;
+  background: var(--coral); color: var(--aegean-deep);
+  font-weight: 700; text-decoration: none;
+  padding: 0.9rem 2rem; border-radius: 999px;
+  transition: background 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+.btn:hover{ background: oklch(0.79 0.12 44); transform: translateY(-2px); }
+.booking .alt{
+  display: block; margin-top: 1rem; font-size: 0.93rem; color: oklch(0.82 0.02 250);
+}
+.booking .alt a{ color: var(--coral); }
+
+/* ---------- tide-table footer ---------- */
+.tides{
+  background: oklch(0.25 0.06 253); color: oklch(0.87 0.015 250);
+  padding: clamp(2.8rem, 6vw, 4rem) 0 2.4rem;
+}
+.tides-head{
+  display: flex; flex-wrap: wrap; justify-content: space-between;
+  align-items: baseline; gap: 1rem; margin-bottom: 2rem;
+}
+.tides h2{ font-size: clamp(1.6rem, 1.3rem + 1.6vw, 2.3rem); }
+.tides-head p{ font-size: 0.95rem; color: oklch(0.75 0.02 250); }
+.tide-chart{
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.8rem;
+  align-items: end; height: 150px;
+  border-bottom: 1px solid oklch(0.87 0.015 250 / 0.25);
+  padding-bottom: 0;
+}
+.tide-bar{
+  display: grid; align-content: end; gap: 0.5rem; height: 100%;
+}
+.tide-bar i{
+  display: block; background: var(--coral);
+  border-radius: 6px 6px 0 0;
+  height: var(--h);
+  transform-origin: 50% 100%;
+}
+.in-view .tide-bar i{ animation: tide-rise 1.1s var(--ease-out) both; animation-delay: var(--d, 0s); }
+@keyframes tide-rise{ from{ transform: scaleY(0.05); } to{ transform: scaleY(1); } }
+.tide-labels{
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.8rem;
+  margin-top: 0.7rem; font-size: 0.82rem; color: oklch(0.75 0.02 250);
+}
+.tide-labels span{ text-align: left; }
+.tide-labels b{ display: block; color: oklch(0.90 0.012 250); font-weight: 600; }
+.tides-foot{
+  margin-top: 2.6rem; padding-top: 1.6rem;
+  border-top: 1px solid oklch(0.87 0.015 250 / 0.2);
+  display: flex; flex-wrap: wrap; gap: 1rem 3rem; justify-content: space-between;
+  font-size: 0.93rem;
+}
+.tides-foot a{ color: var(--coral); }
+.tides-foot strong{ color: var(--on-blue); font-weight: 600; }
+
+@media (max-width: 860px){
+  .intro-grid, .table-grid, .island-grid{ grid-template-columns: 1fr; }
+  .room-grid, .room-index{ grid-template-columns: 1fr; }
+  .tide-chart{ gap: 0.45rem; }
+  .tide-labels{ gap: 0.45rem; font-size: 0.72rem; }
+}
+@media (prefers-reduced-motion: reduce){
+  .zoom.in-view .room-photo img,
+  .in-view .tide-bar i{ animation: none; }
+  .btn{ transition: none; }
+}
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  .nav-cta {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .nav-cta {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    .main-nav a:not(.nav-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="wordmark" href="#top">Halcyon House</a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="#rooms">Rooms</a>
+      <a href="#table">The table</a>
+      <a href="#island">The island</a>
+      <a class="nav-cta" href="#book">Book a room</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-media">
+      <img id="hero-img" src="https://picsum.photos/seed/hotel-1/1600/900" width="1600" height="900"
+           alt="The sea-view terrace at Halcyon House, white plaster and one blue horizon">
+    </div>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <p class="hero-eyebrow">A twelve-room house above Dryopida Bay</p>
+      <h1>Do very little, beautifully.</h1>
+      <p class="hero-sub">No schedule, no scene, no lobby music. Breakfast when
+      you wake, the sea when you want it, and a house that keeps out of your way.</p>
+      <div class="hero-meta">
+        <span>12 rooms</span>
+        <span>May – October</span>
+        <span>Adults only</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro">
+    <div class="wrap intro-grid">
+      <h2>White plaster, one blue, and nothing asking for your attention.</h2>
+      <div class="intro-copy">
+        <p class="lede">Halcyon House sits on the quiet side of the island —
+        the side the ferry schedule protects. A converted shipowner&rsquo;s
+        house from 1894, kept deliberately small.</p>
+        <p>Days here have a shape but not a timetable. Coffee appears on the
+        terrace from seven until eleven. The pool is unheated and unbothered.
+        Dinner is served when the boats come in, not before. If you need
+        something, Katarina is at the desk; if you don&rsquo;t, she
+        isn&rsquo;t.</p>
+        <ul class="intro-facts">
+          <li>From €240 / night</li>
+          <li>Breakfast included, always</li>
+          <li>4 min walk to the water</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="rooms" id="rooms">
+    <div class="wrap">
+      <div class="rooms-head">
+        <h2>Twelve rooms, three kinds of quiet</h2>
+        <p>Every room has the sea or the garden, thick walls, and a bed you
+        will think about in February. No two are alike; these two are the ones
+        returning guests ask for by name.</p>
+      </div>
+      <div class="room-grid">
+        <figure class="room zoom">
+          <div class="room-photo">
+            <img src="https://picsum.photos/seed/hotel-2/800/600" width="800" height="600"
+                 alt="Room Aliki — linen curtains moving with the morning air">
+          </div>
+          <figcaption>
+            <p class="room-name">Aliki <span class="room-rate">€310</span></p>
+            <p class="room-desc">Top floor, corner room, two windows on the bay.
+            The sunrise one. Sleeps two.</p>
+          </figcaption>
+        </figure>
+        <figure class="room zoom">
+          <div class="room-photo">
+            <img src="https://picsum.photos/seed/hotel-3/800/600" width="800" height="600"
+                 alt="The unheated pool at midday, tiled in deep Aegean blue">
+          </div>
+          <figcaption>
+            <p class="room-name">The Pool Suite <span class="room-rate">€380</span></p>
+            <p class="room-desc">Ground floor, private terrace, gate straight
+            onto the pool deck. Sleeps two, plus one small person on the daybed.</p>
+          </figcaption>
+        </figure>
+      </div>
+      <ul class="room-index">
+        <li><span class="n">Aliki — top floor, sea both ways</span><span class="r">€310</span></li>
+        <li><span class="n">The Pool Suite — terrace, pool gate</span><span class="r">€380</span></li>
+        <li><span class="n">Thalassa — first floor, wide balcony</span><span class="r">€340</span></li>
+        <li><span class="n">Yard Room 4 — garden side, coolest</span><span class="r">€240</span></li>
+        <li><span class="n">Neraida — attic, beams, skylight</span><span class="r">€260</span></li>
+        <li><span class="n">Kyma — sea side, small but all window</span><span class="r">€290</span></li>
+        <li><span class="n">Faro — the old watch room, stairs up</span><span class="r">€360</span></li>
+        <li><span class="n">Melissa — garden, lemon tree outside</span><span class="r">€250</span></li>
+        <li><span class="n">Petra — stone walls, ground floor</span><span class="r">€240</span></li>
+        <li><span class="n">Anemos — the wind corner, two aspects</span><span class="r">€300</span></li>
+        <li><span class="n">Ilios — sunset side, last light in the house</span><span class="r">€320</span></li>
+        <li><span class="n">Skala — street level, easiest knees</span><span class="r">€240</span></li>
+      </ul>
+      <p class="rooms-note">Rates are per night, breakfast included, and shift
+      with the season — May and October run about twenty percent kinder.
+      <a href="#book">Ask us which room is yours</a> — we answer honestly,
+      including &ldquo;not this one.&rdquo;</p>
+    </div>
+  </section>
+
+  <section class="table-section" id="table">
+    <div class="wrap table-grid">
+      <div>
+        <h2>The table</h2>
+        <p class="lede">One seating, one short menu, whatever the boats brought.
+        Nikos cooks; the sea decides.</p>
+        <p style="margin-top: 1.1rem;">Dinner is for house guests first — the
+        remaining four tables go to the island at noon each day. Lunch is a
+        plate of something cold, a tomato, and bread, served under the fig tree
+        from one o&rsquo;clock.</p>
+        <p class="menu-note">Vegetarians are fed properly here, not
+        apologetically. Tell us at breakfast.</p>
+      </div>
+      <ul class="menu">
+        <li>
+          <span class="dish">Grilled sardines <small>lemon, wild oregano, yesterday&rsquo;s bread</small></span>
+          <span class="price">€18</span>
+        </li>
+        <li>
+          <span class="dish">Octopus, slow then fast <small>fava, capers, the good oil</small></span>
+          <span class="price">€26</span>
+        </li>
+        <li>
+          <span class="dish">Goat from the hill farm <small>lemon potatoes, no apology</small></span>
+          <span class="price">€29</span>
+        </li>
+        <li>
+          <span class="dish">Fig leaf ice cream <small>made from the tree you sat under at lunch</small></span>
+          <span class="price">€9</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="island" id="island">
+    <div class="wrap island-grid">
+      <div class="island-copy">
+        <h2>The island, if you must</h2>
+        <p class="lede">Most guests mean to explore and don&rsquo;t. This is a
+        success, not a failure.</p>
+        <p>Should restlessness strike: the coast path runs eleven kilometres
+        past three swimmable coves and one chapel. The harbor is a twenty-minute
+        walk for the evening promenade, and Katarina&rsquo;s brother runs the
+        taxi boat to the blue caves on calm mornings.</p>
+        <p>We keep a shelf of paperbacks in five languages and a honesty bar
+        that closes when the last guest goes up. That is the entire activities
+        program.</p>
+      </div>
+      <figure class="zoom">
+        <img src="https://picsum.photos/seed/hotel-4/800/600" width="800" height="600"
+             alt="Eleven kilometres of coast path, thyme underfoot, coves below">
+        <figcaption>The path to Agios Ioannis, forty minutes at reading pace.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="booking" id="book">
+    <div class="wrap">
+      <h2>The season runs May to October. The quiet rooms go first.</h2>
+      <p>Write to us with your dates and how you like your mornings. We reply
+      within the day — a person, not a form.</p>
+      <a class="btn" href="mailto:stay@halcyonhouse.example">Ask about your dates</a>
+      <span class="alt">or call <a href="tel:+302284013700">+30 22840 13700</a> · three-night minimum in August</span>
+    </div>
+  </section>
+
+</main>
+
+<footer class="tides" id="tides-footer">
+  <div class="wrap">
+    <div class="tides-head">
+      <h2>Today&rsquo;s tide, for swimmers</h2>
+      <p>Dryopida Bay · updated at dawn · the calm water is before ten</p>
+    </div>
+    <div class="tide-chart" id="tide-chart" role="img"
+         aria-label="Tide heights today: low at 06:00 and 18:20, high at 12:10, calmest swimming before ten in the morning">
+      <div class="tide-bar"><i style="--h: 30%; --d: 0s"></i></div>
+      <div class="tide-bar"><i style="--h: 52%; --d: .08s"></i></div>
+      <div class="tide-bar"><i style="--h: 78%; --d: .16s"></i></div>
+      <div class="tide-bar"><i style="--h: 95%; --d: .24s"></i></div>
+      <div class="tide-bar"><i style="--h: 82%; --d: .32s"></i></div>
+      <div class="tide-bar"><i style="--h: 58%; --d: .40s"></i></div>
+      <div class="tide-bar"><i style="--h: 36%; --d: .48s"></i></div>
+      <div class="tide-bar"><i style="--h: 44%; --d: .56s"></i></div>
+    </div>
+    <div class="tide-labels">
+      <span><b>06:00</b>low 0.4m</span>
+      <span><b>08:00</b>rising</span>
+      <span><b>10:00</b>rising</span>
+      <span><b>12:10</b>high 1.2m</span>
+      <span><b>14:00</b>falling</span>
+      <span><b>16:00</b>falling</span>
+      <span><b>18:20</b>low 0.5m</span>
+      <span><b>20:00</b>rising</span>
+    </div>
+    <div class="tides-foot">
+      <div><strong>Halcyon House</strong> · Dryopida Bay · open May – October</div>
+      <div><a href="mailto:stay@halcyonhouse.example">stay@halcyonhouse.example</a> · <a href="tel:+302284013700">+30 22840 13700</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Full-bleed hero parallax — transform only, rAF-throttled.
+  var heroImg = document.getElementById("hero-img");
+  if (heroImg && !reduce) {
+    var ticking = false;
+    var onScroll = function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = Math.min(window.scrollY, window.innerHeight);
+        heroImg.style.transform = "translateY(" + y * 0.28 + "px)";
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  // Slow zoom-out reveals + animated tide table.
+  if (!reduce && "IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.25 });
+    document.querySelectorAll(".zoom").forEach(function (el) { io.observe(el); });
+    io.observe(document.getElementById("tides-footer"));
+  }
+})();
+</script>
+</body>
+</html>

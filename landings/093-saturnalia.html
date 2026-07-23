@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saturnalia — One night. Four hundred masks. The toast at midnight.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Jost:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.16 0.055 285);
+    --bg-2: oklch(0.20 0.062 285);
+    --ink: oklch(0.94 0.02 90);
+    --ink-soft: oklch(0.79 0.03 90);
+    --gold: oklch(0.80 0.13 85);
+    --gold-deep: oklch(0.64 0.12 82);
+    --on-gold: oklch(0.22 0.06 285);
+    --amber: oklch(0.78 0.15 70);
+    --line: oklch(0.34 0.06 285);
+    --display: "Cinzel Decorative", serif;
+    --body: "Jost", sans-serif;
+    --step--1: clamp(0.85rem, 0.82rem + 0.15vw, 0.95rem);
+    --step-0: clamp(1.02rem, 0.97rem + 0.25vw, 1.18rem);
+    --step-1: clamp(1.28rem, 1.2rem + 0.4vw, 1.55rem);
+    --step-2: clamp(1.6rem, 1.45rem + 0.75vw, 2.15rem);
+    --step-3: clamp(2rem, 1.72rem + 1.4vw, 3rem);
+    --step-4: clamp(2.5rem, 1.9rem + 3vw, 4.6rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-flames: 5;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 300;
+    font-size: var(--step-0);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    color: var(--gold);
+  }
+  p { max-width: 58ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(960px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 3rem + 6vw, 8rem); }
+  .center { text-align: center; }
+  .center p { margin-inline: auto; }
+
+  /* ---------- candle flames at the viewport edges ---------- */
+  .candle {
+    position: fixed;
+    bottom: 12vh;
+    z-index: var(--z-flames);
+    width: 34px;
+    height: 90px;
+    pointer-events: none;
+    filter: blur(0.4px);
+  }
+  .candle.left { left: clamp(6px, 2.5vw, 40px); }
+  .candle.right { right: clamp(6px, 2.5vw, 40px); }
+  .candle .glow {
+    position: absolute;
+    inset: -60px -46px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, oklch(0.78 0.15 70 / 0.20), transparent 70%);
+    animation: glow-breathe 3.2s var(--ease-out) infinite;
+  }
+  .candle .flame {
+    position: absolute;
+    left: 50%;
+    bottom: 34px;
+    width: 16px;
+    height: 34px;
+    margin-left: -8px;
+    border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+    background: radial-gradient(closest-side at 50% 68%, oklch(0.97 0.06 95), oklch(0.80 0.16 75) 55%, oklch(0.62 0.15 60));
+    transform-origin: 50% 100%;
+    animation: flicker 1.9s var(--ease-out) infinite;
+  }
+  .candle.right .flame { animation-delay: 0.8s; }
+  .candle .wick {
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+    width: 2px; height: 8px;
+    margin-left: -1px;
+    background: oklch(0.25 0.05 285);
+  }
+  .candle .stick {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 12px; height: 32px;
+    margin-left: -6px;
+    background: linear-gradient(oklch(0.92 0.03 90), oklch(0.80 0.04 85));
+    border-radius: 2px;
+  }
+  @keyframes flicker {
+    0%, 100% { transform: scale(1, 1) skewX(0deg); }
+    22% { transform: scale(0.92, 1.08) skewX(-3deg); }
+    45% { transform: scale(1.06, 0.94) skewX(2.5deg); }
+    68% { transform: scale(0.95, 1.05) skewX(-1.5deg); }
+    85% { transform: scale(1.02, 0.97) skewX(1deg); }
+  }
+  @keyframes glow-breathe {
+    0%, 100% { opacity: 0.75; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.12); }
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.16 0.055 285 / 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.14em;
+    text-decoration: none;
+    color: var(--gold);
+  }
+  .site-nav { display: flex; align-items: center; gap: 1.6rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--gold); }
+  @media (max-width: 620px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    color: var(--on-gold);
+    background: var(--gold);
+    padding: 0.85rem 2rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: var(--ink); color: var(--on-gold); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.3rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.ghost {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-deep);
+  }
+  .btn.ghost:hover { border-color: var(--gold); background: transparent; color: var(--ink); }
+
+  /* ---------- hero: the falling mask ---------- */
+  .hero {
+    min-height: 92vh;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+    position: relative;
+    padding-block: clamp(3rem, 7vh, 5rem);
+  }
+  .mask-wrap {
+    width: min(420px, 72vw);
+    margin-bottom: clamp(1.5rem, 4vh, 3rem);
+    animation: mask-fall 1.8s var(--ease-out) both;
+    filter: drop-shadow(0 18px 30px oklch(0.08 0.04 285 / 0.55));
+  }
+  @keyframes mask-fall {
+    0% { transform: translateY(-70vh) rotate(-22deg) scale(0.85); opacity: 0; }
+    55% { transform: translateY(2vh) rotate(4deg) scale(1.02); opacity: 1; }
+    78% { transform: translateY(-1.2vh) rotate(-1.5deg) scale(1); }
+    100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  }
+  .hero h1 { font-size: var(--step-4); font-weight: 900; letter-spacing: 0.06em; }
+  .hero .date {
+    margin-top: 1.3rem;
+    font-size: var(--step-1);
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+  }
+  .hero .venue { margin-top: 0.5rem; color: var(--ink-soft); font-style: italic; }
+  .hero-cta { margin-top: 2.4rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+  /* confetti */
+  .confetti {
+    position: fixed;
+    top: -3vh;
+    z-index: var(--z-flames);
+    pointer-events: none;
+    border-radius: 1px;
+    animation: confetti-fall linear both;
+  }
+  @keyframes confetti-fall {
+    0% { transform: translate3d(0, -5vh, 0) rotate(0deg); opacity: 1; }
+    85% { opacity: 1; }
+    100% { transform: translate3d(var(--drift, 20px), 105vh, 0) rotate(var(--spin, 480deg)); opacity: 0; }
+  }
+
+  /* ---------- ornament divider ---------- */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: min(420px, 70vw);
+    margin-inline: auto;
+    color: var(--gold-deep);
+  }
+  .ornament::before, .ornament::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--gold-deep);
+  }
+  .ornament .diamond {
+    width: 9px; height: 9px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex: none;
+  }
+
+  /* ---------- decree / night ---------- */
+  .night { background: var(--bg-2); border-block: 1px solid var(--line); }
+  .night h2, .decree h2, .toast h2 { font-size: var(--step-3); margin-bottom: 1.4rem; }
+  .decree-list {
+    list-style: none;
+    margin-top: 1.8rem;
+    display: grid;
+    gap: 1.1rem;
+    text-align: left;
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .decree-list li {
+    padding: 1rem 1.3rem;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+  }
+  .decree-list strong {
+    display: block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+  .decree-list span { color: var(--ink-soft); font-size: var(--step--1); }
+
+  /* ---------- ballroom image ---------- */
+  .ballroom figure {
+    border: 1px solid var(--gold-deep);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+  }
+  .ballroom img { width: 100%; filter: saturate(0.9) brightness(0.9); }
+  .ballroom figcaption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.4rem 1.5rem 1.1rem;
+    background: linear-gradient(transparent, oklch(0.12 0.05 285 / 0.92));
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* ---------- toast ---------- */
+  .toast .big-line {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step-2);
+    color: var(--ink);
+    max-width: 26ch;
+    margin-inline: auto;
+  }
+  .toast p { margin-top: 1.4rem; color: var(--ink-soft); }
+
+  /* ---------- tickets ---------- */
+  .tickets { background: var(--bg-2); border-block: 1px solid var(--line); }
+  .tickets h2 { font-size: var(--step-3); }
+  .capacity {
+    margin-top: 1rem;
+    font-size: var(--step-1);
+    color: var(--ink);
+  }
+  .capacity strong { color: var(--amber); font-weight: 500; }
+  .ticket-tiers {
+    margin-top: 2.4rem;
+    display: flex;
+    gap: 1.4rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .ticket {
+    border: 1px solid var(--gold-deep);
+    border-radius: 14px;
+    padding: 1.8rem 2.4rem;
+    background: var(--bg);
+    min-width: 210px;
+  }
+  .ticket .kind {
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+    font-size: 1rem;
+  }
+  .ticket .price {
+    margin-top: 0.6rem;
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: var(--step-2);
+    color: var(--ink);
+  }
+  .ticket .what { margin-top: 0.6rem; font-size: var(--step--1); color: var(--ink-soft); }
+
+  /* ---------- footer ---------- */
+  footer {
+    padding-block: 3.2rem;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+  }
+  footer .brand { display: inline-block; margin-bottom: 0.8rem; }
+  footer p { margin-inline: auto; }
+
+  @media (max-width: 720px) {
+    .candle { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .mask-wrap { animation: none; }
+    .candle .flame, .candle .glow { animation: none; }
+    .confetti { display: none; }
+    .btn { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<div class="candle left" aria-hidden="true"><span class="glow"></span><span class="stick"></span><span class="wick"></span><span class="flame"></span></div>
+<div class="candle right" aria-hidden="true"><span class="glow"></span><span class="stick"></span><span class="wick"></span><span class="flame"></span></div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">SATURNALIA</a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#decree">The Decree</a>
+      <a href="#toast">Midnight</a>
+      <a href="#tickets">Tickets</a>
+      <a class="btn small" href="#tickets">Claim a mask</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="mask-wrap" aria-hidden="true">
+        <svg viewBox="0 0 600 260" fill="none" role="img" aria-label="A gold filigree masquerade mask">
+          <path d="M60,112 C120,42 240,42 300,96 C360,42 480,42 540,112 C522,192 432,218 352,166 C332,152 316,146 300,146 C284,146 268,152 248,166 C168,218 78,192 60,112 Z"
+                fill="oklch(0.22 0.06 285)" stroke="oklch(0.80 0.13 85)" stroke-width="5" stroke-linejoin="round"/>
+          <path d="M150,116 C166,90 226,90 242,116 C226,142 166,142 150,116 Z" fill="oklch(0.12 0.045 285)" stroke="oklch(0.80 0.13 85)" stroke-width="3.5"/>
+          <path d="M358,116 C374,90 434,90 450,116 C434,142 374,142 358,116 Z" fill="oklch(0.12 0.045 285)" stroke="oklch(0.80 0.13 85)" stroke-width="3.5"/>
+          <path d="M300,96 C286,70 268,64 256,74 C246,82 250,96 262,94 C270,92 270,82 263,80" stroke="oklch(0.80 0.13 85)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M300,96 C314,70 332,64 344,74 C354,82 350,96 338,94 C330,92 330,82 337,80" stroke="oklch(0.80 0.13 85)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M120,150 C140,176 176,186 210,178" stroke="oklch(0.64 0.12 82)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M480,150 C460,176 424,186 390,178" stroke="oklch(0.64 0.12 82)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="300" cy="120" r="7" fill="oklch(0.78 0.15 70)"/>
+          <circle cx="106" cy="132" r="4" fill="oklch(0.80 0.13 85)"/>
+          <circle cx="494" cy="132" r="4" fill="oklch(0.80 0.13 85)"/>
+        </svg>
+      </div>
+      <h1>Saturnalia</h1>
+      <p class="date">SATURDAY · 19 DECEMBER 2026 · NINE O'CLOCK</p>
+      <p class="venue">The Vetra Ballroom, Clerkenwell — one night only, four hundred masks, no exceptions.</p>
+      <div class="hero-cta">
+        <a class="btn" href="#tickets">Claim a mask</a>
+        <a class="btn ghost" href="#decree">Read the decree</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="night">
+    <div class="wrap center">
+      <div class="ornament" aria-hidden="true"><span class="diamond"></span></div>
+      <h2 style="margin-top: 1.6rem;">One night a year, the city wears gold</h2>
+      <p>Doors at nine. Candles, not chandeliers — eight hundred of them, lit by hand from six. Coats are taken, names are not. You are who your mask says you are until the toast.</p>
+    </div>
+  </section>
+
+  <section class="decree" id="decree">
+    <div class="wrap center">
+      <h2>The Decree of Dress</h2>
+      <p>Issued by the hosts and enforced, cheerfully but absolutely, at the door.</p>
+      <ul class="decree-list">
+        <li><strong>Masks are not optional.</strong><span>Black, gold, or bone-white. A limited number of house masks wait at the door for the forgetful — £20, donated to the night shelter.</span></li>
+        <li><strong>Evening dress, full length.</strong><span>Black tie at minimum. Gloves encouraged. Trainers will be admired, then turned away.</span></li>
+        <li><strong>No phones on the ballroom floor.</strong><span>A photographer roams so you don't have to. Your likeness arrives by post, printed, within the fortnight.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ballroom">
+    <div class="wrap">
+      <figure>
+        <img src="https://picsum.photos/seed/masquerade-1/1600/900" width="1600" height="900"
+             alt="The Vetra's candlelit ballroom, gilt mirrors doubling the flames, the floor waiting for the first waltz">
+        <figcaption>The Vetra, an hour before doors. The candles take two people most of the afternoon.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="toast center" id="toast">
+    <div class="wrap">
+      <div class="ornament" aria-hidden="true"><span class="diamond"></span></div>
+      <h2 style="margin-top: 1.6rem;">The Midnight Toast</h2>
+      <p class="big-line">A fourteen-piece orchestra plays waltzes until the clock is done with eleven.</p>
+      <p>At midnight the music stops mid-phrase. Four hundred glasses of the 2015 are raised to whoever you decided to be tonight — and then, masks off. What happens after the toast is between you and the waltz.</p>
+    </div>
+  </section>
+
+  <section class="tickets center" id="tickets">
+    <div class="wrap">
+      <h2>Tickets vanish at capacity</h2>
+      <p class="capacity">Four hundred tickets exist. <strong>136 remain.</strong> There is no waitlist, and there is no next month.</p>
+      <div class="ticket-tiers">
+        <div class="ticket">
+          <p class="kind">SINGLE MASK</p>
+          <p class="price">£145</p>
+          <p class="what">Entry, the toast, the photograph by post, and breakfast at one.</p>
+        </div>
+        <div class="ticket">
+          <p class="kind">A PAIR</p>
+          <p class="price">£260</p>
+          <p class="what">Two of everything, and a candlelit corner table held until eleven.</p>
+        </div>
+      </div>
+      <div class="hero-cta">
+        <a class="btn" href="mailto:masks@saturnalia.london">masks@saturnalia.london</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top">SATURNALIA</a>
+    <p>Hosted annually by the Friends of the Vetra · Over-18s · The ballroom is reached by twenty-four candlelit stairs</p>
+    <p>© 2026 Saturnalia. The night ends when it ends.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) return;
+
+  /* Gold confetti — one celebratory fall on load, then swept away. */
+  var colors = [
+    "oklch(0.80 0.13 85)",
+    "oklch(0.78 0.15 70)",
+    "oklch(0.88 0.10 90)",
+    "oklch(0.64 0.12 82)"
+  ];
+  var COUNT = 42;
+  for (var i = 0; i < COUNT; i++) {
+    var bit = document.createElement("span");
+    bit.className = "confetti";
+    var w = 5 + Math.random() * 7;
+    bit.style.width = w + "px";
+    bit.style.height = (w * (0.4 + Math.random() * 0.9)) + "px";
+    bit.style.left = (Math.random() * 100) + "vw";
+    bit.style.background = colors[i % colors.length];
+    bit.style.animationDuration = (2.6 + Math.random() * 2.4) + "s";
+    bit.style.animationDelay = (Math.random() * 1.1) + "s";
+    bit.style.setProperty("--drift", (Math.random() * 160 - 80) + "px");
+    bit.style.setProperty("--spin", (240 + Math.random() * 600) + "deg");
+    document.body.appendChild(bit);
+    (function (el) {
+      el.addEventListener("animationend", function () { el.remove(); });
+    })(bit);
+  }
+})();
+</script>
+</body>
+</html>

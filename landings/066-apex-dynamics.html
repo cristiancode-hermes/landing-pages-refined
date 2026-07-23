@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Dynamics VX-1 — 180 electric horses, zero gears, no excuses.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Spline+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --stealth: oklch(0.14 0.02 240);
+    --surface: oklch(0.19 0.022 240);
+    --surface-2: oklch(0.23 0.025 240);
+    --volt: oklch(0.88 0.22 130);
+    --volt-dim: oklch(0.72 0.17 130);
+    --titanium: oklch(0.70 0.012 240);
+    --ink: oklch(0.95 0.012 240);
+    --ink-on-volt: oklch(0.18 0.03 160);
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--stealth);
+    color: var(--ink);
+    font-family: "Spline Sans", system-ui, sans-serif;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 { text-wrap: balance; }
+  :focus-visible { outline: 3px solid var(--volt); outline-offset: 3px; border-radius: 4px; }
+
+  .display {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(1.5rem, 4vw, 4rem);
+    overflow: hidden;
+  }
+  .speed-lines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .speed-lines span {
+    position: absolute;
+    left: 0;
+    height: 2px;
+    width: var(--len, 30vw);
+    background: var(--volt);
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+  .play .speed-lines span { animation: streak 0.9s var(--ease-expo) var(--d, 0s) 1; }
+  @keyframes streak {
+    0%   { opacity: 0; transform: translateX(-120%); }
+    15%  { opacity: 0.9; }
+    100% { opacity: 0; transform: translateX(calc(100vw + 120%)); }
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 1.2rem + 7vw, 6rem);
+    max-width: 12ch;
+  }
+  .hero h1 em { font-style: normal; color: var(--volt); }
+  .hero-sub {
+    margin-top: 1.5rem;
+    max-width: 46ch;
+    color: var(--titanium);
+    font-size: clamp(1.05rem, 1rem + 0.4vw, 1.25rem);
+  }
+  .launch {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+  }
+  .launch figure { margin: 0; }
+  .launch .num {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 2rem + 5vw, 5.5rem);
+    line-height: 1;
+    color: var(--volt);
+    font-variant-numeric: tabular-nums;
+  }
+  .launch figcaption { color: var(--titanium); font-size: 0.95rem; margin-top: 0.35rem; }
+  .btn {
+    display: inline-block;
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 1rem;
+    color: var(--ink-on-volt);
+    background: var(--volt);
+    padding: 1rem 2.2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: transform 0.45s var(--ease-expo), background-color 0.45s var(--ease-expo); white-space: nowrap; flex-shrink: 0; }
+  .btn:hover { transform: translateY(-3px) scale(1.03); background: oklch(0.93 0.19 130); }
+  .btn--ghost {
+    background: transparent;
+    color: var(--ink);
+    box-shadow: inset 0 0 0 2px var(--titanium); white-space: nowrap; flex-shrink: 0; }
+  .btn--ghost:hover { background: var(--surface-2); box-shadow: inset 0 0 0 2px var(--volt); }
+  .hero-img {
+    margin-top: 3rem;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .hero-img img { width: 100%; filter: brightness(0.72) saturate(0.8) contrast(1.1); }
+
+  section { padding: clamp(4rem, 9vw, 8rem) clamp(1.5rem, 4vw, 4rem); }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h2.display { font-size: clamp(2rem, 1.1rem + 4.5vw, 4.25rem); margin-bottom: 1.25rem; }
+  h2.display em { font-style: normal; color: var(--volt); }
+  .lead { color: var(--titanium); max-width: 56ch; font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem); }
+
+  /* ---------- CHAPTERS ---------- */
+  .chapter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+    padding: clamp(2.5rem, 5vw, 4rem) 0;
+    border-top: 1px solid var(--surface-2);
+  }
+  .chapter:first-of-type { border-top: none; }
+  .chapter--flip .chapter-media { order: 2; }
+  .chapter h3 { font-family: "Archivo", sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; font-size: clamp(1.6rem, 1.2rem + 2vw, 2.5rem); margin-bottom: 1rem; }
+  .chapter h3 span { color: var(--volt); }
+  .chapter p { color: var(--titanium); max-width: 52ch; }
+  .chapter p + p { margin-top: 1rem; }
+  .chapter p strong { color: var(--ink); }
+  .chapter-media img { border-radius: 14px; width: 100%; filter: brightness(0.72) saturate(0.8) contrast(1.1); }
+  .spec-list { margin-top: 1.5rem; display: grid; gap: 0.5rem; font-variant-numeric: tabular-nums; }
+  .spec-list div { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--surface-2); padding-bottom: 0.5rem; max-width: 420px; }
+  .spec-list dt { color: var(--titanium); }
+  .spec-list dd { color: var(--volt); font-weight: 700; }
+
+  .diagram { background: var(--surface); border-radius: 14px; padding: clamp(1rem, 3vw, 2rem); }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .diagram text { font-family: "Spline Sans", sans-serif; }
+
+  /* ---------- TORQUE ---------- */
+  .torque { background: var(--surface); }
+  .torque .chart { margin-top: 2.5rem; }
+  .torque svg { width: 100%; height: auto; display: block; }
+  #torquePath {
+    stroke-dasharray: 1600;
+    stroke-dashoffset: 1600;
+    transition: stroke-dashoffset 2.2s var(--ease-expo);
+  }
+  .torque.drawn #torquePath { stroke-dashoffset: 0; }
+  .torque .note { margin-top: 1.25rem; color: var(--titanium); font-size: 0.95rem; }
+
+  /* ---------- RANGE TABLE ---------- */
+  .range table { width: 100%; border-collapse: collapse; margin-top: 2.5rem; font-variant-numeric: tabular-nums; }
+  .range caption { text-align: left; color: var(--titanium); padding-bottom: 1rem; font-size: 1rem; }
+  .range th, .range td { text-align: left; padding: 1.1rem 0.75rem; border-bottom: 1px solid var(--surface-2); }
+  .range thead th { font-family: "Archivo", sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; font-size: 0.85rem; color: var(--titanium); }
+  .range tbody th { font-weight: 700; color: var(--ink); }
+  .range td { color: var(--titanium); }
+  .range td.km { color: var(--volt); font-weight: 700; font-size: 1.2rem; }
+
+  /* ---------- LOCATOR + DEPOSIT ---------- */
+  .ride { background: var(--surface); }
+  .ride .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); }
+  .cities { list-style: none; margin-top: 2rem; display: grid; gap: 0; }
+  .cities li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--surface-2);
+  }
+  .cities b { color: var(--ink); }
+  .cities span { color: var(--volt); font-weight: 700; white-space: nowrap; }
+  .steps { list-style: none; margin-top: 2rem; display: grid; gap: 1.5rem; counter-reset: step; }
+  .steps li { position: relative; padding-left: 3.5rem; counter-increment: step; }
+  .steps li::before {
+    content: counter(step, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 0.1rem;
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    color: var(--volt);
+    font-size: 1.5rem;
+  }
+  .steps b { display: block; color: var(--ink); margin-bottom: 0.25rem; }
+  .steps p { color: var(--titanium); font-size: 1rem; }
+
+  footer {
+    padding: 3rem clamp(1.5rem, 4vw, 4rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 3rem;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--surface-2);
+  }
+  footer .display { font-size: 1.3rem; color: var(--volt); }
+  footer p { color: var(--titanium); font-size: 0.95rem; }
+  footer a { color: var(--ink); font-weight: 700; }
+
+  @media (max-width: 820px) {
+    .chapter, .ride .wrap { grid-template-columns: 1fr; }
+    .chapter--flip .chapter-media { order: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .play .speed-lines span { animation: none; }
+    #torquePath { transition: none; stroke-dashoffset: 0; }
+    .btn { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body class="play">
+
+<header class="hero">
+  <div class="speed-lines" aria-hidden="true">
+    <span style="top:12%; --len:24vw; --d:0.05s"></span>
+    <span style="top:23%; --len:38vw; --d:0.18s"></span>
+    <span style="top:37%; --len:18vw; --d:0.32s"></span>
+    <span style="top:52%; --len:44vw; --d:0.10s"></span>
+    <span style="top:66%; --len:28vw; --d:0.26s"></span>
+    <span style="top:79%; --len:36vw; --d:0.40s"></span>
+    <span style="top:90%; --len:22vw; --d:0.15s"></span>
+  </div>
+  <div class="wrap">
+    <h1 class="display">180 horses. <em>Zero gears.</em> No excuses.</h1>
+    <p class="hero-sub">The VX-1 is an electric hyperbike built by people who think "good enough" is an insult. One moving part where petrol bikes have hundreds. Torque that arrives before your fear does.</p>
+    <div class="launch">
+      <figure>
+        <div class="num" id="counter">0.0</div>
+        <figcaption>seconds, 0–100 km/h. Measured, not hoped.</figcaption>
+      </figure>
+      <a class="btn" href="#deposit">Reserve a build slot</a>
+      <a class="btn btn--ghost" href="#chapters">Read the engineering</a>
+    </div>
+    <div class="hero-img">
+      <img src="https://picsum.photos/seed/ebike-1/1600/900" width="1600" height="900"
+           alt="The VX-1 hyperbike under studio light — matte carbon bodywork, volt-lime stitching on the seat, no exhaust anywhere.">
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="chapters">
+    <div class="wrap">
+      <h2 class="display">Built in three <em>obsessions.</em></h2>
+      <p class="lead">Every decision on the VX-1 lost an argument before it won one. These are the three that mattered most.</p>
+
+      <article class="chapter">
+        <div>
+          <h3><span>01 /</span> The motor</h3>
+          <p>A permanent-magnet axial-flux unit of our own design, oil-cooled, good for <strong>134 kW peak</strong>. It makes its maximum torque from zero rpm — which is why there is no clutch, no gearbox, and no forgiveness if you're careless with your right wrist.</p>
+          <dl class="spec-list">
+            <div><dt>Peak power</dt><dd>134 kW / 180 hp</dd></div>
+            <div><dt>Torque at wheel</dt><dd>310 Nm</dd></div>
+            <div><dt>Redline</dt><dd>none exists</dd></div>
+          </dl>
+        </div>
+        <div class="chapter-media">
+          <img src="https://picsum.photos/seed/ebike-2/800/600" width="800" height="600"
+               alt="Close-up of the VX-1's exposed axial-flux motor, oil lines and lime-anodized housing on black carbon.">
+        </div>
+      </article>
+
+      <article class="chapter chapter--flip">
+        <div>
+          <h3><span>02 /</span> The battery</h3>
+          <p><strong>16.8 kWh</strong> in a structural pack that is also the spine of the bike. It charges 20–80% in <strong>28 minutes</strong> on a DC fast charger — one coffee, not lunch. We publish the degradation curve: 8% capacity loss at 100,000 km, on record.</p>
+          <dl class="spec-list">
+            <div><dt>Capacity</dt><dd>16.8 kWh</dd></div>
+            <div><dt>20–80% charge</dt><dd>28 min</dd></div>
+            <div><dt>Degradation, 100k km</dt><dd>8% (published)</dd></div>
+          </dl>
+        </div>
+        <div class="chapter-media">
+          <div class="diagram" role="img" aria-label="Dimension diagram of the VX-1 chassis: wheelbase 1420 mm, seat height 810 mm, rake 23.5 degrees, dry weight 218 kg.">
+            <svg viewBox="0 0 640 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="oklch(0.88 0.22 130)" stroke-width="2" stroke-linecap="round">
+                <circle cx="130" cy="260" r="70"/>
+                <circle cx="510" cy="260" r="70"/>
+                <path d="M130 260 L300 150 L400 130 L510 260"/>
+                <path d="M300 150 L340 260 L130 260"/>
+                <path d="M400 130 L455 95"/>
+                <path d="M340 260 L510 260"/>
+              </g>
+              <g stroke="oklch(0.70 0.012 240)" stroke-width="1" stroke-dasharray="4 4">
+                <path d="M130 340 L510 340"/>
+                <path d="M130 335 L130 345 M510 335 L510 345"/>
+                <path d="M590 130 L590 260"/>
+                <path d="M585 130 L595 130 M585 260 L595 260"/>
+              </g>
+              <g fill="oklch(0.95 0.012 240)" font-size="15">
+                <text x="280" y="330">1 420 mm wheelbase</text>
+                <text x="470" y="70">rake 23.5°</text>
+                <text x="30" y="200">Ø front 17″</text>
+                <text x="255" y="120">218 kg dry</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </article>
+
+      <article class="chapter">
+        <div>
+          <h3><span>03 /</span> The chassis</h3>
+          <p>A carbon monocoque with the battery as a stressed member. Titanium subframe. Öhlins at both ends because saving weight and then ruining it with cheap suspension is a joke we've heard before. Dry weight: <strong>218 kg</strong>. That's a middleweight with a heavyweight's punch.</p>
+        </div>
+        <div class="chapter-media">
+          <img src="https://picsum.photos/seed/ebike-3/800/600" width="800" height="600"
+               alt="The VX-1's carbon monocoque on a build stand, titanium subframe catching the workshop light.">
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="torque" id="torque">
+    <div class="wrap">
+      <h2 class="display">Torque, <em>drawn honestly.</em></h2>
+      <p class="lead">No curve to "wait for". The flat shelf from 0 rpm is the whole point of electric. Scroll it, watch it draw.</p>
+      <div class="chart" role="img" aria-label="Torque curve graph: 310 newton-metres available flat from zero to 4,000 rpm, tapering gently to 9,000.">
+        <svg viewBox="0 0 800 320" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="oklch(0.23 0.025 240)" stroke-width="1">
+            <path d="M60 20 L60 280 L780 280"/>
+            <path d="M60 130 L780 130" stroke-dasharray="3 5"/>
+            <path d="M60 205 L780 205" stroke-dasharray="3 5"/>
+          </g>
+          <path id="torquePath" d="M60 58 C 120 56, 200 56, 320 58 C 440 60, 520 66, 620 84 C 690 96, 740 118, 770 150"
+                stroke="oklch(0.88 0.22 130)" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <g fill="oklch(0.70 0.012 240)" font-size="13" font-family="Spline Sans, sans-serif">
+            <text x="60" y="305">0 rpm</text>
+            <text x="330" y="305">4 000</text>
+            <text x="730" y="305">9 000</text>
+            <text x="66" y="52" fill="oklch(0.88 0.22 130)" font-weight="700">310 Nm</text>
+            <text x="8" y="134">200</text>
+            <text x="8" y="209">100</text>
+          </g>
+        </svg>
+      </div>
+      <p class="note">Dyno: Apex cell 2, third-party witnessed. Ambient 21°C, pack at 80% charge. Your numbers will vary; physics will not.</p>
+    </div>
+  </section>
+
+  <section class="range" id="range">
+    <div class="wrap">
+      <h2 class="display">Range, <em>without the brochure math.</em></h2>
+      <p class="lead">Manufacturers quote you a lab cycle. We quote you what our test riders actually got, at actual speeds, and we publish the worst case first.</p>
+      <table>
+        <caption>Measured on VX-1 prototype P-07, rider 82 kg, 12°C, standard tyres.</caption>
+        <thead>
+          <tr><th scope="col">How you ride</th><th scope="col">Pace</th><th scope="col">Real range</th><th scope="col">Recharge stop</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Full send</th><td>Track day, no mercy</td><td class="km">88 km</td><td>Bring a generator</td></tr>
+          <tr><th scope="row">Motorway</th><td>120 km/h steady</td><td class="km">131 km</td><td>28 min, every ~1.5 h</td></tr>
+          <tr><th scope="row">Mixed</th><td>Back roads + town</td><td class="km">176 km</td><td>Lunch, if you want</td></tr>
+          <tr><th scope="row">City</th><td>Commute pace</td><td class="km">214 km</td><td>Weekly</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ride" id="deposit">
+    <div class="wrap">
+      <div>
+        <h2 class="display">Ride it <em>before you doubt it.</em></h2>
+        <p class="lead">Forty-minute test rides, on real roads, with our engineer riding lead. Full licence and a pulse required.</p>
+        <ul class="cities">
+          <li><b>Munich</b><span>Mar 14–16</span></li>
+          <li><b>Milan</b><span>Mar 21–23</span></li>
+          <li><b>Barcelona</b><span>Mar 28–30</span></li>
+          <li><b>Amsterdam</b><span>Apr 04–06</span></li>
+          <li><b>Copenhagen</b><span>Apr 11–13</span></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="display">€99. <em>Refundable.</em> Real.</h2>
+        <ol class="steps">
+          <li><b>Put down €99.</b><p>Fully refundable until your bike enters the build queue. No fine print; we checked.</p></li>
+          <li><b>Pick your slot.</b><p>First production run: 500 bikes, numbered on the triple clamp. Deliveries start November.</p></li>
+          <li><b>Test ride, then decide.</b><p>If the VX-1 doesn't rearrange your expectations, cancel on the spot. €99 back within 5 working days.</p></li>
+        </ol>
+        <p style="margin-top:2rem"><a class="btn" href="#">Reserve slot #401–500</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="display">APEX DYNAMICS</span>
+  <p>VX-1 · Type approval EU L3e · <a href="#chapters">engineering@apexdynamics.example</a></p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // 0–100 counter with exponential ease-out
+  var el = document.getElementById('counter');
+  var TARGET = 2.9, DURATION = 2400;
+  function setFinal() { el.textContent = TARGET.toFixed(1); }
+  if (reduced) {
+    setFinal();
+  } else {
+    var start = null;
+    function tick(now) {
+      if (start === null) start = now;
+      var p = Math.min((now - start) / DURATION, 1);
+      var eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p); // easeOutExpo
+      el.textContent = (TARGET * eased).toFixed(1);
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    setTimeout(function () { requestAnimationFrame(tick); }, 500);
+  }
+
+  // torque curve draws when scrolled into view
+  var torque = document.getElementById('torque');
+  if (reduced || !('IntersectionObserver' in window)) {
+    torque.classList.add('drawn');
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          torque.classList.add('drawn');
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.35 });
+    io.observe(torque);
+  }
+})();
+</script>
+</body>
+</html>

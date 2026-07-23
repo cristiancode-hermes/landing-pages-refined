@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BITE — Smash-Burger Truck. Smashed, Melted, Gone.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Hanken+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ketchup: oklch(0.50 0.20 25);
+    --ketchup-deep: oklch(0.40 0.16 25);
+    --ketchup-dark: oklch(0.32 0.12 25);
+    --ink: oklch(0.99 0.002 90);
+    --mustard: oklch(0.85 0.16 95);
+    --mustard-deep: oklch(0.72 0.15 95);
+    --pickle: oklch(0.70 0.15 140);
+    --pickle-deep: oklch(0.55 0.13 140);
+    --char: oklch(0.22 0.02 40);
+    --z-ticker: 10;
+    --z-sticker: 20;
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ketchup);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 { text-wrap: balance; }
+
+  :focus-visible {
+    outline: 3px solid var(--mustard);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .display {
+    font-family: "Bungee", cursive;
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 100svh;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+    padding: clamp(1.5rem, 4vw, 4rem);
+    padding-bottom: 5rem;
+    position: relative;
+  }
+  .hero-copy h1 {
+    font-size: clamp(2.6rem, 1.4rem + 6vw, 6rem);
+    text-shadow: 0.06em 0.06em 0 var(--ketchup-dark);
+    margin-bottom: 1.25rem;
+  }
+  .sizzle .hero-copy h1 { animation: sizzle-shake 0.7s var(--ease-expo) 0.25s 1 both; }
+  @keyframes sizzle-shake {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    12%  { transform: translate(-6px, 2px) rotate(-1.2deg); }
+    24%  { transform: translate(5px, -3px) rotate(1deg); }
+    36%  { transform: translate(-4px, 1px) rotate(-0.7deg); }
+    50%  { transform: translate(4px, 2px) rotate(0.6deg); }
+    66%  { transform: translate(-2px, -1px) rotate(-0.3deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+  .hero-copy p {
+    max-width: 34ch;
+    font-size: clamp(1.15rem, 1rem + 0.8vw, 1.5rem);
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  .hero-copy p strong { color: var(--mustard); }
+  .hero-cta {
+    display: inline-block;
+    margin-top: 2rem;
+    font-family: "Bungee", cursive;
+    font-size: 1.05rem;
+    color: var(--char);
+    background: var(--mustard);
+    padding: 1rem 2.2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    transform: rotate(-2deg);
+    box-shadow: 0 6px 0 var(--ketchup-dark);
+    transition: transform 0.5s var(--ease-expo), box-shadow 0.5s var(--ease-expo);
+  }
+  .hero-cta:hover, .hero-cta:focus-visible {
+    transform: rotate(0deg) translateY(-4px) scale(1.04);
+    box-shadow: 0 10px 0 var(--ketchup-dark);
+  }
+
+  .polaroid {
+    background: var(--ink);
+    padding: clamp(0.75rem, 1.5vw, 1.25rem);
+    padding-bottom: clamp(3rem, 5vw, 4.5rem);
+    border-radius: 8px;
+    transform: rotate(3deg);
+    box-shadow: 0 18px 40px -12px oklch(0.25 0.1 25 / 0.55);
+    position: relative;
+    transition: transform 0.6s var(--ease-expo);
+  }
+  .polaroid:hover { transform: rotate(0.5deg) translateY(-6px); }
+  .polaroid img { border-radius: 4px; width: 100%; }
+  .polaroid figcaption {
+    position: absolute;
+    bottom: 0.9rem;
+    left: 1.25rem;
+    font-family: "Bungee", cursive;
+    font-size: 0.95rem;
+    color: var(--ketchup);
+    transform: rotate(-1.5deg);
+  }
+  .polaroid .chip { position: absolute; top: -14px; right: -14px; z-index: var(--z-sticker); }
+
+  /* ---------- STICKER CHIPS ---------- */
+  .chip {
+    display: inline-block;
+    font-family: "Bungee", cursive;
+    font-size: 0.8rem;
+    line-height: 1.1;
+    padding: 0.55em 1em;
+    border-radius: 999px;
+    color: var(--char);
+    transform: rotate(6deg);
+    box-shadow: 0 3px 0 oklch(0.25 0.1 25 / 0.35);
+    transition: transform 0.45s var(--ease-expo), box-shadow 0.45s var(--ease-expo);
+    transform-origin: 15% 90%;
+  }
+  .chip--mustard { background: var(--mustard); }
+  .chip--pickle { background: var(--pickle); }
+  .chip:hover, .chip:focus-visible {
+    transform: rotate(-3deg) translateY(-5px) scale(1.06);
+    box-shadow: 0 8px 0 oklch(0.25 0.1 25 / 0.3);
+  }
+
+  /* ---------- TICKER ---------- */
+  .ticker {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-ticker);
+    background: var(--char);
+    color: var(--mustard);
+    overflow: hidden;
+    padding: 0.7rem 0;
+    font-weight: 700;
+    font-size: clamp(0.9rem, 0.85rem + 0.3vw, 1.05rem);
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex;
+    gap: 3rem;
+    padding-right: 3rem;
+    animation: roll 28s linear infinite;
+  }
+  @keyframes roll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .ticker span { display: inline-flex; align-items: center; gap: 0.6em; }
+  .ticker .dot { color: var(--pickle); }
+
+  /* ---------- MENU ---------- */
+  .menu {
+    background: var(--ketchup-deep);
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+  }
+  .menu h2 {
+    font-size: clamp(2.2rem, 1.2rem + 4.5vw, 4.5rem);
+    text-shadow: 0.05em 0.05em 0 var(--ketchup-dark);
+    margin-bottom: 0.5rem;
+  }
+  .menu .sub {
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin-bottom: 3rem;
+  }
+  .menu .sub em { color: var(--mustard); font-style: normal; }
+  .burgers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    list-style: none;
+  }
+  .burger {
+    background: var(--ink);
+    color: var(--char);
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem 1.5rem;
+    position: relative;
+    transform: rotate(var(--tilt, 1.5deg));
+    box-shadow: 0 8px 0 var(--ketchup-dark);
+    transition: transform 0.55s var(--ease-expo), box-shadow 0.55s var(--ease-expo);
+  }
+  .burger:nth-child(even) { --tilt: -1.5deg; }
+  .burger:hover, .burger:focus-within {
+    transform: rotate(0deg) translateY(-8px);
+    box-shadow: 0 16px 0 var(--ketchup-dark);
+  }
+  .burger h3 {
+    font-family: "Bungee", cursive;
+    font-size: 1.45rem;
+    letter-spacing: 0;
+    color: var(--ketchup);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .burger h3 .price { color: var(--pickle-deep); font-size: 1.15rem; white-space: nowrap; }
+  .burger p { font-size: 1rem; line-height: 1.55; max-width: 32ch; }
+  .burger .chip {
+    position: absolute;
+    top: -13px;
+    left: 1.25rem;
+    font-size: 0.7rem;
+  }
+  .burger:hover .chip { transform: rotate(-6deg) translateY(-4px) scale(1.08); }
+
+  /* ---------- PAY / FIND ---------- */
+  .pay {
+    padding: clamp(3.5rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .pay h2 {
+    font-size: clamp(1.9rem, 1.1rem + 3.5vw, 3.5rem);
+    text-shadow: 0.05em 0.05em 0 var(--ketchup-dark);
+    margin-bottom: 1rem;
+  }
+  .pay p { max-width: 38ch; font-weight: 500; }
+  .pay .fine { font-size: 0.95rem; opacity: 0.92; margin-top: 1rem; }
+  .hours {
+    background: var(--char);
+    border-radius: 12px;
+    padding: 2rem;
+    transform: rotate(-1deg);
+    box-shadow: 0 8px 0 var(--ketchup-dark);
+  }
+  .hours h3 {
+    font-family: "Bungee", cursive;
+    color: var(--mustard);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  .hours dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1.5rem;
+    font-size: 1.02rem;
+  }
+  .hours dt { font-weight: 700; color: var(--pickle); }
+  .hours dd { text-align: right; font-weight: 500; }
+
+  footer {
+    background: var(--ketchup-dark);
+    padding: 2.5rem clamp(1.5rem, 4vw, 4rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  footer .display { font-size: 1.6rem; color: var(--mustard); }
+  footer p { font-size: 0.95rem; }
+  footer a { color: var(--pickle); font-weight: 700; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 3rem; }
+    .polaroid { max-width: 420px; margin: 0 auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sizzle .hero-copy h1 { animation: none; }
+    .ticker-track { animation: none; }
+    .polaroid, .burger, .chip, .hero-cta { transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-copy">
+    <h1 class="display">SMASHED.<br>MELTED.<br>GONE.</h1>
+    <p>BITE is a red truck with a flat-top, four burgers, and <strong>zero small talk</strong>. Beef hits the steel at 7:58 every morning. It stops when we sell out — and we sell out.</p>
+    <a class="hero-cta" href="#menu">SEE THE FOUR</a>
+  </div>
+  <figure class="polaroid">
+    <span class="chip chip--mustard">EST. 2019</span>
+    <img src="https://picsum.photos/seed/bite-burger/1600/900" width="1600" height="900"
+         alt="A double smash burger mid-stack — lace-edged patties, cheese still sliding, on the truck's flat-top.">
+    <figcaption>The Double Trouble, 11:58 AM.</figcaption>
+  </figure>
+</header>
+
+<div class="ticker" aria-label="Truck location ticker">
+  <div class="ticker-track" id="tickerTrack">
+    <span>MON–WED · 5TH &amp; MAIN <i class="dot">★</i></span>
+    <span>THU · RIVERSIDE MARKET <i class="dot">★</i></span>
+    <span>FRI · BREWERY ROW TIL LATE <i class="dot">★</i></span>
+    <span>SAT · THE FARMERS' LOT, 8AM <i class="dot">★</i></span>
+    <span>SUN · WE SLEEP <i class="dot">★</i></span>
+    <span>11AM–SOLD OUT, EVERY DAY <i class="dot">★</i></span>
+  </div>
+</div>
+
+<main>
+  <section class="menu" id="menu">
+    <h2 class="display">THE FOUR.</h2>
+    <p class="sub">That's the whole menu. <em>No substitutions, no salad, no regrets.</em></p>
+    <ul class="burgers">
+      <li class="burger">
+        <span class="chip chip--pickle">THE GATEWAY</span>
+        <h3>The Rookie <span class="price">$9</span></h3>
+        <p>One patty, smashed thin with crispy lace edges. American cheese, diced onion, pickle, house sauce. Gone in four bites.</p>
+      </li>
+      <li class="burger">
+        <span class="chip chip--mustard">BEST SELLER</span>
+        <h3>Double Trouble <span class="price">$12</span></h3>
+        <p>Two patties, double cheese, double sauce. The one in the photo. The one you smelled from the sidewalk.</p>
+      </li>
+      <li class="burger">
+        <span class="chip chip--pickle">EXTRA CRUNCH</span>
+        <h3>Pickle Freak <span class="price">$11</span></h3>
+        <p>Single patty buried under fried pickle chips, pickle slaw, and pickle-brine mustard. We warned you in the name.</p>
+      </li>
+      <li class="burger">
+        <span class="chip chip--mustard">EAT SITTING DOWN</span>
+        <h3>The Nap <span class="price">$13</span></h3>
+        <p>Double patty, bacon jam, fried egg, hash-brown patty inside the bun. Comes with a napkin dispenser and zero judgment.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section class="pay" aria-label="Payment and hours">
+    <div>
+      <h2 class="display">CASH. CARD. WHATEVER.</h2>
+      <p>Tap, swipe, crumpled bills, exact change counted into our sweaty palm. If it's legal tender, it's a burger. Tips go in the pickle jar and buy the crew's Friday beers.</p>
+      <p class="fine">Sold-out rule is real: when the last tray of beef is gone, the window drops. Follow the ticker, not your feelings.</p>
+    </div>
+    <div class="hours">
+      <h3>WINDOW HOURS</h3>
+      <dl>
+        <dt>Mon–Wed</dt><dd>11:00 – 21:00</dd>
+        <dt>Thursday</dt><dd>11:00 – 22:00</dd>
+        <dt>Friday</dt><dd>11:00 – late</dd>
+        <dt>Saturday</dt><dd>08:00 – sold out</dd>
+        <dt>Sunday</dt><dd>closed. we sleep.</dd>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span class="display">BITE</span>
+  <p>Find the red truck · <a href="#menu">@bitetruck</a> · No catering, no merch, just burgers.</p>
+</footer>
+
+<script>
+  // Duplicate ticker content for a seamless loop
+  (function () {
+    var track = document.getElementById('tickerTrack');
+    track.innerHTML += track.innerHTML;
+  })();
+
+  // One-time sizzle-shake on the headline
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.body.classList.add('sizzle');
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Motor Pool — vintage motorcycles, restored honest. No choppers.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Staatliches&family=Cutive+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --asphalt: oklch(0.17 0.012 262);
+    --asphalt-2: oklch(0.21 0.014 262);
+    --paper: oklch(0.955 0.012 80);
+    --paper-2: oklch(0.925 0.015 80);
+    --ink-dark: oklch(0.24 0.02 262);
+    --ink-dark-soft: oklch(0.40 0.025 262);
+    --ink-light: oklch(0.93 0.01 85);
+    --ink-light-dim: oklch(0.76 0.012 85);
+    --orange: oklch(0.70 0.17 52);
+    --orange-deep: oklch(0.58 0.16 48);
+    --chrome: oklch(0.72 0.008 260);
+    --line-dark: oklch(0.32 0.015 262);
+    --line-light: oklch(0.86 0.015 80);
+    --display: "Staatliches", sans-serif;
+    --body: "Cutive Mono", monospace;
+    --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+    --step-0: clamp(0.95rem, 0.91rem + 0.2vw, 1.05rem);
+    --step-1: clamp(1.2rem, 1.13rem + 0.35vw, 1.4rem);
+    --step-2: clamp(1.55rem, 1.4rem + 0.75vw, 2rem);
+    --step-3: clamp(2rem, 1.7rem + 1.5vw, 2.9rem);
+    --step-4: clamp(2.6rem, 1.9rem + 3.5vw, 5rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--asphalt);
+    color: var(--ink-light);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    text-transform: uppercase;
+  }
+  p { max-width: 65ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .wrap { width: min(1140px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(3.5rem, 2.8rem + 4vw, 7rem); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.17 0.012 262 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.8rem;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    font-family: var(--display);
+    font-size: 1.5rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-light);
+  }
+  .swirl-wrap { position: relative; width: 2.4rem; height: 2.4rem; flex: none; }
+  .swirl {
+    position: absolute;
+    inset: -0.6rem;
+    width: 3.6rem;
+    height: 3.6rem;
+    animation: swirlspin 46s linear infinite;
+    opacity: 0.85;
+  }
+  @keyframes swirlspin { to { transform: rotate(360deg); } }
+  .swirl-wrap .bolt {
+    position: absolute;
+    inset: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+  .site-nav { display: flex; align-items: center; gap: 1.5rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    color: var(--ink-light-dim);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--orange); }
+  @media (max-width: 640px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--display);
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--asphalt);
+    background: var(--orange);
+    padding: 0.7rem 1.5rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: oklch(0.76 0.17 55); transform: translateY(-2px); }
+  .btn.small { padding: 0.45rem 1rem; font-size: 0.9rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.dark { background: var(--asphalt); color: var(--ink-light); }
+  .btn.dark:hover { background: oklch(0.12 0.012 262); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3rem, 2rem + 5vw, 6.5rem) clamp(2.5rem, 2rem + 3vw, 4.5rem); }
+  .hero .kicker {
+    color: var(--orange);
+    font-size: var(--step--1);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    color: var(--ink-light);
+    margin-bottom: 1.3rem;
+  }
+  .hero h1 .o { color: var(--orange); }
+  .hero .lede {
+    font-size: var(--step-1);
+    color: var(--ink-light-dim);
+    max-width: 46ch;
+    margin-bottom: 2.2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-bottom: 3.2rem; }
+  .hero figure {
+    border: 1px solid var(--line-dark);
+    padding: 0.5rem;
+    background: var(--asphalt-2);
+  }
+  .hero figure img { width: 100%; filter: grayscale(0.35) contrast(1.05); }
+  .hero figcaption {
+    font-size: 0.72rem;
+    color: var(--ink-light-dim);
+    padding-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  /* ---------- odometer ---------- */
+  .odo-band {
+    border-block: 1px solid var(--line-dark);
+    background: var(--asphalt-2);
+    padding-block: 2.2rem;
+  }
+  .odo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+  .odo .label {
+    font-size: 0.72rem;
+    color: var(--ink-light-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .drum {
+    display: inline-flex;
+    background: oklch(0.10 0.01 262);
+    border: 1px solid var(--line-dark);
+    border-radius: 6px;
+    overflow: hidden;
+    font-family: var(--body);
+    font-size: var(--step-2);
+    line-height: 1;
+  }
+  .drum .d {
+    padding: 0.55rem 0.28rem;
+    color: var(--ink-light);
+    border-right: 1px solid var(--line-dark);
+    font-variant-numeric: tabular-nums;
+    min-width: 1.15ch;
+    text-align: center;
+  }
+  .drum .d:last-child { border-right: none; background: var(--paper); color: var(--ink-dark); }
+  .odo .note { font-size: 0.72rem; color: var(--chrome); margin-top: 0.55rem; }
+
+  /* ---------- restorations (off-white section) ---------- */
+  .resto {
+    background: var(--paper);
+    color: var(--ink-dark);
+  }
+  .resto h2 { font-size: var(--step-3); color: var(--ink-dark); margin-bottom: 0.6rem; }
+  .resto .sub { color: var(--ink-dark-soft); margin-bottom: 2.6rem; max-width: 62ch; }
+  .resto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.8rem;
+  }
+  .bike {
+    background: oklch(0.99 0.008 85);
+    border: 1px solid var(--line-light);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .bike .head {
+    padding: 1.4rem 1.5rem 1.1rem;
+    border-bottom: 1px dashed var(--line-light);
+  }
+  .bike .year { font-size: 0.72rem; color: var(--orange-deep); letter-spacing: 0.1em; }
+  .bike h3 { font-size: var(--step-2); color: var(--ink-dark); margin-top: 0.3rem; }
+  .bike .report { padding: 1.2rem 1.5rem 1.4rem; }
+  .bike .report dt {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-dark-soft);
+    margin-top: 0.9rem;
+  }
+  .bike .report dt:first-child { margin-top: 0; }
+  .bike .report dd { font-size: var(--step--1); color: var(--ink-dark); line-height: 1.6; }
+  .gauge {
+    height: 8px;
+    background: var(--paper-2);
+    border-radius: 999px;
+    margin-top: 0.35rem;
+    overflow: hidden;
+  }
+  .gauge i {
+    display: block;
+    height: 100%;
+    background: var(--orange-deep);
+    border-radius: 999px;
+    width: 0;
+    transition: width 1.4s var(--ease-out);
+  }
+  .bike.shown .gauge i { width: var(--fill); }
+
+  /* ---------- service menu ---------- */
+  .service h2 { font-size: var(--step-3); margin-bottom: 0.6rem; }
+  .service .sub { color: var(--ink-light-dim); margin-bottom: 2.6rem; max-width: 60ch; }
+  .menu { border-top: 2px solid var(--orange); }
+  .job {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.4rem;
+    padding-block: 1.05rem;
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .job .name { font-size: var(--step--1); color: var(--ink-light); }
+  .job .name b {
+    display: block;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: var(--step-1);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .job .name span { color: var(--ink-light-dim); }
+  .job .price {
+    font-size: var(--step-1);
+    color: var(--orange);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .job .price small { display: block; font-size: 0.68rem; color: var(--ink-light-dim); text-align: right; }
+
+  /* ---------- stance + tank ---------- */
+  .stance { background: var(--paper); color: var(--ink-dark); }
+  .stance .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  @media (max-width: 900px) { .stance .wrap { grid-template-columns: 1fr; } }
+  .stance h2 { font-size: var(--step-4); color: var(--ink-dark); margin-bottom: 1.1rem; }
+  .stance h2 .o { color: var(--orange-deep); }
+  .stance p { color: var(--ink-dark-soft); margin-bottom: 1.1rem; }
+  .stance p b { color: var(--ink-dark); }
+  .stance figure { border-radius: 14px; overflow: hidden; }
+  .stance figure img { width: 100%; filter: grayscale(0.25) contrast(1.05); }
+  .stance figcaption { font-size: var(--step--1); color: var(--ink-dark-soft); padding-top: 0.7rem; }
+
+  /* ---------- parts ---------- */
+  .parts h2 { font-size: var(--step-3); margin-bottom: 0.6rem; }
+  .parts .sub { color: var(--ink-light-dim); margin-bottom: 2.6rem; max-width: 60ch; }
+  .parts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.8rem;
+    margin-bottom: 2.6rem;
+  }
+  .part {
+    border: 1px solid var(--line-dark);
+    border-radius: 14px;
+    padding: 1.7rem 1.6rem;
+    background: var(--asphalt-2);
+  }
+  .part h3 { font-size: var(--step-1); color: var(--orange); margin-bottom: 0.7rem; }
+  .part p { font-size: var(--step--1); color: var(--ink-light-dim); line-height: 1.65; }
+  .part p b { color: var(--ink-light); }
+  .parts .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    align-items: center;
+    border-top: 1px solid var(--line-dark);
+    padding-top: 2.2rem;
+  }
+  .parts .cta-row p { font-size: var(--step--1); color: var(--ink-light-dim); max-width: 52ch; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line-dark);
+    padding-block: 2.2rem;
+    font-size: 0.75rem;
+    color: var(--ink-light-dim);
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    line-height: 1.8;
+  }
+  footer b { color: var(--ink-light); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .swirl { animation: none; }
+    .gauge i { transition: none; width: var(--fill); }
+    .btn, .btn:hover { transition: none; transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="swirl-wrap" aria-hidden="true">
+        <svg class="swirl" viewBox="0 0 72 72">
+          <g fill="none" stroke="var(--chrome)" stroke-width="1.1">
+            <circle cx="36" cy="36" r="33" stroke-dasharray="5 9"/>
+            <circle cx="36" cy="36" r="26" stroke-dasharray="3 7"/>
+            <circle cx="36" cy="36" r="19" stroke-dasharray="6 5"/>
+          </g>
+        </svg>
+        <svg class="bolt" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="14" fill="var(--orange)"/>
+          <path d="M24 14 v20 M14 24 h20 M17 17 l14 14 M31 17 l-14 14" stroke="var(--asphalt)" stroke-width="3"/>
+        </svg>
+      </span>
+      MOTOR POOL
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#resto">On the lifts</a>
+      <a href="#service">Service menu</a>
+      <a href="#parts">Parts</a>
+      <a class="btn small" href="#parts">Book the bench</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">VINTAGE MOTORCYCLE GARAGE · EST. 1987 · TWO LIFTS, ONE COMPRESSOR, NO SHORTCUTS</p>
+      <h1>Old bikes, brought back <span class="o">honest.</span></h1>
+      <p class="lede">Motor Pool restores and services classic motorcycles — British twins, Italian singles, Japanese fours from before everything got plastic. We document everything, we charge what we said, and we hand back your bike with the bolts facing the right way.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#resto">See what's on the lifts</a>
+        <a class="btn dark" href="#service">Service menu</a>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/moto-1/1600/900" width="1600" height="900"
+             alt="The Motor Pool workshop — two bikes up on lifts, a wall of spanners in descending order, and a pool of workshop light on the concrete.">
+        <figcaption><span>BAY 1, TUESDAY 07:40 — KETTLE ON, LIFTS UP</span><span>PHOTO: RAY</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ODOMETER -->
+  <section class="odo-band" aria-label="Workshop tally">
+    <div class="wrap odo-grid">
+      <div class="odo">
+        <div class="label">Bikes back on the road</div>
+        <div class="drum" data-count="1284" aria-label="1284 bikes back on the road"></div>
+        <div class="note">Since the doors opened, spring '87.</div>
+      </div>
+      <div class="odo">
+        <div class="label">Engines rebuilt, top to bottom</div>
+        <div class="drum" data-count="396" aria-label="396 engines rebuilt"></div>
+        <div class="note">Every one bench-tested an hour minimum.</div>
+      </div>
+      <div class="odo">
+        <div class="label">Parts located, worldwide</div>
+        <div class="drum" data-count="9021" aria-label="9021 parts located"></div>
+        <div class="note">NOS, used-good, or machined in-house.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESTORATIONS -->
+  <section class="resto" id="resto">
+    <div class="wrap">
+      <h2>Currently on the lifts</h2>
+      <p class="sub">Three restorations in progress, with the condition reports we actually wrote. If your bike is here, this page is how you check on it without ringing during tea break.</p>
+      <div class="resto-grid">
+        <article class="bike" style="--fill: 78%">
+          <div class="head">
+            <span class="year">1972 · BRITISH TWIN</span>
+            <h3>Triumph Bonneville T120</h3>
+          </div>
+          <dl class="report">
+            <dt>Where it stands</dt>
+            <dd>Engine rebuilt and run-in on the bench. Original paint tank saved — three dents kept, on purpose, at the owner's request.</dd>
+            <dt>The honest bit</dt>
+            <dd>The wiring loom was a rat's nest of household cable. Full rewire, not a patch. Added two days we didn't quote; we're eating the labour.</dd>
+            <dt>Progress</dt>
+            <dd><span class="gauge"><i></i></span></dd>
+          </dl>
+        </article>
+        <article class="bike" style="--fill: 45%">
+          <div class="head">
+            <span class="year">1968 · ITALIAN SINGLE</span>
+            <h3>Ducati 250 Scrambler</h3>
+          </div>
+          <dl class="report">
+            <dt>Where it stands</dt>
+            <dd>Frame straightened and powder-coated. Wheels rebuilt with stainless spokes. Waiting on a correct Dell'Orto from a breaker in Bologna.</dd>
+            <dt>The honest bit</dt>
+            <dd>Case numbers don't match the logbook — engine is a '69. Owner knows, price adjusted down, paperwork annotated. No mysteries sold here.</dd>
+            <dt>Progress</dt>
+            <dd><span class="gauge"><i></i></span></dd>
+          </dl>
+        </article>
+        <article class="bike" style="--fill: 20%">
+          <div class="head">
+            <span class="year">1976 · JAPANESE FOUR</span>
+            <h3>Honda CB750 Four</h3>
+          </div>
+          <dl class="report">
+            <dt>Where it stands</dt>
+            <dd>Just come in. Stripped to the frame, everything photographed and bagged. Assessment report goes to the owner Friday.</dd>
+            <dt>The honest bit</dt>
+            <dd>It was stored outside under a tarp for nine years. The tar pit of old chain lube saved the frame; the seat did not survive. Budget accordingly.</dd>
+            <dt>Progress</dt>
+            <dd><span class="gauge"><i></i></span></dd>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE -->
+  <section class="service" id="service">
+    <div class="wrap">
+      <h2>Service menu</h2>
+      <p class="sub">Fixed prices for the usual jobs. Anything weird gets a written quote before a single bolt moves. Labour rate for the unlisted: £74 an hour, billed in quarter hours, never rounded up.</p>
+      <div class="menu">
+        <div class="job">
+          <div class="name"><b>Full annual service</b><span>Oil, filters, tappets, points, chain, brake fluid, the lot. Road test included.</span></div>
+          <div class="price">£310 <small>+ parts at cost</small></div>
+        </div>
+        <div class="job">
+          <div class="name"><b>Carb strip &amp; sync</b><span>Ultrasonic bath, new jets where worn, balanced on the vacuum gauges.</span></div>
+          <div class="price">£145 <small>per bank</small></div>
+        </div>
+        <div class="job">
+          <div class="name"><b>Top-end refresh</b><span>Barrels honed or rebored, valves seated, guides measured twice.</span></div>
+          <div class="price">£620 <small>most twins &amp; fours</small></div>
+        </div>
+        <div class="job">
+          <div class="name"><b>Electrical sorting</b><span>Charging faults, dead switches, forty years of somebody else's crimps.</span></div>
+          <div class="price">£74/hr <small>capped at £370 without a call</small></div>
+        </div>
+        <div class="job">
+          <div class="name"><b>Pre-purchase inspection</b><span>We crawl over a bike you're thinking of buying. Written report, photos, no diplomacy.</span></div>
+          <div class="price">£120 <small>cheapest money in motorcycling</small></div>
+        </div>
+        <div class="job">
+          <div class="name"><b>MOT &amp; recommission</b><span>For bikes waking up from long storage. Fuel system, brakes, tyres, then the test.</span></div>
+          <div class="price">£260 <small>+ MOT fee</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STANCE -->
+  <section class="stance">
+    <div class="wrap">
+      <div>
+        <h2>We don't do <span class="o">choppers.</span></h2>
+        <p>Nothing against them — some are beautiful. But a raked-out frame and a sprung saddle is a different religion, and we'd be learning on your money. <b>We restore bikes to how the factory made them, or how the factory should have.</b> That's the whole craft, and we're still getting better at it.</p>
+        <p>Same goes for full custom builds, cafe conversions of rare bikes, and anything involving a rattle can. If that's your project, we'll happily point you at three shops who do it well. Ask Ray — he keeps a list and strong opinions.</p>
+        <p>What we will always take: the unglamorous stuff. The commuter 250 with a dead battery. The barn find that turns out to be mostly barn. <b>Nobody's bike is too ordinary to be saved.</b></p>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/moto-2/800/600" width="800" height="600"
+             alt="A restored fuel tank in deep red with hand-lined gold pinstriping, bench-polished to a mirror, clamped in the vice for final assembly.">
+        <figcaption>The Bonneville's tank — dents kept, stripes relaid by hand.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PARTS -->
+  <section class="parts" id="parts">
+    <div class="wrap">
+      <h2>Parts sourcing</h2>
+      <p class="sub">Half of restoration is detective work. We keep a network of breakers, dealers' old stock, and machinists across four countries — and a card index older than most of the staff.</p>
+      <div class="parts-grid">
+        <div class="part">
+          <h3>NOS &amp; used-good</h3>
+          <p>New-old-stock when it exists, inspected used parts when it doesn't. Every used part is photographed and graded before you pay. <b>If we wouldn't bolt it to our own bike, it doesn't ship.</b></p>
+        </div>
+        <div class="part">
+          <h3>Machined in-house</h3>
+          <p>Bushes, spacers, valve guides, and the small obscure bits that stopped existing in 1974. Our lathe is from 1962 and holds tolerance better than the new one did.</p>
+        </div>
+        <div class="part">
+          <h3>The wanted list</h3>
+          <p>Can't find it? It goes on the wanted board with your name and phone number. Average wait last year: <b>11 weeks</b>. Longest running entry: a 1954 velocette fishtail silencer, six years. We're still looking, Alan.</p>
+        </div>
+      </div>
+      <div class="cta-row">
+        <a class="btn" href="mailto:bench@motorpool.example">Book the bench</a>
+        <p>Bench slots open three weeks out. Bring the bike, the logbook, and whatever history you've got — even the napkin the last owner wrote the timing on. Especially that napkin.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>MOTOR POOL</b> · Unit 9, Calder Mill Yard<br>Off Foundry Row — follow the compressor noise</span>
+    <span>Mon – Fri 8:00 – 17:30<br>Sat 9:00 – 13:00 (tea at 10:30 sharp)</span>
+    <span>Ray · Diane · young Pete<br>No choppers. Napkins welcome.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- build odometer drums ---- */
+  var drums = document.querySelectorAll(".drum");
+  drums.forEach(function (drum) {
+    var target = parseInt(drum.getAttribute("data-count"), 10);
+    var digits = String(target).split("");
+    digits.forEach(function () {
+      var d = document.createElement("span");
+      d.className = "d";
+      d.textContent = "0";
+      drum.appendChild(d);
+    });
+  });
+
+  function rollTo(drum, target, duration) {
+    var digits = String(target).split("");
+    var cells = drum.querySelectorAll(".d");
+    var start = null;
+    function frame(t) {
+      if (start === null) start = t;
+      var p = Math.min(1, (t - start) / duration);
+      /* ease-out-expo */
+      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      var val = Math.round(target * e);
+      var s = String(val).padStart(digits.length, "0");
+      for (var i = 0; i < cells.length; i++) cells[i].textContent = s[i];
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function fillNow(drum, target) {
+    var s = String(target);
+    var cells = drum.querySelectorAll(".d");
+    for (var i = 0; i < cells.length; i++) cells[i].textContent = s[i];
+  }
+
+  /* ---- restoration gauges ---- */
+  var bikes = document.querySelectorAll(".bike");
+
+  if (reduced || !("IntersectionObserver" in window)) {
+    drums.forEach(function (d) { fillNow(d, parseInt(d.getAttribute("data-count"), 10)); });
+    bikes.forEach(function (b) { b.classList.add("shown"); });
+    return;
+  }
+
+  var odoIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e, i) {
+      if (e.isIntersecting) {
+        var drum = e.target;
+        setTimeout(function () {
+          rollTo(drum, parseInt(drum.getAttribute("data-count"), 10), 1900);
+        }, i * 200);
+        odoIO.unobserve(drum);
+      }
+    });
+  }, { threshold: 0.5 });
+  drums.forEach(function (d) { odoIO.observe(d); });
+
+  var bikeIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add("shown");
+        bikeIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  bikes.forEach(function (b) { bikeIO.observe(b); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonder — the travel journal for people who notice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.975 0.006 250);
+    --ink: oklch(0.21 0.02 260);
+    --ink-soft: oklch(0.42 0.025 255);
+    --navy: oklch(0.34 0.09 252);
+    --navy-deep: oklch(0.27 0.08 255);
+    --stamp-red: oklch(0.52 0.17 22);
+    --stamp-red-deep: oklch(0.44 0.15 22);
+    --stamp-teal: oklch(0.52 0.085 188);
+    --stamp-teal-deep: oklch(0.42 0.08 190);
+    --line: oklch(0.9 0.008 250);
+    --display: "Sora", sans-serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.8rem, 0.77rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.45rem);
+    --step-2: clamp(1.56rem, 1.35rem + 1vw, 2.2rem);
+    --step-3: clamp(1.95rem, 1.55rem + 2vw, 3rem);
+    --step-4: clamp(2.44rem, 1.75rem + 3.4vw, 4.5rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-stamp: 5;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--stamp-teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1140px, 100% - 3rem); margin-inline: auto; }
+  .measure { max-width: 65ch; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .brand svg { width: 1.6rem; height: 1.6rem; flex: none; }
+  .site-nav { display: flex; align-items: center; gap: 1.75rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--navy); }
+  .btn {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: oklch(0.99 0.004 250);
+    background: var(--navy);
+    padding: 0.8rem 1.6rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-out), background 0.35s var(--ease-out);
+  }
+  .btn:hover { background: var(--navy-deep); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.ghost {
+    background: transparent;
+    color: var(--navy);
+    border: 2px solid var(--navy);
+  }
+  .btn.ghost:hover { background: var(--navy); color: oklch(0.99 0.004 250); }
+  @media (max-width: 640px) {
+    .site-nav a:not(.btn) { display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3.5rem, 8vw, 7rem) clamp(3rem, 6vw, 5rem); }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .hero h1 { font-size: var(--step-4); font-weight: 800; margin-bottom: 1.25rem; }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--stamp-red-deep);
+  }
+  .hero .lede {
+    font-size: var(--step-1);
+    color: var(--ink-soft);
+    max-width: 34rem;
+    margin-bottom: 2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+  .hero-note {
+    margin-top: 1.4rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .hero-figure { position: relative; }
+  .hero-figure img {
+    width: 100%;
+    border-radius: 14px;
+    transform: rotate(1.2deg);
+    box-shadow: 0 6px 8px oklch(0.3 0.03 250 / 0.18);
+  }
+  .hero-figure figcaption {
+    margin-top: 0.9rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    text-align: right;
+  }
+  .stamp {
+    position: absolute;
+    width: clamp(5.5rem, 9vw, 8rem);
+    height: auto;
+    z-index: var(--z-stamp);
+  }
+  .stamp text {
+    font-family: var(--display);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+  }
+  .stamp.s1 { top: -2.2rem; right: 8%; transform: rotate(9deg); }
+  .stamp.s2 { bottom: 14%; left: -2.5rem; transform: rotate(-11deg); width: clamp(4.5rem, 7.5vw, 6.5rem); }
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .stamp.s2 { left: auto; right: 4%; bottom: -1.8rem; }
+  }
+
+  /* ---------- stamp-in motion ---------- */
+  @keyframes stampIn {
+    0% { opacity: 0; transform: scale(1.18) rotate(calc(var(--tilt, 0deg) - 4deg)); filter: blur(3px); }
+    55% { opacity: 1; filter: blur(0); }
+    100% { opacity: 1; transform: scale(1) rotate(var(--tilt, 0deg)); filter: blur(0); }
+  }
+  .stamp-in.stamped { animation: stampIn 0.55s var(--ease-out) both; }
+  .stamp-in.stamped.delay-1 { animation-delay: 0.15s; }
+  .stamp-in.stamped.delay-2 { animation-delay: 0.3s; }
+
+  /* ---------- section scaffolding ---------- */
+  section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .section-head { margin-bottom: clamp(2rem, 4vw, 3.25rem); }
+  .section-head h2 { font-size: var(--step-3); font-weight: 800; margin-bottom: 0.9rem; }
+  .section-head p { color: var(--ink-soft); font-size: var(--step-1); }
+  .chip {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--stamp-teal-deep);
+    border: 2px solid var(--stamp-teal);
+    border-radius: 6px;
+    padding: 0.35rem 0.8rem;
+    transform: rotate(-2deg);
+    margin-bottom: 1.1rem;
+  }
+  .chip.red { color: var(--stamp-red-deep); border-color: var(--stamp-red); transform: rotate(1.5deg); }
+
+  /* ---------- journal walkthrough ---------- */
+  .journal { background: var(--surface); border-block: 1px solid var(--line); }
+  .entries {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.75rem;
+  }
+  .entry {
+    --tilt: -0.8deg;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.6rem 1.5rem 1.4rem;
+    transform: rotate(var(--tilt));
+  }
+  .entry:nth-child(2) { --tilt: 0.7deg; }
+  .entry:nth-child(3) { --tilt: -0.4deg; }
+  .entry .date {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: oklch(0.99 0.004 250);
+    background: var(--navy);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .entry:nth-child(2) .date { background: var(--stamp-red-deep); }
+  .entry:nth-child(3) .date { background: var(--stamp-teal-deep); }
+  .entry h3 { font-size: var(--step-1); font-weight: 700; margin-bottom: 0.6rem; }
+  .entry p { font-size: var(--step-0); color: var(--ink-soft); }
+  .entry .meta {
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--line);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  /* ---------- route map ---------- */
+  .map-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .map-grid h2 { font-size: var(--step-3); font-weight: 800; margin-bottom: 1rem; }
+  .map-grid .lede { color: var(--ink-soft); font-size: var(--step-1); margin-bottom: 1.75rem; }
+  .map-points { list-style: none; display: grid; gap: 0.9rem; }
+  .map-points li { display: flex; gap: 0.85rem; align-items: baseline; }
+  .map-points .dot {
+    flex: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--stamp-red);
+    transform: translateY(-0.05rem);
+  }
+  .map-points li:nth-child(2) .dot { background: var(--stamp-teal); }
+  .map-points li:nth-child(3) .dot { background: var(--navy); }
+  .map-points li:nth-child(4) .dot { background: var(--stamp-red); }
+  .map-points strong { font-family: var(--display); font-weight: 700; }
+  .map-points span { color: var(--ink-soft); }
+  .mapsvg { width: 100%; height: auto; }
+  #route-line {
+    fill: none;
+    stroke: var(--navy);
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 2.4s var(--ease-out);
+  }
+  .coast { fill: none; stroke: var(--line); stroke-width: 2; }
+  .map-label {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 13px;
+    fill: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .pin path { fill: var(--stamp-red); }
+  .pin.teal path { fill: var(--stamp-teal-deep); }
+  @keyframes pinDrop {
+    0% { opacity: 0; transform: translateY(-26px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .mapsvg.drawn .pin { animation: pinDrop 0.6s var(--ease-out) both; }
+  .mapsvg.drawn .pin.p2 { animation-delay: 0.7s; }
+  .mapsvg.drawn .pin.p3 { animation-delay: 1.3s; }
+  .mapsvg.drawn .pin.p4 { animation-delay: 1.9s; }
+  @media (max-width: 860px) {
+    .map-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- offline honesty ---------- */
+  .offline { background: var(--navy-deep); color: oklch(0.96 0.01 250); }
+  .offline .wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .offline h2 { font-size: var(--step-3); font-weight: 800; margin-bottom: 1.1rem; }
+  .offline .lede { color: oklch(0.85 0.02 250); font-size: var(--step-1); margin-bottom: 1.75rem; }
+  .offline ul { list-style: none; display: grid; gap: 1.1rem; }
+  .offline li { display: flex; gap: 0.9rem; align-items: baseline; line-height: 1.55; }
+  .offline li::before {
+    content: "";
+    flex: none;
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 2px;
+    background: var(--stamp-teal);
+    transform: rotate(45deg) translateY(-0.1rem);
+  }
+  .offline li strong { color: oklch(0.99 0.005 250); }
+  .offline li span { color: oklch(0.85 0.02 250); }
+  .offline img { border-radius: 14px; width: 100%; }
+  @media (max-width: 860px) {
+    .offline .wrap { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- pricing ---------- */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 1.75rem;
+    align-items: stretch;
+  }
+  .tier {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 2rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    background: var(--bg);
+  }
+  .tier.featured {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: oklch(0.96 0.012 250);
+  }
+  .tier h3 { font-size: var(--step-1); font-weight: 700; }
+  .tier .price {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+    margin-block: 0.5rem 0.2rem;
+  }
+  .tier .price small { font-size: var(--step-0); font-weight: 600; letter-spacing: 0; }
+  .tier .for { font-size: var(--step--1); color: var(--ink-soft); margin-bottom: 1.1rem; }
+  .tier.featured .for { color: oklch(0.82 0.02 250); }
+  .tier ul { list-style: none; display: grid; gap: 0.6rem; font-size: var(--step--1); margin-bottom: 1.75rem; }
+  .tier li { padding-left: 1.3rem; position: relative; }
+  .tier li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.42em;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--stamp-teal);
+  }
+  .tier.featured li::before { background: var(--stamp-red); }
+  .tier .btn { margin-top: auto; text-align: center; }
+  .tier.featured .btn { background: var(--stamp-red-deep); }
+  .tier.featured .btn:hover { background: var(--stamp-red); }
+
+  /* ---------- closing + footer ---------- */
+  .closing { text-align: center; }
+  .closing h2 { font-size: var(--step-3); font-weight: 800; margin-bottom: 1rem; }
+  .closing p { color: var(--ink-soft); font-size: var(--step-1); margin: 0 auto 2rem; max-width: 38rem; }
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center; }
+  footer nav { display: flex; gap: 1.5rem; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--navy); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .stamp-in.stamped, .mapsvg.drawn .pin { animation: none; }
+    #route-line { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Sonder home">
+      <svg viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.5" fill="none" stroke="oklch(0.52 0.17 22)" stroke-width="2.5"/>
+        <circle cx="16" cy="16" r="9.5" fill="none" stroke="oklch(0.52 0.17 22)" stroke-width="1.5"/>
+        <path d="M10 18.5 L16 10 L22 18.5 L16 16 Z" fill="oklch(0.34 0.09 252)"/>
+      </svg>
+      Sonder
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#journal">A real journal</a>
+      <a href="#route">The route</a>
+      <a href="#offline">Offline-first</a>
+      <a href="#pricing">Pricing</a>
+      <a class="btn small" href="#pricing">Start your journal</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <h1 id="hero-title">Everyone you pass is the <em>main character</em>.</h1>
+        <p class="lede">Sonder is a travel journal for the moments between the landmarks — the night
+        trains, the wrong turns, the stranger who drew you a map on a napkin. Write it down while
+        it's still warm. Your phone signal is optional.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#pricing">Start your journal — free</a>
+          <a class="btn ghost" href="#journal">Read a real page</a>
+        </div>
+        <p class="hero-note">Free for your first trip. No account needed until you sync.</p>
+      </div>
+      <figure class="hero-figure">
+        <img src="https://picsum.photos/seed/travel-1/1600/900" width="1600" height="900"
+             alt="A battered journal open on a café table somewhere far from home, pen resting on a half-written page">
+        <svg class="stamp stamp-in s1" style="--tilt: 9deg" viewBox="0 0 120 120" aria-hidden="true">
+          <defs><path id="ringA" d="M60 60 m -46 0 a 46 46 0 1 1 92 0 a 46 46 0 1 1 -92 0"/></defs>
+          <circle cx="60" cy="60" r="56" fill="none" stroke="oklch(0.52 0.17 22)" stroke-width="3" opacity="0.9"/>
+          <circle cx="60" cy="60" r="34" fill="none" stroke="oklch(0.52 0.17 22)" stroke-width="2" opacity="0.9"/>
+          <text font-size="12.5" fill="oklch(0.52 0.17 22)" opacity="0.9">
+            <textPath href="#ringA">LISBOA · 14 MAR 2024 · LISBOA ·</textPath>
+          </text>
+          <text x="60" y="66" text-anchor="middle" font-size="15" fill="oklch(0.52 0.17 22)" opacity="0.9">ENTRY</text>
+        </svg>
+        <svg class="stamp stamp-in delay-1 s2" style="--tilt: -11deg" viewBox="0 0 120 120" aria-hidden="true">
+          <defs><path id="ringB" d="M60 60 m -46 0 a 46 46 0 1 1 92 0 a 46 46 0 1 1 -92 0"/></defs>
+          <circle cx="60" cy="60" r="56" fill="none" stroke="oklch(0.42 0.08 190)" stroke-width="3" opacity="0.9"/>
+          <circle cx="60" cy="60" r="34" fill="none" stroke="oklch(0.42 0.08 190)" stroke-width="2" opacity="0.9"/>
+          <text font-size="12.5" fill="oklch(0.42 0.08 190)" opacity="0.9">
+            <textPath href="#ringB">KYOTO · 02 NOV 2025 · KYOTO ·</textPath>
+          </text>
+          <text x="60" y="66" text-anchor="middle" font-size="15" fill="oklch(0.42 0.08 190)" opacity="0.9">EXIT</text>
+        </svg>
+        <figcaption>Three trips, forty-one entries, one carry-on.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="journal" id="journal" aria-labelledby="journal-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="chip red">From Marta's journal</span>
+        <h2 id="journal-title">What a page actually looks like</h2>
+        <p class="measure">Not a highlight reel. A record. Entries stamp into your journal the moment
+        you stop typing — no publishing, no likes, no audience unless you invite one.</p>
+      </div>
+      <div class="entries">
+        <article class="entry stamp-in">
+          <span class="date">14 MAR 2024</span>
+          <h3>Lisbon, the wrong tram</h3>
+          <p>Took the 28 in the wrong direction on purpose after the second stop. An old woman
+          named Inês told me which bakery her sister swears by and then argued with the driver
+          about it. Pastel de nata count: four. Regrets: none.</p>
+          <div class="meta"><span>Rua Augusta, 18:42</span><span>612 words</span></div>
+        </article>
+        <article class="entry stamp-in delay-1">
+          <span class="date">22 JUN 2024</span>
+          <h3>Night train to Kandy</h3>
+          <p>No signal since Colombo and honestly? Good. The man across the aisle shared his
+          roasted chickpeas and taught me the Sinhala word for rain. Wrote three pages by
+          window light while the highlands went past black and enormous.</p>
+          <div class="meta"><span>Somewhere past Rambukkana</span><span>Written offline</span></div>
+        </article>
+        <article class="entry stamp-in delay-2">
+          <span class="date">02 NOV 2025</span>
+          <h3>Kyoto, last morning</h3>
+          <p>Got lost in Nishiki Market before it opened and watched the knife man sharpen
+          for twenty minutes. Bought nothing. He bowed anyway. Some entries you write so the
+          feeling has somewhere to live.</p>
+          <div class="meta"><span>Nishiki-dōri, 07:15</span><span>340 words</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="route" aria-labelledby="route-title">
+    <div class="wrap map-grid">
+      <div>
+        <h2 id="route-title">Your trip draws itself</h2>
+        <p class="lede">Pin a place from any entry and Sonder threads your route between them.
+        Not for bragging rights — for the day you forget which order the ferries came in.</p>
+        <ul class="map-points">
+          <li><span class="dot" aria-hidden="true"></span><div><strong>Lisbon</strong> <span>— where the journal started, 14 March</span></div></li>
+          <li><span class="dot" aria-hidden="true"></span><div><strong>Marrakech</strong> <span>— four days, one very persistent rug seller</span></div></li>
+          <li><span class="dot" aria-hidden="true"></span><div><strong>Colombo → Kandy</strong> <span>— the night train, offline for 19 hours</span></div></li>
+          <li><span class="dot" aria-hidden="true"></span><div><strong>Kyoto</strong> <span>— the last stamp, for now</span></div></li>
+        </ul>
+      </div>
+      <svg class="mapsvg" id="mapsvg" viewBox="0 0 800 500" role="img"
+           aria-label="A hand-threaded route map connecting Lisbon, Marrakech, Kandy and Kyoto">
+        <path class="coast" d="M-20 120 C 120 80, 200 150, 320 110 S 520 60, 640 110 S 780 90, 830 120"/>
+        <path class="coast" d="M-20 430 C 100 460, 260 410, 400 445 S 660 470, 830 430"/>
+        <path id="route-line" d="M 110 380 C 220 330, 260 300, 330 280 C 430 250, 500 230, 560 190 C 620 150, 660 130, 700 105"/>
+        <g class="pin p1" transform="translate(110 380)">
+          <path d="M0 0 C -7 -9 -10 -13 -10 -19 a 10 10 0 1 1 20 0 C 10 -13 7 -9 0 0 Z"/>
+          <circle cx="0" cy="-19" r="3.5" fill="oklch(1 0 0)"/>
+        </g>
+        <g class="pin teal p2" transform="translate(330 280)">
+          <path d="M0 0 C -7 -9 -10 -13 -10 -19 a 10 10 0 1 1 20 0 C 10 -13 7 -9 0 0 Z"/>
+          <circle cx="0" cy="-19" r="3.5" fill="oklch(1 0 0)"/>
+        </g>
+        <g class="pin p3" transform="translate(560 190)">
+          <path d="M0 0 C -7 -9 -10 -13 -10 -19 a 10 10 0 1 1 20 0 C 10 -13 7 -9 0 0 Z"/>
+          <circle cx="0" cy="-19" r="3.5" fill="oklch(1 0 0)"/>
+        </g>
+        <g class="pin teal p4" transform="translate(700 105)">
+          <path d="M0 0 C -7 -9 -10 -13 -10 -19 a 10 10 0 1 1 20 0 C 10 -13 7 -9 0 0 Z"/>
+          <circle cx="0" cy="-19" r="3.5" fill="oklch(1 0 0)"/>
+        </g>
+        <text class="map-label" x="92" y="420">Lisbon</text>
+        <text class="map-label" x="290" y="322">Marrakech</text>
+        <text class="map-label" x="540" y="232">Kandy</text>
+        <text class="map-label" x="672" y="146">Kyoto</text>
+      </svg>
+    </div>
+  </section>
+
+  <section class="offline" id="offline" aria-labelledby="offline-title">
+    <div class="wrap">
+      <div>
+        <h2 id="offline-title">The best moments have no signal</h2>
+        <p class="lede">Sonder is built offline-first, because the entries that matter most happen
+        on night buses, mountain passes and ferry decks. Here's the honest version of what that means:</p>
+        <ul>
+          <li><div><strong>Your journal lives on your device.</strong> <span>Every word is written to local
+          storage first. Airplane mode changes nothing.</span></div></li>
+          <li><div><strong>Sync happens when you say so.</strong> <span>When you're back on Wi-Fi, entries
+          sync to your account. Conflicts keep both versions — we never silently overwrite.</span></div></li>
+          <li><div><strong>Export is forever, in plain Markdown.</strong> <span>Leave tomorrow and take every
+          entry, photo caption and pinned place with you. No ransom, no lock-in.</span></div></li>
+        </ul>
+      </div>
+      <img src="https://picsum.photos/seed/travel-2/800/600" width="800" height="600"
+           alt="A train window at dusk, hills sliding past while someone writes by the last of the light">
+    </div>
+  </section>
+
+  <section id="pricing" aria-labelledby="pricing-title">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="chip">Pricing, plainly</span>
+        <h2 id="pricing-title">Cheap enough to keep forever</h2>
+        <p class="measure">One journal, three ways to pay. The free tier isn't a trial — it's a
+        complete journal for one trip, and it never expires.</p>
+      </div>
+      <div class="tiers">
+        <div class="tier">
+          <h3>Day Tripper</h3>
+          <p class="price">$0</p>
+          <p class="for">For the first journey. Yours as long as you want it.</p>
+          <ul>
+            <li>One trip, unlimited entries</li>
+            <li>Route map with up to 12 pins</li>
+            <li>Offline writing, of course</li>
+            <li>Markdown export anytime</li>
+          </ul>
+          <a class="btn ghost" href="#top">Start free</a>
+        </div>
+        <div class="tier featured">
+          <h3>Wayfarer</h3>
+          <p class="price">$4<small>/month, or $32/year</small></p>
+          <p class="for">For the person who is always planning the next one.</p>
+          <ul>
+            <li>Unlimited trips and entries</li>
+            <li>Unlimited pins, photos at full resolution</li>
+            <li>Printed annual book at cost (about $18)</li>
+            <li>Shared journals with up to 4 travel partners</li>
+          </ul>
+          <a class="btn" href="#top">Go Wayfarer</a>
+        </div>
+        <div class="tier">
+          <h3>One Grand Tour</h3>
+          <p class="price">$89<small> once</small></p>
+          <p class="for">For the commitment-averse. Pay once, keep it for life.</p>
+          <ul>
+            <li>Everything in Wayfarer, forever</li>
+            <li>All future features included</li>
+            <li>Your name in the credits of the printed atlas</li>
+          </ul>
+          <a class="btn ghost" href="#top">Buy it once</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title">The napkin map deserves to survive</h2>
+      <p>Twenty years from now you won't remember the hotel. You'll remember Inês, the chickpeas,
+      and the knife man who bowed. Write it down.</p>
+      <a class="btn" href="#pricing">Start your journal — free</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Sonder — a travel journal, not a social network. Est. 2023, Porto &amp; Melbourne.</span>
+    <nav aria-label="Footer">
+      <a href="#journal">A real journal</a>
+      <a href="#offline">Offline-first</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:postcards@sonder.example">Write to us</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Ink-pad press: entries and stamps press in when they enter the viewport.
+    if (!reduce && "IntersectionObserver" in window) {
+      var stampIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add("stamped");
+            stampIO.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.25 });
+      document.querySelectorAll(".stamp-in").forEach(function (el) { stampIO.observe(el); });
+    }
+
+    // Route draws itself, then pins drop along it.
+    var route = document.getElementById("route-line");
+    var map = document.getElementById("mapsvg");
+    if (route && map && !reduce && "IntersectionObserver" in window) {
+      var len = route.getTotalLength();
+      route.style.strokeDasharray = len;
+      route.style.strokeDashoffset = len;
+      var mapIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            requestAnimationFrame(function () {
+              route.style.strokeDashoffset = "0";
+              map.classList.add("drawn");
+            });
+            mapIO.unobserve(map);
+          }
+        });
+      }, { threshold: 0.4 });
+      mapIO.observe(map);
+    }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voltage — five players, one split left to prove it</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@1,900&family=Sono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.03 0.005 250);
+    --surface: oklch(0.10 0.012 250);
+    --surface-hi: oklch(0.15 0.018 250);
+    --ink: oklch(0.99 0.002 250);
+    --muted: oklch(0.76 0.02 250);
+    --volt: oklch(0.92 0.19 105);
+    --ozone: oklch(0.72 0.16 250);
+    --line: oklch(0.22 0.02 250);
+    --display: "Archivo", sans-serif;
+    --body: "Sono", monospace;
+    --step--1: clamp(0.85rem, 0.82rem + 0.15vw, 0.95rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.13rem);
+    --step-1: clamp(1.25rem, 1.14rem + 0.55vw, 1.58rem);
+    --step-2: clamp(1.56rem, 1.36rem + 1vw, 2.2rem);
+    --step-3: clamp(1.95rem, 1.6rem + 1.8vw, 3.1rem);
+    --step-4: clamp(2.44rem, 1.8rem + 3.4vw, 4.9rem);
+    --z-canvas: 0;
+    --z-content: 2;
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  p { max-width: 65ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--volt);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1140px, 100% - 3rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(0.03 0.005 250 / 0.88);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .brand span { color: var(--volt); }
+  .site-nav { display: flex; gap: 1.8rem; align-items: center; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--volt); }
+  @media (max-width: 620px) { .site-nav { gap: 1rem; } .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):nth-child(4) { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--bg);
+  }
+  #storm {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-canvas);
+    pointer-events: none;
+  }
+  .hero .wrap {
+    position: relative;
+    z-index: var(--z-content);
+    padding-block: clamp(4rem, 10vh, 7rem);
+  }
+  .hero .record-chip {
+    display: inline-block;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ozone);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    margin-bottom: 1.6rem;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    color: var(--volt);
+    margin-bottom: 1.2rem;
+    max-width: 12ch;
+  }
+  .hero .lede {
+    color: var(--ink);
+    font-size: var(--step-1);
+    max-width: 42ch;
+    margin-bottom: 2.2rem;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .btn {
+    display: inline-block;
+    font-family: var(--body);
+    font-weight: 700;
+    font-size: var(--step-0);
+    text-decoration: none;
+    padding: 0.9rem 2.1rem;
+    border-radius: 999px;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s;
+  }
+  .btn-volt { background: var(--volt); color: oklch(0.15 0.03 105); }
+  .btn-volt:hover { transform: translateY(-2px); background: oklch(0.95 0.18 108); }
+  .btn-line { border: 1px solid var(--line); color: var(--ink); }
+  .btn-line:hover { border-color: var(--ozone); color: var(--ozone); }
+
+  /* ---------- ticker ---------- */
+  .ticker {
+    border-block: 1px solid var(--line);
+    background: var(--surface);
+    overflow: hidden;
+    padding-block: 0.9rem;
+  }
+  .ticker-inner {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: ticker 40s linear infinite;
+    font-size: var(--step--1);
+    white-space: nowrap;
+  }
+  .ticker-inner span { color: var(--muted); }
+  .ticker-inner b { color: var(--volt); font-weight: 600; }
+  .ticker-inner .loss b { color: var(--ozone); }
+  @keyframes ticker {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-50%, 0, 0); }
+  }
+
+  /* ---------- roster ---------- */
+  .roster { padding-block: clamp(4rem, 10vh, 7.5rem); }
+  .roster .head { margin-bottom: 3rem; }
+  .roster h2 { font-size: var(--step-3); margin-bottom: 0.8rem; }
+  .roster .head p { color: var(--muted); max-width: 55ch; }
+  .players {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    perspective: 1200px;
+  }
+  .player {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 1.5rem;
+    transform-style: preserve-3d;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s;
+    will-change: transform;
+  }
+  .player:hover { background: var(--surface-hi); }
+  .player .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: oklch(0.15 0.03 105);
+    background: var(--volt);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    margin-bottom: 1rem;
+  }
+  .player h3 { font-size: var(--step-1); margin-bottom: 0.3rem; }
+  .player .real { color: var(--muted); font-size: var(--step--1); margin-bottom: 0.9rem; }
+  .player dl { font-size: var(--step--1); display: grid; gap: 0.3rem; }
+  .player dl div { display: flex; justify-content: space-between; gap: 0.8rem; border-bottom: 1px dashed var(--line); padding-block: 0.3rem; }
+  .player dt { color: var(--muted); }
+  .player dd { color: var(--ozone); font-weight: 600; }
+
+  /* ---------- season ---------- */
+  .season {
+    background: var(--volt);
+    color: oklch(0.16 0.035 105);
+    padding-block: clamp(4rem, 10vh, 7rem);
+  }
+  .season .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .season h2 { font-size: var(--step-3); margin-bottom: 1rem; }
+  .season p { color: oklch(0.28 0.05 105); }
+  .season p + p { margin-top: 1rem; }
+  .season .split {
+    background: oklch(0.16 0.035 105);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: clamp(1.5rem, 3vw, 2.2rem);
+  }
+  .split-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.65rem;
+    border-bottom: 1px dashed oklch(0.30 0.05 105);
+    font-size: var(--step--1);
+  }
+  .split-row:last-child { border-bottom: none; }
+  .split-row b { font-weight: 600; color: var(--volt); }
+  .split-row .w { color: var(--volt); }
+  .split-row .l { color: var(--ozone); }
+  @media (max-width: 760px) { .season .wrap { grid-template-columns: 1fr; } }
+
+  /* ---------- bootcamp ---------- */
+  .bootcamp { padding-block: clamp(4rem, 10vh, 7.5rem); }
+  .bootcamp .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+  }
+  .bootcamp figure { border-radius: 14px; overflow: hidden; }
+  .bootcamp img {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 3;
+    filter: brightness(0.75) saturate(1.1) hue-rotate(-8deg);
+  }
+  .bootcamp h2 { font-size: var(--step-3); margin-bottom: 1rem; }
+  .bootcamp p { color: var(--muted); }
+  .bootcamp p + p { margin-top: 1rem; }
+  .bootcamp .grind {
+    list-style: none;
+    margin-top: 1.5rem;
+    font-size: var(--step--1);
+  }
+  .bootcamp .grind li {
+    padding-block: 0.5rem;
+    border-bottom: 1px dashed var(--line);
+    color: var(--muted);
+  }
+  .bootcamp .grind li b { color: var(--volt); font-weight: 600; }
+  @media (max-width: 760px) { .bootcamp .wrap { grid-template-columns: 1fr; } }
+
+  /* ---------- merch + watch ---------- */
+  .drop {
+    background: var(--surface);
+    border-block: 1px solid var(--line);
+    padding-block: clamp(4rem, 10vh, 7rem);
+  }
+  .drop .wrap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .panel {
+    background: var(--surface-hi);
+    border-radius: 14px;
+    padding: clamp(1.6rem, 3vw, 2.4rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .panel h2 { font-size: var(--step-2); }
+  .panel p { color: var(--muted); font-size: var(--step--1); flex: 1; }
+  .panel .price-line { font-weight: 700; color: var(--volt); }
+  .panel .btn { align-self: flex-start; }
+
+  /* ---------- footer ---------- */
+  footer {
+    padding-block: 2rem;
+    color: var(--muted);
+    font-size: var(--step--1);
+  }
+  footer .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .ticker-inner { animation: none; flex-wrap: wrap; width: auto; white-space: normal; }
+    .btn, .player { transition: none; }
+    .btn-volt:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Volt<span>age</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#roster">Roster</a>
+      <a href="#season">Season</a>
+      <a href="#bootcamp">Bootcamp</a>
+      <a href="#drop">Merch</a>
+      <a href="#drop">Watch</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <canvas id="storm" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <span class="record-chip">Spring split · 14–4 · playoffs locked</span>
+      <h1>We don't scrim to participate.</h1>
+      <p class="lede">Five players, one coach, a bootcamp house in Berlin that smells of energy drinks and grudges. Voltage plays the final weekend of the split this Saturday.</p>
+      <div class="hero-actions">
+        <a class="btn btn-volt" href="#roster">Meet the five</a>
+        <a class="btn btn-line" href="#drop">Watch-party cities</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-label="Recent match results">
+    <div class="ticker-inner">
+      <span>VLT <b>2–0</b> vs Nordwind</span><span>VLT <b>2–1</b> vs Bastion</span><span class="loss">VLT <b>0–2</b> vs Crownfall</span><span>VLT <b>2–0</b> vs Ironquill</span><span>VLT <b>2–1</b> vs Sable</span><span>VLT <b>2–0</b> vs Petrichor GG</span><span class="loss">VLT <b>1–2</b> vs Meridian</span><span>VLT <b>2–0</b> vs Halcyon</span>
+      <span aria-hidden="true">VLT <b>2–0</b> vs Nordwind</span><span aria-hidden="true">VLT <b>2–1</b> vs Bastion</span><span aria-hidden="true" class="loss">VLT <b>0–2</b> vs Crownfall</span><span aria-hidden="true">VLT <b>2–0</b> vs Ironquill</span><span aria-hidden="true">VLT <b>2–1</b> vs Sable</span><span aria-hidden="true">VLT <b>2–0</b> vs Petrichor GG</span><span aria-hidden="true" class="loss">VLT <b>1–2</b> vs Meridian</span><span aria-hidden="true">VLT <b>2–0</b> vs Halcyon</span>
+    </div>
+  </div>
+
+  <section class="roster" id="roster">
+    <div class="wrap">
+      <div class="head">
+        <h2>The starting five</h2>
+        <p>Average age twenty-one, average sleep schedule catastrophic. Contracts through 2027, clauses kept boring on purpose — nobody here is going anywhere.</p>
+      </div>
+      <div class="players">
+        <article class="player">
+          <span class="tag">Entry</span>
+          <h3>Ferro</h3>
+          <p class="real">Mateus Alves · 20 · São Paulo</p>
+          <dl>
+            <div><dt>Role</dt><dd>First through the door</dd></div>
+            <div><dt>K/D this split</dt><dd>1.31</dd></div>
+            <div><dt>Opening duels won</dt><dd>64%</dd></div>
+          </dl>
+        </article>
+        <article class="player">
+          <span class="tag">IGL</span>
+          <h3>Bishop</h3>
+          <p class="real">Joon-hyuk Seo · 24 · Seoul</p>
+          <dl>
+            <div><dt>Role</dt><dd>Calls, mid-round brain</dd></div>
+            <div><dt>Clutch rate</dt><dd>41%</dd></div>
+            <div><dt>Timeouts burned well</dt><dd>Most of them</dd></div>
+          </dl>
+        </article>
+        <article class="player">
+          <span class="tag">AWP</span>
+          <h3>Widow</h3>
+          <p class="real">Anouk Verhoeven · 22 · Rotterdam</p>
+          <dl>
+            <div><dt>Role</dt><dd>Long angles, short tempers</dd></div>
+            <div><dt>Opening picks</dt><dd>0.41 / round</dd></div>
+            <div><dt>Flick accuracy</dt><dd>Unfair</dd></div>
+          </dl>
+        </article>
+        <article class="player">
+          <span class="tag">Anchor</span>
+          <h3>Cairn</h3>
+          <p class="real">Tomasz Nowak · 23 · Gdańsk</p>
+          <dl>
+            <div><dt>Role</dt><dd>Site belongs to him</dd></div>
+            <div><dt>Retake wins</dt><dd>58%</dd></div>
+            <div><dt>Utility damage</dt><dd>92 / map</dd></div>
+          </dl>
+        </article>
+        <article class="player">
+          <span class="tag">Support</span>
+          <h3>Pico</h3>
+          <p class="real">Ren Ishida · 19 · Osaka</p>
+          <dl>
+            <div><dt>Role</dt><dd>Flash first, frag second</dd></div>
+            <div><dt>Assists / map</dt><dd>9.7</dd></div>
+            <div><dt>Teammates blinded</dt><dd>Zero (this split)</dd></div>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="season" id="season">
+    <div class="wrap">
+      <div>
+        <h2>Fourteen and four, and the four still sting.</h2>
+        <p>Spring split started 0–2 and the comments wrote us off by week one. Then the bootcamp happened, the veto book got honest, and we dropped twelve maps in eighteen weeks. Both remaining losses came from rounds we should have closed — the tape is pinned in the practice room as a reminder, not a wound.</p>
+        <p>Playoffs start Saturday. First seed plays fourth. We are first seed.</p>
+      </div>
+      <div class="split" aria-label="Spring split record">
+        <div class="split-row"><span>Match record</span><b>14–4</b></div>
+        <div class="split-row"><span>Map record</span><b>31–15</b></div>
+        <div class="split-row"><span>Pistol rounds</span><b class="w">62% won</b></div>
+        <div class="split-row"><span>Overtimes</span><b>4–1</b></div>
+        <div class="split-row"><span>Worst loss</span><b class="l">0–2 vs Crownfall (wk 3)</b></div>
+        <div class="split-row"><span>Best win</span><b class="w">2–0 vs Halcyon (wk 16)</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bootcamp" id="bootcamp">
+    <div class="wrap">
+      <div>
+        <h2>The bootcamp is not a vibe.</h2>
+        <p>Six weeks in a Kreuzberg apartment with five PCs, one whiteboard, and a coach who confiscates phones at midnight. No content days. No "mental reset" beach trips. Scrim blocks at 10:00 and 18:00, VOD review until someone falls asleep in the chair.</p>
+        <ul class="grind">
+          <li><b>10:00</b> — scrim block one, four maps, no excuses for ping</li>
+          <li><b>15:00</b> — demo review; every death gets a reason or a fix</li>
+          <li><b>18:00</b> — scrim block two, vs whoever will actually punish mistakes</li>
+          <li><b>23:00</b> — aim routines; 30 minutes, tracked, graphed, no skipping</li>
+        </ul>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/esports-1/800/600" width="800" height="600"
+             alt="Arena crowd under stage lights moments before the grand final map begins">
+      </figure>
+    </div>
+  </section>
+
+  <section class="drop" id="drop">
+    <div class="wrap">
+      <div class="panel">
+        <h2>The Storm Kit drop</h2>
+        <p>Playoff jersey in blackout with the volt strike across the back, plus the heavy hoodie the team actually wears on stage. Numbers on the back, names if you want them. Ships worldwide from Berlin, June 12, 09:00 CET — when it's gone, it's gone until autumn.</p>
+        <p class="price-line">Jersey €75 · Hoodie €95 · both €150</p>
+        <a class="btn btn-volt" href="#drop">Get drop alerts</a>
+      </div>
+      <div class="panel">
+        <h2>Watch the final with us</h2>
+        <p>Official watch-parties, door times one hour before first map: Berlin (Kino Intimes, 220 seats), Rotterdam (Bar Volt, standing), Seoul (PC Bang 24, basement floor). Entry free with a kit, €8 otherwise — proceeds to the youth academy.</p>
+        <p class="price-line">Saturday · doors 17:00 local · first map 18:00</p>
+        <a class="btn btn-line" href="#drop">Reserve a seat</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Voltage Esports · Berlin · est. 2021</span>
+    <span>First seed. Saturday. Be loud.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+(function () {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- roster card 3D tilt ---- */
+  if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+    document.querySelectorAll(".player").forEach(function (card) {
+      card.addEventListener("pointermove", function (e) {
+        var r = card.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5;
+        var y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = "rotateY(" + (x * 10) + "deg) rotateX(" + (-y * 10) + "deg) translateZ(6px)";
+      });
+      card.addEventListener("pointerleave", function () {
+        card.style.transform = "rotateY(0) rotateX(0)";
+      });
+    });
+  }
+
+  /* ---- three.js lightning ---- */
+  if (typeof THREE === "undefined") return; // CDN blocked: hero still reads fine
+
+  // resolve oklch palette to rgb for three.js
+  function cssToRGB(css) {
+    var el = document.createElement("span");
+    el.style.color = css;
+    document.body.appendChild(el);
+    var rgb = getComputedStyle(el).color;
+    document.body.removeChild(el);
+    var m = rgb.match(/[\d.]+/g).map(Number);
+    return new THREE.Color(m[0] / 255, m[1] / 255, m[2] / 255);
+  }
+  var voltColor = cssToRGB("oklch(0.92 0.19 105)");
+  var ozoneColor = cssToRGB("oklch(0.72 0.16 250)");
+
+  var canvas = document.getElementById("storm");
+  var hero = canvas.parentElement;
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+  var W = hero.clientWidth, H = hero.clientHeight;
+  var camera = new THREE.OrthographicCamera(-W / 2, W / 2, H / 2, -H / 2, 1, 100);
+  camera.position.z = 10;
+  var scene = new THREE.Scene();
+
+  function resize() {
+    W = hero.clientWidth;
+    H = hero.clientHeight;
+    renderer.setSize(W, H, false);
+    camera.left = -W / 2; camera.right = W / 2;
+    camera.top = H / 2; camera.bottom = -H / 2;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  function boltPoints(x1, y1, x2, y2, segments, jag) {
+    var pts = [];
+    for (var i = 0; i <= segments; i++) {
+      var t = i / segments;
+      var x = x1 + (x2 - x1) * t + (Math.random() - 0.5) * jag;
+      var y = y1 + (y2 - y1) * t + (Math.random() - 0.5) * jag;
+      if (i === 0) { x = x1; y = y1; }
+      if (i === segments) { x = x2; y = y2; }
+      pts.push(new THREE.Vector3(x, y, 0));
+    }
+    return pts;
+  }
+
+  function makeBolt(color) {
+    var group = new THREE.Group();
+    var glowMat = new THREE.LineBasicMaterial({
+      color: color, transparent: true, opacity: 0.16,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    var coreMat = new THREE.LineBasicMaterial({
+      color: color, transparent: true, opacity: 0.9,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    var glow = new THREE.Line(new THREE.BufferGeometry(), glowMat);
+    var core = new THREE.Line(new THREE.BufferGeometry(), coreMat);
+    group.add(glow, core);
+    var branches = [];
+    for (var i = 0; i < 2; i++) {
+      var b = new THREE.Line(new THREE.BufferGeometry(), coreMat.clone());
+      b.material.opacity = 0.45;
+      group.add(b);
+      branches.push(b);
+    }
+    scene.add(group);
+    return { group: group, glow: glow, core: core, branches: branches };
+  }
+
+  var bolts = [makeBolt(voltColor), makeBolt(ozoneColor), makeBolt(voltColor)];
+
+  function regenerate(bolt) {
+    var horizontal = Math.random() > 0.4;
+    var x1, y1, x2, y2;
+    if (horizontal) {
+      x1 = -W / 2 - 40; x2 = W / 2 + 40;
+      y1 = (Math.random() - 0.5) * H * 0.8;
+      y2 = (Math.random() - 0.5) * H * 0.8;
+    } else {
+      y1 = H / 2 + 40; y2 = -H / 2 - 40;
+      x1 = (Math.random() - 0.5) * W * 0.9;
+      x2 = (Math.random() - 0.5) * W * 0.9;
+    }
+    var pts = boltPoints(x1, y1, x2, y2, 26, Math.min(W, H) * 0.07);
+    bolt.glow.geometry.setFromPoints(pts);
+    bolt.core.geometry.setFromPoints(pts);
+    bolt.branches.forEach(function (b) {
+      var anchor = pts[4 + Math.floor(Math.random() * 18)];
+      var bx = anchor.x + (Math.random() - 0.5) * W * 0.3;
+      var by = anchor.y + (Math.random() - 0.5) * H * 0.3;
+      b.geometry.setFromPoints(boltPoints(anchor.x, anchor.y, bx, by, 8, 24));
+    });
+  }
+
+  var running = true;
+  var lastRegen = 0;
+
+  function frame(ts) {
+    if (!running) return;
+    if (ts - lastRegen > 180) {
+      bolts.forEach(function (b) { if (Math.random() > 0.45) regenerate(b); });
+      lastRegen = ts;
+    }
+    bolts.forEach(function (b) {
+      var flicker = 0.55 + Math.random() * 0.45;
+      b.core.material.opacity = 0.9 * flicker;
+      b.glow.material.opacity = 0.16 * flicker;
+      b.branches.forEach(function (br) { br.material.opacity = 0.45 * flicker; });
+    });
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+
+  bolts.forEach(regenerate);
+
+  if (reduceMotion) {
+    renderer.render(scene, camera); // one static frame, no crackle
+  } else {
+    requestAnimationFrame(frame);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        running = false;
+      } else {
+        running = true;
+        requestAnimationFrame(frame);
+      }
+    });
+  }
+})();
+</script>
+</body>
+</html>

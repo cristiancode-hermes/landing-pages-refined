@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velvet Circuit — CHROME BUMPER, the debut LP. Out October 17.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Monoton&family=Sora:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --uv: oklch(0.16 0.06 290);
+    --uv-deep: oklch(0.12 0.05 290);
+    --uv-raise: oklch(0.22 0.07 290);
+    --ink: oklch(0.89 0.04 300);
+    --ink-dim: oklch(0.72 0.05 300);
+    --pink: oklch(0.72 0.21 340);
+    --pink-deep: oklch(0.55 0.19 340);
+    --cyan: oklch(0.87 0.13 195);
+    --cyan-ink: oklch(0.18 0.05 250);
+    --z-base: 0;
+    --z-eq: 1;
+    --z-content: 2;
+    --z-header: 10;
+    --z-scanlines: 20;
+    --font-display: "Monoton", cursive;
+    --font-body: "Sora", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--uv);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; height: auto; display: block; }
+
+  :focus-visible {
+    outline: 3px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1, h2, h3 { text-wrap: balance; }
+
+  .wrap { width: min(70rem, 92vw); margin-inline: auto; position: relative; z-index: var(--z-content); }
+
+  /* CRT scanlines — SVG pattern, not a gradient stripe */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-scanlines);
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><rect y='0' width='4' height='1' fill='black' fill-opacity='0.20'/></svg>");
+    background-repeat: repeat;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: oklch(0.12 0.05 290 / 0.92);
+    border-bottom: 1px solid oklch(0.32 0.08 300);
+  }
+  .header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 0;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--pink);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  nav ul { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  nav a:hover { color: var(--cyan); }
+  @media (max-width: 600px) {
+    .header-in { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+    nav ul { gap: 1rem; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    z-index: var(--z-base);
+    padding: clamp(3.5rem, 9vw, 7rem) 0 clamp(2.5rem, 6vw, 4rem);
+    overflow: hidden;
+    border-bottom: 1px solid oklch(0.32 0.08 300);
+  }
+  #eq-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-eq);
+    pointer-events: none;
+  }
+  .hero-in { position: relative; z-index: var(--z-content); text-align: center; }
+  .album-tag {
+    display: inline-block;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    border-radius: 999px;
+    padding: 0.3rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    margin-bottom: 1.75rem;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 0.8rem + 8vw, 5.75rem);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    color: var(--pink);
+    text-shadow: 0 0 24px oklch(0.55 0.19 340 / 0.55), 0 0 80px oklch(0.55 0.19 340 / 0.3);
+  }
+  .hero-sub {
+    margin: 1.5rem auto 0;
+    max-width: 52ch;
+    color: var(--ink-dim);
+    font-size: clamp(1rem, 0.92rem + 0.4vw, 1.2rem);
+  }
+  .hero-actions {
+    margin-top: 2.25rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 0.98rem;
+    text-decoration: none;
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), background 220ms cubic-bezier(0.16, 1, 0.3, 1), color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-pink { background: var(--pink); color: var(--cyan-ink); }
+  .btn-pink:hover { background: oklch(0.78 0.20 340); }
+  .btn-pink[aria-pressed="true"] { background: var(--cyan); color: var(--cyan-ink); }
+  .btn-line { background: transparent; color: var(--ink); border: 1px solid oklch(0.5 0.08 300); }
+  .btn-line:hover { border-color: var(--cyan); color: var(--cyan); }
+  .sound-note { margin-top: 0.9rem; font-size: 0.82rem; color: var(--ink-dim); }
+
+  /* ---------- chrome ornament (generative) ---------- */
+  .chrome-row {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1rem, 4vw, 3rem);
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+  .chrome-disc {
+    width: clamp(70px, 12vw, 130px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 32% 28%, oklch(0.95 0.03 330), oklch(0.4 0.08 300) 62%),
+      conic-gradient(from 200deg, oklch(0.85 0.10 340), oklch(0.35 0.06 290), oklch(0.88 0.12 195), oklch(0.4 0.07 300), oklch(0.85 0.10 340));
+    background-blend-mode: screen;
+    box-shadow: 0 10px 30px oklch(0.08 0.04 290 / 0.6);
+  }
+  .chrome-disc:nth-child(2) { transform: translateY(14px); }
+  .chrome-disc:nth-child(3) { transform: translateY(-6px); }
+
+  /* ---------- sections ---------- */
+  section.block { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  section.block + section.block { border-top: 1px solid oklch(0.32 0.08 300); }
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 1.2rem + 3.2vw, 3.2rem);
+    color: var(--cyan);
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    text-shadow: 0 0 18px oklch(0.87 0.13 195 / 0.35);
+  }
+  .lede { margin-top: 1rem; color: var(--ink-dim); max-width: 60ch; font-size: 1.05rem; }
+
+  /* ---------- tracklist ---------- */
+  .tracks { margin-top: 2.25rem; list-style: none; counter-reset: cut; }
+  .tracks li {
+    counter-increment: cut;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid oklch(0.32 0.08 300);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 200ms cubic-bezier(0.16, 1, 0.3, 1), transform 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tracks li:hover, .tracks li:focus-visible {
+    background: var(--uv-raise);
+    transform: translateX(6px);
+  }
+  .tracks li::before {
+    content: counter(cut, decimal-leading-zero);
+    font-weight: 300;
+    color: var(--pink);
+    font-size: 0.9rem;
+    min-width: 2ch;
+  }
+  .track-name { font-weight: 800; font-size: 1.1rem; }
+  .track-hint { flex: 1; color: var(--ink-dim); font-size: 0.88rem; }
+  .track-time { color: var(--cyan); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .tracks li.playing { background: var(--uv-raise); }
+  .tracks li.playing .track-name { color: var(--cyan); }
+  .tracks-note { margin-top: 1rem; font-size: 0.88rem; color: var(--ink-dim); }
+  @media (max-width: 560px) { .track-hint { display: none; } }
+
+  /* ---------- making of ---------- */
+  .making-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (max-width: 800px) { .making-grid { grid-template-columns: 1fr; } }
+  .making-copy p + p { margin-top: 1.1rem; }
+  .making-photo {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid oklch(0.4 0.09 310);
+    box-shadow: 0 18px 40px oklch(0.08 0.04 290 / 0.6);
+  }
+  .making-photo img { width: 100%; object-fit: cover; filter: saturate(1.25) hue-rotate(-12deg); }
+  .making-photo figcaption {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    background: var(--uv-deep);
+  }
+
+  /* ---------- vinyl variants ---------- */
+  .variants { margin-top: 2.5rem; display: grid; gap: 1.75rem; }
+  .variant {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.75rem;
+    align-items: center;
+    background: var(--uv-raise);
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+  }
+  .variant:nth-child(even) { grid-template-columns: 1fr auto; }
+  .variant:nth-child(even) .disc { order: 2; }
+  .disc {
+    width: clamp(90px, 14vw, 140px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 8px 24px oklch(0.08 0.04 290 / 0.55);
+  }
+  .disc::after {
+    content: "";
+    position: absolute;
+    inset: 38%;
+    border-radius: 50%;
+    background: var(--uv-deep);
+    border: 2px solid oklch(0.4 0.09 310);
+  }
+  .disc-pink {
+    background: repeating-radial-gradient(circle at 50% 50%, oklch(0.60 0.18 340) 0 2px, oklch(0.50 0.16 340) 2px 4px);
+  }
+  .disc-splatter {
+    background:
+      radial-gradient(circle at 30% 35%, oklch(0.72 0.21 340) 0 8%, transparent 9%),
+      radial-gradient(circle at 65% 60%, oklch(0.87 0.13 195) 0 6%, transparent 7%),
+      radial-gradient(circle at 50% 25%, oklch(0.87 0.13 195) 0 4%, transparent 5%),
+      repeating-radial-gradient(circle at 50% 50%, oklch(0.30 0.09 290) 0 2px, oklch(0.24 0.08 290) 2px 4px);
+  }
+  .disc-chrome {
+    background:
+      radial-gradient(circle at 35% 30%, oklch(0.92 0.04 330), transparent 55%),
+      conic-gradient(from 120deg, oklch(0.80 0.09 340), oklch(0.45 0.07 290), oklch(0.85 0.11 195), oklch(0.5 0.08 300), oklch(0.80 0.09 340));
+  }
+  .variant h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); letter-spacing: 0; }
+  .variant .run { color: var(--pink); font-weight: 600; font-size: 0.9rem; margin-top: 0.2rem; }
+  .variant p { margin-top: 0.6rem; color: var(--ink-dim); font-size: 0.98rem; max-width: 56ch; }
+  .variant .price { margin-top: 0.75rem; font-weight: 800; color: var(--cyan); font-size: 1.1rem; }
+  @media (max-width: 620px) {
+    .variant, .variant:nth-child(even) { grid-template-columns: 1fr; }
+    .variant:nth-child(even) .disc { order: 0; }
+  }
+
+  /* ---------- tour ---------- */
+  .dates { margin-top: 2.25rem; list-style: none; }
+  .dates li {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr auto;
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid oklch(0.32 0.08 300);
+  }
+  .dates .when { color: var(--cyan); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .dates .where { font-weight: 600; }
+  .dates .where small { display: block; color: var(--ink-dim); font-weight: 400; font-size: 0.88rem; }
+  .dates a {
+    color: var(--pink);
+    font-weight: 800;
+    text-decoration: none;
+    border-bottom: 2px solid var(--pink);
+    transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .dates a:hover { color: var(--cyan); border-color: var(--cyan); }
+  .dates .sold { color: var(--ink-dim); font-weight: 600; font-style: italic; }
+  @media (max-width: 620px) {
+    .dates li { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+
+  /* ---------- mailing list ---------- */
+  .list-box {
+    margin-top: 2.25rem;
+    background: var(--uv-raise);
+    border-radius: 12px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    max-width: 42rem;
+  }
+  .list-form { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem; }
+  .list-form label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .list-form input {
+    flex: 1 1 16rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 0.85rem 1.2rem;
+    border-radius: 999px;
+    border: 1px solid oklch(0.5 0.08 300);
+    background: var(--uv-deep);
+    color: var(--ink);
+  }
+  .list-form input::placeholder { color: oklch(0.70 0.05 300); }
+  .list-msg { margin-top: 0.9rem; font-size: 0.92rem; color: var(--cyan); min-height: 1.4em; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid oklch(0.32 0.08 300);
+    background: var(--uv-deep);
+    padding: 2.5rem 0;
+  }
+  .footer-in {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+  }
+  footer .brand { font-size: 1rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="brand" href="#top">VELVET CIRCUIT</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#tracks">Tracks</a></li>
+        <li><a href="#making">Making Of</a></li>
+        <li><a href="#vinyl">Vinyl</a></li>
+        <li><a href="#tour">Tour</a></li>
+        <li><a href="#list">Mailing List</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Album hero">
+    <canvas id="eq-canvas" aria-hidden="true"></canvas>
+    <div class="wrap hero-in">
+      <span class="album-tag">Debut LP · Chrome Bumper · Out October 17</span>
+      <h1>VELVET CIRCUIT</h1>
+      <p class="hero-sub">
+        Ten synth-pop confessionals cut in a strip-mall rehearsal room in Reseda.
+        Chrome bumpers, dead malls, 2 a.m. FM static — you know the feeling.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-pink" id="sound-toggle" aria-pressed="false">Turn the sound on</button>
+        <a class="btn btn-line" href="#vinyl">Pre-order the vinyl</a>
+      </div>
+      <p class="sound-note" id="sound-note">Sound is off. The equalizer above is dreaming until you say otherwise.</p>
+      <div class="chrome-row" aria-hidden="true">
+        <div class="chrome-disc"></div>
+        <div class="chrome-disc"></div>
+        <div class="chrome-disc"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="tracks" aria-label="Tracklist">
+    <div class="wrap">
+      <h2>Side A / Side B</h2>
+      <p class="lede">
+        Ten cuts, thirty-nine minutes. Hover a title for a little 8-bit taste — the real
+        thing is twice as wide and three times as sad.
+      </p>
+      <ol class="tracks" id="tracklist">
+        <li tabindex="0" data-notes="261.6,329.6,392.0,523.3">
+          <span class="track-name">Chrome Bumper</span>
+          <span class="track-hint">the title cut — a love song to a '84 Cutlass</span>
+          <span class="track-time">4:12</span>
+        </li>
+        <li tabindex="0" data-notes="293.7,370.0,440.0,587.3">
+          <span class="track-name">Neon Lease</span>
+          <span class="track-hint">for everyone still paying rent on a dead mall</span>
+          <span class="track-time">3:47</span>
+        </li>
+        <li tabindex="0" data-notes="220.0,277.2,329.6,440.0">
+          <span class="track-name">Laser Cassette</span>
+          <span class="track-hint">side B of a mixtape never given</span>
+          <span class="track-time">3:58</span>
+        </li>
+        <li tabindex="0" data-notes="246.9,311.1,392.0,493.9">
+          <span class="track-name">Ultraviolet Youth</span>
+          <span class="track-hint">the one the college stations found first</span>
+          <span class="track-time">4:31</span>
+        </li>
+        <li tabindex="0" data-notes="329.6,415.3,493.9,659.3">
+          <span class="track-name">Parking Lot Rapture</span>
+          <span class="track-hint">slow-dance under a humming sodium light</span>
+          <span class="track-time">5:02</span>
+        </li>
+        <li tabindex="0" data-notes="233.1,293.7,349.2,466.2">
+          <span class="track-name">Dial Tone Heart</span>
+          <span class="track-hint">busy signal, fourth ring, hang up, repeat</span>
+          <span class="track-time">3:36</span>
+        </li>
+        <li tabindex="0" data-notes="277.2,349.2,415.3,554.4">
+          <span class="track-name">Reseda Rain</span>
+          <span class="track-hint">instrumental — the storm that flooded the booth</span>
+          <span class="track-time">2:58</span>
+        </li>
+        <li tabindex="0" data-notes="311.1,392.0,466.2,622.3">
+          <span class="track-name">Mirror Sleeve</span>
+          <span class="track-hint">see yourself in the record you bought</span>
+          <span class="track-time">4:09</span>
+        </li>
+        <li tabindex="0" data-notes="196.0,246.9,311.1,392.0">
+          <span class="track-name">2 A.M. FM</span>
+          <span class="track-hint">closer — static, a voice, then nothing</span>
+          <span class="track-time">6:14</span>
+        </li>
+      </ol>
+      <p class="tracks-note">Previews are tiny on purpose. The LP is not.</p>
+    </div>
+  </section>
+
+  <section class="block" id="making" aria-label="The making of Chrome Bumper">
+    <div class="wrap">
+      <h2>Eleven Nights in Reseda</h2>
+      <div class="making-grid">
+        <div class="making-copy">
+          <p>
+            Chrome Bumper was tracked in eleven nights, 9 p.m. to 5 a.m., in a rehearsal
+            room between a nail salon and a shuttered RadioShack. The Juno-60 was borrowed
+            from a cousin's wedding band. The LinnDrum was a Craigslist miracle with one
+            dead tom, which you can hear missing on "Neon Lease" if you listen for it.
+          </p>
+          <p>
+            Mara Voss sang every vocal twice — once close, once across the room — and
+            producer Denny Okafor ran both through the same busted spring reverb, so the
+            record sounds like it's chasing itself down a hallway. That's not a metaphor.
+            That's literally the signal chain.
+          </p>
+          <p>
+            The rain you hear on "Reseda Rain" is real. Night nine flooded the vocal
+            booth and ruined a shoe, a lyric sheet, and one very good take. The take you
+            hear is take two. Nobody remembers night eleven.
+          </p>
+        </div>
+        <figure class="making-photo">
+          <img src="https://picsum.photos/seed/synth-1/800/600" width="800" height="600"
+               alt="Stage lights washing the room in magenta and cyan during the Chrome Bumper release rehearsal.">
+          <figcaption>Release-show rehearsal, the Strip Mall Room, Reseda. Night nine, pre-flood.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="vinyl" aria-label="Vinyl variants">
+    <div class="wrap">
+      <h2>Wax, Three Ways</h2>
+      <p class="lede">
+        Pressed at Furnace in Alexandria. All variants ship the week of release with a
+        download code and a sticker you will absolutely put on a laptop.
+      </p>
+      <div class="variants">
+        <article class="variant">
+          <div class="disc disc-chrome" aria-hidden="true"></div>
+          <div>
+            <h3>Mirror Sleeve Edition</h3>
+            <p class="run">500 copies · hand-numbered</p>
+            <p>
+              180-gram black vinyl in a foil mirror sleeve — the jacket is literally
+              reflective, so the cover model is whoever's holding it. Includes a
+              12-page zine of Mara's night-session Polaroids.
+            </p>
+            <p class="price">$38</p>
+          </div>
+        </article>
+        <article class="variant">
+          <div class="disc disc-pink" aria-hidden="true"></div>
+          <div>
+            <h3>Chrome Pink Pressing</h3>
+            <p class="run">1,000 copies</p>
+            <p>
+              Opaque chrome-pink 140-gram vinyl, gatefold with the full Reseda session
+              log printed inside — every take, every timestamp, every "one more."
+            </p>
+            <p class="price">$29</p>
+          </div>
+        </article>
+        <article class="variant">
+          <div class="disc disc-splatter" aria-hidden="true"></div>
+          <div>
+            <h3>Laser Cyan Cassette</h3>
+            <p class="run">150 copies · dub-your-own-heart-out</p>
+            <p>
+              Chrome tape in a cyan shell with a J-card folded from the original lyric
+              sheet that survived the flood. Side B ends with two minutes of real rain.
+            </p>
+            <p class="price">$14</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="tour" aria-label="Tour dates">
+    <div class="wrap">
+      <h2>The Chrome Bumper Run</h2>
+      <p class="lede">
+        Six rooms, one borrowed Juno. Doors at 8, show at 9, Mara's at the merch table
+        after because nobody else can fold a shirt that fast.
+      </p>
+      <ul class="dates">
+        <li>
+          <span class="when">Oct 17</span>
+          <span class="where">Los Angeles, CA<small>The Echo — release night</small></span>
+          <a href="#list">Tickets</a>
+        </li>
+        <li>
+          <span class="when">Oct 21</span>
+          <span class="where">San Francisco, CA<small>Bottom of the Hill</small></span>
+          <a href="#list">Tickets</a>
+        </li>
+        <li>
+          <span class="when">Oct 24</span>
+          <span class="where">Portland, OR<small>Doug Fir Lounge</small></span>
+          <span class="sold">Sold out</span>
+        </li>
+        <li>
+          <span class="when">Oct 28</span>
+          <span class="where">Chicago, IL<small>Empty Bottle</small></span>
+          <a href="#list">Tickets</a>
+        </li>
+        <li>
+          <span class="when">Nov 01</span>
+          <span class="where">Brooklyn, NY<small>TV Eye</small></span>
+          <a href="#list">Tickets</a>
+        </li>
+        <li>
+          <span class="when">Nov 05</span>
+          <span class="where">Austin, TX<small>Hotel Vegas — the final night</small></span>
+          <a href="#list">Tickets</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="list" aria-label="Mailing list">
+    <div class="wrap">
+      <h2>The Midnight Transmission</h2>
+      <div class="list-box">
+        <p>
+          One email a month, sent at midnight Pacific. Demo scraps, tour additions before
+          the posters go up, and the occasional photo of a rental car. No spam, no
+          "last chance," unsubscribe whenever.
+        </p>
+        <form class="list-form" id="list-form" novalidate>
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@fmdial.net" autocomplete="email" required>
+          <button class="btn btn-pink" type="submit">Tune in</button>
+        </form>
+        <p class="list-msg" id="list-msg" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <a class="brand" href="#top">VELVET CIRCUIT</a>
+    <p>Chrome Bumper · out October 17 · Static Bloom Records</p>
+    <p>Booking: Denny Okafor · denny@staticbloom.example</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ============ equalizer hero canvas ============ */
+  var canvas = document.getElementById("eq-canvas");
+  var ctx2d = canvas.getContext("2d");
+  var W = 0, H = 0, raf = null, t = 0;
+  var BAR_COUNT = 56;
+  var analyser = null;
+  var freqData = null;
+
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rect = canvas.parentElement.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
+    ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function drawBars(levels) {
+    ctx2d.clearRect(0, 0, W, H);
+    var bw = W / BAR_COUNT;
+    for (var i = 0; i < BAR_COUNT; i++) {
+      var v = levels[i];
+      var h = Math.max(3, v * H * 0.72);
+      var x = i * bw + bw * 0.18;
+      var w = bw * 0.64;
+      /* pink at the base rising into cyan tips */
+      ctx2d.fillStyle = "rgba(255, 92, 168, 0.30)";
+      ctx2d.fillRect(x, H - h, w, h);
+      ctx2d.fillStyle = "rgba(96, 235, 230, 0.55)";
+      ctx2d.fillRect(x, H - h, w, Math.min(6, h));
+    }
+  }
+
+  function simLevel(i, time) {
+    var a = Math.sin(time * 1.7 + i * 0.42) * 0.5 + 0.5;
+    var b = Math.sin(time * 0.9 + i * 0.13) * 0.5 + 0.5;
+    var c = Math.sin(time * 2.9 + i * 0.77) * 0.5 + 0.5;
+    return 0.06 + (a * 0.45 + b * 0.35 + c * 0.20) * 0.8;
+  }
+
+  function tick() {
+    t += 0.016;
+    var levels = [];
+    if (analyser) {
+      analyser.getByteFrequencyData(freqData);
+      for (var i = 0; i < BAR_COUNT; i++) {
+        var idx = Math.floor(Math.pow(i / BAR_COUNT, 1.6) * (freqData.length - 1));
+        levels.push(Math.max(0.05, freqData[idx] / 255));
+      }
+    } else {
+      for (var j = 0; j < BAR_COUNT; j++) levels.push(simLevel(j, t));
+    }
+    drawBars(levels);
+    raf = requestAnimationFrame(tick);
+  }
+
+  function staticFrame() {
+    var levels = [];
+    for (var j = 0; j < BAR_COUNT; j++) levels.push(simLevel(j, 1.7));
+    drawBars(levels);
+  }
+
+  resize();
+  if (reduced) { staticFrame(); } else { tick(); }
+
+  document.addEventListener("visibilitychange", function () {
+    if (reduced) return;
+    if (document.hidden) { if (raf) cancelAnimationFrame(raf); raf = null; }
+    else if (!raf) tick();
+  });
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      resize();
+      if (reduced) staticFrame();
+    }, 150);
+  });
+
+  /* ============ WebAudio: consent toggle + 8-bit previews ============ */
+  var audioCtx = null;
+  var master = null;
+  var padOsc1 = null, padOsc2 = null, padGain = null;
+  var soundOn = false;
+  var toggle = document.getElementById("sound-toggle");
+  var note = document.getElementById("sound-note");
+  var padTimer = null;
+  var PAD_SEQ = [220.0, 261.6, 196.0, 164.8];
+  var padStep = 0;
+
+  function ensureCtx() {
+    if (audioCtx) return true;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return false;
+      audioCtx = new AC();
+      master = audioCtx.createGain();
+      master.gain.value = 0.0;
+      master.connect(audioCtx.destination);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  function startPad() {
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    freqData = new Uint8Array(analyser.frequencyBinCount);
+    padGain = audioCtx.createGain();
+    padGain.gain.value = 0.16;
+    padOsc1 = audioCtx.createOscillator();
+    padOsc2 = audioCtx.createOscillator();
+    padOsc1.type = "sawtooth";
+    padOsc2.type = "sawtooth";
+    padOsc2.detune.value = 8;
+    padOsc1.frequency.value = PAD_SEQ[0];
+    padOsc2.frequency.value = PAD_SEQ[0] * 0.5;
+    var filt = audioCtx.createBiquadFilter();
+    filt.type = "lowpass";
+    filt.frequency.value = 900;
+    padOsc1.connect(filt); padOsc2.connect(filt);
+    filt.connect(padGain);
+    padGain.connect(analyser);
+    analyser.connect(master);
+    padOsc1.start(); padOsc2.start();
+    padTimer = setInterval(function () {
+      padStep = (padStep + 1) % PAD_SEQ.length;
+      var f = PAD_SEQ[padStep];
+      var now = audioCtx.currentTime;
+      padOsc1.frequency.exponentialRampToValueAtTime(f, now + 0.35);
+      padOsc2.frequency.exponentialRampToValueAtTime(f * 0.5, now + 0.35);
+    }, 900);
+    master.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.8);
+  }
+
+  function stopPad() {
+    if (!padOsc1) return;
+    var now = audioCtx.currentTime;
+    master.gain.linearRampToValueAtTime(0.0, now + 0.4);
+    clearInterval(padTimer);
+    var o1 = padOsc1, o2 = padOsc2;
+    setTimeout(function () { try { o1.stop(); o2.stop(); } catch (e) {} }, 600);
+    padOsc1 = padOsc2 = null;
+    analyser = null;
+  }
+
+  toggle.addEventListener("click", function () {
+    if (!ensureCtx()) {
+      note.textContent = "Your browser won't play along — the LP still will.";
+      return;
+    }
+    audioCtx.resume();
+    soundOn = !soundOn;
+    toggle.setAttribute("aria-pressed", String(soundOn));
+    if (soundOn) {
+      startPad();
+      toggle.textContent = "Turn the sound off";
+      note.textContent = "Sound on. A detuned saw pad, straight from the rehearsal room.";
+    } else {
+      stopPad();
+      toggle.textContent = "Turn the sound on";
+      note.textContent = "Sound is off. The equalizer above is dreaming until you say otherwise.";
+    }
+  });
+
+  /* 8-bit track previews */
+  var previewOsc = null, previewGain = null, previewTimer = null, previewEl = null;
+
+  function stopPreview() {
+    if (previewTimer) { clearInterval(previewTimer); previewTimer = null; }
+    if (previewOsc) { try { previewOsc.stop(); } catch (e) {} previewOsc = null; }
+    if (previewEl) { previewEl.classList.remove("playing"); previewEl = null; }
+  }
+
+  function playPreview(el) {
+    if (!soundOn || !audioCtx) return; /* previews ride on consent */
+    stopPreview();
+    var notes = el.getAttribute("data-notes").split(",").map(Number);
+    var step = 0;
+    previewOsc = audioCtx.createOscillator();
+    previewGain = audioCtx.createGain();
+    previewOsc.type = "square";
+    previewGain.gain.value = 0.09;
+    previewOsc.frequency.value = notes[0];
+    previewOsc.connect(previewGain);
+    previewGain.connect(audioCtx.destination);
+    previewOsc.start();
+    previewTimer = setInterval(function () {
+      step++;
+      if (step >= notes.length * 2) { stopPreview(); return; }
+      previewOsc.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
+    }, 160);
+    previewEl = el;
+    el.classList.add("playing");
+  }
+
+  var items = document.querySelectorAll("#tracklist li");
+  items.forEach(function (el) {
+    el.addEventListener("mouseenter", function () { playPreview(el); });
+    el.addEventListener("focus", function () { playPreview(el); });
+    el.addEventListener("mouseleave", stopPreview);
+    el.addEventListener("blur", stopPreview);
+  });
+
+  /* ============ mailing list (local only) ============ */
+  var form = document.getElementById("list-form");
+  var msg = document.getElementById("list-msg");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = document.getElementById("email").value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      msg.textContent = "That address looks like static — check it and try again.";
+      return;
+    }
+    msg.textContent = "You're tuned in. First Transmission lands at midnight Pacific on the 1st.";
+    form.reset();
+  });
+})();
+</script>
+</body>
+</html>

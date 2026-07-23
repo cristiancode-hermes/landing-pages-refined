@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Small Hours — A Podcast for the Awake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@1,7..72,400..700&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.16 0.045 270);
+    --surface: oklch(0.21 0.05 270);
+    --ink: oklch(0.88 0.025 80);
+    --muted: oklch(0.66 0.04 270);
+    --amber: oklch(0.72 0.10 80);
+    --amber-dim: oklch(0.55 0.07 80);
+    --display: "Literata", serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --z-glow: 0;
+    --z-content: 1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  a { color: var(--amber); text-decoration-color: oklch(0.72 0.10 80 / 0.5); }
+  a:hover { text-decoration-color: var(--amber); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  h1, h2 {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .wrap { max-width: 44rem; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 2rem); position: relative; z-index: var(--z-content); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    min-height: 96vh;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+    padding-block: 4rem;
+  }
+  .window {
+    position: relative;
+    width: min(100%, 34rem);
+    margin-bottom: clamp(2rem, 6vh, 3.5rem);
+  }
+  .window svg { display: block; width: 100%; height: auto; }
+  .hero h1 {
+    font-size: clamp(2.1rem, 1.5rem + 3vw, 3.9rem);
+    color: var(--ink);
+    max-width: 16ch;
+  }
+  .hero p.sub {
+    color: var(--muted);
+    margin-top: 1.25rem;
+    max-width: 44ch;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
+  }
+
+  /* play */
+  .play-row { display: flex; align-items: center; gap: 1.1rem; margin-top: 2.5rem; }
+  .play-btn {
+    position: relative;
+    width: 4.25rem; height: 4.25rem; flex: none;
+    border-radius: 50%;
+    border: 1px solid var(--amber-dim);
+    background: var(--surface);
+    color: var(--amber);
+    cursor: pointer;
+    display: grid; place-items: center;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .play-btn:hover { transform: scale(1.06); border-color: var(--amber); }
+  .play-btn::before {
+    content: "";
+    position: absolute; inset: -1.4rem;
+    border-radius: 50%;
+    background: radial-gradient(circle, oklch(0.72 0.10 80 / 0.28) 0%, oklch(0.72 0.10 80 / 0) 70%);
+    z-index: var(--z-glow);
+    animation: breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.35; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  .play-btn svg { width: 1.35rem; height: 1.35rem; margin-left: 0.2rem; }
+  .play-row .hint { color: var(--muted); font-size: 0.92rem; max-width: 24ch; }
+
+  /* ---------- episodes ---------- */
+  section { padding-block: clamp(3rem, 8vh, 5.5rem); }
+  h2 { font-size: clamp(1.6rem, 1.3rem + 1.6vw, 2.4rem); margin-bottom: 2rem; color: var(--ink); }
+  .ep-list { list-style: none; display: flex; flex-direction: column; }
+  .ep {
+    display: grid; grid-template-columns: 3.2rem 1fr; gap: 1.1rem;
+    padding-block: 1.4rem;
+    border-top: 1px solid oklch(0.28 0.05 270);
+    opacity: 0;
+    transform: translateY(14px);
+    animation: driftin 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .ep:nth-child(2) { animation-delay: 0.35s; }
+  .ep:nth-child(3) { animation-delay: 0.7s; }
+  .ep:nth-child(4) { animation-delay: 1.05s; }
+  .ep:nth-child(5) { animation-delay: 1.4s; }
+  @keyframes driftin {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ep .num {
+    font-family: var(--display); font-style: italic;
+    color: var(--amber-dim); font-size: 1.05rem;
+    padding-top: 0.15rem;
+  }
+  .ep h3 {
+    font-family: var(--body); font-weight: 600; font-style: normal;
+    font-size: 1.1rem; color: var(--ink); margin-bottom: 0.3rem;
+    text-wrap: balance;
+  }
+  .ep p { color: var(--muted); font-size: 0.95rem; max-width: 52ch; }
+  .ep .len { color: var(--amber-dim); font-size: 0.85rem; display: inline-block; margin-top: 0.5rem; font-variant-numeric: tabular-nums; }
+
+  /* ---------- listen ---------- */
+  .listen { border-top: 1px solid oklch(0.28 0.05 270); }
+  .listen p { color: var(--muted); max-width: 48ch; }
+  .listen-links { display: flex; gap: 1.75rem; flex-wrap: wrap; margin-top: 1.5rem; font-weight: 600; }
+
+  footer {
+    padding-block: 3rem 3.5rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    border-top: 1px solid oklch(0.28 0.05 270);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .play-btn::before { animation: none; opacity: 0.5; }
+    .ep { animation: none; opacity: 1; transform: none; }
+    .play-btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div class="window" aria-hidden="true">
+        <svg viewBox="0 0 560 300">
+          <!-- night sky -->
+          <rect x="0" y="0" width="560" height="300" rx="10" fill="oklch(0.12 0.04 270)"/>
+          <!-- moon -->
+          <circle cx="452" cy="66" r="34" fill="oklch(0.88 0.025 80)"/>
+          <circle cx="441" cy="58" r="7" fill="oklch(0.80 0.03 80)" opacity="0.7"/>
+          <circle cx="462" cy="76" r="5" fill="oklch(0.80 0.03 80)" opacity="0.6"/>
+          <circle cx="456" cy="52" r="3.5" fill="oklch(0.80 0.03 80)" opacity="0.5"/>
+          <circle cx="452" cy="66" r="52" fill="none" stroke="oklch(0.88 0.025 80)" stroke-opacity="0.08" stroke-width="22"/>
+          <!-- a few faint stars -->
+          <circle cx="90" cy="52" r="1.6" fill="oklch(0.88 0.025 80)" opacity="0.5"/>
+          <circle cx="180" cy="34" r="1.2" fill="oklch(0.88 0.025 80)" opacity="0.35"/>
+          <circle cx="300" cy="70" r="1.4" fill="oklch(0.88 0.025 80)" opacity="0.4"/>
+          <!-- streetlight beam through blind slats -->
+          <g>
+            <rect x="0" y="150" width="560" height="14" fill="oklch(0.72 0.10 80)" opacity="0.16"/>
+            <rect x="0" y="186" width="560" height="14" fill="oklch(0.72 0.10 80)" opacity="0.12"/>
+            <rect x="0" y="222" width="560" height="14" fill="oklch(0.72 0.10 80)" opacity="0.09"/>
+            <rect x="0" y="258" width="560" height="14" fill="oklch(0.72 0.10 80)" opacity="0.06"/>
+          </g>
+          <!-- blind slat shadows -->
+          <rect x="0" y="164" width="560" height="22" fill="oklch(0.10 0.035 270)" opacity="0.85"/>
+          <rect x="0" y="200" width="560" height="22" fill="oklch(0.10 0.035 270)" opacity="0.85"/>
+          <rect x="0" y="236" width="560" height="22" fill="oklch(0.10 0.035 270)" opacity="0.85"/>
+          <rect x="0" y="272" width="560" height="28" fill="oklch(0.10 0.035 270)" opacity="0.85"/>
+          <!-- window frame -->
+          <rect x="0" y="0" width="560" height="300" rx="10" fill="none" stroke="oklch(0.28 0.05 270)" stroke-width="3"/>
+          <rect x="0" y="140" width="560" height="10" fill="oklch(0.24 0.05 270)"/>
+        </svg>
+      </div>
+
+      <h1>For the ones watching the ceiling at 3:47.</h1>
+      <p class="sub">Small Hours is a quiet podcast recorded after midnight. One voice, one story, no ads, nothing to win. It won't fix your sleep. It will keep you company while you're not sleeping.</p>
+
+      <div class="play-row">
+        <button class="play-btn" id="playBtn" aria-label="Play the latest episode">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3.8v16.4c0 1 1.1 1.6 2 1.1l13-8.2c0.8-0.5 0.8-1.7 0-2.2L8 2.7c-0.9-0.5-2 0.1-2 1.1z"/></svg>
+        </button>
+        <p class="hint" id="playHint">Latest: “The Night Bus Driver” — 41 min</p>
+      </div>
+    </div>
+  </div>
+
+  <section aria-labelledby="eps">
+    <div class="wrap">
+      <h2 id="eps">Recent hours</h2>
+      <ol class="ep-list">
+        <li class="ep">
+          <span class="num">No. 48</span>
+          <div>
+            <h3>The Night Bus Driver</h3>
+            <p>Ray has driven the N19 for eleven years. He knows which regulars are heading somewhere and which are just riding it out.</p>
+            <span class="len">41 min</span>
+          </div>
+        </li>
+        <li class="ep">
+          <span class="num">No. 47</span>
+          <div>
+            <h3>Bread Before Sunrise</h3>
+            <p>A bakery shift that starts at 2am, and why the quietest hour makes the best crust.</p>
+            <span class="len">36 min</span>
+          </div>
+        </li>
+        <li class="ep">
+          <span class="num">No. 46</span>
+          <div>
+            <h3>The Lighthouse Keeper's Log</h3>
+            <p>Reading a hundred-year-old logbook, one calm entry at a time. Nothing happens. That's the point.</p>
+            <span class="len">52 min</span>
+          </div>
+        </li>
+        <li class="ep">
+          <span class="num">No. 45</span>
+          <div>
+            <h3>Apartment 4B</h3>
+            <p>On the neighbors we've never met but know entirely by sound — footsteps, kettles, one practicing cello.</p>
+            <span class="len">33 min</span>
+          </div>
+        </li>
+        <li class="ep">
+          <span class="num">No. 44</span>
+          <div>
+            <h3>A Field Guide to 4am</h3>
+            <p>What the hour does to your thoughts, and why it lies to you a little. With sleep researcher Dr. Ines Vidal.</p>
+            <span class="len">47 min</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="listen" aria-labelledby="listen">
+    <div class="wrap">
+      <h2 id="listen">Where to listen</h2>
+      <p>New hours land every other Thursday, just after midnight — recorded that same night, in one take, mistakes left in. Free everywhere, forever.</p>
+      <div class="listen-links">
+        <a href="#listen">Apple Podcasts</a>
+        <a href="#listen">Spotify</a>
+        <a href="#listen">Overcast</a>
+        <a href="#listen">RSS</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Small Hours · recorded in a closet in Apartment 4B · if you're awake right now, this one is for you.</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var btn = document.getElementById('playBtn');
+    var hint = document.getElementById('playHint');
+    var playing = false;
+    btn.addEventListener('click', function () {
+      playing = !playing;
+      btn.setAttribute('aria-label', playing ? 'Pause the latest episode' : 'Play the latest episode');
+      hint.textContent = playing
+        ? 'Now playing — the city is very quiet from the top deck.'
+        : 'Latest: “The Night Bus Driver” — 41 min';
+      btn.innerHTML = playing
+        ? '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="width:1.35rem;height:1.35rem;margin-left:0"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 3.8v16.4c0 1 1.1 1.6 2 1.1l13-8.2c0.8-0.5 0.8-1.7 0-2.2L8 2.7c-0.9-0.5-2 0.1-2 1.1z"/></svg>';
+    });
+  })();
+</script>
+
+</body>
+</html>

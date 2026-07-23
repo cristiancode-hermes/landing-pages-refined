@@ -1,0 +1,21 @@
+---
+description: LoopKit operating contract — always apply
+alwaysApply: true
+---
+
+This repository uses the LoopKit agent harness. One source of truth for rules,
+regardless of model:
+
+1. Follow the operating contract in `.claude/CLAUDE.md` (session protocol,
+   hard rules, verification standard) and the agent notes in `AGENTS.md`.
+2. Read `MEMORY.md` before starting work; append a shift note (format at the
+   top of that file) before ending a session with meaningful changes.
+3. Before specialized work, open the matching skill track's `SKILL.md` under
+   `.claude/skills/` (architecture, angular, nestjs, neon, tailwind, deploy,
+   ml-python, testing, eslint, debug, security, frontend, frontend-design,
+   refactor, docs, data, git-ops, agent-llm) and follow it. Deploys default to
+   Vercel; Netlify when the project chooses it (see `.claude/skills/deploy/`).
+   C/C++ systems development lives on the separate `cpp-systems` branch.
+4. Claude Code hooks don't run in Cursor — uphold their guarantees manually:
+   no force-push to main/master, never read `.env*`, no `rm -rf` outside the
+   workspace, no curl|sh; format edited files; verify before claiming done.

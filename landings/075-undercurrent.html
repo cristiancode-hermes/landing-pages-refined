@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undercurrent Dive Center — Learn to Breathe Down There</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;800&family=Jost:wght@300;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep-top: oklch(0.25 0.06 225);
+    --deep-mid: oklch(0.18 0.05 228);
+    --deep-end: oklch(0.12 0.04 230);
+    --surface: oklch(0.17 0.045 229);
+    --surface-raise: oklch(0.21 0.05 228);
+    --ink: oklch(0.95 0.012 200);
+    --ink-dim: oklch(0.78 0.035 220);
+    --cyan: oklch(0.85 0.12 195);
+    --cyan-deep: oklch(0.70 0.11 200);
+    --coral: oklch(0.70 0.16 35);
+    --coral-ink: oklch(0.16 0.03 40);
+    --z-canvas: 0;
+    --z-content: 1;
+    --z-gauge: 5;
+    --z-header: 10;
+    --font-display: "Jost", sans-serif;
+    --font-body: "Hanken Grotesk", sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: linear-gradient(180deg, var(--deep-top) 0%, var(--deep-mid) 45%, var(--deep-end) 100%);
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  img { max-width: 100%; height: auto; display: block; }
+
+  :focus-visible {
+    outline: 3px solid var(--coral);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p { max-width: 68ch; text-wrap: pretty; }
+
+  #sea-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-canvas);
+    pointer-events: none;
+  }
+
+  .wrap {
+    width: min(72rem, 92vw);
+    margin-inline: auto;
+    position: relative;
+    z-index: var(--z-content);
+  }
+
+  /* ---------- depth gauge ---------- */
+  .gauge {
+    position: fixed;
+    right: clamp(0.5rem, 2vw, 1.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: var(--z-gauge);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    pointer-events: none;
+  }
+  .gauge-rail {
+    width: 6px;
+    height: 38vh;
+    border-radius: 999px;
+    background: oklch(0.30 0.05 228);
+    overflow: hidden;
+    position: relative;
+  }
+  .gauge-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--cyan);
+    border-radius: 999px;
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+  .gauge-depth {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--cyan);
+    font-variant-numeric: tabular-nums;
+    writing-mode: vertical-rl;
+  }
+  @media (max-width: 700px) { .gauge { display: none; } }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: oklch(0.14 0.045 229 / 0.94);
+    border-bottom: 1px solid oklch(0.30 0.05 228);
+  }
+  .header-in {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.2rem;
+    letter-spacing: 0.14em;
+    color: var(--cyan);
+    text-decoration: none;
+  }
+  nav ul { display: flex; gap: 1.5rem; list-style: none; flex-wrap: wrap; }
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  nav a:hover { color: var(--cyan); }
+  @media (max-width: 600px) {
+    .header-in { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+    nav ul { gap: 0.9rem; }
+    nav a { font-size: 0.82rem; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    padding: clamp(4rem, 9vw, 7rem) 0;
+  }
+  .hero-kicker {
+    display: inline-block;
+    border: 1px solid var(--coral);
+    color: var(--coral);
+    border-radius: 999px;
+    padding: 0.3rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1.75rem;
+  }
+  h1 {
+    font-size: clamp(2.8rem, 1.2rem + 7.5vw, 5.5rem);
+    color: var(--ink);
+    max-width: 15ch;
+  }
+  h1 .thin { color: var(--cyan); }
+  .hero-sub {
+    margin-top: 1.5rem;
+    font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.25rem);
+    color: var(--ink-dim);
+    max-width: 48ch;
+  }
+  .hero-cta { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: 1rem; }
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 0.85rem 1.9rem;
+    border-radius: 999px;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), background 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-coral { background: var(--coral); color: var(--coral-ink); }
+  .btn-coral:hover { background: oklch(0.76 0.16 35); }
+  .btn-line { background: transparent; color: var(--ink); border: 1px solid oklch(0.5 0.05 220); }
+  .btn-line:hover { border-color: var(--cyan); color: var(--cyan); }
+
+  /* ---------- content blocks ---------- */
+  section.block { padding: clamp(3.5rem, 8vw, 6rem) 0; position: relative; z-index: var(--z-content); }
+  .panel {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: clamp(1.75rem, 4vw, 3rem);
+  }
+  h2 { font-size: clamp(2rem, 1.4rem + 3vw, 3.25rem); color: var(--cyan); }
+  h2 .coral { color: var(--coral); }
+  .lede { margin-top: 1rem; color: var(--ink-dim); font-size: 1.05rem; max-width: 62ch; }
+
+  /* ---------- certification path ---------- */
+  .path { margin-top: 2.5rem; list-style: none; display: grid; gap: 1.5rem; counter-reset: cert; }
+  .path li {
+    counter-increment: cert;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    background: var(--surface-raise);
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+  }
+  .path li::before {
+    content: counter(cert);
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: 2.5rem;
+    color: var(--coral);
+    line-height: 1;
+  }
+  .path h3 { font-weight: 500; font-size: 1.3rem; color: var(--ink); letter-spacing: 0; }
+  .path .meta { color: var(--cyan); font-weight: 600; font-size: 0.9rem; margin-top: 0.2rem; }
+  .path p { margin-top: 0.6rem; color: var(--ink-dim); font-size: 0.98rem; }
+
+  /* ---------- dive sites ---------- */
+  .sites { margin-top: 2.5rem; display: grid; gap: 1.25rem; }
+  .site {
+    background: var(--surface-raise);
+    border-radius: 12px;
+    padding: 1.4rem 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 2rem;
+    align-items: baseline;
+  }
+  .site h3 { font-weight: 500; font-size: 1.25rem; color: var(--ink); letter-spacing: 0; }
+  .site .depth { color: var(--cyan); font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .site p { grid-column: 1 / -1; color: var(--ink-dim); font-size: 0.98rem; }
+  .site .rating { grid-column: 1 / -1; font-size: 0.88rem; font-weight: 600; }
+  .rating-easy { color: var(--cyan); }
+  .rating-mid { color: oklch(0.82 0.13 85); }
+  .rating-hard { color: var(--coral); }
+  .site-photo {
+    grid-column: 1 / -1;
+    margin-top: 0.75rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .site-photo img { width: 100%; object-fit: cover; }
+  @media (max-width: 560px) {
+    .site { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- safety ---------- */
+  .safety-grid {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+  @media (max-width: 800px) { .safety-grid { grid-template-columns: 1fr; } }
+  .safety-copy p + p { margin-top: 1.1rem; }
+  .record {
+    background: var(--surface-raise);
+    border-radius: 12px;
+    padding: 1.75rem;
+  }
+  .record dl { display: grid; gap: 1rem; }
+  .record dt { font-weight: 800; color: var(--cyan); font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+  .record dd { color: var(--ink-dim); font-size: 0.95rem; margin-top: -0.4rem; }
+  .reef-photo { border-radius: 12px; overflow: hidden; margin-top: 1.5rem; }
+  .reef-photo img { width: 100%; object-fit: cover; }
+
+  /* ---------- rental + boat ---------- */
+  .two-col {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+  @media (max-width: 800px) { .two-col { grid-template-columns: 1fr; } }
+  .rate-list, .boat-list { list-style: none; display: grid; }
+  .rate-list li, .boat-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid oklch(0.32 0.05 228);
+  }
+  .rate-list li:last-child, .boat-list li:last-child { border-bottom: none; }
+  .rate-list .what, .boat-list .when { color: var(--ink); font-weight: 600; }
+  .rate-list .howmuch { color: var(--coral); font-weight: 800; white-space: nowrap; }
+  .boat-list .where { color: var(--ink-dim); }
+  h3.sub {
+    font-weight: 500;
+    font-size: 1.35rem;
+    color: var(--ink);
+    letter-spacing: 0;
+    margin-bottom: 1rem;
+  }
+  .fineprint { margin-top: 1rem; font-size: 0.88rem; color: var(--ink-dim); }
+
+  /* ---------- footer ---------- */
+  footer {
+    position: relative;
+    z-index: var(--z-content);
+    background: var(--deep-end);
+    border-top: 1px solid oklch(0.30 0.05 228);
+    padding: 2.5rem 0;
+  }
+  .footer-in {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--ink-dim);
+    font-size: 0.9rem;
+  }
+  footer .brand { font-size: 1rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="sea-canvas" aria-hidden="true"></canvas>
+
+<div class="gauge" aria-hidden="true">
+  <span class="gauge-depth" id="gauge-depth">0 m</span>
+  <div class="gauge-rail"><div class="gauge-fill" id="gauge-fill"></div></div>
+  <span class="gauge-depth">40 m</span>
+</div>
+
+<header>
+  <div class="wrap header-in">
+    <a class="brand" href="#top">UNDERCURRENT</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#certify">Get Certified</a></li>
+        <li><a href="#sites">Dive Sites</a></li>
+        <li><a href="#safety">Safety</a></li>
+        <li><a href="#gear">Gear &amp; Boats</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Welcome">
+    <div class="wrap">
+      <span class="hero-kicker">Kailua-Kona, Hawai'i · PADI 5-Star since 2009</span>
+      <h1>LEARN TO BREATHE <span class="thin">DOWN THERE.</span></h1>
+      <p class="hero-sub">
+        Thirty meters down, the light goes blue-green and the noise of the surface stops
+        existing. We teach you to be calm, capable, and welcome in that world — then we
+        take you to the good stuff.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-coral" href="#certify">Start with Open Water</a>
+        <a class="btn btn-line" href="#sites">See the five sites</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="certify" aria-label="Certification path">
+    <div class="wrap">
+      <div class="panel">
+        <h2>The Path Down</h2>
+        <p class="lede">
+          Three rungs, in order, no skipping. Every course is capped at four students per
+          instructor, because buoyancy is personal.
+        </p>
+        <ol class="path">
+          <li>
+            <div>
+              <h3>Open Water Diver</h3>
+              <p class="meta">4 days · $545 all-in · max depth 18 m</p>
+              <p>
+                Two pool sessions, four ocean dives, one very patient instructor. You'll
+                flood and clear your mask until it's boring, which is exactly the point.
+                Includes all gear, the e-learning, and the certification card.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Advanced Open Water</h3>
+              <p class="meta">2 days · $395 · max depth 30 m</p>
+              <p>
+                Five adventure dives: deep, navigation, night, drift, and peak-performance
+                buoyancy. This is where you stop swimming like a windmill and start
+                hovering like you mean it.
+              </p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <h3>Rescue Diver</h3>
+              <p class="meta">3 days · $470 · the serious one</p>
+              <p>
+                Panicked-diver scenarios, tired-diver tows, missing-diver searches. It's
+                exhausting and it's the course our instructors respect most. EFR
+                first-aid included; bring snacks and humility.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="sites" aria-label="Dive sites">
+    <div class="wrap">
+      <div class="panel">
+        <h2>Five Sites, <span class="coral">Honestly Rated</span></h2>
+        <p class="lede">
+          We don't call everything "suitable for all levels," because it isn't. Here's
+          what each site actually asks of you.
+        </p>
+        <div class="sites">
+          <article class="site">
+            <h3>Kohanaiki Gardens</h3>
+            <span class="depth">8–12 m</span>
+            <p>
+              Our classroom reef. Gentle slope, friendly turtles, surge mild enough for a
+              first ocean dive. If you can't relax here, the ocean is telling you something.
+            </p>
+            <span class="rating rating-easy">Beginner — where every Open Water course starts</span>
+            <div class="site-photo">
+              <img src="https://picsum.photos/seed/reef-1/800/600" width="800" height="600"
+                   alt="Sunlight falling in pale shafts over a coral head busy with small reef fish.">
+            </div>
+          </article>
+          <article class="site">
+            <h3>Turtle Pinnacle</h3>
+            <span class="depth">12–18 m</span>
+            <p>
+              A cleaning station where green turtles queue up like customers. Mild current
+              on the outgoing tide; keep your buoyancy tidy near the coral or the
+              divemaster will have words.
+            </p>
+            <span class="rating rating-easy">Beginner+ — comfortable with 6 dives logged</span>
+          </article>
+          <article class="site">
+            <h3>Manta Night Dive</h3>
+            <span class="depth">10 m</span>
+            <p>
+              You kneel in a circle with a light pointed up; mantas with four-meter
+              wingspans do barrel rolls inches over your head. Shallow and stationary,
+              but night water rattles some people — say so beforehand, no shame in it.
+            </p>
+            <span class="rating rating-mid">Intermediate — night comfort required</span>
+          </article>
+          <article class="site">
+            <h3>The Cathedral</h3>
+            <span class="depth">18–28 m</span>
+            <p>
+              A lava-tube swim-through with a skylight that does exactly what the name
+              promises. Overhead environment, single-file, no touching the ceiling —
+              silt-outs are real and we brief them seriously.
+            </p>
+            <span class="rating rating-hard">Advanced — AOW with solid buoyancy, 20+ dives</span>
+            <div class="site-photo">
+              <img src="https://picsum.photos/seed/reef-2/800/600" width="800" height="600"
+                   alt="A green sea turtle gliding over the reef, remora riding underneath its shell.">
+            </div>
+          </article>
+          <article class="site">
+            <h3>The Washing Machine</h3>
+            <span class="depth">22–40 m</span>
+            <p>
+              Named by a divemaster who got rolled in its surge channel in 2014. Deep
+              wall, ripping current on the wrong tide, hammerheads on the right one. We
+              run it maybe ten days a year, and we cancel without apology.
+            </p>
+            <span class="rating rating-hard">Expert only — Rescue-level skills, 50+ dives, checkout dive required</span>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="safety" aria-label="Safety record">
+    <div class="wrap">
+      <div class="panel">
+        <h2>The Record, Unedited</h2>
+        <div class="safety-grid">
+          <div class="safety-copy">
+            <p>
+              Since 2009 we've guided 4,200-some dives and taught 1,100 students. Zero
+              serious injuries. Zero chamber rides. That number matters to us more than
+              any five-star rating, and we protect it by being boring: conservative
+              profiles, nitrox analysis on camera, and a standing rule that any guide can
+              cancel any dive for any reason with zero questions from the front desk.
+            </p>
+            <p>
+              The honest footnotes: one bent D-ring (2016), one lost wedding band
+              (recovered, 2019), one diver stung by a Portuguese man o' war on the
+              surface interval (treated on board, finished his holiday). We'll tell you
+              all three stories on the boat if you ask.
+            </p>
+            <div class="reef-photo">
+              <img src="https://picsum.photos/seed/reef-1/800/600" width="800" height="600"
+                   alt="Reef flat at midday, the kind of calm water the morning briefing hopes for.">
+            </div>
+          </div>
+          <div class="record">
+            <dl>
+              <div><dt>4,200+</dt><dd>guided dives since 2009</dd></div>
+              <div><dt>1,100</dt><dd>students certified, Open Water through Rescue</dd></div>
+              <div><dt>0</dt><dd>serious incidents, and we intend to keep it that way</dd></div>
+              <div><dt>4 : 1</dt><dd>maximum students per instructor, always</dd></div>
+              <div><dt>2</dt><dd>oxygen kits on every boat, checked weekly</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="gear" aria-label="Equipment rental and boat schedule">
+    <div class="wrap">
+      <div class="panel">
+        <h2>Gear &amp; Boats</h2>
+        <div class="two-col">
+          <div>
+            <h3 class="sub">Rental Rates (per day)</h3>
+            <ul class="rate-list">
+              <li><span class="what">Full kit — BCD, reg, wetsuit, fins, mask</span><span class="howmuch">$45</span></li>
+              <li><span class="what">BCD or regulator set, either one</span><span class="howmuch">$18</span></li>
+              <li><span class="what">Wetsuit, 3mm shorty or 5mm full</span><span class="howmuch">$12</span></li>
+              <li><span class="what">Dive computer — required, so we price it low</span><span class="howmuch">$10</span></li>
+              <li><span class="what">Underwater torch for the night dive</span><span class="howmuch">$8</span></li>
+              <li><span class="what">Nitrox fill, any tank</span><span class="howmuch">$9</span></li>
+            </ul>
+            <p class="fineprint">
+              Everything's serviced on schedule and the service tags hang at the counter.
+              Ask to see them — we like that question.
+            </p>
+          </div>
+          <div>
+            <h3 class="sub">Boat Schedule</h3>
+            <ul class="boat-list">
+              <li><span class="when">Mon / Wed / Fri</span><span class="where">Two-tank morning, 8:00 — Kohanaiki &amp; Turtle Pinnacle</span></li>
+              <li><span class="when">Tue / Thu</span><span class="where">Advanced two-tank, 7:30 — Cathedral or the wall, conditions willing</span></li>
+              <li><span class="when">Saturday</span><span class="where">Three-tank long day, 7:00 — sites picked by the guides over coffee</span></li>
+              <li><span class="when">Nightly</span><span class="where">Manta dive, sunset departure — book two days ahead</span></li>
+              <li><span class="when">Sunday</span><span class="where">No boats. Tanks get inspected, crew goes diving for fun.</span></li>
+            </ul>
+            <p class="fineprint">
+              Two-tank trips $145 including tanks and weights. Cancel by 4 p.m. the day
+              before or the boat leaves with your seat empty and your card charged —
+              the ocean waits for no one, and neither does the manifest.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <a class="brand" href="#top">UNDERCURRENT</a>
+    <p>75-5629 Kuakini Hwy, Kailua-Kona, HI · (808) 555-0134</p>
+    <p>Dive within your training. We'll help you extend it.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>window.THREE || document.write('<script src="https://unpkg.com/three@0.160.0/build/three.min.js"><\/script>');</script>
+<script>
+(function () {
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- depth gauge ---------- */
+  var fill = document.getElementById("gauge-fill");
+  var depthLabel = document.getElementById("gauge-depth");
+  var scrollProgress = 0;
+
+  function updateGauge() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    scrollProgress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    fill.style.transform = "scaleY(" + scrollProgress.toFixed(4) + ")";
+    depthLabel.textContent = Math.round(scrollProgress * 40) + " m";
+  }
+  window.addEventListener("scroll", updateGauge, { passive: true });
+  updateGauge();
+
+  /* ---------- three.js underwater scene ---------- */
+  if (!window.THREE) {
+    document.getElementById("sea-canvas").style.display = "none";
+    return;
+  }
+
+  var canvas = document.getElementById("sea-canvas");
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  } catch (e) {
+    canvas.style.display = "none";
+    return;
+  }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  var scene = new THREE.Scene();
+  var colSurface = new THREE.Color(0.10, 0.20, 0.32); /* light going blue-green near top */
+  var colDeep = new THREE.Color(0.02, 0.05, 0.10);    /* 30 m down */
+  scene.fog = new THREE.FogExp2(colSurface.getHex(), 0.08);
+
+  var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 8);
+
+  /* bubble sprite texture (canvas-generated) */
+  function makeSprite() {
+    var c = document.createElement("canvas");
+    c.width = c.height = 64;
+    var g = c.getContext("2d");
+    var grad = g.createRadialGradient(32, 28, 2, 32, 32, 30);
+    grad.addColorStop(0, "rgba(255,255,255,0.9)");
+    grad.addColorStop(0.35, "rgba(190,240,255,0.28)");
+    grad.addColorStop(0.8, "rgba(150,220,255,0.08)");
+    grad.addColorStop(1, "rgba(150,220,255,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  }
+  var bubbleTex = makeSprite();
+
+  /* rising bubbles */
+  var BUBBLES = 170;
+  var bGeo = new THREE.BufferGeometry();
+  var bPos = new Float32Array(BUBBLES * 3);
+  var bSpeed = new Float32Array(BUBBLES);
+  for (var i = 0; i < BUBBLES; i++) {
+    bPos[i * 3] = (Math.random() - 0.5) * 18;
+    bPos[i * 3 + 1] = (Math.random() - 0.5) * 14;
+    bPos[i * 3 + 2] = (Math.random() - 0.5) * 8;
+    bSpeed[i] = 0.008 + Math.random() * 0.03;
+  }
+  bGeo.setAttribute("position", new THREE.BufferAttribute(bPos, 3));
+  var bMat = new THREE.PointsMaterial({
+    size: 0.35, map: bubbleTex, transparent: true, opacity: 0.7,
+    depthWrite: false, blending: THREE.AdditiveBlending, color: 0xbfefff
+  });
+  var bubbles = new THREE.Points(bGeo, bMat);
+  scene.add(bubbles);
+
+  /* marine snow — slow drifting particles */
+  var SNOW = 320;
+  var sGeo = new THREE.BufferGeometry();
+  var sPos = new Float32Array(SNOW * 3);
+  for (var j = 0; j < SNOW; j++) {
+    sPos[j * 3] = (Math.random() - 0.5) * 20;
+    sPos[j * 3 + 1] = (Math.random() - 0.5) * 16;
+    sPos[j * 3 + 2] = (Math.random() - 0.5) * 10;
+  }
+  sGeo.setAttribute("position", new THREE.BufferAttribute(sPos, 3));
+  var sMat = new THREE.PointsMaterial({
+    size: 0.07, map: bubbleTex, transparent: true, opacity: 0.35,
+    depthWrite: false, blending: THREE.AdditiveBlending, color: 0x9fd8e8
+  });
+  var snow = new THREE.Points(sGeo, sMat);
+  scene.add(snow);
+
+  /* light rays from the surface */
+  function makeRayTexture() {
+    var c = document.createElement("canvas");
+    c.width = 64; c.height = 256;
+    var g = c.getContext("2d");
+    var grad = g.createLinearGradient(0, 0, 0, 256);
+    grad.addColorStop(0, "rgba(200,240,255,0.9)");
+    grad.addColorStop(1, "rgba(200,240,255,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 64, 256);
+    return new THREE.CanvasTexture(c);
+  }
+  var rayTex = makeRayTexture();
+  var rays = [];
+  for (var r = 0; r < 5; r++) {
+    var rMat = new THREE.MeshBasicMaterial({
+      map: rayTex, transparent: true, opacity: 0.10 + Math.random() * 0.06,
+      depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide
+    });
+    var ray = new THREE.Mesh(new THREE.PlaneGeometry(1.4 + Math.random() * 1.4, 16), rMat);
+    ray.position.set(-6 + r * 3 + Math.random(), 5.5, -3 - Math.random() * 2);
+    ray.rotation.z = 0.22 + Math.random() * 0.15;
+    ray.userData.baseOpacity = rMat.opacity;
+    ray.userData.phase = Math.random() * Math.PI * 2;
+    scene.add(ray);
+    rays.push(ray);
+  }
+
+  var t = 0;
+  var running = true;
+
+  function applyDepth() {
+    /* scroll depth drives camera descent + darkening */
+    var p = scrollProgress;
+    camera.position.y = -p * 5;
+    var fogCol = colSurface.clone().lerp(colDeep, p);
+    scene.fog.color.copy(fogCol);
+    var rayFade = 1 - p * 0.85;
+    for (var i = 0; i < rays.length; i++) {
+      rays[i].material.opacity = rays[i].userData.baseOpacity * rayFade *
+        (0.85 + 0.15 * Math.sin(t * 0.7 + rays[i].userData.phase));
+    }
+  }
+
+  function animate() {
+    t += 0.016;
+    var pos = bGeo.attributes.position.array;
+    for (var i = 0; i < BUBBLES; i++) {
+      pos[i * 3 + 1] += bSpeed[i];
+      pos[i * 3] += Math.sin(t * 1.4 + i) * 0.0025;
+      if (pos[i * 3 + 1] > 8) pos[i * 3 + 1] = -8;
+    }
+    bGeo.attributes.position.needsUpdate = true;
+
+    var sp = sGeo.attributes.position.array;
+    for (var j = 0; j < SNOW; j++) {
+      sp[j * 3 + 1] -= 0.0018;
+      sp[j * 3] += Math.sin(t * 0.5 + j * 0.7) * 0.0012;
+      if (sp[j * 3 + 1] < -9) sp[j * 3 + 1] = 9;
+    }
+    sGeo.attributes.position.needsUpdate = true;
+
+    bubbles.rotation.y = Math.sin(t * 0.08) * 0.05;
+    applyDepth();
+    renderer.render(scene, camera);
+    if (running) requestAnimationFrame(animate);
+  }
+
+  if (reduced) {
+    /* static frame: one render, no loop */
+    applyDepth();
+    renderer.render(scene, camera);
+    window.addEventListener("scroll", function () {
+      applyDepth();
+      renderer.render(scene, camera);
+    }, { passive: true });
+  } else {
+    requestAnimationFrame(animate);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) { running = false; }
+      else if (!running) { running = true; requestAnimationFrame(animate); }
+    });
+  }
+
+  window.addEventListener("resize", function () {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    if (reduced) { applyDepth(); renderer.render(scene, camera); }
+  });
+})();
+</script>
+</body>
+</html>

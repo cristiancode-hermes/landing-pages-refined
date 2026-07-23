@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Night Market — Forty Stalls Under the Lanterns, Fridays All Summer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.14 0.04 280);
+    --surface: oklch(0.20 0.05 280);
+    --surface-2: oklch(0.25 0.06 280);
+    --ink: oklch(0.94 0.02 90);
+    --muted: oklch(0.74 0.05 285);
+    --red: oklch(0.66 0.19 25);
+    --red-deep: oklch(0.50 0.15 25);
+    --teal: oklch(0.82 0.12 185);
+    --gold: oklch(0.83 0.12 90);
+    --display: "Zen Dots", cursive;
+    --body: "Sora", sans-serif;
+    --z-lanterns: 1;
+    --z-hero-copy: 2;
+    --z-ticker: 3;
+    --z-header: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--teal); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .wrap { max-width: 72rem; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 3rem); }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: oklch(0.14 0.04 280 / 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--surface-2);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding-block: 0.85rem;
+    max-width: 72rem; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 3rem);
+  }
+  .brand { font-family: var(--display); font-size: 1.05rem; color: var(--ink); text-decoration: none; }
+  .brand span { color: var(--red); }
+  nav ul { display: flex; gap: clamp(0.75rem, 2.5vw, 1.75rem); list-style: none; flex-wrap: wrap; }
+  nav a {
+    color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 600;
+  }
+  nav a:hover { color: var(--gold); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+    padding-bottom: clamp(3rem, 8vh, 6rem);
+  }
+  .lanterns {
+    position: absolute; inset: 0 0 auto 0; height: 62%;
+    z-index: var(--z-lanterns);
+    pointer-events: none;
+  }
+  .lanterns svg { width: 100%; height: 100%; display: block; }
+  .lantern { transform-origin: center top; transform-box: fill-box; animation: sway ease-in-out infinite alternate; }
+  .lantern.s1 { animation-duration: 5.2s; }
+  .lantern.s2 { animation-duration: 6.7s; }
+  .lantern.s3 { animation-duration: 4.4s; }
+  .lantern.s4 { animation-duration: 7.6s; }
+  .lantern.s5 { animation-duration: 5.9s; }
+  .lantern.s6 { animation-duration: 6.2s; }
+  @keyframes sway {
+    from { transform: rotate(-4.5deg); }
+    to   { transform: rotate(4.5deg); }
+  }
+  .hero-copy { position: relative; z-index: var(--z-hero-copy); }
+  .hero .dates {
+    font-weight: 600; color: var(--gold);
+    font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 1.4rem + 5vw, 5.5rem);
+    color: var(--ink);
+    text-shadow: 0 0 22px oklch(0.66 0.19 25 / 0.55), 0 0 60px oklch(0.66 0.19 25 / 0.3);
+    max-width: 14ch;
+  }
+  .hero h1 em { font-style: normal; color: var(--teal); text-shadow: 0 0 24px oklch(0.82 0.12 185 / 0.5); }
+  .hero p.lede {
+    max-width: 52ch; margin-top: 1.5rem; color: var(--muted); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem);
+  }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2.25rem; }
+  .btn {
+    display: inline-block; padding: 0.85rem 1.9rem; border-radius: 999px;
+    font-family: var(--body); font-weight: 700; font-size: 1rem; text-decoration: none;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-red { background: var(--red); color: oklch(0.98 0.01 90); box-shadow: 0 0 28px oklch(0.66 0.19 25 / 0.45); }
+  .btn-red:hover { box-shadow: 0 0 40px oklch(0.66 0.19 25 / 0.65); }
+  .btn-ghost { background: transparent; color: var(--teal); border: 1px solid var(--teal); }
+
+  /* ---------- ticker ---------- */
+  .ticker {
+    position: relative; z-index: var(--z-ticker);
+    background: var(--red-deep);
+    border-block: 1px solid oklch(0.66 0.19 25 / 0.6);
+    overflow: hidden; padding-block: 0.7rem;
+  }
+  .ticker-track {
+    display: flex; gap: 2.5rem; width: max-content;
+    animation: tick 38s linear infinite;
+    font-weight: 600; font-size: 0.95rem; color: oklch(0.94 0.03 60);
+    white-space: nowrap;
+  }
+  .ticker-track span::after { content: "·"; margin-left: 2.5rem; color: var(--gold); }
+  @keyframes tick { to { transform: translateX(-50%); } }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(3.5rem, 9vh, 7rem); }
+  .section-head { margin-bottom: clamp(2rem, 5vh, 3.5rem); }
+  .section-head h2 { font-size: clamp(1.7rem, 1.2rem + 2.4vw, 3.1rem); }
+  .section-head p { color: var(--muted); max-width: 58ch; margin-top: 0.9rem; }
+  .kicker-red { color: var(--red); }
+  .kicker-teal { color: var(--teal); }
+  .kicker-gold { color: var(--gold); }
+
+  /* vendors */
+  .vendor-grid {
+    display: grid; gap: clamp(1.25rem, 3vw, 2rem);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  .vendor-card {
+    background: var(--surface); border-radius: 14px; overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .vendor-card:hover { transform: translateY(-6px); }
+  .vendor-card img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .vendor-card .vc-body { padding: 1.25rem 1.4rem 1.5rem; }
+  .vendor-card h3 { font-size: 1.15rem; margin-bottom: 0.4rem; color: var(--gold); }
+  .vendor-card p { color: var(--muted); font-size: 0.95rem; }
+  .vendor-card .stall { display: inline-block; margin-top: 0.85rem; font-size: 0.8rem; font-weight: 700; color: var(--teal); }
+  .vendor-note { margin-top: 2rem; color: var(--muted); max-width: 60ch; }
+  .vendor-note strong { color: var(--ink); }
+
+  /* map */
+  .map-section { background: var(--surface); }
+  .map-flex { display: grid; gap: clamp(2rem, 4vw, 3.5rem); grid-template-columns: 1fr; align-items: center; }
+  @media (min-width: 56rem) { .map-flex { grid-template-columns: 1.15fr 0.85fr; } }
+  .map-frame {
+    background: var(--bg); border-radius: 16px; padding: clamp(1rem, 3vw, 2rem);
+  }
+  .map-frame svg { width: 100%; height: auto; display: block; }
+  .pin { transform-origin: center bottom; transform-box: fill-box; animation: pinpop 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+  .pin.p1 { animation-delay: 0.15s; } .pin.p2 { animation-delay: 0.45s; }
+  .pin.p3 { animation-delay: 0.75s; } .pin.p4 { animation-delay: 1.05s; }
+  .pin.p5 { animation-delay: 1.35s; }
+  @keyframes pinpop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .zone-list { list-style: none; display: flex; flex-direction: column; gap: 1.1rem; }
+  .zone-list li { display: flex; gap: 0.9rem; align-items: baseline; }
+  .zone-dot { flex: none; width: 0.8rem; height: 0.8rem; border-radius: 50%; translate: 0 1px; }
+  .zone-list strong { display: block; color: var(--ink); }
+  .zone-list span { color: var(--muted); font-size: 0.95rem; }
+
+  /* lineup */
+  .lineup { display: grid; gap: 1rem; }
+  .act {
+    display: grid; grid-template-columns: 5.5rem 1fr auto; gap: 1rem; align-items: baseline;
+    padding: 1.1rem 1.25rem; background: var(--surface); border-radius: 12px;
+  }
+  .act .time { font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; }
+  .act .name { font-weight: 700; color: var(--ink); }
+  .act .what { color: var(--muted); font-size: 0.9rem; display: block; }
+  .act .stage { font-size: 0.85rem; color: var(--gold); font-weight: 600; }
+  @media (max-width: 34rem) {
+    .act { grid-template-columns: 4.5rem 1fr; }
+    .act .stage { grid-column: 2; }
+  }
+
+  /* photos strip */
+  .photo-strip { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+  @media (min-width: 48rem) { .photo-strip { grid-template-columns: 1.3fr 1fr; } }
+  .photo-strip figure { border-radius: 14px; overflow: hidden; }
+  .photo-strip img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-strip figcaption { color: var(--muted); font-size: 0.85rem; padding-top: 0.6rem; }
+
+  /* tickets */
+  .ticket-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .ticket {
+    background: var(--surface); border-radius: 14px; padding: 1.75rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .ticket.featured { background: var(--red-deep); }
+  .ticket h3 { font-size: 1.2rem; }
+  .ticket .price { font-family: var(--display); font-size: 2rem; color: var(--gold); }
+  .ticket.featured .price { color: var(--ink); }
+  .ticket ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; color: var(--muted); font-size: 0.95rem; }
+  .ticket.featured ul { color: oklch(0.87 0.05 60); }
+  .ticket ul li::before { content: "— "; color: var(--teal); }
+  .ticket .btn { margin-top: auto; text-align: center; }
+  .ticket.featured .btn-red { background: var(--ink); color: var(--red-deep); box-shadow: none; }
+
+  /* footer */
+  footer {
+    border-top: 1px solid var(--surface-2);
+    padding-block: 2.5rem; color: var(--muted); font-size: 0.9rem;
+  }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .lantern, .ticker-track, .pin { animation: none; }
+    .ticker-track { flex-wrap: wrap; width: auto; white-space: normal; }
+    .ticker { padding-inline: clamp(1.25rem, 4vw, 3rem); }
+    .btn, .vendor-card { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" href="#top">NIGHT<span>·</span>MARKET</a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#vendors">Vendors</a></li>
+        <li><a href="#map">The Grounds</a></li>
+        <li><a href="#lineup">Lineup</a></li>
+        <li><a href="#tickets">Tickets</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- hero -->
+  <div class="hero">
+    <div class="lanterns" aria-hidden="true">
+      <svg viewBox="0 0 1440 520" preserveAspectRatio="xMidYMin slice">
+        <defs>
+          <radialGradient id="glowR" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="oklch(0.66 0.19 25)" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="oklch(0.66 0.19 25)" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glowT" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="oklch(0.82 0.12 185)" stop-opacity="0.75"/>
+            <stop offset="100%" stop-color="oklch(0.82 0.12 185)" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glowG" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="oklch(0.83 0.12 90)" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="oklch(0.83 0.12 90)" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <g class="lantern s1">
+          <line x1="180" y1="0" x2="180" y2="120" stroke="oklch(0.35 0.05 280)" stroke-width="2"/>
+          <circle cx="180" cy="185" r="90" fill="url(#glowR)"/>
+          <ellipse cx="180" cy="185" rx="42" ry="52" fill="oklch(0.60 0.18 25)"/>
+          <ellipse cx="180" cy="185" rx="42" ry="52" fill="none" stroke="oklch(0.75 0.16 40)" stroke-width="1.5" opacity="0.6"/>
+          <rect x="168" y="128" width="24" height="10" rx="3" fill="oklch(0.83 0.12 90)"/>
+          <rect x="168" y="232" width="24" height="8" rx="3" fill="oklch(0.83 0.12 90)"/>
+        </g>
+        <g class="lantern s2">
+          <line x1="420" y1="0" x2="420" y2="60" stroke="oklch(0.35 0.05 280)" stroke-width="2"/>
+          <circle cx="420" cy="118" r="75" fill="url(#glowG)"/>
+          <ellipse cx="420" cy="118" rx="34" ry="44" fill="oklch(0.80 0.12 90)"/>
+          <rect x="410" y="70" width="20" height="8" rx="3" fill="oklch(0.50 0.15 25)"/>
+          <rect x="410" y="158" width="20" height="7" rx="3" fill="oklch(0.50 0.15 25)"/>
+        </g>
+        <g class="lantern s3">
+          <line x1="660" y1="0" x2="660" y2="170" stroke="oklch(0.35 0.05 280)" stroke-width="2"/>
+          <circle cx="660" cy="240" r="95" fill="url(#glowT)"/>
+          <ellipse cx="660" cy="240" rx="40" ry="54" fill="oklch(0.72 0.12 185)"/>
+          <rect x="649" y="181" width="22" height="9" rx="3" fill="oklch(0.83 0.12 90)"/>
+          <rect x="649" y="289" width="22" height="8" rx="3" fill="oklch(0.83 0.12 90)"/>
+        </g>
+        <g class="lantern s4">
+          <line x1="900" y1="0" x2="900" y2="95" stroke="oklch(0.35 0.05 280)" stroke-width="2"/>
+          <circle cx="900" cy="158" r="82" fill="url(#glowR)"/>
+          <ellipse cx="900" cy="158" rx="38" ry="48" fill="oklch(0.58 0.19 25)"/>
+          <ellipse cx="900" cy="158" rx="38" ry="48" fill="none" stroke="oklch(0.75 0.16 40)" stroke-width="1.5" opacity="0.6"/>
+          <rect x="889" y="105" width="22" height="9" rx="3" fill="oklch(0.83 0.12 90)"/>
+          <rect x="889" y="201" width="22" height="8" rx="3" fill="oklch(0.83 0.12 90)"/>
+        </g>
+        <g class="lantern s5">
+          <line x1="1140" y1="0" x2="1140" y2="150" stroke="oklch(0.35 0.05 280)" stroke-width="2"/>
+          <circle cx="1140" cy="215" r="88" fill="url(#glowG)"/>
+          <ellipse cx="1140" cy="215" rx="36" ry="50" fill="oklch(0.80 0.12 90)"/>
+          <rect x="1130" y="160" width="20" height="9" rx="3" fill="oklch(0.50 0.15 25)"/>
+          <rect x="1130" y="260" width="20" height="8" rx="3" fill="oklch(0.50 0.15 25)"/>
+        </g>
+        <g class="lantern s6">
+          <line x1="1330" y1="0" x2="1330" y2="75" stroke="oklch(0.35 0.05 280)" stroke-width="2"/>
+          <circle cx="1330" cy="132" r="72" fill="url(#glowT)"/>
+          <ellipse cx="1330" cy="132" rx="32" ry="42" fill="oklch(0.72 0.12 185)"/>
+          <rect x="1320" y="86" width="20" height="8" rx="3" fill="oklch(0.83 0.12 90)"/>
+          <rect x="1320" y="169" width="20" height="7" rx="3" fill="oklch(0.83 0.12 90)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="wrap hero-copy">
+      <p class="dates">Every Friday · June 6 – August 29 · 6pm until the coals give out</p>
+      <h1>Forty stalls. One alley. <em>Eat everything.</em></h1>
+      <p class="lede">Pratt Street closes at five, the lanterns go up at six, and by seven the whole block smells like charcoal, lemongrass, and brown sugar. This is the Night Market — twelve Fridays of skewers, noodles, cold beer, and loud music.</p>
+      <div class="hero-cta">
+        <a class="btn btn-red" href="#tickets">Get a tasting pass</a>
+        <a class="btn btn-ghost" href="#map">Find your way in</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ticker -->
+  <div class="ticker" aria-label="Vendor roll call">
+    <div class="ticker-track" id="tickerTrack">
+      <span>Bao Down</span><span>Smoke &amp; Satay</span><span>Noodle Religion</span><span>The Dumpling Aunties</span><span>Char Kings</span><span>Mango Sticky</span><span>Roti Riot</span><span>Skewer Theory</span><span>Chili Jam Social</span><span>Midnight Broth Co.</span><span>The Oyster Cart</span><span>Sugar Cane Press</span><span>Wok This Way</span><span>Tempura Tantrum</span><span>Coal &amp; Corn</span><span>Pandan Republic</span>
+    </div>
+  </div>
+
+  <!-- vendors -->
+  <section id="vendors">
+    <div class="wrap">
+      <div class="section-head">
+        <h2><span class="kicker-red">Forty vendors,</span> no repeats, no mercy</h2>
+        <p>Every stall is chosen by people who queue. Here are three the regulars plan their night around — the other thirty-seven you'll have to discover the hard way, which is the fun way.</p>
+      </div>
+      <div class="vendor-grid">
+        <article class="vendor-card">
+          <img src="https://picsum.photos/seed/nightmarket-1/800/600" width="800" height="600" alt="A stall grill loaded with lacquered skewers over open flame, smoke rising into lantern light" loading="lazy">
+          <div class="vc-body">
+            <h3>Char Kings</h3>
+            <p>Pork collar skewers brushed with burnt honey, finished over binchotan. The line forms at 6:04. They sell out by ten — every single week.</p>
+            <span class="stall">Stall 04 · Grill Row</span>
+          </div>
+        </article>
+        <article class="vendor-card">
+          <img src="https://picsum.photos/seed/nightmarket-2/800/600" width="800" height="600" alt="Steam pouring off bamboo baskets as a vendor lifts the lid on fresh dumplings" loading="lazy">
+          <div class="vc-body">
+            <h3>The Dumpling Aunties</h3>
+            <p>Two sisters, one folding table, four hundred pleats an hour. Pork-and-chive is the classic; the black vinegar is not optional.</p>
+            <span class="stall">Stall 11 · Noodle Alley</span>
+          </div>
+        </article>
+        <article class="vendor-card">
+          <img src="https://picsum.photos/seed/nightmarket-3/800/600" width="800" height="600" alt="Crowd bokeh and strings of lights above packed market tables late in the evening" loading="lazy">
+          <div class="vc-body">
+            <h3>Mango Sticky</h3>
+            <p>Coconut rice pressed to order, mango cut in front of you, sesame salt on top. Eat it on the curb watching the crowd go by — that's the whole point.</p>
+            <span class="stall">Stall 27 · Sweet Corner</span>
+          </div>
+        </article>
+      </div>
+      <p class="vendor-note"><strong>Full vendor list posted at both gates</strong> — plus rotating guest stalls each week, so the map you memorized in June is wrong by August.</p>
+    </div>
+  </section>
+
+  <!-- map -->
+  <section id="map" class="map-section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2><span class="kicker-teal">The grounds,</span> five zones, two gates</h2>
+        <p>Pratt Street between Meridian and the old rail arch. Cash and cards everywhere; the beer tent is card only. Lost? Follow the smoke.</p>
+      </div>
+      <div class="map-flex">
+        <div class="map-frame">
+          <svg viewBox="0 0 640 440" role="img" aria-label="Market grounds map showing five zones and two entrance gates">
+            <rect x="20" y="20" width="600" height="400" rx="14" fill="oklch(0.20 0.05 280)"/>
+            <path d="M 60 220 L 580 220" stroke="oklch(0.35 0.06 280)" stroke-width="26" stroke-linecap="round"/>
+            <text x="320" y="226" text-anchor="middle" fill="oklch(0.55 0.06 285)" font-family="Sora, sans-serif" font-size="13">PRATT STREET</text>
+            <path d="M 320 60 L 320 190 M 320 250 L 320 380" stroke="oklch(0.30 0.06 280)" stroke-width="14" stroke-linecap="round"/>
+            <rect x="60" y="60" width="200" height="120" rx="10" fill="oklch(0.25 0.06 280)"/>
+            <rect x="380" y="60" width="200" height="120" rx="10" fill="oklch(0.25 0.06 280)"/>
+            <rect x="60" y="260" width="200" height="120" rx="10" fill="oklch(0.25 0.06 280)"/>
+            <rect x="380" y="260" width="200" height="120" rx="10" fill="oklch(0.25 0.06 280)"/>
+            <g class="pin p1">
+              <path d="M 160 78 c -14 0 -24 10 -24 23 c 0 17 24 37 24 37 s 24 -20 24 -37 c 0 -13 -10 -23 -24 -23 z" fill="oklch(0.66 0.19 25)"/>
+              <circle cx="160" cy="101" r="8" fill="oklch(0.94 0.02 90)"/>
+            </g>
+            <g class="pin p2">
+              <path d="M 480 78 c -14 0 -24 10 -24 23 c 0 17 24 37 24 37 s 24 -20 24 -37 c 0 -13 -10 -23 -24 -23 z" fill="oklch(0.82 0.12 185)"/>
+              <circle cx="480" cy="101" r="8" fill="oklch(0.14 0.04 280)"/>
+            </g>
+            <g class="pin p3">
+              <path d="M 160 278 c -14 0 -24 10 -24 23 c 0 17 24 37 24 37 s 24 -20 24 -37 c 0 -13 -10 -23 -24 -23 z" fill="oklch(0.83 0.12 90)"/>
+              <circle cx="160" cy="301" r="8" fill="oklch(0.14 0.04 280)"/>
+            </g>
+            <g class="pin p4">
+              <path d="M 480 278 c -14 0 -24 10 -24 23 c 0 17 24 37 24 37 s 24 -20 24 -37 c 0 -13 -10 -23 -24 -23 z" fill="oklch(0.66 0.19 25)"/>
+              <circle cx="480" cy="301" r="8" fill="oklch(0.94 0.02 90)"/>
+            </g>
+            <g class="pin p5">
+              <path d="M 320 128 c -14 0 -24 10 -24 23 c 0 17 24 37 24 37 s 24 -20 24 -37 c 0 -13 -10 -23 -24 -23 z" fill="oklch(0.82 0.12 185)"/>
+              <circle cx="320" cy="151" r="8" fill="oklch(0.14 0.04 280)"/>
+            </g>
+            <text x="40" y="418" fill="oklch(0.83 0.12 90)" font-family="Sora, sans-serif" font-size="12" font-weight="700">GATE A — MERIDIAN</text>
+            <text x="600" y="418" text-anchor="end" fill="oklch(0.83 0.12 90)" font-family="Sora, sans-serif" font-size="12" font-weight="700">GATE B — RAIL ARCH</text>
+          </svg>
+        </div>
+        <ul class="zone-list">
+          <li><span class="zone-dot" style="background: oklch(0.66 0.19 25)"></span><div><strong>Grill Row</strong><span>Twelve stalls of open flame. Bring napkins; leave diets.</span></div></li>
+          <li><span class="zone-dot" style="background: oklch(0.82 0.12 185)"></span><div><strong>Noodle Alley</strong><span>Broths, dumplings, hand-pulled everything. Steaming until midnight.</span></div></li>
+          <li><span class="zone-dot" style="background: oklch(0.83 0.12 90)"></span><div><strong>Sweet Corner</strong><span>Mango sticky rice, sugar-cane juice, pandan soft serve.</span></div></li>
+          <li><span class="zone-dot" style="background: oklch(0.66 0.19 25)"></span><div><strong>The Bar Tent</strong><span>Six local taps, one very good lychee highball. Card only.</span></div></li>
+          <li><span class="zone-dot" style="background: oklch(0.82 0.12 185)"></span><div><strong>Stage Under the Arch</strong><span>Live sets from 7pm. The rail arch makes everything sound better.</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- lineup -->
+  <section id="lineup">
+    <div class="wrap">
+      <div class="section-head">
+        <h2><span class="kicker-gold">Opening night,</span> June 6 on the arch stage</h2>
+        <p>The full summer lineup drops weekly on the notice board at Gate A. Opening Friday looks like this:</p>
+      </div>
+      <div class="lineup">
+        <div class="act"><span class="time">7:00</span><div><span class="name">Marigold Brass</span><span class="what">Eight-piece street band, opens the market the loud way</span></div><span class="stage">Arch Stage</span></div>
+        <div class="act"><span class="time">8:15</span><div><span class="name">Linh Tran</span><span class="what">Đàn bầu one-string set — the alley goes quiet for this</span></div><span class="stage">Arch Stage</span></div>
+        <div class="act"><span class="time">9:30</span><div><span class="name">City Lions Dance Troupe</span><span class="what">Lion dance through Grill Row, drums you feel in your ribs</span></div><span class="stage">Starts at Gate A</span></div>
+        <div class="act"><span class="time">10:30</span><div><span class="name">DJ Mango Lassi</span><span class="what">City-pop and boogie until the lights come down</span></div><span class="stage">Arch Stage</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- tickets -->
+  <section id="tickets" class="map-section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2><span class="kicker-red">Get in,</span> eat up</h2>
+        <p>Entry is free, always was. Passes just save you the queue math. Kids under twelve eat free at any stall showing the gold lantern.</p>
+      </div>
+      <div class="ticket-grid">
+        <article class="ticket">
+          <h3>Walk In</h3>
+          <p class="price">Free</p>
+          <ul>
+            <li>Entry at either gate, all night</li>
+            <li>Full access to the stage</li>
+            <li>Pay stall to stall, cash or card</li>
+          </ul>
+          <a class="btn btn-ghost" href="#map">See the grounds</a>
+        </article>
+        <article class="ticket featured">
+          <h3>Tasting Pass</h3>
+          <p class="price">$29</p>
+          <ul>
+            <li>Ten tasting tokens, good at 34 stalls</li>
+            <li>Skip-the-line window at Grill Row</li>
+            <li>One pour in the Bar Tent included</li>
+            <li>Valid any single Friday</li>
+          </ul>
+          <a class="btn btn-red" href="#tickets">Buy a tasting pass</a>
+        </article>
+        <article class="ticket">
+          <h3>Lantern Table</h3>
+          <p class="price">$75 <span style="font-family: var(--body); font-size: 0.9rem; color: var(--muted);">/ person</span></p>
+          <ul>
+            <li>Reserved table for four under the arch</li>
+            <li>Chef's crawl: nine courses walked to you</li>
+            <li>Bottomless sugar-cane press</li>
+            <li>Only eight tables a night</li>
+          </ul>
+          <a class="btn btn-ghost" href="#tickets">Request a table</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Night Market · Pratt Street between Meridian &amp; the rail arch · Fridays, June 6 – August 29</p>
+    <p>Rain or shine. Mostly shine. Bring cash for the oyster cart — he's old school.</p>
+  </div>
+</footer>
+
+<script>
+  // Duplicate ticker content for a seamless marquee loop.
+  (function () {
+    var track = document.getElementById('tickerTrack');
+    if (!track) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    track.innerHTML += track.innerHTML;
+  })();
+</script>
+
+</body>
+</html>

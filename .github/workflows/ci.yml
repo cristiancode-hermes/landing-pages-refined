@@ -1,0 +1,73 @@
+name: loopkit-ci
+
+# Validates the harness itself: shell scripts lint & parse, JSON configs are
+# valid, and every skill has proper frontmatter. Branch-agnostic — the same
+# workflow runs on main and every language branch.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read          # least privilege (security track)
+
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2 (pinned SHA)
+
+      - name: shell scripts parse (bash -n)
+        run: |
+          set -euo pipefail
+          found=0
+          while IFS= read -r -d '' f; do
+            found=1
+            echo "bash -n $f"
+            bash -n "$f"
+          done < <(find . -name '*.sh' -not -path './.git/*' -print0)
+          [ "$found" -eq 1 ] || { echo "no shell scripts found"; exit 1; }
+
+      - name: shellcheck
+        run: |
+          set -euo pipefail
+          # ubuntu-latest ships shellcheck preinstalled.
+          # Severity 'error' keeps CI green on first run; raise to 'warning'
+          # once your scripts are clean to catch quoting/word-split issues.
+          find . -name '*.sh' -not -path './.git/*' -print0 \
+            | xargs -0 -r shellcheck --severity=error
+
+      - name: JSON configs valid
+        run: |
+          set -euo pipefail
+          rc=0
+          while IFS= read -r -d '' f; do
+            if python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f"; then
+              echo "ok   $f"
+            else
+              echo "BAD  $f"; rc=1
+            fi
+          done < <(find . -name '*.json' -not -path './.git/*' -not -path './node_modules/*' -print0)
+          exit "$rc"
+
+      - name: skills have valid frontmatter
+        run: |
+          set -euo pipefail
+          rc=0
+          shopt -s nullglob
+          for f in .claude/skills/*/SKILL.md; do
+            head -n1 "$f" | grep -qx -- '---' || { echo "no frontmatter start: $f"; rc=1; }
+            grep -qE '^name:'        "$f" || { echo "missing name:        $f"; rc=1; }
+            grep -qE '^description:' "$f" || { echo "missing description: $f"; rc=1; }
+          done
+          exit "$rc"
+
+      - name: hooks are executable
+        run: |
+          set -euo pipefail
+          rc=0
+          for h in .claude/hooks/*.sh; do
+            [ -x "$h" ] || { echo "not executable (chmod +x): $h"; rc=1; }
+          done
+          exit "$rc"

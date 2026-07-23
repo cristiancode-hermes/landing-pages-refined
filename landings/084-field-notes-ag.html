@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Notes — A regenerative CSA growing fourteen acres in Devon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;600;800&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: oklch(0.99 0 0);
+  --ink: oklch(0.26 0.02 130);
+  --muted: oklch(0.44 0.02 130);
+  --leaf: oklch(0.45 0.12 145);
+  --leaf-deep: oklch(0.34 0.09 145);
+  --leaf-tint: oklch(0.95 0.02 145);
+  --umber: oklch(0.44 0.08 55);
+  --umber-line: oklch(0.82 0.04 70);
+  --sky: oklch(0.52 0.09 230);
+  --sky-tint: oklch(0.95 0.015 230);
+  --font-display: "Bitter", serif;
+  --font-body: "Hanken Grotesk", sans-serif;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --z-sticky: 10;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 {
+  font-family: var(--font-display);
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+h1 { font-size: clamp(2.4rem, 5.6vw, 4.5rem); font-weight: 800; }
+h2 { font-size: clamp(1.8rem, 3.4vw, 2.7rem); font-weight: 700; font-weight: 600; }
+h3 { font-size: clamp(1.15rem, 2vw, 1.4rem); font-weight: 600; }
+p { max-width: 64ch; text-wrap: pretty; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--sky);
+  outline-offset: 3px;
+}
+.wrap { width: min(1140px, 100% - 3rem); margin-inline: auto; }
+.muted { color: var(--muted); }
+
+/* ---------- header ---------- */
+header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  background: oklch(0.99 0 0 / 0.94);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--umber-line);
+}
+.header-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 1rem;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.wordmark svg { flex: none; }
+nav ul { display: flex; gap: 1.8rem; list-style: none; flex-wrap: wrap; }
+nav a {
+  text-decoration: none;
+  font-size: 0.93rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color 0.25s var(--ease-out);
+}
+nav a:hover { color: var(--leaf-deep); }
+@media (max-width: 620px) {
+  .header-in { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  nav ul { gap: 1.1rem; }
+}
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(3rem, 7vh, 5.5rem) clamp(2.5rem, 6vh, 4rem); }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: end;
+}
+.hero h1 { max-width: 13ch; }
+.hero h1 em { font-style: normal; color: var(--leaf); }
+.weather {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--sky-tint);
+  color: var(--sky);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  margin-bottom: 1.4rem;
+}
+.hero .lead { margin-top: 1.3rem; color: var(--muted); font-size: 1.12rem; max-width: 46ch; }
+.hero .cta-row { margin-top: 2rem; display: flex; gap: 0.9rem; flex-wrap: wrap; }
+.btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.btn-leaf { background: var(--leaf); color: oklch(0.99 0 0); border: none; }
+.btn-leaf:hover { background: var(--leaf-deep); }
+.btn-plain { color: var(--leaf-deep); text-decoration: underline; text-underline-offset: 4px; padding-inline: 0.4rem; }
+.hero-figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+.hero-figure figcaption {
+  font-size: 0.88rem;
+  color: var(--muted);
+  padding-top: 0.7rem;
+}
+@media (max-width: 820px) {
+  .hero-grid { grid-template-columns: 1fr; align-items: start; }
+}
+
+/* ---------- season wheel ---------- */
+.season {
+  background: var(--leaf-deep);
+  color: oklch(0.97 0.01 130);
+  padding-block: clamp(3.5rem, 8vh, 6rem);
+}
+.season-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: center;
+}
+.wheel-wrap { width: min(300px, 70vw); }
+.wheel-wrap svg { width: 100%; height: auto; display: block; }
+#wheel-months {
+  transition: transform 2.4s var(--ease-out);
+  transform-origin: 150px 150px;
+}
+.season h2 { color: oklch(0.99 0 0); max-width: 20ch; }
+.season p { color: oklch(0.87 0.03 140); }
+.season .now {
+  margin-top: 1.2rem;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: oklch(0.92 0.06 90);
+}
+.season .body { margin-top: 1rem; max-width: 50ch; }
+@media (max-width: 760px) {
+  .season-grid { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .season .body, .season h2 { margin-inline: auto; }
+}
+
+/* ---------- the box ---------- */
+.box { padding-block: clamp(4rem, 9vh, 7rem); }
+.box-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.box-head h2 { max-width: 20ch; }
+.box-head .price-line {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--umber);
+}
+.harvest { list-style: none; margin-top: 2.5rem; }
+.harvest li {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 1.05rem 0;
+  position: relative;
+}
+.harvest li::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--leaf);
+  transform-origin: left;
+  transform: scaleX(1);
+}
+.harvest.sprouting li { opacity: 0; transform: translateY(14px); }
+.harvest.sprouting li::after { transform: scaleX(0); }
+.harvest.sprouting li.sprouted {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.harvest.sprouting li.sprouted::after {
+  transform: scaleX(1);
+  transition: transform 0.9s var(--ease-out) 0.15s;
+}
+.harvest .crop { font-weight: 600; font-size: 1.08rem; }
+.harvest .note { color: var(--muted); font-size: 0.92rem; grid-column: 2; }
+.harvest .qty {
+  font-family: var(--font-display);
+  color: var(--umber);
+  white-space: nowrap;
+  grid-row: 1;
+  grid-column: 3;
+}
+.harvest .leaf-ico { grid-row: 1; color: var(--leaf); font-family: var(--font-display); }
+.box .swap {
+  margin-top: 1.6rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ---------- soil philosophy ---------- */
+.soil {
+  background: var(--leaf-tint);
+  padding-block: clamp(4rem, 9vh, 7rem);
+}
+.soil-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+}
+.soil h2 { color: var(--leaf-deep); max-width: 18ch; }
+.soil .copy p { color: var(--ink); }
+.soil .copy p + p { margin-top: 1rem; }
+.soil .copy .first { margin-top: 1.2rem; }
+.soil figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+.soil figcaption { font-size: 0.88rem; color: var(--muted); padding-top: 0.7rem; }
+.soil .stats {
+  margin-top: 1.6rem;
+  display: flex;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+  font-family: var(--font-display);
+}
+.soil .stats div { font-size: 1.05rem; color: var(--leaf-deep); }
+.soil .stats strong { display: block; font-size: 1.9rem; color: var(--umber); }
+@media (max-width: 760px) {
+  .soil-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- pickup vs delivery ---------- */
+.getting { padding-block: clamp(4rem, 9vh, 7rem); }
+.getting h2 { max-width: 24ch; }
+.getting .lead { margin-top: 1rem; color: var(--muted); }
+.getting-grid {
+  margin-top: 2.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+.getting article {
+  border-top: 3px solid var(--leaf);
+  padding-top: 1.4rem;
+}
+.getting article.umber { border-top-color: var(--umber); }
+.getting h3 { margin-bottom: 0.8rem; }
+.getting p { color: var(--muted); font-size: 0.98rem; }
+.getting p + p { margin-top: 0.7rem; }
+.getting .price-tag {
+  display: inline-block;
+  margin-top: 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--leaf-deep);
+  background: var(--leaf-tint);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+}
+.getting article.umber .price-tag { color: var(--umber); background: oklch(0.95 0.02 70); }
+@media (max-width: 700px) {
+  .getting-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- work share ---------- */
+.workshare {
+  padding-block: clamp(3.5rem, 8vh, 5.5rem);
+  border-block: 1px solid var(--umber-line);
+  background: oklch(0.97 0.015 70);
+}
+.workshare .in {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+.workshare .hours {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 7vw, 5rem);
+  color: var(--umber);
+  line-height: 1;
+  white-space: nowrap;
+}
+.workshare .hours small {
+  display: block;
+  font-size: 0.28em;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  margin-top: 0.4rem;
+}
+.workshare p { color: var(--ink); }
+.workshare p strong { color: var(--umber); }
+@media (max-width: 640px) {
+  .workshare .in { grid-template-columns: 1fr; }
+}
+
+/* ---------- visit days ---------- */
+.visits { padding-block: clamp(4rem, 9vh, 6.5rem); }
+.visits h2 { max-width: 22ch; }
+.visits .lead { margin-top: 1rem; color: var(--muted); max-width: 54ch; }
+.visit-list { list-style: none; margin-top: 2.2rem; }
+.visit-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--umber-line);
+}
+.visit-list .when {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--leaf-deep);
+}
+.visit-list .what { color: var(--muted); flex: 1; min-width: 14rem; }
+.visit-list .rsvp { font-size: 0.9rem; color: var(--sky); font-weight: 600; white-space: nowrap; }
+
+/* ---------- footer ---------- */
+footer {
+  background: var(--leaf-deep);
+  color: oklch(0.90 0.03 140);
+  padding-block: 3rem;
+}
+.footer-in {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.92rem;
+}
+footer a { color: oklch(0.99 0 0); text-underline-offset: 3px; }
+footer .fm {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: oklch(0.99 0 0);
+}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  #wheel-months { transition: none; }
+  .harvest.sprouting li { opacity: 1; transform: none; }
+  .harvest.sprouting li::after { transform: scaleX(1); }
+  .btn, nav a { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="wordmark" href="#top">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+        <path d="M11 21 V9" stroke="oklch(0.45 0.12 145)" stroke-width="2" fill="none"/>
+        <path d="M11 12 C11 7 7 5 2 5 C2 10 6 12 11 12 Z" fill="oklch(0.45 0.12 145)"/>
+        <path d="M11 9 C11 4 15 2 20 2 C20 7 16 9 11 9 Z" fill="oklch(0.60 0.11 145)"/>
+      </svg>
+      Field Notes
+    </a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#box">This month's box</a></li>
+        <li><a href="#soil">The soil</a></li>
+        <li><a href="#getting">Pickup &amp; delivery</a></li>
+        <li><a href="#visits">Visit days</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-label="Introduction">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="weather">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 3.5 V7 L9.5 8.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+          Field note, Tuesday — 14°C, light rain. The leeks won't mind.
+        </p>
+        <h1>Vegetables with <em>a paper trail</em></h1>
+        <p class="lead">Field Notes is a community farm on fourteen acres outside Crediton,
+        Devon. One hundred and eighty households eat what the field decides, and every box
+        comes with the notes we wrote while growing it.</p>
+        <div class="cta-row">
+          <a class="btn btn-leaf" href="#box">Join the CSA — £14.50 a week</a>
+          <a class="btn btn-plain" href="#visits">Or come see the field first</a>
+        </div>
+      </div>
+      <figure class="hero-figure">
+        <img src="https://picsum.photos/seed/farm-1/1600/900" width="1600" height="900"
+             alt="Long vegetable rows running downhill toward a hedge line, evening light on the leaves">
+        <figcaption>The market garden, block C — chard, leeks and the last of the broad beans.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="season" aria-labelledby="season-heading">
+    <div class="wrap season-grid">
+      <div class="wheel-wrap" aria-hidden="true">
+        <svg viewBox="0 0 300 300" role="img">
+          <circle cx="150" cy="150" r="142" fill="none" stroke="oklch(0.87 0.03 140 / 0.35)" stroke-width="1"/>
+          <circle cx="150" cy="150" r="60" fill="none" stroke="oklch(0.87 0.03 140 / 0.35)" stroke-width="1"/>
+          <g id="wheel-months" font-family="Bitter, serif" font-size="15" fill="oklch(0.97 0.01 130)" text-anchor="middle"></g>
+          <path d="M150 2 L143 18 L157 18 Z" fill="oklch(0.92 0.06 90)"/>
+        </svg>
+      </div>
+      <div>
+        <h2 id="season-heading">The year is the menu</h2>
+        <p class="now" id="season-now">This month: —</p>
+        <p class="body" id="season-body"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="box wrap" id="box" aria-labelledby="box-heading">
+    <div class="box-head">
+      <h2 id="box-heading">In the box this month</h2>
+      <p class="price-line">Small £14.50 · Family £22 · weekly, July</p>
+    </div>
+    <ul class="harvest" id="harvest-list">
+      <li><span class="leaf-ico" aria-hidden="true">·</span><span class="crop">New potatoes — 'Charlotte'</span><span class="qty">800 g</span><span class="note">Dug the morning you get them. Don't peel, don't refrigerate, don't apologise.</span></li>
+      <li><span class="leaf-ico" aria-hidden="true">·</span><span class="crop">Courgettes, green &amp; gold</span><span class="qty">4</span><span class="note">There will be more next week. There is always more next week.</span></li>
+      <li><span class="leaf-ico" aria-hidden="true">·</span><span class="crop">Polytunnel tomatoes</span><span class="qty">500 g</span><span class="note">First picking of the year — still slightly tart, exactly right.</span></li>
+      <li><span class="leaf-ico" aria-hidden="true">·</span><span class="crop">Chard, rainbow stems</span><span class="qty">1 bunch</span><span class="note">Cut-and-come-again bed four, sown back in March.</span></li>
+      <li><span class="leaf-ico" aria-hidden="true">·</span><span class="crop">Broad beans</span><span class="qty">600 g in pod</span><span class="note">The last picking — the plants come out Wednesday for the leeks.</span></li>
+      <li><span class="leaf-ico" aria-hidden="true">·</span><span class="crop">Wet garlic</span><span class="qty">2 bulbs</span><span class="note">Uncured, mild, use the whole stem. Keep it in the fridge this time.</span></li>
+      <li><span class="leaf-ico" aria-hidden="true">·</span><span class="crop">Salad leaves &amp; herbs</span><span class="qty">150 g</span><span class="note">Cut at 6 a.m., in your hands by 4 p.m. That's the whole supply chain.</span></li>
+    </ul>
+    <p class="swap">Something you can't eat? Every box has one swap at the pickup table — the
+    swap crate is also where surplus courgettes go to find new homes.</p>
+  </section>
+
+  <section class="soil" id="soil" aria-labelledby="soil-heading">
+    <div class="wrap soil-grid">
+      <div class="copy">
+        <h2 id="soil-heading">We farm the soil. The vegetables farm themselves.</h2>
+        <p class="first">Most farms feed the plant. We feed the ground under it — compost from
+        the village, deep-rooting cover crops over winter, and no digging, ever, because a
+        spade undoes in an hour what the worms built in a year.</p>
+        <p>It costs us yield in year one and pays it back for twenty. Our beds hold water
+        through August without irrigation, grow fewer weeds each season, and — the part we
+        care about — produce food that tastes like somewhere.</p>
+        <div class="stats">
+          <div><strong>0</strong>synthetic inputs since 2019</div>
+          <div><strong>11 t</strong>compost per acre, yearly</div>
+          <div><strong>43</strong>crop varieties in rotation</div>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/farm-2/800/600" width="800" height="600"
+             alt="Two hands holding dark crumbly soil above a garden bed, earthworm visible">
+        <figcaption>Mags checking the crumb structure in block A — it should hold, then fall apart.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="getting wrap" id="getting" aria-labelledby="getting-heading">
+    <h2 id="getting-heading">Pickup or delivery — choose honestly</h2>
+    <p class="lead">Both get the same box, packed the same afternoon. The difference is price,
+    miles, and whether you get to see the field.</p>
+    <div class="getting-grid">
+      <article>
+        <h3>Pickup at the farm gate</h3>
+        <p>Thursdays 3–7 p.m. at the barn on Park Road. Your box is weighed out with your name
+        on the crate, the swap table is open, and Tom is usually around to answer "what do I
+        do with this?" in person.</p>
+        <p>If you can't make Thursday, a neighbour can collect with your surname — no app,
+        no QR codes, no fuss.</p>
+        <p class="price-tag">£14.50 / week · small box</p>
+      </article>
+      <article class="umber">
+        <h3>Delivery, by e-cargo trike</h3>
+        <p>Fridays within Crediton and Sandford only — that's as far as the trike's battery
+        and our ethics both reach. Boxes arrive in returnable crates that we collect with the
+        next delivery.</p>
+        <p>We'd rather tell you no than put a diesel van on the road for one salad bag. If
+        you're outside the loop, pickup is the honest option.</p>
+        <p class="price-tag">£17 / week · small box, delivered</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="workshare" aria-labelledby="work-heading">
+    <div class="wrap in">
+      <p class="hours" id="work-heading">4<small>HOURS A MONTH</small></p>
+      <p>The work-share, straight up: give the field <strong>four hours a month</strong> —
+      weeding, packing, or the Saturday big-dig — and we take <strong>£26 off your monthly
+      box</strong>. Miss two months in a row and the discount lapses, no guilt trip either
+      way. About a third of our members work their share; the farm genuinely runs on it.</p>
+    </div>
+  </section>
+
+  <section class="visits wrap" id="visits" aria-labelledby="visit-heading">
+    <h2 id="visit-heading">Come and see where dinner grows</h2>
+    <p class="lead">First Sunday of the month, 10 a.m. to 1 p.m., whatever the weather. Wellies
+    advised; dogs on leads welcome; the kettle is always on.</p>
+    <ul class="visit-list">
+      <li>
+        <span class="when">Sun 3 August</span>
+        <span class="what">High-summer walk — tomato tunnel tour, courgette surplus strategy session, kids' bug hunt.</span>
+        <span class="rsvp">28 places left</span>
+      </li>
+      <li>
+        <span class="when">Sun 7 September</span>
+        <span class="what">Harvest day — help lift the maincrop potatoes, take home what you dig, soup at noon.</span>
+        <span class="rsvp">41 places left</span>
+      </li>
+      <li>
+        <span class="when">Sun 5 October</span>
+        <span class="what">Season's-end open day — cover-crop sowing, apple pressing (bring bottles), AGM for members.</span>
+        <span class="rsvp">Open to all</span>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-in">
+    <p><span class="fm">Field Notes CSA</span><br>
+    Park Road Farm, Crediton, Devon EX17<br>
+    Mags &amp; Tom Okafor, growers</p>
+    <p>Boxes: <a href="mailto:box@fieldnotes-csa.example">box@fieldnotes-csa.example</a><br>
+    Work-share: <a href="mailto:hands@fieldnotes-csa.example">hands@fieldnotes-csa.example</a><br>
+    01363 000 281 (evenings — we're outside all day)</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- season wheel: rotate to the current month ---------- */
+  var MONTHS = ["January","February","March","April","May","June",
+                "July","August","September","October","November","December"];
+  var NOTES = [
+    "Hungry gap planning — we sow the polytunnels and eat the last of the stores.",
+    "First sowings under fleece. The box leans on roots, kale and our own preserves.",
+    "The tunnel wakes up — winter purslane, claytonia, the first wet garlic.",
+    "Asparagus starts its six-week sprint. Purple sprouting broccoli carries the box.",
+    "Salads return in force. Outdoor beds go in after the last frost date, mid-month.",
+    "Broad beans, new potatoes, strawberries — the year's first real abundance.",
+    "High summer — tomatoes from the tunnel, courgettes by the wheelbarrow, maincrop salads.",
+    "Glut season. Sweetcorn, French beans, and more tomatoes than sense.",
+    "Harvest month — maincrop potatoes come up, squash skins harden in the sun.",
+    "The field turns — leeks, kale and roots take over; cover crops go in behind them.",
+    "Store season begins — squash, onions, potatoes from the clamp, winter greens.",
+    "The quiet box — roots, sprouts, kale, and the chutneys we made in September."
+  ];
+  var now = new Date();
+  var m = now.getMonth();
+
+  var g = document.getElementById("wheel-months");
+  var NS = "http://www.w3.org/2000/svg";
+  MONTHS.forEach(function (name, i) {
+    var angle = (i / 12) * 360;
+    var t = document.createElementNS(NS, "text");
+    var rad = (angle - 90) * Math.PI / 180;
+    var r = 100;
+    t.setAttribute("x", (150 + r * Math.cos(rad)).toFixed(1));
+    t.setAttribute("y", (150 + r * Math.sin(rad)).toFixed(1));
+    t.setAttribute("dy", "0.35em");
+    t.setAttribute("transform", "rotate(" + angle + " " +
+      (150 + r * Math.cos(rad)).toFixed(1) + " " + (150 + r * Math.sin(rad)).toFixed(1) + ")");
+    t.textContent = name;
+    if (i === m) {
+      t.setAttribute("fill", "oklch(0.92 0.06 90)");
+      t.setAttribute("font-weight", "700");
+    }
+    g.appendChild(t);
+  });
+  /* rotate so the current month sits at the top pointer */
+  g.style.transform = "rotate(" + (-m * 30) + "deg)";
+  /* keep labels upright relative to wheel by counter-rotating each label's own origin:
+     labels were placed pre-rotation, so rotation of the group carries them around. */
+
+  document.getElementById("season-now").textContent = "This month: " + MONTHS[m];
+  document.getElementById("season-body").textContent = NOTES[m];
+
+  /* ---------- harvest rows sprout in sequence ---------- */
+  var list = document.getElementById("harvest-list");
+  if (!reduce && "IntersectionObserver" in window) {
+    var rows = list.querySelectorAll("li");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        list.classList.add("sprouting");
+        /* force the starting state before staggering */
+        requestAnimationFrame(function () {
+          rows.forEach(function (row, i) {
+            setTimeout(function () { row.classList.add("sprouted"); }, i * 110);
+          });
+        });
+        io.disconnect();
+      });
+    }, { threshold: 0.2 });
+    io.observe(list);
+  }
+})();
+</script>
+</body>
+</html>

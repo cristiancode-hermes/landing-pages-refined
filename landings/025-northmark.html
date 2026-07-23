@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Northmark — One boot, done right. Resoled for life.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --surface: oklch(0.96 0.012 75);
+    --ink: oklch(0.23 0.02 60);
+    --ink-soft: oklch(0.38 0.03 62);
+    --leather: oklch(0.42 0.09 55);
+    --leather-deep: oklch(0.33 0.08 55);
+    --leather-ink: oklch(0.93 0.015 75);
+    --blaze: oklch(0.55 0.17 50);
+    --blaze-deep: oklch(0.47 0.15 48);
+    --line: oklch(0.89 0.012 72);
+    --display: "Archivo", sans-serif;
+    --body: "Hanken Grotesk", sans-serif;
+    --step--1: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.1rem);
+    --step-1: clamp(1.25rem, 1.18rem + 0.35vw, 1.45rem);
+    --step-2: clamp(1.56rem, 1.42rem + 0.7vw, 2rem);
+    --step-3: clamp(1.95rem, 1.68rem + 1.35vw, 2.8rem);
+    --step-4: clamp(2.44rem, 1.9rem + 2.7vw, 4.2rem);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+    --z-slider: 5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  h1, h2, h3 {
+    font-family: var(--display);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  p { max-width: 68ch; text-wrap: pretty; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 3px solid var(--blaze);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .wrap { width: min(1140px, 100% - 3rem); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 3rem + 5vw, 8rem); }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: oklch(1 0 0 / 0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.85rem;
+  }
+  .brand {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: 1.25rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .brand svg { width: 1.4rem; height: 1.4rem; flex: none; }
+  .brand svg path, .brand svg rect { fill: var(--leather); }
+  .site-nav { display: flex; align-items: center; gap: 1.6rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--blaze-deep); }
+  @media (max-width: 640px) { .site-nav a:not(.btn) { display: none; } }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: oklch(0.98 0.01 70);
+    background: var(--leather-deep);
+    padding: 0.8rem 1.7rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out);
+  }
+  .btn:hover { background: var(--leather); transform: translateY(-2px); }
+  .btn.small { padding: 0.55rem 1.2rem; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .btn.blaze { background: var(--blaze); }
+  .btn.blaze:hover { background: var(--blaze-deep); }
+  .btn.ghost {
+    background: transparent;
+    color: var(--leather-deep);
+    box-shadow: inset 0 0 0 2px var(--leather);
+  }
+  .btn.ghost:hover { background: var(--surface); color: var(--leather-deep); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    padding-block: clamp(3.5rem, 2.5rem + 5vw, 7rem) clamp(5rem, 4rem + 5vw, 8rem);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+    align-items: center;
+  }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+  .hero .kicker-fact {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--blaze-deep);
+    margin-bottom: 1.1rem;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.4rem;
+  }
+  .hero h1 em { font-style: normal; color: var(--leather); }
+  .hero .lede {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+  .hero figure { position: relative; }
+  .hero figure img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 14px;
+  }
+  .hero figcaption {
+    margin-top: 0.7rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+
+  /* boot-print step-in sequence */
+  .prints {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(0.5rem, 2vw, 1.5rem);
+    height: 4.5rem;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    gap: clamp(1.2rem, 4vw, 3.4rem);
+    overflow: hidden;
+  }
+  .prints svg {
+    width: 2rem;
+    height: 3.2rem;
+    opacity: 0.16;
+    transform: translateY(var(--lift, 0)) rotate(var(--rot, 0deg));
+    animation: stepIn 0.7s var(--ease-out) both;
+    animation-delay: var(--d, 0s);
+  }
+  .prints svg path, .prints svg rect { fill: var(--leather); }
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(calc(var(--lift, 0) + 26px)) rotate(var(--rot, 0deg)) scale(0.7); }
+    to   { opacity: 0.16; transform: translateY(var(--lift, 0)) rotate(var(--rot, 0deg)) scale(1); }
+  }
+
+  /* ---------- the boot ---------- */
+  .boot { background: var(--surface); }
+  .boot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5.5rem);
+    align-items: start;
+  }
+  @media (max-width: 860px) { .boot-grid { grid-template-columns: 1fr; } }
+  .boot h2, .resole h2, .sizing h2, .log h2 { font-size: var(--step-3); margin-bottom: 1.2rem; }
+  .boot .price-line {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-1);
+    color: var(--leather-deep);
+    margin: 1.6rem 0 0.4rem;
+  }
+  .boot .price-note { font-size: var(--step--1); color: var(--ink-soft); }
+  .spec-list { border-top: 1px solid var(--line); }
+  .spec-list > div {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    gap: 1rem;
+    padding-block: 0.95rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .spec-list dt {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: var(--step--1);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--leather);
+    padding-top: 0.15rem;
+  }
+  .spec-list dd { color: var(--ink); }
+
+  /* ---------- resole / before-after ---------- */
+  .resole-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 5.5rem);
+    align-items: center;
+  }
+  @media (max-width: 860px) { .resole-grid { grid-template-columns: 1fr; } }
+  .resole p + p { margin-top: 1rem; }
+  .resole .promise {
+    margin-top: 1.8rem;
+    padding: 1.1rem 1.3rem;
+    background: var(--surface);
+    border-radius: 12px;
+    font-weight: 600;
+    color: var(--leather-deep);
+    max-width: 46ch;
+  }
+  .ba {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    --pos: 50%;
+  }
+  .ba img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ba .before { filter: sepia(0.55) saturate(0.55) brightness(0.8) contrast(0.92); }
+  .ba .after { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+  .ba .divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 2px;
+    background: oklch(0.98 0.01 70);
+    transform: translateX(-1px);
+    pointer-events: none;
+  }
+  .ba .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2.6rem;
+    height: 2.6rem;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    background: var(--blaze);
+    box-shadow: 0 2px 6px oklch(0.2 0.02 60 / 0.45);
+  }
+  .ba .tag {
+    position: absolute;
+    top: 0.8rem;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: oklch(0.98 0.01 70);
+    background: oklch(0.25 0.02 60 / 0.72);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+  .ba .tag.worn { left: 0.8rem; }
+  .ba .tag.new { right: 0.8rem; }
+  .ba input[type="range"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: var(--z-slider);
+  }
+  .ba-caption {
+    margin-top: 0.7rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+
+  /* ---------- sizing ---------- */
+  .sizing { background: var(--leather-deep); color: var(--leather-ink); }
+  .sizing h2 { color: oklch(0.98 0.01 70); }
+  .sizing .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.8rem, 1rem + 3vw, 3.5rem);
+  }
+  .sizing p { color: oklch(0.88 0.02 70); }
+  .sizing p + p { margin-top: 1rem; }
+  .sizing .rule {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-1);
+    color: oklch(0.98 0.01 70);
+    margin-bottom: 0.7rem;
+    line-height: 1.25;
+  }
+  .sizing a { color: oklch(0.9 0.1 60); font-weight: 600; }
+
+  /* ---------- trail log ---------- */
+  .log .ledger { border-top: 2px solid var(--ink); margin-top: 1.8rem; }
+  .log .entry {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr auto;
+    gap: 1.2rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  @media (max-width: 640px) {
+    .log .entry { grid-template-columns: 1fr; gap: 0.25rem; }
+  }
+  .log .date {
+    font-size: var(--step--1);
+    font-weight: 700;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .log .trail { font-weight: 600; font-size: var(--step-1); }
+  .log .note { color: var(--ink-soft); font-size: var(--step--1); margin-top: 0.15rem; }
+  .log .miles {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: var(--step-1);
+    color: var(--blaze-deep);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 2.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; justify-content: space-between; }
+  footer strong { color: var(--ink); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .prints svg { animation: none; }
+    .btn, .btn:hover { transition: none; transform: none; }
+    .ba .after { transition: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* northmark-cta-mobile */
+  .btn-label-short { display: none; }
+  @media (max-width: 480px) {
+    .btn-label-full { display: none; }
+    .btn-label-short { display: inline; }
+    .site-head .btn.small.blaze {
+      font-size: 0.78rem;
+      padding: 0.45rem 0.85rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bootprint" viewBox="0 0 36 60">
+      <path d="M18 2c7.5 0 12.5 5.2 12.5 13.5v9.5c0 6.2-4.5 9.5-12.5 9.5S5.5 31.2 5.5 25v-9.5C5.5 7.2 10.5 2 18 2Z"/>
+      <rect x="8" y="40" width="20" height="15" rx="5.5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Northmark home">
+      <svg viewBox="0 0 36 60" aria-hidden="true"><use href="#bootprint"/></svg>
+      Northmark
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="#boot">The boot</a>
+      <a href="#resole">Resole for life</a>
+      <a href="#sizing">Sizing</a>
+      <a href="#log">Trail log</a>
+      <a class="btn small blaze" href="#boot"><span class="btn-label-full">Get the Meriden — $385</span><span class="btn-label-short">Meriden · $385</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="kicker-fact">One model since 1989 · Bellingham, Washington</p>
+        <h1>One boot. Built once. <em>Rebuilt forever.</em></h1>
+        <p class="lede">The Meriden is the only boot we make. Full-grain steerhide, a sole you can replace, and a last we've been arguing about for thirty-seven years. When it's right, you stop thinking about your feet.</p>
+        <div class="hero-cta">
+          <a class="btn blaze" href="#boot">See the boot</a>
+          <a class="btn ghost" href="#resole">The resole promise</a>
+        </div>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/boots-1/1600/900" width="1600" height="900"
+             alt="A Meriden boot resting on granite above the tree line, laces still damp from the morning creek ford.">
+        <figcaption>Pair #0317, somewhere on the Ptarmigan Traverse, day four.</figcaption>
+      </figure>
+    </div>
+    <div class="prints" aria-hidden="true">
+      <svg style="--d:0.15s; --rot:-9deg; --lift:0px" viewBox="0 0 36 60"><use href="#bootprint"/></svg>
+      <svg style="--d:0.45s; --rot:8deg; --lift:-14px" viewBox="0 0 36 60"><use href="#bootprint"/></svg>
+      <svg style="--d:0.75s; --rot:-7deg; --lift:2px" viewBox="0 0 36 60"><use href="#bootprint"/></svg>
+      <svg style="--d:1.05s; --rot:9deg; --lift:-12px" viewBox="0 0 36 60"><use href="#bootprint"/></svg>
+      <svg style="--d:1.35s; --rot:-8deg; --lift:0px" viewBox="0 0 36 60"><use href="#bootprint"/></svg>
+      <svg style="--d:1.65s; --rot:7deg; --lift:-14px" viewBox="0 0 36 60"><use href="#bootprint"/></svg>
+    </div>
+  </section>
+
+  <section class="boot" id="boot">
+    <div class="wrap boot-grid">
+      <div>
+        <h2>The Meriden, six-inch. That's the whole catalog.</h2>
+        <p>We tried a second model in 1994. It distracted us for a season, so we killed it. Everything we know goes into one pattern, cut from one hide lot at a time, stitched in a shop where the radio is always slightly too loud.</p>
+        <p class="price-line">$385 — resoles $85, for life</p>
+        <p class="price-note">Free shipping both ways on resoles. No sales, ever; the price is the price.</p>
+      </div>
+      <dl class="spec-list">
+        <div><dt>Upper</dt><dd>2.4&nbsp;mm full-grain steerhide, one piece per quarter, waxed in-house</dd></div>
+        <div><dt>Sole</dt><dd>Vibram Montagna, stitched through the welt — not just glued</dd></div>
+        <div><dt>Weight</dt><dd>618&nbsp;g per boot in men's 9 — heavy enough to trust, light enough to forget</dd></div>
+        <div><dt>Run</dt><dd>400 pairs a year, numbered on the tongue</dd></div>
+        <div><dt>Break-in</dt><dd>About 30 honest miles. We won't pretend it's less.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="resole" id="resole">
+    <div class="wrap resole-grid">
+      <div>
+        <h2>Send them back tired. They come home ready.</h2>
+        <p>A stitched sole is a promise: when the lugs wear smooth, you don't throw the boot away. Strip the outsole, inspect the welt, rebuild from the midsole down. Three weeks, door to door, and the upper — the part that's molded to your foot — never leaves the story.</p>
+        <p>Pair #0031 has been resoled nine times. Its owner walked it through three decades and two careers. The leather is darker now, softer at the ankle, and better than the day it shipped.</p>
+        <p class="promise">$85 a resole, for as long as you own the boots. Drag the handle to see what nine resoles buys you.</p>
+      </div>
+      <figure>
+        <div class="ba" id="ba">
+          <img class="before" src="https://picsum.photos/seed/boots-2/800/600" width="800" height="600"
+               alt="A worn Meriden on the resole bench, sole smooth and leather scuffed from a hard season.">
+          <img class="after" src="https://picsum.photos/seed/boots-2/800/600" width="800" height="600"
+               alt="The same bench after the rebuild: fresh Vibram sole stitched on, upper conditioned and gleaming.">
+          <span class="tag worn">Worn</span>
+          <span class="tag new">Resoled</span>
+          <div class="divider" aria-hidden="true"></div>
+          <input type="range" id="ba-range" min="0" max="100" value="50" aria-label="Reveal the resoled boot">
+        </div>
+        <figcaption class="ba-caption">Same bench, three weeks apart. The upper is the part worth keeping.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sizing" id="sizing">
+    <div class="wrap">
+      <h2>Our sizing is honest, which means it's a little strange.</h2>
+      <div class="cols">
+        <div>
+          <p class="rule">Between sizes? Size down.</p>
+          <p>The Meriden runs long in the toe on purpose — your foot swells at mile twelve, and a boot that fits at 8 a.m. shouldn't cripple you at 4 p.m. The heel stays snug so you don't blister.</p>
+        </div>
+        <div>
+          <p class="rule">Measure in centimeters. Trust the chart.</p>
+          <p>If vanity sizing has burned you before, skip the guesswork: stand on a piece of paper, trace, measure heel to longest toe, and match it to the chart. Two widths, every size, no upcharge.</p>
+        </div>
+        <div>
+          <p class="rule">Wrong size? We swap it, free.</p>
+          <p>Wear them around the house for a week. Carpet only. If they're wrong, send them back and the right pair ships before yours lands. About 6% of orders swap — we'd rather know.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="log" id="log">
+    <div class="wrap">
+      <h2>The test ledger</h2>
+      <p style="max-width:62ch">Every production run gets beaten on by staff before it ships. These are the last entries, unedited — including the days we got cold and wet.</p>
+      <div class="ledger">
+        <div class="entry">
+          <span class="date">2026-05-02</span>
+          <div><span class="trail">Enchantments thru-hike, WA</span><p class="note">Snow over scree above Aasgard Pass. No hot spots, no wet socks, one marmot incident.</p></div>
+          <span class="miles">19.4 mi</span>
+        </div>
+        <div class="entry">
+          <span class="date">2026-04-18</span>
+          <div><span class="trail">Dosewallips washout loop</span><p class="note">Two knee-deep creek fords. Dried overnight by the stove; leather took one coat of wax after.</p></div>
+          <span class="miles">14.2 mi</span>
+        </div>
+        <div class="entry">
+          <span class="date">2026-03-30</span>
+          <div><span class="trail">Mailbox Peak, in sleet</span><p class="note">Laces iced solid on the ridge. Eyelets fine, footing fine, tester grumpy. Type-two fun.</p></div>
+          <span class="miles">7.8 mi</span>
+        </div>
+        <div class="entry">
+          <span class="date">2026-03-08</span>
+          <div><span class="trail">Oyster Dome mud season opener</span><p class="note">Ankle-deep clay for two miles. Tread shed it by the descent; we did not shed our dignity.</p></div>
+          <span class="miles">11.6 mi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><strong>Northmark Boot Co.</strong> — 1214 Harris Ave, Bellingham, WA. Shop hours Mon–Sat, 9–5.</span>
+    <span>We answer the phone: (360) 555-0117</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var ba = document.getElementById('ba');
+    var range = document.getElementById('ba-range');
+    function setPos(v) {
+      v = Math.max(0, Math.min(100, v));
+      ba.style.setProperty('--pos', v + '%');
+      range.value = v;
+    }
+    range.addEventListener('input', function () { setPos(Number(range.value)); });
+    ba.addEventListener('pointerdown', function (e) {
+      function move(ev) {
+        var r = ba.getBoundingClientRect();
+        setPos(((ev.clientX - r.left) / r.width) * 100);
+      }
+      move(e);
+      ba.setPointerCapture(e.pointerId);
+      ba.addEventListener('pointermove', move);
+      ba.addEventListener('pointerup', function () {
+        ba.removeEventListener('pointermove', move);
+      }, { once: true });
+    });
+  })();
+</script>
+</body>
+</html>

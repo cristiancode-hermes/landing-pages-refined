@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Half Light — a film lab that pushes, pulls, and doesn't judge. Scans by Friday.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark: oklch(0.145 0.012 65);
+    --dark-2: oklch(0.19 0.015 65);
+    --ink: oklch(0.93 0.012 80);
+    --muted: oklch(0.76 0.02 80);
+    --amber: oklch(0.78 0.14 70);
+    --amber-dim: oklch(0.62 0.11 70);
+    --paper: oklch(0.965 0.012 90);
+    --paper-ink: oklch(0.21 0.015 80);
+    --paper-muted: oklch(0.42 0.02 80);
+    --z-header: 10;
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--dark);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--amber); color: var(--dark); }
+
+  :focus-visible {
+    outline: 2.5px solid var(--amber);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    width: min(62rem, calc(100% - 2.5rem));
+    margin-inline: auto;
+  }
+
+  h1, h2, h3 {
+    font-family: "Cutive Mono", "Courier New", monospace;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; max-width: 60ch; }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--dark);
+    border-bottom: 1px solid var(--dark-2);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1rem;
+  }
+  .wordmark {
+    font-family: "Cutive Mono", monospace;
+    font-size: 1.3rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .wordmark em { color: var(--amber); font-style: normal; }
+  .site-nav { display: flex; gap: 1.6rem; font-size: 0.9rem; flex-wrap: wrap; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-expo);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--amber); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(2.5rem, 7vh, 5rem) clamp(3rem, 8vh, 5.5rem); }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6.5vw, 4.4rem);
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em { color: var(--amber); font-style: normal; }
+  .hero .lede {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-bottom: clamp(2rem, 5vh, 3.5rem);
+  }
+  .hero-frame {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--dark-2);
+  }
+  .hero-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+    animation: develop 3s var(--ease-expo) 0.3s backwards;
+  }
+  /* the frame loads like a print in the tray: blurred, sepia, low — then it fixes */
+  @keyframes develop {
+    0%   { filter: blur(18px) sepia(0.95) brightness(0.55) contrast(0.75); opacity: 0.4; }
+    55%  { filter: blur(6px) sepia(0.45) brightness(0.8) contrast(0.9); opacity: 1; }
+    100% { filter: blur(0) sepia(0) brightness(1) contrast(1); opacity: 1; }
+  }
+  .hero-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)' opacity='0.55'/%3E%3C/svg%3E");
+  }
+  .hero-frame figcaption {
+    position: absolute;
+    left: 1rem;
+    bottom: 0.9rem;
+    font-family: "Cutive Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--amber);
+    background: oklch(0.145 0.012 65 / 0.82);
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+  }
+
+  /* ---------- ethos ---------- */
+  .ethos { padding-block: clamp(3rem, 8vh, 5.5rem); }
+  .ethos h2 { font-size: clamp(1.7rem, 4.5vw, 2.8rem); margin-bottom: 1.5rem; }
+  .ethos h2 em { color: var(--amber); font-style: normal; }
+  .ethos p { color: var(--muted); }
+  .ethos p + p { margin-top: 1rem; }
+  .ethos strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- pricing (the paper-white section) ---------- */
+  .pricing {
+    background: var(--paper);
+    color: var(--paper-ink);
+    padding-block: clamp(3.5rem, 9vh, 6rem);
+  }
+  .pricing h2 { font-size: clamp(1.7rem, 4.5vw, 2.8rem); margin-bottom: 0.75rem; }
+  .pricing .intro { color: var(--paper-muted); margin-bottom: 2.5rem; }
+  .price-table { width: 100%; border-collapse: collapse; }
+  .price-table caption {
+    text-align: left;
+    font-family: "Cutive Mono", monospace;
+    font-size: 0.85rem;
+    color: var(--paper-muted);
+    padding-bottom: 0.9rem;
+  }
+  .price-table th, .price-table td {
+    text-align: left;
+    padding: 0.85rem 0.5rem;
+    border-bottom: 1px solid oklch(0.88 0.015 90);
+    font-size: 1rem;
+    vertical-align: baseline;
+  }
+  .price-table thead th {
+    font-family: "Cutive Mono", monospace;
+    font-weight: 400;
+    font-size: 0.82rem;
+    color: var(--paper-muted);
+    border-bottom: 2px solid var(--paper-ink);
+  }
+  .price-table td:last-child, .price-table th:last-child { text-align: right; }
+  .price-table .fmt { font-weight: 700; }
+  .price-table .note { font-size: 0.85rem; color: var(--paper-muted); }
+  .pricing .promise {
+    margin-top: 2.25rem;
+    font-family: "Cutive Mono", monospace;
+    font-size: 1rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--paper-ink);
+    border-radius: 8px;
+    max-width: 46rem;
+  }
+
+  /* ---------- log / footer ---------- */
+  .log { padding-block: clamp(3rem, 8vh, 5rem); }
+  .log h2 { font-size: clamp(1.7rem, 4.5vw, 2.8rem); margin-bottom: 1.5rem; }
+  .log ul { list-style: none; display: grid; gap: 1rem; max-width: 60ch; }
+  .log li {
+    padding-left: 1.4rem;
+    position: relative;
+    color: var(--muted);
+  }
+  .log li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--amber-dim);
+  }
+  .log li strong { color: var(--ink); font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--dark-2);
+    padding-block: 2.25rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  footer .wrap {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer a { color: var(--amber); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-frame img { animation: none; }
+    .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">HALF<em>LIGHT</em></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#ethos">The Lab</a>
+      <a href="#prices">Prices</a>
+      <a href="#turnaround">Turnaround</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-h">
+    <div class="wrap">
+      <h1 id="hero-h">Your negatives, <em>fixed properly.</em></h1>
+      <p class="lede">
+        Half Light is a two-person film lab above the framing shop on Delancey Street.
+        We develop by hand, scan on a real scanner, and tell you the truth about your roll.
+      </p>
+      <figure class="hero-frame">
+        <img src="https://picsum.photos/seed/film-1/1600/900" width="1600" height="900"
+             alt="A grainy analog frame still settling in the developing tray — soft shapes sharpening into a street scene" fetchpriority="high">
+        <figcaption>TRAY 3 · D-76 1:1 · 68°F · AGITATE EVERY 60s</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="ethos" class="ethos" aria-labelledby="ethos-h">
+    <div class="wrap">
+      <h2 id="ethos-h">We push, we pull, <em>we don't judge.</em></h2>
+      <p>
+        Shot your Portra 400 at 1600 because the light was dying? Write it on the bag.
+        We'll push it two stops and tell you honestly how it came out. Found a roll of
+        expired Provia in a jacket from 2011? <strong>That's our favorite kind of problem.</strong>
+      </p>
+      <p>
+        Every roll gets a name, a log entry, and a temperature-controlled bath — not a
+        slot in a machine that eats sprockets. If something goes wrong in our tanks, we
+        call you before you call us, and the reshoot credit is on the house.
+      </p>
+    </div>
+  </section>
+
+  <section id="prices" class="pricing" aria-labelledby="prices-h">
+    <div class="wrap">
+      <h2 id="prices-h">Develop &amp; scan, by format</h2>
+      <p class="intro">Scans delivered as full-resolution TIFFs plus web JPEGs, through a private link that stays up for a year. Prints quoted per job — ask at the counter.</p>
+      <table class="price-table">
+        <caption>Prices per roll unless noted · turnaround clock starts at intake</caption>
+        <thead>
+          <tr><th scope="col">Format</th><th scope="col">Dev only</th><th scope="col">Dev + scan</th><th scope="col">Push/pull per stop</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fmt">35mm <span class="note">— C-41 or B&amp;W</span></td>
+            <td>$9</td><td>$14</td><td>+$2</td>
+          </tr>
+          <tr>
+            <td class="fmt">120 <span class="note">— C-41, B&amp;W, or E-6</span></td>
+            <td>$11</td><td>$16</td><td>+$2</td>
+          </tr>
+          <tr>
+            <td class="fmt">Sheet film <span class="note">— 4×5, per sheet</span></td>
+            <td>$7</td><td>$11</td><td>+$1</td>
+          </tr>
+          <tr>
+            <td class="fmt">Disposable camera <span class="note">— yes, even the soggy one</span></td>
+            <td>$13</td><td>$18</td><td>—</td>
+          </tr>
+          <tr>
+            <td class="fmt">Cross-process <span class="note">— E-6 in C-41, chaos included</span></td>
+            <td>$13</td><td>$19</td><td>—</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="promise">IN BY TUESDAY NOON → SCANS IN YOUR INBOX BY FRIDAY 6 PM. B&amp;W HAND-PROCESSING RUNS DAILY; E-6 RUNS TUESDAY AND FRIDAY ONLY.</p>
+    </div>
+  </section>
+
+  <section id="turnaround" class="log" aria-labelledby="log-h">
+    <div class="wrap">
+      <h2 id="log-h">From the lab log, this month</h2>
+      <ul>
+        <li><strong>Roll 4,182:</strong> a wedding on Fuji 400H, shot entirely during golden hour by a nervous uncle. Came out like a dream. He cried at pickup; so did Marta.</li>
+        <li><strong>Roll 4,191:</strong> thirty-six frames of the same pigeon, exposed at f/1.4. We scanned all thirty-six. The pigeon earned it.</li>
+        <li><strong>Roll 4,207:</strong> a Holga roll with the back taped shut by three generations of electrical tape. Light leaks like scripture. <strong>10/10, no notes.</strong></li>
+        <li><strong>Roll 4,215:</strong> blank. It happens to everyone eventually — the leader never caught. We called first, credited the dev, and walked the shooter through loading over the phone.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Half Light · 142 Delancey St, up the stairs · Tue–Sat 10–6</span>
+    <span>Mail-ins welcome — <a href="mailto:lab@halflight.example">lab@halflight.example</a></span>
+  </div>
+</footer>
+
+<script>
+  // The develop animation is pure CSS. Nothing on this page hides behind JS.
+</script>
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nocturne FM 91.7 — late-night jazz, ten to six</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='oklch%280.76%200.11%2085%29'/%3E%3Ccircle cx='8' cy='8' r='2' fill='oklch%280.16%200.012%20260%29'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,400;1,6..96,500;1,6..96,600;1,6..96,700&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(0.16 0.012 260);
+    --surface: oklch(0.205 0.014 260);
+    --surface-hi: oklch(0.24 0.015 260);
+    --ink: oklch(0.94 0.015 90);
+    --ink-dim: oklch(0.78 0.014 90);
+    --brass: oklch(0.76 0.11 85);
+    --brass-soft: oklch(0.66 0.10 85);
+    --purple: oklch(0.46 0.07 300);
+    --purple-deep: oklch(0.36 0.06 300);
+    --hairline: oklch(0.30 0.015 260);
+    --z-header: 10;
+    --z-vinyl-label: 2;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Literata", Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection { background: var(--brass); color: var(--bg); }
+
+  a { color: var(--brass); }
+  a:hover { color: var(--ink); }
+
+  :focus-visible {
+    outline: 2.5px solid var(--brass);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .wrap { width: min(68rem, calc(100% - 3rem)); margin-inline: auto; }
+
+  h1, h2, h3, .display {
+    font-family: "Bodoni Moda", Didot, serif;
+    font-style: italic;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    text-wrap: balance;
+  }
+
+  /* ---------- header ---------- */
+  .site-head {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: oklch(0.16 0.012 260 / 0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1rem;
+  }
+  .wordmark {
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  .wordmark .name { font-family: "Bodoni Moda", Didot, serif; font-style: italic; font-weight: 600; font-size: 1.4rem; color: var(--ink); }
+  .wordmark .freq { color: var(--brass); font-size: 0.95rem; letter-spacing: 0.12em; }
+  .site-nav { display: flex; gap: 1.75rem; font-size: 0.95rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { color: var(--ink-dim); text-decoration: none; transition: color 0.4s var(--ease-out-expo); }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--brass); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 5.6vw, 4.3rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .brass { color: var(--brass); }
+  .hero .lede {
+    margin-top: 1.4rem;
+    color: var(--ink-dim);
+    max-width: 33rem;
+    font-size: 1.12rem;
+    text-wrap: pretty;
+  }
+  .dial-note {
+    margin-top: 2rem;
+    color: var(--brass-soft);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---------- player ---------- */
+  .player {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 1.75rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.75rem;
+    align-items: center;
+  }
+  .vinyl-wrap { position: relative; width: 190px; height: 190px; flex: none; }
+  .vinyl {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background:
+      repeating-radial-gradient(circle at 50% 50%,
+        oklch(0.11 0.012 260) 0px, oklch(0.11 0.012 260) 2px,
+        oklch(0.16 0.013 260) 2px, oklch(0.16 0.013 260) 4px);
+    animation: spin 7s linear infinite;
+    position: relative;
+  }
+  .vinyl::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 210deg,
+      oklch(1 0 0 / 0.06), oklch(1 0 0 / 0) 25%,
+      oklch(1 0 0 / 0) 55%, oklch(1 0 0 / 0.05) 80%, oklch(1 0 0 / 0) 95%);
+  }
+  .vinyl::after {
+    content: "";
+    position: absolute;
+    inset: 34%;
+    border-radius: 50%;
+    background: var(--brass);
+    box-shadow: 0 0 0 4px oklch(0.36 0.06 300), 0 0 0 5px oklch(0.11 0.012 260);
+    z-index: var(--z-vinyl-label);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .player-info .now {
+    color: var(--brass);
+    font-size: 0.88rem;
+    letter-spacing: 0.10em;
+    margin-bottom: 0.4rem;
+  }
+  .player-info .show {
+    font-family: "Bodoni Moda", Didot, serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .player-info .host { color: var(--ink-dim); font-size: 0.95rem; margin-top: 0.3rem; }
+
+  .listen {
+    margin-top: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    background: var(--brass);
+    color: oklch(0.16 0.012 260);
+    border: 0;
+    border-radius: 999px;
+    padding: 0.7rem 1.4rem;
+    font-family: "Literata", Georgia, serif;
+    font-weight: 600;
+    font-size: 0.98rem;
+    cursor: pointer;
+    transition: background 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo);
+  }
+  .listen:hover { background: var(--ink); transform: translateY(-2px); }
+  .listen svg { display: block; }
+
+  /* VU meter */
+  .vu {
+    margin-top: 1.3rem;
+    background: var(--purple-deep);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem 0.4rem;
+  }
+  .vu svg { display: block; width: 100%; height: auto; }
+  .needle {
+    transform-origin: 100px 62px;
+    animation: tremble 1.15s ease-in-out infinite;
+  }
+  @keyframes tremble {
+    0%   { transform: rotate(-9deg); }
+    28%  { transform: rotate(3deg); }
+    52%  { transform: rotate(-3deg); }
+    76%  { transform: rotate(7deg); }
+    100% { transform: rotate(-9deg); }
+  }
+  .player.live .needle { animation-duration: 0.55s; }
+  .vu-label {
+    display: flex;
+    justify-content: space-between;
+    color: oklch(0.86 0.02 300);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    padding-top: 0.25rem;
+  }
+
+  /* ---------- photo band ---------- */
+  .band { margin-block: clamp(2rem, 5vw, 4rem); }
+  .band img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+  }
+  .band figcaption {
+    margin-top: 0.8rem;
+    color: var(--ink-dim);
+    font-size: 0.92rem;
+    font-style: italic;
+  }
+
+  /* ---------- sections ---------- */
+  section.block { padding-block: clamp(3rem, 7vw, 5.5rem); }
+  .block + .block { border-top: 1px solid var(--hairline); }
+  h2 {
+    font-size: clamp(1.9rem, 3.8vw, 2.8rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.7rem;
+  }
+  .intro { color: var(--ink-dim); max-width: 36rem; margin-bottom: 2.4rem; text-wrap: pretty; }
+
+  /* schedule */
+  .tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.8rem;
+    flex-wrap: wrap;
+  }
+  .tab {
+    background: none;
+    border: 1px solid var(--hairline);
+    color: var(--ink-dim);
+    border-radius: 999px;
+    padding: 0.5rem 1.2rem;
+    font-family: "Literata", Georgia, serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: color 0.35s var(--ease-out-expo), border-color 0.35s var(--ease-out-expo), background 0.35s var(--ease-out-expo);
+  }
+  .tab:hover { color: var(--ink); border-color: var(--brass-soft); }
+  .tab[aria-selected="true"] {
+    background: var(--brass);
+    border-color: var(--brass);
+    color: oklch(0.16 0.012 260);
+    font-weight: 600;
+  }
+  .schedule { position: relative; }
+  .sched-panel {
+    transition: opacity 0.6s var(--ease-out-expo);
+  }
+  .sched-panel[hidden] { display: none; }
+  .sched-panel.fading { opacity: 0; }
+  .sched-row {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1.25rem;
+    padding-block: 1.1rem;
+  }
+  .sched-row + .sched-row { border-top: 1px solid var(--hairline); }
+  .sched-row time { color: var(--brass); font-size: 0.98rem; }
+  .sched-row h3 { font-size: 1.35rem; letter-spacing: -0.01em; line-height: 1.25; }
+  .sched-row p { color: var(--ink-dim); font-size: 0.97rem; margin-top: 0.25rem; max-width: 34rem; text-wrap: pretty; }
+
+  /* sign-off */
+  .signoff {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2rem, 6vw, 4.5rem);
+    align-items: center;
+  }
+  .signoff blockquote {
+    font-family: "Bodoni Moda", Didot, serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .signoff blockquote footer {
+    margin-top: 1.2rem;
+    font-family: "Literata", Georgia, serif;
+    font-style: normal;
+    font-size: 0.98rem;
+    color: var(--brass);
+  }
+  .signoff img { width: 100%; height: auto; display: block; border-radius: 12px; }
+  .signoff figcaption { margin-top: 0.8rem; color: var(--ink-dim); font-size: 0.92rem; font-style: italic; }
+
+  /* pledge */
+  .pledge {
+    background: var(--purple);
+    border-radius: 16px;
+    padding: clamp(2rem, 5vw, 3.5rem);
+    color: oklch(0.97 0.01 90);
+  }
+  .pledge h2 { color: oklch(0.97 0.01 90); }
+  .pledge p { max-width: 40rem; color: oklch(0.90 0.02 300); text-wrap: pretty; }
+  .pledge .bar {
+    margin-top: 1.8rem;
+    height: 10px;
+    border-radius: 999px;
+    background: oklch(0.32 0.05 300);
+    overflow: hidden;
+  }
+  .pledge .bar i {
+    display: block;
+    height: 100%;
+    width: 71%;
+    border-radius: 999px;
+    background: var(--brass);
+  }
+  .pledge .bar-note {
+    margin-top: 0.7rem;
+    font-size: 0.95rem;
+    color: oklch(0.97 0.01 90);
+  }
+  .pledge a { color: oklch(0.97 0.01 90); font-weight: 600; }
+
+  /* footer */
+  .site-foot {
+    border-top: 1px solid var(--hairline);
+    padding-block: 2rem;
+    color: var(--ink-dim);
+    font-size: 0.92rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .site-foot .freq { color: var(--brass); letter-spacing: 0.12em; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px) {
+    .hero, .signoff { grid-template-columns: 1fr; }
+    .signoff figure { order: -1; }
+  }
+  @media (max-width: 540px) {
+    .player { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .player-info .now { margin-top: 0.4rem; }
+    .sched-row { grid-template-columns: 3.6rem minmax(0, 1fr); gap: 0.9rem; }
+    .site-nav { gap: 1.1rem; font-size: 0.88rem; }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .vinyl { animation: none; }
+    .needle { animation: none; transform: rotate(2deg); }
+    .sched-panel, .tab, .listen, .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) { transition: none; }
+    .listen:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="#top">
+      <span class="name">Nocturne FM</span>
+      <span class="freq">91.7</span>
+    </a>
+    <nav class="site-nav" aria-label="Station">
+      <a href="#on-air">On air</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#pledge">Pledge</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap" id="on-air" aria-labelledby="hero-title">
+    <div>
+      <h1 id="hero-title">The city sleeps. <span class="brass">We keep the light on.</span></h1>
+      <p class="lede">Late-night jazz on 91.7 FM and everywhere online. Ten at night until six in the morning, no playlists, no algorithms — Marlowe picks every record by hand, and tells you why.</p>
+      <p class="dial-note">91.7 FM · DAB channel 11C · streaming everywhere the night reaches</p>
+    </div>
+
+    <div class="player" id="player">
+      <div class="vinyl-wrap" aria-hidden="true">
+        <div class="vinyl"></div>
+      </div>
+      <div class="player-info">
+        <p class="now">ON AIR NOW</p>
+        <p class="show">The Blue Hour</p>
+        <p class="host">with Marlowe Reyes · until midnight</p>
+        <button class="listen" id="listenBtn" type="button" aria-pressed="false">
+          <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true">
+            <path d="M1 1.5 v13 l12 -6.5 z" fill="currentColor"/>
+          </svg>
+          <span id="listenLabel">Listen live</span>
+        </button>
+        <div class="vu" aria-hidden="true">
+          <svg viewBox="0 0 200 70">
+            <path d="M30 62 A 78 78 0 0 1 170 62" fill="none" stroke="oklch(0.60 0.05 300)" stroke-width="2"/>
+            <g stroke="oklch(0.72 0.05 300)" stroke-width="2">
+              <line x1="38" y1="50" x2="44" y2="54"/>
+              <line x1="66" y1="24" x2="70" y2="31"/>
+              <line x1="100" y1="16" x2="100" y2="24"/>
+              <line x1="134" y1="24" x2="130" y2="31"/>
+              <line x1="162" y1="50" x2="156" y2="54"/>
+            </g>
+            <line class="needle" x1="100" y1="62" x2="100" y2="20" stroke="oklch(0.76 0.11 85)" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="100" cy="62" r="4" fill="oklch(0.76 0.11 85)"/>
+          </svg>
+          <div class="vu-label"><span>VU</span><span id="vuState">STANDBY</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <figure class="band wrap">
+    <img src="https://picsum.photos/seed/jazz-1/1600/900" width="1600" height="900"
+         alt="The room past midnight: a quartet on a low stage, brass catching the one lamp that stays on" loading="lazy">
+    <figcaption>The booth window, 1:40am. Whoever's still awake is listening to this.</figcaption>
+  </figure>
+
+  <section class="block" id="schedule" aria-labelledby="schedule-title">
+    <div class="wrap">
+      <h2 id="schedule-title">Tonight, and every night after</h2>
+      <p class="intro">The grid barely changes. That's the point — you should be able to find us in the dark.</p>
+
+      <div class="tabs" role="tablist" aria-label="Schedule day">
+        <button class="tab" role="tab" id="tab-tonight" aria-selected="true" aria-controls="panel-tonight" data-panel="panel-tonight">Tonight</button>
+        <button class="tab" role="tab" id="tab-tomorrow" aria-selected="false" aria-controls="panel-tomorrow" data-panel="panel-tomorrow" tabindex="-1">Tomorrow</button>
+        <button class="tab" role="tab" id="tab-weekend" aria-selected="false" aria-controls="panel-weekend" data-panel="panel-weekend" tabindex="-1">The weekend</button>
+      </div>
+
+      <div class="schedule">
+        <div class="sched-panel" id="panel-tonight" role="tabpanel" aria-labelledby="tab-tonight">
+          <div class="sched-row">
+            <time>22:00</time>
+            <div><h3>The Blue Hour</h3><p>Marlowe Reyes opens the night with vocals and ballads — Billie, Chet, and the singer you haven't heard yet.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>00:00</time>
+            <div><h3>Wax &amp; Static</h3><p>DJ Odessa Blue plays nothing but 78s, surface noise and all. Requests by postcard only.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>02:00</time>
+            <div><h3>The Long Goodbye</h3><p>One album, front to back, no talking. Tonight: <em>Kind of Blue</em>, the way it was meant to be heard — in the dark, doing nothing else.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>04:00</time>
+            <div><h3>Night Freight</h3><p>Instrumentals for the roads home. No vocals after four; words are for earlier.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>06:00</time>
+            <div><h3>Sign-off</h3><p>Marlowe puts the records back on the shelf and tells you to go to bed. He means it kindly.</p></div>
+          </div>
+        </div>
+
+        <div class="sched-panel" id="panel-tomorrow" role="tabpanel" aria-labelledby="tab-tomorrow" hidden>
+          <div class="sched-row">
+            <time>22:00</time>
+            <div><h3>The Blue Hour</h3><p>Marlowe opens with a full hour of tenor sax — the brass bell in a dark room, as promised.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>00:00</time>
+            <div><h3>Bandstand</h3><p>Live from the basement of the Roseland: the Thursday quartet, one mic, no second takes.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>02:00</time>
+            <div><h3>The Long Goodbye</h3><p>One album, front to back, no talking. Tomorrow: <em>Mingus Ah Um</em>, because Thursday can take it.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>04:00</time>
+            <div><h3>Night Freight</h3><p>Instrumentals until sign-off. The city is quietest at half past four; we keep it that way.</p></div>
+          </div>
+        </div>
+
+        <div class="sched-panel" id="panel-weekend" role="tabpanel" aria-labelledby="tab-weekend" hidden>
+          <div class="sched-row">
+            <time>22:00</time>
+            <div><h3>The Late Set</h3><p>Friday and Saturday run long. Marlowe and Odessa trade records and argue about drummers until one.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>01:00</time>
+            <div><h3>After Hours</h3><p>The request hour that isn't an hour. Call the studio; if the line's busy, we're playing your song.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>03:00</time>
+            <div><h3>The Long Goodbye</h3><p>Weekend edition: two albums, back to back. Bring coffee. We do.</p></div>
+          </div>
+          <div class="sched-row">
+            <time>06:00</time>
+            <div><h3>Sign-off</h3><p>Saturday's sign-off runs fifteen minutes late, every week, on purpose.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="signoff-title">
+    <div class="wrap signoff">
+      <div>
+        <h2 id="signoff-title" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">The host's sign-off</h2>
+        <blockquote>
+          “You've been listening to Nocturne FM. The records go back on the shelf, the needle goes back in its rest, and the city goes back to sleep. We do it all again at ten. Go to bed.”
+          <footer>— Marlowe Reyes, every morning at six, give or take fifteen minutes</footer>
+        </blockquote>
+      </div>
+      <figure>
+        <img src="https://picsum.photos/seed/jazz-2/800/600" width="800" height="600"
+             alt="A tenor sax on the studio table between records, keys worn bright where hands have been" loading="lazy">
+        <figcaption>Odessa's tenor, resting between sets. It has its own chair.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block" id="pledge" aria-labelledby="pledge-title">
+    <div class="wrap">
+      <div class="pledge">
+        <h2 id="pledge-title">The spring pledge drive</h2>
+        <p>We have no advertisers, only listeners. This spring we're raising £18,000 to replace the transmitter that's carried the night since 1987 — it's held together with solder and optimism, and one of those is running out.</p>
+        <div class="bar" role="img" aria-label="Pledge progress: 71 percent of the way to the new transmitter"><i></i></div>
+        <p class="bar-note">£12,780 of £18,000 — 71%, with eleven nights to go. <a href="#pledge">Pledge £5 a month</a> and we'll read your name on the air, very quietly, at half past four.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot wrap">
+  <span>Nocturne FM · broadcasting from the fourth floor of the Roseland Building, 12 Marlowe Street</span>
+  <span class="freq">91.7 · TEN TO SIX</span>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /* ---- listen-live mock ---- */
+    var btn = document.getElementById("listenBtn");
+    var label = document.getElementById("listenLabel");
+    var vuState = document.getElementById("vuState");
+    var player = document.getElementById("player");
+    btn.addEventListener("click", function () {
+      var on = btn.getAttribute("aria-pressed") === "true";
+      btn.setAttribute("aria-pressed", String(!on));
+      player.classList.toggle("live", !on);
+      label.textContent = on ? "Listen live" : "Listening — live";
+      vuState.textContent = on ? "STANDBY" : "ON AIR";
+    });
+
+    /* ---- schedule tabs with crossfade ---- */
+    var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+    var panels = Array.prototype.slice.call(document.querySelectorAll(".sched-panel"));
+
+    function activate(tab) {
+      tabs.forEach(function (t) {
+        t.setAttribute("aria-selected", String(t === tab));
+        t.tabIndex = t === tab ? 0 : -1;
+      });
+      var target = document.getElementById(tab.dataset.panel);
+      var current = panels.filter(function (p) { return !p.hidden && p !== target; })[0];
+
+      if (!current || reduce) {
+        panels.forEach(function (p) { p.hidden = p !== target; });
+        target.classList.remove("fading");
+        return;
+      }
+      // crossfade: fade the outgoing panel, then swap and fade the new one in
+      current.classList.add("fading");
+      window.setTimeout(function () {
+        current.hidden = true;
+        current.classList.remove("fading");
+        target.hidden = false;
+        target.classList.add("fading");
+        // force a frame so the fade-in transition runs
+        void target.offsetWidth;
+        target.classList.remove("fading");
+      }, 220);
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener("click", function () { activate(tab); });
+      tab.addEventListener("keydown", function (e) {
+        var next = null;
+        if (e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+        if (e.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
+        if (next) { next.focus(); activate(next); e.preventDefault(); }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

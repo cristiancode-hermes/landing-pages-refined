@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quickstep — swing dance school, no partner required</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Jost:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(1 0 0);
+    --ivory: oklch(0.965 0.015 95);
+    --ink: oklch(0.3 0.02 220);
+    --muted: oklch(0.46 0.03 220);
+    --teal: oklch(0.62 0.11 185);
+    --teal-deep: oklch(0.42 0.08 185);
+    --brass: oklch(0.74 0.13 85);
+    --brass-deep: oklch(0.55 0.11 85);
+    --font-display: "Shrikhand", serif;
+    --font-body: "Jost", sans-serif;
+    --z-header: 10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--teal-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: clamp(2.2rem, 6vw, 4.2rem); }
+  h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+  h3 { font-size: clamp(1.2rem, 2vw, 1.45rem); }
+
+  p { max-width: 65ch; text-wrap: pretty; }
+  img { display: block; max-width: 100%; height: auto; }
+
+  a { color: var(--teal-deep); text-underline-offset: 3px; }
+  a:hover { color: var(--brass-deep); }
+
+  .wrap { width: min(1080px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--bg);
+    border-bottom: 1px solid oklch(0.92 0.02 95);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.9rem;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .brand em { font-style: normal; color: var(--teal-deep); }
+
+  nav ul { display: flex; gap: 1.6rem; list-style: none; }
+
+  nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.98rem;
+  }
+
+  nav a:hover { color: var(--teal-deep); }
+
+  .btn {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 999px;
+    background: var(--brass);
+    color: oklch(0.28 0.06 85);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s cubic-bezier(0.16, 1, 0.3, 1); white-space: nowrap; flex-shrink: 0; }
+
+  .btn:hover { background: oklch(0.79 0.13 85); color: oklch(0.28 0.06 85); transform: translateY(-2px); }
+
+  .btn--teal { background: var(--teal-deep); color: oklch(0.98 0.01 185); }
+  .btn--teal:hover { background: var(--ink); color: oklch(0.98 0.01 185); }
+
+  @media (max-width: 700px) { nav ul { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(2.5rem, 6vw, 4.5rem); }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .hero-kicker {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--brass-deep);
+    background: oklch(0.74 0.13 85 / 0.16);
+    padding: 0.35rem 0.95rem;
+    border-radius: 999px;
+    margin-bottom: 1.3rem;
+  }
+
+  .hero .lede {
+    font-size: clamp(1.12rem, 2vw, 1.3rem);
+    color: var(--muted);
+    margin-top: 1.2rem;
+  }
+
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 1.9rem; }
+
+  .hero-figure { position: relative; }
+
+  .hero-figure img {
+    width: 100%;
+    border-radius: 16px;
+    transform: rotate(2deg);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-figure:hover img { transform: rotate(0deg); }
+
+  .hero-figure figcaption {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: oklch(0.3 0.02 220 / 0.82);
+    color: oklch(0.98 0.01 95);
+    font-size: 0.88rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+  }
+
+  @media (max-width: 780px) { .hero-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- sections ---------- */
+  section { padding: clamp(3rem, 7vw, 5.5rem) 0; }
+
+  .section-head { margin-bottom: clamp(1.8rem, 4vw, 2.8rem); }
+  .section-head p { color: var(--muted); margin-top: 0.8rem; }
+
+  /* footprint step diagram */
+  .steps { background: var(--teal-deep); }
+  .steps h2 { color: oklch(0.98 0.01 185); }
+  .steps .section-head p { color: oklch(0.86 0.04 185); }
+
+  .floor {
+    background: oklch(0.36 0.07 185);
+    border-radius: 16px;
+    padding: clamp(1.2rem, 3vw, 2.2rem);
+    overflow-x: auto;
+  }
+
+  .floor svg { width: 100%; min-width: 520px; height: auto; display: block; }
+
+  .footprint { opacity: 0.18; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .footprint.lit { opacity: 1; }
+
+  .count-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.4rem;
+    justify-content: center;
+  }
+
+  .count-chip {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    padding: 0.4rem 1.1rem;
+    border-radius: 999px;
+    background: oklch(0.3 0.05 185);
+    color: oklch(0.86 0.04 185);
+    transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .count-chip.lit { background: var(--brass); color: oklch(0.28 0.06 85); transform: scale(1.1); }
+
+  .steps-caption {
+    text-align: center;
+    color: oklch(0.86 0.04 185);
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  /* classes */
+  .class-rows { list-style: none; }
+
+  .class-row {
+    display: grid;
+    grid-template-columns: minmax(140px, 200px) 1fr auto;
+    gap: 1.2rem;
+    align-items: baseline;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid oklch(0.92 0.02 95);
+  }
+
+  .class-row:last-child { border-bottom: none; }
+
+  .class-row .when {
+    font-family: var(--font-display);
+    color: var(--teal-deep);
+    font-size: 1.05rem;
+  }
+
+  .class-row .what { color: var(--muted); max-width: 50ch; }
+  .class-row .what strong { color: var(--ink); }
+
+  .class-row .price {
+    font-family: var(--font-display);
+    color: var(--brass-deep);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 680px) { .class-row { grid-template-columns: 1fr; gap: 0.35rem; } }
+
+  /* partners */
+  .partners { background: var(--ivory); }
+
+  .partner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .partner {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 1.7rem;
+    transform: rotate(var(--tilt, 0deg));
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .partner:hover { transform: rotate(0deg) translateY(-4px); }
+
+  .partner:nth-child(1) { --tilt: -1.6deg; }
+  .partner:nth-child(2) { --tilt: 1.2deg; }
+  .partner:nth-child(3) { --tilt: -1deg; }
+
+  .partner h3 { color: var(--teal-deep); margin-bottom: 0.6rem; }
+  .partner p { color: var(--muted); font-size: 0.95rem; }
+
+  /* shoes */
+  .shoes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .shoe-do, .shoe-dont {
+    border-radius: 16px;
+    padding: 1.7rem;
+  }
+
+  .shoe-do { background: oklch(0.62 0.11 185 / 0.12); }
+  .shoe-dont { background: oklch(0.74 0.13 85 / 0.16); }
+
+  .shoe-do h3 { color: var(--teal-deep); }
+  .shoe-dont h3 { color: var(--brass-deep); }
+
+  .shoe-do ul, .shoe-dont ul {
+    list-style: none;
+    margin-top: 0.9rem;
+    display: grid;
+    gap: 0.55rem;
+    color: var(--ink);
+    font-size: 0.98rem;
+  }
+
+  .shoe-do li::before { content: "✓ "; color: var(--teal-deep); font-weight: 700; }
+  .shoe-dont li::before { content: "✕ "; color: var(--brass-deep); font-weight: 700; }
+
+  @media (max-width: 680px) { .shoes-grid { grid-template-columns: 1fr; } }
+
+  /* footer */
+  footer {
+    background: var(--ink);
+    color: oklch(0.85 0.02 220);
+    padding: 2.8rem 0;
+  }
+
+  footer .foot-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  footer .brand { color: oklch(0.98 0.01 95); }
+  footer .brand em { color: var(--brass); }
+  footer small { font-size: 0.86rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .footprint { opacity: 1; transition: none; }
+    .count-chip { transition: none; }
+    .partner, .hero-figure img, .btn { transition: none; }
+    .partner { transform: none; }
+    .hero-figure img { transform: none; }
+  }
+
+  /* header-cta-mobile */
+  @media (max-width: 480px) {
+  header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-head .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-header .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .site-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  .main-nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  nav .btn {
+    font-size: clamp(0.7rem, 0.65rem + 0.4vw, 0.85rem);
+    padding: 0.4rem 0.75rem;
+  }
+  }
+
+  /* header-nav-mobile-hide */
+  @media (max-width: 640px) {
+    header nav a { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">Quick<em>step</em></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#steps">The basic step</a></li>
+        <li><a href="#classes">Classes</a></li>
+        <li><a href="#shoes">What to wear</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="#classes">Book a spot</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="hero-kicker">Est. 2019 · Lindy hop, Charleston, Balboa</span>
+        <h1 id="hero-title">You already know how to walk. We'll teach you to swing.</h1>
+        <p class="lede">Quickstep is a swing dance school for people who think they can't dance. Six weeks, one hour a week, and you'll be doing the basic step to actual big-band records — grinning, probably sweating, definitely coming back.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#classes">See the classes</a>
+          <a class="btn btn--teal" href="#steps">Learn the basic step</a>
+        </div>
+      </div>
+      <figure class="hero-figure">
+        <img src="https://picsum.photos/seed/swing-1/1600/900" width="1600" height="900" alt="Two dancers mid-aerial, the follow flying over the lead's shoulder, both laughing">
+        <figcaption>Friday social, week six graduates showing off.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="steps" id="steps" aria-labelledby="steps-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="steps-title">The basic step, in six beats</h2>
+        <p>Slow, slow, quick-quick. Watch the footprints walk it — that's genuinely all week one is.</p>
+      </div>
+      <div class="floor" aria-label="Animated footprint diagram of the swing basic step">
+        <svg viewBox="0 0 640 240" role="img" aria-label="Six footprints stepping forward: left slow, right slow, then a quick-quick rock step">
+          <!-- floor line -->
+          <line x1="20" y1="120" x2="620" y2="120" stroke="oklch(0.86 0.04 185 / 0.25)" stroke-width="2" stroke-dasharray="4 10"/>
+          <!-- footprint template: sole + heel -->
+          <g class="footprint" data-step="0" fill="oklch(0.74 0.13 85)">
+            <ellipse cx="90" cy="95" rx="14" ry="24"/>
+            <ellipse cx="90" cy="128" rx="10" ry="10"/>
+          </g>
+          <g class="footprint" data-step="1" fill="oklch(0.98 0.01 95)">
+            <ellipse cx="180" cy="145" rx="14" ry="24"/>
+            <ellipse cx="180" cy="112" rx="10" ry="10"/>
+          </g>
+          <g class="footprint" data-step="2" fill="oklch(0.74 0.13 85)">
+            <ellipse cx="270" cy="95" rx="14" ry="24"/>
+            <ellipse cx="270" cy="128" rx="10" ry="10"/>
+          </g>
+          <g class="footprint" data-step="3" fill="oklch(0.98 0.01 95)">
+            <ellipse cx="350" cy="145" rx="14" ry="24"/>
+            <ellipse cx="350" cy="112" rx="10" ry="10"/>
+          </g>
+          <g class="footprint" data-step="4" fill="oklch(0.74 0.13 85)">
+            <ellipse cx="420" cy="120" rx="24" ry="14" transform="rotate(-20 420 120)"/>
+            <ellipse cx="448" cy="128" rx="10" ry="10"/>
+          </g>
+          <g class="footprint" data-step="5" fill="oklch(0.98 0.01 95)">
+            <ellipse cx="500" cy="120" rx="24" ry="14" transform="rotate(20 500 120)"/>
+            <ellipse cx="528" cy="112" rx="10" ry="10"/>
+          </g>
+        </svg>
+      </div>
+      <div class="count-line" aria-hidden="true">
+        <span class="count-chip" data-step="0">slow</span>
+        <span class="count-chip" data-step="1">slow</span>
+        <span class="count-chip" data-step="2">quick</span>
+        <span class="count-chip" data-step="3">quick</span>
+        <span class="count-chip" data-step="4">rock</span>
+        <span class="count-chip" data-step="5">step</span>
+      </div>
+      <p class="steps-caption">Left leads for the lead, right for the follow — but honestly, wrong-footed counts too.</p>
+    </div>
+  </section>
+
+  <section id="classes" aria-labelledby="classes-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="classes-title">Six-week series</h2>
+        <p>Every series runs six Wednesdays, 19:30–20:30, at the Polish Hall on Brewer Street. Drop in week one or two only — after that we're all too far gone.</p>
+      </div>
+      <ul class="class-rows">
+        <li class="class-row">
+          <span class="when">Wednesdays</span>
+          <p class="what"><strong>Absolute Beginners.</strong> The basic step, the send-out, and how to apologize when you tread on someone. Starts the first Wednesday of every month.</p>
+          <span class="price">£65 / series</span>
+        </li>
+        <li class="class-row">
+          <span class="when">Wednesdays</span>
+          <p class="what"><strong>Swingouts &amp; Beyond.</strong> You've done a series or two. Now the swingout, the circle, and the dangerous business of musicality. 20:45–21:45.</p>
+          <span class="price">£65 / series</span>
+        </li>
+        <li class="class-row">
+          <span class="when">Fridays</span>
+          <p class="what"><strong>Social dance.</strong> Live DJ, real records, 20:00 till late. Free for students, a fiver for everyone else. First dance is always a beginner-friendly tempo.</p>
+          <span class="price">£5 at the door</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="partners" aria-labelledby="partners-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="partners-title">The no-partner promise</h2>
+        <p>Most people arrive alone. Here's why that works.</p>
+      </div>
+      <div class="partner-grid">
+        <div class="partner">
+          <h3>We rotate, always</h3>
+          <p>Partners switch every two minutes, so nobody's stuck and nobody's left out. By the end of one class you've danced with the whole room.</p>
+        </div>
+        <div class="partner">
+          <h3>Leads &amp; follows welcome</h3>
+          <p>Pick either role, whichever appeals — plenty of us learn both. About a third of each class is dancing the role they didn't expect to.</p>
+        </div>
+        <div class="partner">
+          <h3>Bring one anyway</h3>
+          <p>Couples are welcome to stay together — just say so at the door and we'll keep you paired. The rotation is an offer, never a rule.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="shoes" aria-labelledby="shoes-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="shoes-title">What to put on your feet</h2>
+        <p>The single most-asked question at the door, answered forever.</p>
+      </div>
+      <div class="shoes-grid">
+        <div class="shoe-do">
+          <h3>Yes, perfect</h3>
+          <ul>
+            <li>Any flat shoe that stays on — trainers are fine</li>
+            <li>Leather soles if you have them (slide is your friend)</li>
+            <li>Keds, brogues, jazz shoes, plimsolls</li>
+            <li>Comfort over glamour, every time</li>
+          </ul>
+        </div>
+        <div class="shoe-dont">
+          <h3>Leave at home</h3>
+          <ul>
+            <li>Flip-flops and anything backless</li>
+            <li>Stilettos — the floor is 120 years old</li>
+            <li>Grippy running shoes (your knees will complain)</li>
+            <li>Brand-new anything. Break them in first.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <a class="brand" href="#top">Quick<em>step</em></a>
+    <small>The Polish Hall, 14 Brewer Street · Wednesdays &amp; Fridays · © 2026 Quickstep Swing CIC</small>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* footprint step diagram: walk the basic step in a loop */
+  (function steps() {
+    var footprints = document.querySelectorAll(".footprint");
+    var chips = document.querySelectorAll(".count-chip");
+    if (!footprints.length) return;
+    if (reduceMotion) {
+      footprints.forEach(function (f) { f.classList.add("lit"); });
+      return;
+    }
+
+    /* beats: slow(2) slow(2) quick(1) quick(1) rock(1) step(1) */
+    var beatLens = [2, 2, 1, 1, 1, 1];
+    var beatUnit = 420; /* ms per beat */
+    var order = [0, 1, 2, 3, 4, 5];
+    var idx = 0;
+    var timer = null;
+    var visible = false;
+
+    function clear() {
+      footprints.forEach(function (f) { f.classList.remove("lit"); });
+      chips.forEach(function (c) { c.classList.remove("lit"); });
+    }
+
+    function tick() {
+      if (!visible) return;
+      clear();
+      var step = order[idx];
+      footprints[step].classList.add("lit");
+      if (chips[step]) chips[step].classList.add("lit");
+      var wait = beatLens[idx] * beatUnit;
+      idx = (idx + 1) % order.length;
+      if (idx === 0) wait += beatUnit * 2; /* pause before re-walking */
+      timer = window.setTimeout(tick, wait);
+    }
+
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !visible) {
+            visible = true;
+            tick();
+          } else if (!e.isIntersecting) {
+            visible = false;
+            if (timer) window.clearTimeout(timer);
+          }
+        });
+      }, { threshold: 0.3 });
+      io.observe(document.querySelector(".floor"));
+    } else {
+      visible = true;
+      tick();
+    }
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        visible = false;
+        if (timer) window.clearTimeout(timer);
+      } else {
+        visible = true;
+        tick();
+      }
+    });
+  })();
+})();
+</script>
+
+</body>
+</html>

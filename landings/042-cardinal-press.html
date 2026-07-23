@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardinal Press — poems, set by hand, answered by humans</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='oklch(0.50 0.19 22)' d='M7 16 L12 4 L14 9 L19 8 L15 13 L16 19 L11 15 Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(1 0 0);
+    --ink: oklch(0.23 0.012 40);
+    --ink-soft: oklch(0.42 0.012 40);
+    --cardinal: oklch(0.50 0.19 22);
+    --cardinal-deep: oklch(0.42 0.16 22);
+    --rule: oklch(0.90 0.004 60);
+    --serif: "Source Serif 4", Georgia, serif;
+    --step--1: clamp(0.84rem, 0.8rem + 0.15vw, 0.9rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.1rem);
+    --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.45rem);
+    --step-2: clamp(1.56rem, 1.35rem + 1vw, 2.05rem);
+    --step-3: clamp(1.95rem, 1.5rem + 2.2vw, 3rem);
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: var(--step-0);
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  a { color: var(--cardinal-deep); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--cardinal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .wrap { width: min(1060px, 100% - 3rem); margin-inline: auto; }
+  .measure { max-width: 62ch; }
+
+  /* ---------- cardinal margin mark ---------- */
+  .cardinal-mark {
+    position: fixed;
+    left: clamp(0.75rem, 4vw, 3.5rem);
+    top: 18vh;
+    width: 30px;
+    height: 30px;
+    z-index: 5;
+    pointer-events: none;
+    will-change: transform;
+    display: none;
+  }
+  @media (min-width: 1100px) { .cardinal-mark { display: block; } }
+
+  /* ---------- header ---------- */
+  .site-head {
+    border-bottom: 1px solid var(--rule);
+    padding-block: 1.4rem;
+  }
+  .site-head .wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  .brand {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand .bird { color: var(--cardinal); }
+  .site-nav { display: flex; gap: 1.75rem; }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta) {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: var(--step--1);
+    transition: color 0.3s var(--ease);
+  }
+  .site-nav a:not(.btn):not(.nav-cta):not(.head-cta):hover { color: var(--cardinal-deep); }
+
+  /* ---------- intro ---------- */
+  .intro { padding-block: clamp(4rem, 10vw, 8rem) clamp(3rem, 7vw, 5rem); }
+  .intro h1 {
+    font-size: var(--step-3);
+    max-width: 20ch;
+    margin-bottom: 1.75rem;
+  }
+  .intro h1 em { font-style: italic; font-weight: 400; color: var(--cardinal-deep); }
+  .intro p { color: var(--ink-soft); max-width: 52ch; text-wrap: pretty; }
+  .intro p + p { margin-top: 1rem; }
+  .press-note {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+
+  /* ---------- chapbooks ---------- */
+  .books { padding-block: clamp(2rem, 5vw, 4rem); }
+  .book {
+    display: grid;
+    grid-template-columns: minmax(220px, 300px) 1fr;
+    gap: clamp(2rem, 6vw, 4.5rem);
+    align-items: center;
+    padding-block: clamp(3rem, 7vw, 5rem);
+    border-top: 1px solid var(--rule);
+  }
+  .book:last-child { border-bottom: 1px solid var(--rule); }
+  @media (max-width: 760px) { .book { grid-template-columns: 1fr; } }
+
+  /* generative typographic cover */
+  .cover {
+    aspect-ratio: 5 / 7;
+    background: var(--paper);
+    border: 1px solid oklch(0.82 0.005 60);
+    border-radius: 3px;
+    box-shadow: 6px 6px 0 oklch(0.955 0.003 60);
+    padding: 9% 10%;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover .c-author {
+    font-size: clamp(0.7rem, 0.7rem + 0.2vw, 0.85rem);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .cover .c-rule {
+    width: 34px;
+    height: 2px;
+    background: var(--cardinal);
+    margin-block: 1.1em;
+  }
+  .cover .c-title {
+    font-size: clamp(1.35rem, 1rem + 2.2vw, 2rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .cover .c-title em { font-style: italic; font-weight: 400; }
+  .cover .c-mark {
+    margin-top: auto;
+    align-self: flex-end;
+    width: 22px;
+    height: 22px;
+  }
+  .cover .c-press {
+    margin-top: 0.6em;
+    align-self: flex-end;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* poem excerpts */
+  .book-meta {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+  .book-meta strong { color: var(--ink); font-weight: 600; }
+  .book h2 { font-size: var(--step-2); margin-bottom: 0.5rem; }
+  .stanza {
+    margin-top: 1.75rem;
+    font-size: var(--step-1);
+    line-height: 1.9;
+  }
+  .stanza .line { display: block; }
+  .stanza.in .line {
+    animation: lineIn 0.85s var(--ease) both;
+  }
+  .stanza.in .line:nth-child(1) { animation-delay: 0ms; }
+  .stanza.in .line:nth-child(2) { animation-delay: 160ms; }
+  .stanza.in .line:nth-child(3) { animation-delay: 320ms; }
+  .stanza.in .line:nth-child(4) { animation-delay: 480ms; }
+  .stanza.in .line:nth-child(5) { animation-delay: 640ms; }
+  .stanza.in .line:nth-child(6) { animation-delay: 800ms; }
+  @keyframes lineIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .book-foot {
+    margin-top: 1.75rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .book-foot a { font-style: normal; }
+
+  /* ---------- submissions ---------- */
+  .submissions { padding-block: clamp(3rem, 8vw, 6rem); }
+  .submissions h2 { font-size: var(--step-2); margin-bottom: 1.25rem; }
+  .submissions h2 em { font-style: italic; font-weight: 400; color: var(--cardinal-deep); }
+  .submissions p { color: var(--ink-soft); max-width: 56ch; text-wrap: pretty; }
+  .submissions p + p { margin-top: 1rem; }
+  .window {
+    margin-top: 2.25rem;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    align-items: baseline;
+  }
+  .window dt {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 0.25rem;
+  }
+  .window dd { font-size: var(--step-1); font-weight: 600; }
+  .window dd .open { color: var(--cardinal-deep); }
+  .answer {
+    margin-top: 2.25rem;
+    font-size: var(--step-1);
+    font-style: italic;
+  }
+  .answer .bird-inline { color: var(--cardinal); font-style: normal; }
+
+  /* ---------- footer ---------- */
+  .site-foot {
+    border-top: 1px solid var(--rule);
+    padding-block: 2rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+  }
+  .site-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  .site-foot .sig { font-style: italic; }
+
+  /* ---------- reveals (enhancement only; visible by default) ---------- */
+  .reveal.in { animation: rise 0.9s var(--ease) both; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    .stanza.in .line, .reveal.in { animation: none; }
+    .cardinal-mark { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg class="cardinal-mark" id="cardinal" viewBox="0 0 24 24" aria-hidden="true">
+  <path fill="oklch(0.50 0.19 22)" d="M7 16 L12 4 L14 9 L19 8 L15 13 L16 19 L11 15 Z"/>
+</svg>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top">Cardinal <span class="bird">Press</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#books">Chapbooks</a>
+      <a href="#submissions">Submissions</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="intro" aria-labelledby="intro-h">
+    <div class="wrap">
+      <h1 id="intro-h">A small press for <em>short books of poems.</em></h1>
+      <p>Cardinal Press publishes three chapbooks a year from a two-room studio in Beacon, New York. We print on a Vandercook that is older than our lease, sew the spines by hand, and number every copy in pencil.</p>
+      <p>No algorithms, no acquisitions committee. Two editors, one red bird, and the conviction that twenty pages is exactly long enough.</p>
+      <p class="press-note">Est. 2019 · Editions of 300 · Printed, sewn, and numbered in Beacon, NY</p>
+    </div>
+  </section>
+
+  <section class="books" id="books" aria-label="Current chapbooks">
+    <div class="wrap">
+
+      <article class="book reveal" id="book-1">
+        <div class="cover" role="img" aria-label="Chapbook cover: Field Guide to Leaving by Wren Okonkwo">
+          <span class="c-author">Wren Okonkwo</span>
+          <span class="c-rule"></span>
+          <span class="c-title">Field Guide <em>to Leaving</em></span>
+          <svg class="c-mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="oklch(0.50 0.19 22)" d="M7 16 L12 4 L14 9 L19 8 L15 13 L16 19 L11 15 Z"/></svg>
+          <span class="c-press">Cardinal · 26</span>
+        </div>
+        <div>
+          <p class="book-meta"><strong>№ 14</strong> · 22 pages · sewn in red thread · $12</p>
+          <h2>Field Guide to Leaving</h2>
+          <p class="stanza" data-stanza>
+            <span class="line">Pack the good knife. Leave the lamp.</span>
+            <span class="line">A house forgets you room by room —</span>
+            <span class="line">the hallway first, then where you slept,</span>
+            <span class="line">the kettle last, still loyal, warm.</span>
+            <span class="line">Go before the birds come back</span>
+            <span class="line">to audit what you failed to keep.</span>
+          </p>
+          <p class="book-foot">From “Departure, Annotated” · <a href="#submissions">Order a copy</a></p>
+        </div>
+      </article>
+
+      <article class="book reveal" id="book-2">
+        <div class="cover" role="img" aria-label="Chapbook cover: Low Country Psalm by Esther Vale">
+          <span class="c-author">Esther Vale</span>
+          <span class="c-rule"></span>
+          <span class="c-title">Low Country <em>Psalm</em></span>
+          <svg class="c-mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="oklch(0.50 0.19 22)" d="M7 16 L12 4 L14 9 L19 8 L15 13 L16 19 L11 15 Z"/></svg>
+          <span class="c-press">Cardinal · 25</span>
+        </div>
+        <div>
+          <p class="book-meta"><strong>№ 13</strong> · 18 pages · sewn in red thread · $12</p>
+          <h2>Low Country Psalm</h2>
+          <p class="stanza" data-stanza>
+            <span class="line">The tide goes out like an apology</span>
+            <span class="line">and the marsh accepts it, every time.</span>
+            <span class="line">My grandmother hung her grief on nails</span>
+            <span class="line">beside the nets, where it dried silver.</span>
+            <span class="line">Lord of small inlets, teach me that —</span>
+            <span class="line">the leaving, and the coming back.</span>
+          </p>
+          <p class="book-foot">From “Psalm of the Ebb” · <a href="#submissions">Order a copy</a></p>
+        </div>
+      </article>
+
+      <article class="book reveal" id="book-3">
+        <div class="cover" role="img" aria-label="Chapbook cover: The Cartographer's Widow by Tomas Iversen">
+          <span class="c-author">Tomas Iversen</span>
+          <span class="c-rule"></span>
+          <span class="c-title">The Cartographer&rsquo;s <em>Widow</em></span>
+          <svg class="c-mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="oklch(0.50 0.19 22)" d="M7 16 L12 4 L14 9 L19 8 L15 13 L16 19 L11 15 Z"/></svg>
+          <span class="c-press">Cardinal · 25</span>
+        </div>
+        <div>
+          <p class="book-meta"><strong>№ 12</strong> · 24 pages · sewn in red thread · $12</p>
+          <h2>The Cartographer&rsquo;s Widow</h2>
+          <p class="stanza" data-stanza>
+            <span class="line">He mapped the coast and missed the house.</span>
+            <span class="line">Every inlet bears another man&rsquo;s name;</span>
+            <span class="line">our kitchen table holds no legend at all.</span>
+            <span class="line">I fold his charts into paper boats</span>
+            <span class="line">and sail them down the gutter — north,</span>
+            <span class="line">always north, like he went.</span>
+          </p>
+          <p class="book-foot">From “Legend” · <a href="#submissions">Order a copy</a></p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="submissions" id="submissions" aria-labelledby="sub-h">
+    <div class="wrap">
+      <h2 id="sub-h">Send us your <em>twenty pages.</em></h2>
+      <p>We read everything ourselves, in the order it arrives, printed out and marked in pencil. Simultaneous submissions are fine. We charge no fee, because reading your work is the job, not a favor.</p>
+      <dl class="window">
+        <div>
+          <dt>Next reading window</dt>
+          <dd><span class="open">March 1 – 31, 2026</span></dd>
+        </div>
+        <div>
+          <dt>Length</dt>
+          <dd>12 – 20 pages of poems</dd>
+        </div>
+        <div>
+          <dt>Reply by</dt>
+          <dd>May 15, 2026</dd>
+        </div>
+        <div>
+          <dt>Fee</dt>
+          <dd>None, ever</dd>
+        </div>
+      </dl>
+      <p class="answer"><span class="bird-inline">✳</span> We answer everyone. Usually within eight weeks, always by a human who read the whole manuscript. Send yours to <a href="mailto:poems@cardinalpress.example">poems@cardinalpress.example</a>.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <span>© 2026 Cardinal Press — Beacon, New York</span>
+    <span class="sig">Three books a year. Every one answered.</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Stanza line-by-line reveals + section rises. Visible by default; JS adds motion only.
+    var targets = document.querySelectorAll('[data-stanza], .reveal');
+    if (!reduce && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.3 });
+      targets.forEach(function (el) { io.observe(el); });
+    }
+
+    // The cardinal hops down the margin as you scroll.
+    var bird = document.getElementById('cardinal');
+    if (!bird || reduce) return;
+    var currentY = 0;
+    var targetY = 0;
+    var ticking = false;
+
+    function computeTarget() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var frac = max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0;
+      // hop between discrete perches, roughly one per fold
+      var perches = 5;
+      var travel = window.innerHeight * 0.62;
+      targetY = Math.round(frac * perches) / perches * travel;
+    }
+
+    function hop() {
+      ticking = false;
+      if (Math.abs(targetY - currentY) < 4) return;
+      var from = currentY;
+      currentY = targetY;
+      bird.animate(
+        [
+          { transform: 'translateY(' + from + 'px)' },
+          { transform: 'translateY(' + ((from + targetY) / 2 - 16) + 'px)', offset: 0.45 },
+          { transform: 'translateY(' + targetY + 'px)' }
+        ],
+        { duration: 420, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' }
+      );
+    }
+
+    window.addEventListener('scroll', function () {
+      computeTarget();
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(hop);
+      }
+    }, { passive: true });
+    window.addEventListener('resize', computeTarget, { passive: true });
+    computeTarget();
+  })();
+</script>
+</body>
+</html>

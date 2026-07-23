@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typecase — an independent type foundry: Meridian, Folio, Cassel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@300;400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: oklch(0.995 0 0);
+    --ink: oklch(0.18 0 0);
+    --ink-soft: oklch(0.35 0 0);
+    --gray-1: oklch(0.55 0 0);
+    --gray-2: oklch(0.78 0 0);
+    --gray-3: oklch(0.92 0 0);
+    --blue: oklch(0.5 0.19 245);
+    --blue-deep: oklch(0.42 0.16 245);
+    --blue-tint: oklch(0.96 0.015 245);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --z-sticky: 10;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 { font-family: "Zilla Slab", Georgia, serif; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; line-height: 1.08; }
+  p { max-width: 65ch; text-wrap: pretty; }
+  a { color: var(--blue-deep); text-underline-offset: 0.18em; }
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--blue-deep);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  ::selection { background: var(--blue); color: oklch(0.99 0 0); }
+
+  .wrap { width: min(72rem, 100% - 3rem); margin-inline: auto; }
+
+  header {
+    position: sticky; top: 0; z-index: var(--z-sticky);
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+  }
+  .header-in { display: flex; align-items: baseline; justify-content: space-between; padding-block: 1rem; }
+  .wordmark { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.5rem; color: var(--ink); text-decoration: none; }
+  .wordmark em { font-style: normal; color: var(--blue); }
+  nav { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+  nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.9375rem; font-weight: 500; transition: color 0.3s var(--ease-out); }
+  nav a:hover { color: var(--blue-deep); }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3rem, 8vw, 6rem) clamp(2rem, 5vw, 4rem); border-bottom: 1px solid var(--gray-3); }
+  .hero-kicker { font-weight: 600; color: var(--blue-deep); margin-bottom: 1.5rem; }
+  .hero-word {
+    font-family: "Zilla Slab", serif;
+    font-size: clamp(3rem, 2rem + 10vw, 9rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    font-variation-settings: normal;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    user-select: none;
+  }
+  .weight-lab {
+    margin-top: 2rem;
+    display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+  }
+  .weight-lab label { font-size: 0.9375rem; color: var(--ink-soft); font-weight: 500; }
+  .weight-lab input[type="range"] {
+    width: min(320px, 60vw);
+    accent-color: var(--blue);
+    cursor: ew-resize;
+  }
+  .weight-readout {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--blue-deep);
+    min-width: 3ch;
+  }
+  .hero-sub { margin-top: 2.5rem; max-width: 56ch; color: var(--ink-soft); font-size: 1.125rem; }
+
+  /* ---------- glyph grid ---------- */
+  .glyphs-section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+  .glyphs-section h2, .families h2, .waterfall-section h2, .licensing h2, .custom h2 {
+    font-size: clamp(1.9rem, 1.5rem + 1.9vw, 3rem);
+    margin-bottom: 1rem;
+  }
+  .section-note { color: var(--ink-soft); margin-bottom: 2.5rem; max-width: 58ch; }
+  .glyph-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+    border-top: 1px solid var(--gray-3);
+    border-left: 1px solid var(--gray-3);
+  }
+  .glyph {
+    border-right: 1px solid var(--gray-3);
+    border-bottom: 1px solid var(--gray-3);
+    aspect-ratio: 1;
+    display: grid; place-items: center;
+    font-family: "Zilla Slab", serif;
+    font-size: clamp(1.8rem, 1.2rem + 2vw, 2.8rem);
+    color: var(--gray-2);
+    transition: color 0.9s var(--ease-out), background-color 0.9s var(--ease-out);
+  }
+  .glyph.filled { color: var(--ink); }
+  .glyph.filled:nth-child(7n) { color: var(--blue); background: var(--blue-tint); }
+
+  /* ---------- waterfall ---------- */
+  .waterfall-section { padding-block: clamp(3rem, 7vw, 5.5rem); border-top: 1px solid var(--gray-3); }
+  .waterfall { display: flex; flex-direction: column; gap: 0.35em; }
+  .wf-line {
+    font-family: "Zilla Slab", serif;
+    font-weight: 500;
+    line-height: 1.15;
+    white-space: nowrap;
+    transform-origin: left center;
+    opacity: 1;
+  }
+  .wf-line.animate-in {
+    animation: wf-in 0.9s var(--ease-out) both;
+  }
+  @keyframes wf-in {
+    from { opacity: 0; transform: translateX(-1.2rem) scale(0.985); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  .wf-size { font-family: "Hanken Grotesk", sans-serif; font-size: 0.75rem; color: var(--gray-1); margin-left: 0.75rem; vertical-align: middle; font-weight: 500; }
+
+  /* ---------- families ---------- */
+  .families { padding-block: clamp(3rem, 7vw, 5.5rem); border-top: 1px solid var(--gray-3); }
+  .family {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding-block: 3rem;
+    border-top: 1px solid var(--gray-3);
+    align-items: start;
+  }
+  .family:first-of-type { border-top: none; }
+  .family-specimen {
+    background: var(--blue-tint);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border-radius: 12px;
+  }
+  .spec-aa { font-size: clamp(4.5rem, 3rem + 6vw, 8rem); line-height: 1; display: block; }
+  .spec-charset { display: block; margin-top: 1.25rem; font-size: 1.125rem; color: var(--ink-soft); overflow-wrap: anywhere; line-height: 1.7; }
+  .family h3 { font-size: clamp(1.6rem, 1.3rem + 1.3vw, 2.3rem); margin-bottom: 0.25rem; }
+  .family-meta { color: var(--blue-deep); font-weight: 600; font-size: 0.9375rem; margin-bottom: 1.25rem; }
+  .family p + p { margin-top: 0.9rem; }
+  .family .story { color: var(--ink-soft); }
+  .trial-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.4rem;
+    background: var(--blue);
+    color: oklch(0.99 0 0);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 999px;
+    transition: background-color 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  }
+  .trial-btn:hover { background: var(--blue-deep); transform: translateY(-2px); }
+
+  /* ---------- licensing ---------- */
+  .licensing { padding-block: clamp(3rem, 7vw, 5.5rem); border-top: 1px solid var(--gray-3); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  caption { text-align: left; color: var(--ink-soft); padding-bottom: 1rem; max-width: 60ch; }
+  th, td { text-align: left; padding: 0.9rem 1rem; border-bottom: 1px solid var(--gray-3); vertical-align: top; }
+  thead th { font-family: "Zilla Slab", serif; font-size: 1.05rem; border-bottom: 2px solid var(--ink); }
+  tbody th { font-weight: 600; }
+  td.price { font-weight: 700; color: var(--blue-deep); white-space: nowrap; }
+  .license-note { margin-top: 1.25rem; color: var(--ink-soft); font-size: 0.9375rem; }
+
+  /* ---------- custom ---------- */
+  .custom { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(4rem, 9vw, 7rem); border-top: 1px solid var(--gray-3); }
+  .custom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
+  .custom p { color: var(--ink-soft); }
+  .custom p + p { margin-top: 0.9rem; }
+  .custom-facts { list-style: none; }
+  .custom-facts li {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--gray-3);
+    display: flex; justify-content: space-between; gap: 1rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .custom-facts li span:last-child { font-weight: 700; color: var(--ink); white-space: nowrap; }
+
+  footer {
+    border-top: 2px solid var(--ink);
+    padding-block: 2rem 3rem;
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+
+  @media (max-width: 760px) {
+    .family, .custom-grid { grid-template-columns: 1fr; }
+    .hero-word { white-space: normal; }
+    th, td { padding: 0.7rem 0.5rem; font-size: 0.9rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .glyph { color: var(--ink); }
+    .glyph:nth-child(7n) { color: var(--blue); background: var(--blue-tint); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-in">
+    <a class="wordmark" href="#top">Type<em>case</em></a>
+    <nav aria-label="Main">
+      <a href="#families">Families</a>
+      <a href="#licensing">Licensing</a>
+      <a href="#custom">Custom work</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <p class="hero-kicker">An independent type foundry in Utrecht — three families, no revivals of revivals.</p>
+    <h1 id="hero-title" class="hero-word" aria-label="Hamburgefonstiv">Hamburgefonstiv</h1>
+    <div class="weight-lab">
+      <label for="weight-slider">Drag the weight</label>
+      <input type="range" id="weight-slider" min="300" max="700" step="1" value="400"
+             aria-valuetext="Weight 400">
+      <span class="weight-readout" id="weight-readout" aria-hidden="true">400</span>
+    </div>
+    <p class="hero-sub">Every Typecase family ships as a variable font with drawn intermediate masters — what you feel under the slider is interpolation between real drawings, not a algorithm thickening stems.</p>
+  </section>
+
+  <section class="glyphs-section wrap" aria-labelledby="glyphs-title">
+    <h2 id="glyphs-title">The case, laid out</h2>
+    <p class="section-note">Meridian's basic Latin set. Glyphs fill in as you scroll, the way a proof sheet catches ink — the blue cells are the characters we drew first and fussed over longest.</p>
+    <div class="glyph-grid" id="glyph-grid" aria-hidden="true"></div>
+  </section>
+
+  <section class="waterfall-section wrap" aria-labelledby="waterfall-title">
+    <h2 id="waterfall-title">Waterfall</h2>
+    <p class="section-note">One sentence, every size that matters. Meridian holds its color from display down to captions because the light master was drawn for text, not shrunk from a headline.</p>
+    <div class="waterfall" id="waterfall">
+      <span class="wf-line" style="font-size: clamp(2.2rem, 6vw, 4rem);">Pack my box with five dozen liquor jugs.<span class="wf-size">64</span></span>
+      <span class="wf-line" style="font-size: clamp(1.8rem, 4.5vw, 3rem);">Pack my box with five dozen liquor jugs.<span class="wf-size">48</span></span>
+      <span class="wf-line" style="font-size: clamp(1.4rem, 3.4vw, 2.25rem);">Pack my box with five dozen liquor jugs.<span class="wf-size">36</span></span>
+      <span class="wf-line" style="font-size: clamp(1.1rem, 2.3vw, 1.5rem);">Pack my box with five dozen liquor jugs.<span class="wf-size">24</span></span>
+      <span class="wf-line" style="font-size: 1.125rem;">Pack my box with five dozen liquor jugs.<span class="wf-size">18</span></span>
+      <span class="wf-line" style="font-size: 0.875rem;">Pack my box with five dozen liquor jugs.<span class="wf-size">14</span></span>
+      <span class="wf-line" style="font-size: 0.75rem;">Pack my box with five dozen liquor jugs.<span class="wf-size">12</span></span>
+    </div>
+  </section>
+
+  <section class="families wrap" id="families" aria-labelledby="families-title">
+    <h2 id="families-title">Three families</h2>
+    <p class="section-note">Screen previews stand in for the trial fonts — download a trial to see the real outlines.</p>
+
+    <article class="family">
+      <div class="family-specimen" style="font-family: 'Zilla Slab', Georgia, serif;" aria-hidden="true">
+        <span class="spec-aa">Aa Rg</span>
+        <span class="spec-charset">ABCDEFGHIJKLM abcdefghijklm 0123456789 &amp; ?! — “Quartz”</span>
+      </div>
+      <div>
+        <h3>Meridian</h3>
+        <p class="family-meta">Slab serif · 7 weights · 2019, rev. 2024</p>
+        <p class="story">Meridian began as wayfinding for the Utrecht Science Park — a slab that had to stay legible in rain, at distance, on brushed aluminum. The serifs are unbracketed but softened by a two-degree flare, so signs stopped shouting once they moved indoors.</p>
+        <p class="story">The 2024 revision added a true light master and redrew the figures; old-style numerals now align with lowercase by default.</p>
+        <a class="trial-btn" href="#licensing">Download trial — Meridian</a>
+      </div>
+    </article>
+
+    <article class="family">
+      <div class="family-specimen" style="font-family: 'Hanken Grotesk', Arial, sans-serif;" aria-hidden="true">
+        <span class="spec-aa">Aa Rg</span>
+        <span class="spec-charset">ABCDEFGHIJKLM abcdefghijklm 0123456789 &amp; ?! — “Quartz”</span>
+      </div>
+      <div>
+        <h3>Folio Grotesk</h3>
+        <p class="family-meta">Grotesque · 9 weights + italics · 2021</p>
+        <p class="story">Folio is our answer to the neutral grotesque: one that admits a person drew it. The tails of a and t curl a half-degree more than convention allows, and the G keeps its spur — small decisions that add up to a page that reads warm at text sizes.</p>
+        <p class="story">Nine weights, true italics drawn on a 9° slant, and a mono-spaced figure set for tables that refuse to line up otherwise.</p>
+        <a class="trial-btn" href="#licensing">Download trial — Folio</a>
+      </div>
+    </article>
+
+    <article class="family">
+      <div class="family-specimen" style="font-family: Georgia, 'Times New Roman', serif;" aria-hidden="true">
+        <span class="spec-aa">Aa Rg</span>
+        <span class="spec-charset">ABCDEFGHIJKLM abcdefghijklm 0123456789 &amp; ?! — “Quartz”</span>
+      </div>
+      <div>
+        <h3>Cassel</h3>
+        <p class="family-meta">Old-style serif · 5 weights · 2023</p>
+        <p class="story">Cassel is a book face for people who still read books. Named for the bindery street where its first proofs were sewn, it carries a modest x-height, generous counters, and an italic that slopes like handwriting rather than machinery.</p>
+        <p class="story">Ships with small caps, four figure styles, and ornaments cut from the bindery's own 1912 brass type — the one revival we allowed ourselves.</p>
+        <a class="trial-btn" href="#licensing">Download trial — Cassel</a>
+      </div>
+    </article>
+  </section>
+
+  <section class="licensing wrap" id="licensing" aria-labelledby="licensing-title">
+    <h2 id="licensing-title">Licensing</h2>
+    <table>
+      <caption>One price per family per use, paid once. Trials are free, full character set, desktop-only, and watermarked in name only — the outlines are complete.</caption>
+      <thead>
+        <tr><th scope="col">License</th><th scope="col">Covers</th><th scope="col">Price / family</th></tr>
+      </thead>
+      <tbody>
+        <tr><th scope="row">Desktop</th><td>1–5 workstations, print and static image use</td><td class="price">€89</td></tr>
+        <tr><th scope="row">Web</th><td>Self-hosted webfonts, up to 100k pageviews / month</td><td class="price">€140</td></tr>
+        <tr><th scope="row">App &amp; ePub</th><td>Embedding in one application or digital publication</td><td class="price">€260</td></tr>
+        <tr><th scope="row">Studio bundle</th><td>All three families, desktop + web, 10 workstations</td><td class="price">€590</td></tr>
+        <tr><th scope="row">Enterprise</th><td>Unlimited seats, broadcast, OEM — let's talk</td><td class="price">from €2,400</td></tr>
+      </tbody>
+    </table>
+    <p class="license-note">Students pay half with any school address. If a license lapses mid-project, finished work stays legal — we license the making, not the artifact.</p>
+  </section>
+
+  <section class="custom wrap" id="custom" aria-labelledby="custom-title">
+    <h2 id="custom-title">Custom work</h2>
+    <div class="custom-grid">
+      <div>
+        <p>Half our income is commissions: a weight nobody else draws, a script extension, a wordmark pulled into a full family. Recent work includes a Devanagari companion to Meridian for a Mumbai publisher and a five-width sign system for a Dutch rail operator.</p>
+        <p>A commission starts with a week of drawing against your actual text — not our specimen sentences — so the first review is already about your voice, not ours.</p>
+        <p>Write to <a href="mailto:bench@typecase.example">bench@typecase.example</a> with the problem, not the brief. We answer with sketches, not a slide deck.</p>
+      </div>
+      <ul class="custom-facts">
+        <li><span>Typical engagement</span><span>14 weeks</span></li>
+        <li><span>Starting price</span><span>€18,000</span></li>
+        <li><span>Exclusive ownership</span><span>available</span></li>
+        <li><span>Commissions per year</span><span>four, no more</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Typecase Foundry — Utrecht, est. 2018</span>
+    <span>Drawn by hand, hinted by hand, priced by the family.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* --- draggable variable-weight hero --- */
+  var slider = document.getElementById('weight-slider');
+  var word = document.getElementById('hero-title');
+  var readout = document.getElementById('weight-readout');
+  function applyWeight() {
+    var w = slider.value;
+    word.style.fontWeight = w;
+    readout.textContent = w;
+    slider.setAttribute('aria-valuetext', 'Weight ' + w);
+  }
+  slider.addEventListener('input', applyWeight);
+  applyWeight();
+
+  /* --- glyph grid, fills on scroll --- */
+  var glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop 0123456789&?'.replace(/ /g, '');
+  var grid = document.getElementById('glyph-grid');
+  glyphs.split('').forEach(function (g) {
+    var cell = document.createElement('span');
+    cell.className = 'glyph';
+    cell.textContent = g;
+    grid.appendChild(cell);
+  });
+  var cells = grid.querySelectorAll('.glyph');
+
+  /* --- waterfall stagger --- */
+  var wfLines = document.querySelectorAll('.wf-line');
+
+  if (reduced || !('IntersectionObserver' in window)) {
+    cells.forEach(function (c) { c.classList.add('filled'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var idx = Array.prototype.indexOf.call(cells, entry.target);
+        entry.target.style.transitionDelay = (idx % 12) * 45 + 'ms';
+        entry.target.classList.add('filled');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.4 });
+    cells.forEach(function (c) { io.observe(c); });
+
+    var wio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        wfLines.forEach(function (line, i) {
+          line.style.animationDelay = i * 90 + 'ms';
+          line.classList.add('animate-in');
+        });
+        wio.disconnect();
+      });
+    }, { threshold: 0.3 });
+    if (wfLines.length) wio.observe(document.getElementById('waterfall'));
+  }
+})();
+</script>
+</body>
+</html>
